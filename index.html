@@ -47,23 +47,26 @@
         </div>
     </div>
 
-    <!-- MODAL CÀI ĐẶT TÀI KHOẢN -->
+    <!-- MODAL CÀI ĐẶT TÀI KHOẢN (Đã cập nhật đa ngôn ngữ & Nút Chọn Tệp mới) -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-slate-800 text-base">⚙️ Cài đặt tài khoản</h3>
+                <h3 id="s-modal-title" class="font-bold text-slate-800 text-base">⚙️ Cài đặt tài khoản</h3>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
             
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🖼️ Tải lên Avatar cá nhân</h4>
+                    <h4 id="s-avatar-title" class="font-bold text-slate-700 text-xs uppercase tracking-wider">🖼️ Tải lên Avatar cá nhân</h4>
                     <div class="flex items-center gap-4">
                         <div id="preview-avatar" class="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden border border-slate-300 flex items-center justify-center font-bold text-slate-500 shadow-sm">👤</div>
                         <div class="flex-1 space-y-2">
-                            <input type="file" id="avatar-file-input" accept="image/*" onchange="previewAvatarImage(event)" 
-                                class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                            <button onclick="saveAvatarImage()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition">Lưu Avatar</button>
+                            <div class="flex items-center gap-2">
+                                <label for="avatar-file-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">📁 Chọn tệp...</label>
+                                <span id="avatar-file-name" class="text-[11px] text-slate-400 truncate max-w-[110px]">Chưa chọn tệp</span>
+                                <input type="file" id="avatar-file-input" accept="image/*" onchange="previewAvatarImage(event)" class="hidden">
+                            </div>
+                            <button onclick="saveAvatarImage()" id="s-save-avatar-btn" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition">Lưu Avatar</button>
                         </div>
                     </div>
                 </div>
@@ -71,13 +74,13 @@
                 <hr class="border-slate-100">
 
                 <div class="space-y-2">
-                    <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🔒 Đổi mã PIN bảo mật</h4>
+                    <h4 id="s-pin-title" class="font-bold text-slate-700 text-xs uppercase tracking-wider">🔒 Đổi mã PIN bảo mật</h4>
                     <div class="space-y-2">
                         <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại (4 số)" maxlength="4" 
                             class="w-full px-4 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <input type="password" id="new-pin-input" placeholder="Mã PIN mới (4 số)" maxlength="4" 
                             class="w-full px-4 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button onclick="changePin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-semibold transition">Cập nhật mã PIN</button>
+                        <button onclick="changePin()" id="s-update-pin-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-semibold transition">Cập nhật mã PIN</button>
                     </div>
                 </div>
             </div>
@@ -138,8 +141,11 @@
 
                         <div class="space-y-1">
                             <label id="m-upload-label" class="text-xs font-semibold text-slate-500 block">Tải ảnh minh họa lên:</label>
-                            <input type="file" id="modal-image-file" accept="image/*" onchange="previewDayImage(event)" 
-                                class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            <div class="flex items-center gap-2">
+                                <label for="modal-image-file" id="day-file-label" class="cursor-pointer bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">📁 Chọn tệp...</label>
+                                <span id="day-file-name" class="text-[11px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
+                                <input type="file" id="modal-image-file" accept="image/*" onchange="previewDayImage(event)" class="hidden">
+                            </div>
                             <div id="modal-image-preview-container" class="mt-2 hidden">
                                 <img id="modal-image-preview" class="rounded-xl max-h-36 object-cover border border-slate-200 w-full">
                                 <button type="button" onclick="removeDayImage()" id="m-remove-img" class="text-[11px] text-red-500 underline mt-1">Xóa ảnh này</button>
@@ -186,7 +192,7 @@
             </div>
         </header>
 
-        <!-- Navigation Tabs (Sử dụng logo BVGP mới) -->
+        <!-- Navigation Tabs -->
         <div class="flex justify-center bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-1.5">
                 <img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover" alt="Logo">
@@ -303,8 +309,7 @@
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
-                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
-                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách chung',
+                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách chung',
                 tabUpdate: "📌 Thử thách cá nhân",
                 reportBtn: "📋 Kết quả",
                 reportModalTitle: "📋 Kết quả thử thách",
@@ -358,12 +363,21 @@
                 personal: "Cá nhân của bạn",
                 completedThisDay: "Đã hoàn thành",
                 createdBy: "Tạo bởi",
-                alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai."
+                alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai.",
+                // Các từ khóa đa ngôn ngữ cho Cài đặt tài khoản & Chọn tệp
+                settingsTitle: "⚙️ Cài đặt tài khoản",
+                uploadAvatarTitle: "🖼️ Tải lên Avatar cá nhân",
+                saveAvatarBtn: "Lưu Avatar",
+                changePinTitle: "🔒 Đổi mã PIN bảo mật",
+                oldPinPh: "Mã PIN hiện tại (4 số)",
+                newPinPh: "Mã PIN mới (4 số)",
+                updatePinBtn: "Cập nhật mã PIN",
+                chooseFileBtn: "📁 Chọn tệp...",
+                noFileSelected: "Chưa chọn tệp"
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
                 tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
-                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
                 tabUpdate: "📌 Personal Challenges",
                 reportBtn: "📋 Results",
                 reportModalTitle: "📋 Challenge Results",
@@ -417,7 +431,17 @@
                 personal: "Your Personal",
                 completedThisDay: "Completed",
                 createdBy: "Created by",
-                alertFuture: "⏳ Future date! You cannot view or update results for upcoming days."
+                alertFuture: "⏳ Future date! You cannot view or update results for upcoming days.",
+                // English translation keys
+                settingsTitle: "⚙️ Account Settings",
+                uploadAvatarTitle: "🖼️ Upload Personal Avatar",
+                saveAvatarBtn: "Save Avatar",
+                changePinTitle: "🔒 Change Security PIN",
+                oldPinPh: "Current PIN (4 digits)",
+                newPinPh: "New PIN (4 digits)",
+                updatePinBtn: "Update PIN",
+                chooseFileBtn: "📁 Choose File...",
+                noFileSelected: "No file chosen"
             }
         };
 
@@ -442,7 +466,7 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = (currentLang === 'vi') ? t('tabDashboardVi') : t('tabDashboard');
+            document.getElementById('btn-dashboard').innerHTML = t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
             document.getElementById('btn-report').innerText = t('reportBtn');
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
@@ -478,6 +502,24 @@
             document.getElementById('m-save-btn').innerText = t('saveUpdate');
             document.getElementById('m-team-progress').innerText = t('teamProgress');
             document.getElementById('m-completed-text').innerText = t('completedText');
+
+            // Cập nhật tĩnh cho Cài đặt tài khoản & Nút chọn tệp
+            document.getElementById('s-modal-title').innerText = t('settingsTitle');
+            document.getElementById('s-avatar-title').innerText = t('uploadAvatarTitle');
+            document.getElementById('s-save-avatar-btn').innerText = t('saveAvatarBtn');
+            document.getElementById('s-pin-title').innerText = t('changePinTitle');
+            document.getElementById('old-pin-input').placeholder = t('oldPinPh');
+            document.getElementById('new-pin-input').placeholder = t('newPinPh');
+            document.getElementById('s-update-pin-btn').innerText = t('updatePinBtn');
+
+            document.getElementById('avatar-file-label').innerText = t('chooseFileBtn');
+            if (!document.getElementById('avatar-file-input').files[0]) {
+                document.getElementById('avatar-file-name').innerText = t('noFileSelected');
+            }
+            document.getElementById('day-file-label').innerText = t('chooseFileBtn');
+            if (!document.getElementById('modal-image-file').files[0]) {
+                document.getElementById('day-file-name').innerText = t('noFileSelected');
+            }
         }
 
         const firebaseConfig = {
@@ -578,10 +620,13 @@
         function previewAvatarImage(event) {
             const file = event.target.files[0];
             if (file) {
+                document.getElementById('avatar-file-name').innerText = file.name;
                 compressImage(file, (base64) => {
                     tempAvatarBase64 = base64;
                     document.getElementById('preview-avatar').innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
                 });
+            } else {
+                document.getElementById('avatar-file-name').innerText = t('noFileSelected');
             }
         }
 
@@ -602,17 +647,21 @@
         function previewDayImage(event) {
             const file = event.target.files[0];
             if (file) {
+                document.getElementById('day-file-name').innerText = file.name;
                 compressImage(file, (base64) => {
                     tempDayImageBase64 = base64;
                     document.getElementById('modal-image-preview').src = base64;
                     document.getElementById('modal-image-preview-container').classList.remove('hidden');
                 });
+            } else {
+                document.getElementById('day-file-name').innerText = t('noFileSelected');
             }
         }
 
         function removeDayImage() {
             tempDayImageBase64 = '';
             document.getElementById('modal-image-file').value = '';
+            document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('modal-image-preview-container').classList.add('hidden');
         }
 
@@ -1424,6 +1473,7 @@
             let itemData;
             tempDayImageBase64 = '';
             document.getElementById('modal-image-file').value = '';
+            document.getElementById('day-file-name').innerText = t('noFileSelected');
 
             const groupStatusContainer = document.getElementById('group-day-status-container');
 
