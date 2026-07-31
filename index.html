@@ -16,8 +16,13 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <style>
+        /* Ẩn thanh cuộn nếu màn hình quá nhỏ */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-8 px-4 transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300">
 
     <!-- AUDIO NHẠC NỀN CATBOX -->
     <audio id="bg-music" loop src="https://files.catbox.moe/bfdutu.mp3"></audio>
@@ -200,25 +205,30 @@
             <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">Thử Thách Kỷ Luật BVGP</h1>
             <p id="slogan-text" class="text-sm text-slate-500 dark:text-slate-400 italic px-4 transition-all duration-500"></p>
             
-            <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-                <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/60 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 dark:text-indigo-300 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
-                
-                <div class="flex flex-col items-start">
-                    <span class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-0.5 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600 dark:text-indigo-400">---</strong></span>
-                    <button onclick="switchUser()" id="t-switch-user" class="text-[10px] text-slate-400 hover:text-red-600 font-semibold underline ml-1 mt-0.5">Thoát</button>
+            <!-- THANH ĐIỀU HƯỚNG 1 DÒNG DUY NHẤT TRÊN ĐIỆN THOẠI -->
+            <div class="flex items-center justify-between gap-1 mt-3 w-full flex-nowrap overflow-x-auto no-scrollbar py-1 px-1 bg-white/50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm">
+                <!-- Bên trái: Avatar + Tên + Thoát -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <div onclick="openSettingsModal()" id="current-user-avatar" class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/60 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 cursor-pointer shadow-sm hover:scale-105 transition shrink-0" title="Cài đặt tài khoản">👤</div>
+                    
+                    <span class="text-[10px] sm:text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold max-w-[60px] sm:max-w-[100px] truncate"><strong id="current-user-label" class="text-indigo-600 dark:text-indigo-400">---</strong></span>
+                    
+                    <button onclick="switchUser()" id="t-switch-user" class="text-[10px] text-slate-400 hover:text-red-600 font-bold shrink-0 p-0.5">✕</button>
                 </div>
-                
-                <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
 
-                <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📋 Kết quả</button>
-                
-                <!-- NÚT BẬT/TẮT NHẠC NỀN -->
-                <button onclick="toggleMusic()" id="music-toggle-btn" class="text-[10px] bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1 animate-pulse">🎶 Nhạc: Bật</button>
+                <!-- Bên phải: Kết quả + Nhạc + Theme + VI/EN -->
+                <div class="flex items-center gap-1 shrink-0">
+                    <button onclick="openReportModal()" id="btn-report" class="text-[10px] sm:text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded-lg font-semibold transition shadow-sm flex items-center gap-0.5 shrink-0">📋 <span id="btn-report-text">Kết quả</span></button>
+                    
+                    <!-- Icon Bật/Tắt Nhạc (Loa gạch / Loa phát) -->
+                    <button onclick="toggleMusic()" id="music-toggle-btn" class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0" title="Bật/Tắt Nhạc nền">🔇</button>
 
-                <!-- NÚT CHUYỂN LIGHT / DARK MODE -->
-                <button onclick="toggleTheme()" id="theme-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1">🌙 Tối</button>
+                    <!-- Icon Light / Dark Mode -->
+                    <button onclick="toggleTheme()" id="theme-toggle-btn" class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0" title="Chuyển chế độ sáng/tối">🌙</button>
 
-                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2 py-0.5 rounded-md font-bold transition">VI</button>
+                    <!-- Chuyển Ngôn ngữ -->
+                    <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-1.5 py-1 rounded-lg font-bold transition shrink-0">VI</button>
+                </div>
             </div>
         </header>
 
@@ -343,7 +353,7 @@
                 tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
                 tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách nhóm',
                 tabUpdate: "📌 Thử thách cá nhân",
-                reportBtn: "📋 Kết quả",
+                reportBtnText: "Kết quả",
                 reportModalTitle: "📋 Kết quả thử thách",
                 copySuccess: "Đã tự động sao chép!",
                 copyNotice: "Nội dung đã được sao chép vào bộ nhớ tạm.",
@@ -408,18 +418,14 @@
                 chooseFileBtn: "📁 Chọn tệp...",
                 noFileSelected: "Chưa chọn tệp",
                 noDescription: "Chưa có mô tả cho thử thách này.",
-                closeBtn: "Đóng",
-                musicOn: "🎶 Nhạc: Bật",
-                musicOff: "🎵 Nhạc: Tắt",
-                btnThemeDark: "🌙 Tối",
-                btnThemeLight: "☀️ Sáng"
+                closeBtn: "Đóng"
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
                 tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
                 tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
                 tabUpdate: "📌 Personal Challenges",
-                reportBtn: "📋 Results",
+                reportBtnText: "Results",
                 reportModalTitle: "📋 Challenge Results",
                 copySuccess: "Automatically copied!",
                 copyNotice: "Content copied to clipboard.",
@@ -484,11 +490,7 @@
                 chooseFileBtn: "📁 Choose File...",
                 noFileSelected: "No file chosen",
                 noDescription: "No description available for this challenge.",
-                closeBtn: "Close",
-                musicOn: "🎶 Music: On",
-                musicOff: "🎵 Music: Off",
-                btnThemeDark: "🌙 Dark",
-                btnThemeLight: "☀️ Light"
+                closeBtn: "Close"
             }
         };
 
@@ -505,10 +507,10 @@
 
             if (currentTheme === 'dark') {
                 htmlEl.classList.add('dark');
-                if (btn) btn.innerText = t('btnThemeLight');
+                if (btn) btn.innerText = '☀️';
             } else {
                 htmlEl.classList.remove('dark');
-                if (btn) btn.innerText = t('btnThemeDark');
+                if (btn) btn.innerText = '🌙';
             }
         }
 
@@ -519,55 +521,24 @@
             }
         }
 
-        /* QUẢN LÝ NHẠC NỀN (MẶC ĐỊNH BẬT - MUSIC ON) */
-        let isMusicPlaying = true;
-
-        function updateMusicButtonUI() {
-            const btn = document.getElementById('music-toggle-btn');
-            if (!btn) return;
-            if (isMusicPlaying) {
-                btn.innerText = t('musicOn');
-                btn.className = "text-[10px] bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1 animate-pulse";
-            } else {
-                btn.innerText = t('musicOff');
-                btn.className = "text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1";
-            }
-        }
+        /* QUẢN LÝ NHẠC NỀN (MẶC ĐỊNH TẮT) */
+        let isMusicPlaying = false;
 
         function toggleMusic() {
             const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-toggle-btn');
             if (isMusicPlaying) {
                 music.pause();
+                btn.innerText = '🔇';
+                btn.className = "text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0";
                 isMusicPlaying = false;
             } else {
                 music.play().then(() => {
+                    btn.innerText = '🔊';
+                    btn.className = "text-xs bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0 animate-pulse";
                     isMusicPlaying = true;
                 }).catch(err => {
-                    isMusicPlaying = false;
                     alert(currentLang === 'vi' ? 'Vui lòng bấm vào màn hình trước khi bật nhạc!' : 'Please click on the screen first!');
-                });
-            }
-            updateMusicButtonUI();
-        }
-
-        function autoStartMusic() {
-            const music = document.getElementById('bg-music');
-            isMusicPlaying = true;
-            updateMusicButtonUI();
-            
-            const playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // Trình duyệt chặn Autoplay tự động -> Bật khi người dùng bấm bất kỳ đâu trên màn hình
-                    const startAudioOnInteraction = () => {
-                        if (isMusicPlaying) {
-                            music.play().catch(() => {});
-                        }
-                        document.removeEventListener('click', startAudioOnInteraction);
-                        document.removeEventListener('keydown', startAudioOnInteraction);
-                    };
-                    document.addEventListener('click', startAudioOnInteraction, { once: true });
-                    document.addEventListener('keydown', startAudioOnInteraction, { once: true });
                 });
             }
         }
@@ -593,7 +564,7 @@
             document.getElementById('t-app-title').innerText = t('appTitle');
             document.getElementById('btn-dashboard').innerHTML = (currentLang === 'vi') ? t('tabDashboardVi') : t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
-            document.getElementById('btn-report').innerText = t('reportBtn');
+            document.getElementById('btn-report-text').innerText = t('reportBtnText');
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('copy-success-badge').innerText = t('copySuccess');
             document.getElementById('copy-notice-text').innerText = t('copyNotice');
@@ -649,7 +620,6 @@
 
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
 
-            updateMusicButtonUI();
             applyTheme(currentTheme);
         }
 
@@ -712,7 +682,6 @@
         document.getElementById('personal-date-input').value = new Date().toISOString().split('T')[0];
 
         applyTheme(currentTheme);
-        autoStartMusic();
 
         dbRef.on('value', (snapshot) => {
             const data = snapshot.val();
