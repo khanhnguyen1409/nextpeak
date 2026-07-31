@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- MODAL CÀI ĐẶT TÀI KHOẢN (Mở khi bấm vào Avatar) -->
+    <!-- MODAL CÀI ĐẶT TÀI KHOẢN -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
@@ -56,7 +56,6 @@
             </div>
             
             <div class="space-y-4">
-                <!-- Đổi Avatar -->
                 <div class="space-y-2">
                     <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🖼️ Tải lên Avatar cá nhân</h4>
                     <div class="flex items-center gap-4">
@@ -71,7 +70,6 @@
 
                 <hr class="border-slate-100">
 
-                <!-- Đổi mã PIN -->
                 <div class="space-y-2">
                     <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🔒 Đổi mã PIN bảo mật</h4>
                     <div class="space-y-2">
@@ -86,21 +84,29 @@
         </div>
     </div>
 
-    <!-- MODAL KẾT QUẢ THỬ THÁCH (Xuất báo cáo) -->
+    <!-- MODAL KẾT QUẢ THỬ THÁCH (Xem trực quan + Tự động sao chép + Icon Zalo/Messenger) -->
     <div id="report-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center">
+        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-slate-800 text-base">📤 Kết quả thử thách</h3>
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-800 text-base">📤 Kết quả thử thách</h3>
+                    <span id="copy-success-badge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold hidden">Đã sao chép!</span>
+                </div>
                 <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
-            <p class="text-xs text-slate-500">Chọn hình thức chia sẻ báo cáo kết quả của bạn:</p>
-            <div class="grid grid-cols-1 gap-2 pt-2">
-                <button onclick="exportChallengeReport()" class="bg-slate-800 hover:bg-slate-900 text-white py-2.5 px-3 rounded-xl text-xs font-medium transition shadow-sm flex items-center justify-center gap-1.5">📋 Sao chép báo cáo</button>
-                <button onclick="shareToZalo()" class="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-3 rounded-xl text-xs font-medium transition shadow-sm flex items-center justify-center gap-1.5">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.48-.42-1.42-.89.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.96 8.22-3.52 3.91-1.63 4.72-1.91 5.25-1.92.12 0 .39.03.56.17.14.12.18.28.2.4-.02.11-.02.32-.05.51z"/></svg> Chia sẻ qua Zalo
+            
+            <!-- Khung hiển thị trực quan nội dung báo cáo -->
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 max-h-60 overflow-y-auto">
+                <pre id="report-preview-text" class="text-xs text-slate-700 whitespace-pre-wrap font-sans"></pre>
+            </div>
+
+            <!-- 2 Icon Zalo & Messenger tối giản -->
+            <div class="flex justify-center items-center gap-4 pt-2">
+                <button onclick="shareToZalo()" title="Chia sẻ qua Zalo" class="w-11 h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center justify-center shadow-md transition hover:scale-105">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.48-.42-1.42-.89.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.96 8.22-3.52 3.91-1.63 4.72-1.91 5.25-1.92.12 0 .39.03.56.17.14.12.18.28.2.4-.02.11-.02.32-.05.51z"/></svg>
                 </button>
-                <button onclick="shareToMessenger()" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-3 rounded-xl text-xs font-medium transition shadow-sm flex items-center justify-center gap-1.5">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.51 3.13 7.34V22l3.41-1.87c1.01.28 2.08.43 3.46.43 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm1.09 13.06l-2.55-2.72-4.97 2.72 5.46-5.8 2.61 2.72 4.91-2.72-5.46 5.8z"/></svg> Chia sẻ qua Messenger
+                <button onclick="shareToMessenger()" title="Chia sẻ qua Messenger" class="w-11 h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl flex items-center justify-center shadow-md transition hover:scale-105">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.51 3.13 7.34V22l3.41-1.87c1.01.28 2.08.43 3.46.43 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm1.09 13.06l-2.55-2.72-4.97 2.72 5.46-5.8 2.61 2.72 4.91-2.72-5.46 5.8z"/></svg>
                 </button>
             </div>
         </div>
@@ -175,7 +181,6 @@
             
             <!-- User info & quick action bar -->
             <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
-                <!-- Avatar bấm vào để mở Cài đặt -->
                 <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
                 <span class="text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
                 <button onclick="switchUser()" id="t-switch-user" class="text-xs text-slate-500 hover:text-red-600 font-semibold underline ml-1">Thoát</button>
@@ -184,10 +189,8 @@
 
                 <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📤 Kết quả</button>
                 
-                <div class="flex gap-1 ml-1">
-                    <button onclick="setLanguage('vi')" id="lang-vi-btn" class="text-[11px] px-2 py-0.5 rounded font-bold bg-indigo-600 text-white">VI</button>
-                    <button onclick="setLanguage('en')" id="lang-en-btn" class="text-[11px] px-2 py-0.5 rounded font-bold bg-slate-200 text-slate-600">EN</button>
-                </div>
+                <!-- Nút chuyển đổi ngôn ngữ độc lập VI/EN -->
+                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-1 rounded-full font-bold transition shadow-sm">VI</button>
             </div>
         </header>
 
@@ -197,9 +200,8 @@
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
         </div>
 
-        <!-- TAB 1: THỬ THÁCH CHUNG (Tông màu Indigo / Xanh dương) -->
+        <!-- TAB 1: THỬ THÁCH CHUNG -->
         <div id="tab-dashboard" class="space-y-6">
-            <!-- Tạo Thử Thách Chung (Thu gọn mặc định) -->
             <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
                 <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-slate-700 flex justify-between items-center hover:bg-slate-50 transition">
                     <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách chung</span>
@@ -230,15 +232,13 @@
                 </div>
             </div>
 
-            <!-- Danh sách thử thách chung -->
             <div class="space-y-6" id="shared-challenges-container">
                 <div id="shared-challenges-list" class="space-y-6"></div>
             </div>
         </div>
 
-        <!-- TAB 2: THỬ THÁCH CÁ NHÂN (Tông màu Emerald / Xanh lá phân biệt rõ ràng) -->
+        <!-- TAB 2: THỬ THÁCH CÁ NHÂN -->
         <div id="tab-update" class="space-y-6 hidden">
-            <!-- Thêm thử thách cá nhân (Thu gọn mặc định) -->
             <div class="bg-white rounded-3xl shadow-sm border border-emerald-200 overflow-hidden">
                 <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 bg-emerald-50/50 flex justify-between items-center hover:bg-emerald-50 transition">
                     <span id="t-create-personal-toggle" class="flex items-center gap-2">➕ Thêm thử thách cá nhân</span>
@@ -269,7 +269,6 @@
                 </div>
             </div>
 
-            <!-- Danh sách thử thách cá nhân -->
             <div class="space-y-6" id="personal-challenges-container">
                 <div id="personal-list" class="space-y-6"></div>
             </div>
@@ -383,13 +382,10 @@
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('bvgpLang', lang);
-            
-            document.getElementById('lang-vi-btn').className = lang === 'vi' ? "text-[11px] px-2 py-0.5 rounded font-bold bg-indigo-600 text-white" : "text-[11px] px-2 py-0.5 rounded font-bold bg-slate-200 text-slate-600";
-            document.getElementById('lang-en-btn').className = lang === 'en' ? "text-[11px] px-2 py-0.5 rounded font-bold bg-indigo-600 text-white" : "text-[11px] px-2 py-0.5 rounded font-bold bg-slate-200 text-slate-600";
-
+        function toggleLanguage() {
+            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
+            localStorage.setItem('bvgpLang', currentLang);
+            document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
             updateStaticTexts();
             if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
                 renderDashboard();
@@ -462,32 +458,7 @@
 
         let appData = {
             members: defaultMembers,
-            sharedChallenges: [
-                {
-                    id: 1710000000000,
-                    title: 'Thử Thách Kỷ Luật Chung',
-                    creatorName: 'Khánh',
-                    totalDays: 35,
-                    targetDays: 30,
-                    startDate: new Date().toISOString().split('T')[0],
-                    participants: {
-                        'member_2': true,
-                        'member_3': true,
-                        'member_4': true,
-                        'member_5': true,
-                        'member_6': true,
-                        'member_7': true
-                    },
-                    progress: {
-                        'member_2': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' })),
-                        'member_3': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' })),
-                        'member_4': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' })),
-                        'member_5': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' })),
-                        'member_6': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' })),
-                        'member_7': Array(35).fill(null).map(() => ({ completed: false, note: '', image: '' }))
-                    }
-                }
-            ],
+            sharedChallenges: [],
             personalHabits: {
                 'member_2': [],
                 'member_3': [],
@@ -517,14 +488,19 @@
                     const found = (data.members || []).find(m => m.id === def.id);
                     return found ? { ...def, ...found } : def;
                 });
-                // Cho phép sharedChallenges lưu trạng thái đã xóa vĩnh viễn trên Firebase
-                appData.sharedChallenges = data.sharedChallenges !== undefined ? (data.sharedChallenges || []) : appData.sharedChallenges;
+                appData.sharedChallenges = data.sharedChallenges !== undefined ? (data.sharedChallenges || []) : [];
                 appData.personalHabits = data.personalHabits || appData.personalHabits;
             } else {
                 dbRef.set(appData);
             }
             updateUserLabel();
-            setLanguage(currentLang);
+            document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
+            updateStaticTexts();
+            if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
+                renderDashboard();
+            } else {
+                renderPersonalChallenges();
+            }
         });
 
         function compressImage(file, callback) {
@@ -715,6 +691,16 @@
         }
 
         function openReportModal() {
+            const text = getReportText();
+            document.getElementById('report-preview-text').innerText = text;
+            
+            // Tự động sao chép vào bộ nhớ tạm
+            navigator.clipboard.writeText(text).then(() => {
+                const badge = document.getElementById('copy-success-badge');
+                badge.classList.remove('hidden');
+                setTimeout(() => badge.classList.add('hidden'), 3000);
+            }).catch(err => console.log(err));
+
             document.getElementById('report-modal').classList.remove('hidden');
         }
 
@@ -800,7 +786,6 @@
         function getReportText() {
             let report = currentLang === 'vi' ? "🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n" : "🏆 BVGP TEAM DISCIPLINE REPORT 🏆\n\n";
             
-            // 1. Thử thách chung
             if (appData.sharedChallenges && appData.sharedChallenges.length > 0) {
                 report += currentLang === 'vi' ? "--- THỬ THÁCH CHUNG ---\n" : "--- SHARED CHALLENGES ---\n";
                 appData.sharedChallenges.forEach(c => {
@@ -828,7 +813,6 @@
                 });
             }
 
-            // 2. Thử thách cá nhân
             const currentMember = appData.members.find(m => m.id === loggedInUserId);
             const personalHabits = (appData.personalHabits && appData.personalHabits[loggedInUserId]) || [];
             if (personalHabits.length > 0) {
@@ -842,16 +826,6 @@
             }
 
             return report;
-        }
-
-        function exportChallengeReport() {
-            const report = getReportText();
-            navigator.clipboard.writeText(report).then(() => {
-                alert(currentLang === 'vi' ? "Đã sao chép báo cáo kết quả vào clipboard!" : "Report copied to clipboard!");
-                closeReportModal();
-            }).catch(err => {
-                alert("Error copying!");
-            });
         }
 
         function shareToZalo() {
@@ -992,7 +966,7 @@
                             
                             <div class="pt-4 border-t border-slate-100">
                                 <h5 class="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">${t('leaderboard')}</h5>
-                                <div class="relative h-48 w-full">
+                                <div class="relative h-56 w-full">
                                     <canvas id="chart-challenge-${challenge.id}"></canvas>
                                 </div>
                             </div>
@@ -1021,13 +995,55 @@
                             const sortedMembers = activeMembers.map(mId => {
                                 const mObj = appData.members.find(m => m.id === mId);
                                 let total = (challenge.progress && challenge.progress[mId]) ? challenge.progress[mId].filter(item => item && item.completed).length : 0;
-                                return { name: mObj ? mObj.name : mId, count: total };
+                                return { id: mId, name: mObj ? mObj.name : mId, avatar: mObj ? mObj.avatar : '', count: total };
                             }).sort((a, b) => b.count - a.count);
 
                             const labels = sortedMembers.map(m => m.name);
                             const dataCounts = sortedMembers.map(m => m.count);
 
                             const ctx = canvasEl.getContext('2d');
+                            
+                            // Custom plugin để vẽ hình ảnh Avatar bên dưới nhãn trục X
+                            const avatarPlugin = {
+                                id: 'avatarPlugin',
+                                afterDraw(chart) {
+                                    const { ctx, scales: { x } } = chart;
+                                    ctx.save();
+                                    sortedMembers.forEach((m, index) => {
+                                        const xPos = x.getPixelForValue(index);
+                                        const yPos = chart.chartArea.bottom + 6;
+                                        
+                                        // Vẽ khung avatar tròn
+                                        ctx.beginPath();
+                                        ctx.arc(xPos, yPos + 12, 12, 0, 2 * Math.PI);
+                                        ctx.fillStyle = '#e2e8f0';
+                                        ctx.fill();
+                                        ctx.lineWidth = 1.5;
+                                        ctx.strokeStyle = '#cbd5e1';
+                                        ctx.stroke();
+                                        ctx.closePath();
+                                        ctx.clip();
+
+                                        if (m.avatar) {
+                                            const img = new Image();
+                                            img.src = m.avatar;
+                                            if (img.complete) {
+                                                ctx.drawImage(img, xPos - 12, yPos, 24, 24);
+                                            } else {
+                                                img.onload = () => chart.draw();
+                                            }
+                                        } else {
+                                            ctx.fillStyle = '#475569';
+                                            ctx.font = 'bold 10px sans-serif';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillText(m.name.charAt(0), xPos, yPos + 12);
+                                        }
+                                        ctx.restore();
+                                    });
+                                }
+                            };
+
                             activeCharts[challenge.id] = new Chart(ctx, {
                                 type: 'bar',
                                 data: {
@@ -1045,10 +1061,16 @@
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
+                                        x: {
+                                            ticks: {
+                                                padding: 22 // tạo khoảng trống bên dưới nhãn tên để chứa avatar
+                                            }
+                                        },
                                         y: { beginAtZero: true, max: targetD, ticks: { stepSize: 5 } }
                                     },
                                     plugins: { legend: { display: false } }
-                                }
+                                },
+                                plugins: [avatarPlugin]
                             });
                         }
                     }, 50);
@@ -1147,7 +1169,6 @@
                 appData.sharedChallenges.push(newChallenge);
                 document.getElementById('shared-title-input').value = '';
                 dbRef.set(appData);
-                // Tự động thu gọn lại sau khi tạo thành công
                 toggleSharedCreatePanel();
             }
         };
@@ -1181,7 +1202,6 @@
                 });
                 document.getElementById('personal-input').value = '';
                 dbRef.set(appData);
-                // Tự động thu gọn lại sau khi thêm thành công
                 togglePersonalCreatePanel();
             }
         };
