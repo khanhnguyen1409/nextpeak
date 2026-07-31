@@ -3,298 +3,1597 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trình Quản Lý Thử Thách</title>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background: var(--card-bg);
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            position: relative;
-        }
-
-        /* VI/EN Button nhỏ gọn, tinh tế */
-        .lang-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 11px;
-            padding: 2px 6px;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: #64748b;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-        .lang-btn:hover {
-            opacity: 1;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 20px;
-            color: #0f172a;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        .row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .row .form-group {
-            flex: 1;
-        }
-
-        button.btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        button.btn-primary:hover {
-            background-color: #1d4ed8;
-        }
-
-        .preview-section {
-            margin-top: 25px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 180px;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 13px;
-            resize: vertical;
-            background: #f1f5f9;
-            box-sizing: border-box;
-        }
-
-        .actions {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .toast {
-            font-size: 13px;
-            color: #16a34a;
-            font-weight: 500;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .toast.show {
-            opacity: 1;
-        }
-    </style>
+    <title>BVGP - Thử Thách Kỷ Luật</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen py-8 px-4">
 
-    <div class="container">
-        <!-- Nút VI/EN được thu nhỏ, tinh tế -->
-        <button class="lang-btn" onclick="toggleLang()">VI / EN</button>
-
-        <h2>Quản Lý Thử Thách</h2>
-
-        <div class="form-group">
-            <label id="lbl-name">Tên thử thách</label>
-            <input type="text" id="challengeName" placeholder="Ví dụ: Đọc sách, Chạy bộ...">
-        </div>
-
-        <div class="row">
-            <div class="form-group">
-                <label id="lbl-status">Trạng thái</label>
-                <select id="challengeStatus" onchange="toggleProgressInput()">
-                    <option value="doing">Đang thực hiện</option>
-                    <option value="done">Hoàn thành</option>
-                    <option value="paused">Tạm dừng</option>
-                    <option value="givenup">Bỏ cuộc</option>
-                    <option value="none">Không tham gia</option>
+    <!-- MODAL ĐĂNG NHẬP & BẢO MẬT PIN -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center">
+            <h2 id="l-welcome" class="text-xl font-bold text-slate-700">👋 Chào mừng đến với BVGP</h2>
+            
+            <div id="login-step-1" class="space-y-4">
+                <p id="l-select-name" class="text-xs text-slate-500">Chọn đúng tên của bạn để tiếp tục.</p>
+                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white">
+                    <option value="member_2">Vẫn</option>
+                    <option value="member_3">Tính</option>
+                    <option value="member_4">Nghị</option>
+                    <option value="member_5">Lệnh</option>
+                    <option value="member_6">Bằng</option>
+                    <option value="member_7">Khánh</option>
                 </select>
+                <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
             </div>
-            <div class="form-group" id="progressGroup">
-                <label id="lbl-progress">Tiến độ (ví dụ: 2/30 ngày)</label>
-                <input type="text" id="challengeProgress" placeholder="2/30 ngày">
-            </div>
-        </div>
 
-        <button class="btn-primary" onclick="addChallenge()" id="btnAdd">Thêm vào danh sách</button>
-
-        <div class="preview-section">
-            <label id="lbl-preview">Nội dung xem trước (dành cho Zalo/Messenger)</label>
-            <textarea id="outputArea" readonly></textarea>
-            <div class="actions">
-                <span id="toastMsg" class="toast">Nội dung đã được sao chép vào bộ nhớ tạm.</span>
-                <button class="btn-primary" style="width: auto; padding: 8px 16px;" onclick="copyToClipboard()" id="btnCopy">Sao chép</button>
+            <div id="login-step-2" class="space-y-3 hidden">
+                <p id="login-pin-title" class="text-xs font-bold text-indigo-600">🔒 Nhập mã PIN bảo mật</p>
+                <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" 
+                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div class="flex gap-2">
+                    <button onclick="handleLoginBack()" id="l-back-btn" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2.5 rounded-xl font-semibold text-xs transition">Quay lại</button>
+                    <button id="login-pin-btn" onclick="handlePinSubmit()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Xác nhận</button>
+                </div>
+                <div class="text-right">
+                    <button onclick="handleForgotPin()" id="l-forgot-pin" class="text-[11px] text-indigo-600 underline hover:text-indigo-800">Quên mã PIN?</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        let challenges = [];
-        let challengeCount = 0;
-        let currentLang = 'vi';
+    <!-- MODAL CÀI ĐẶT TÀI KHOẢN -->
+    <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-800 text-base">⚙️ Cài đặt tài khoản</h3>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🖼️ Tải lên Avatar cá nhân</h4>
+                    <div class="flex items-center gap-4">
+                        <div id="preview-avatar" class="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden border border-slate-300 flex items-center justify-center font-bold text-slate-500 shadow-sm">👤</div>
+                        <div class="flex-1 space-y-2">
+                            <input type="file" id="avatar-file-input" accept="image/*" onchange="previewAvatarImage(event)" 
+                                class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            <button onclick="saveAvatarImage()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition">Lưu Avatar</button>
+                        </div>
+                    </div>
+                </div>
 
-        function toggleProgressInput() {
-            const status = document.getElementById('challengeStatus').value;
-            const progressGroup = document.getElementById('progressGroup');
-            // Tiến độ cần hiển thị khi đang thực hiện, tạm dừng, hoặc bỏ cuộc
-            if (status === 'paused' || status === 'givenup' || status === 'doing') {
-                progressGroup.style.display = 'block';
+                <hr class="border-slate-100">
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">🔒 Đổi mã PIN bảo mật</h4>
+                    <div class="space-y-2">
+                        <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại (4 số)" maxlength="4" 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="password" id="new-pin-input" placeholder="Mã PIN mới (4 số)" maxlength="4" 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="changePin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-semibold transition">Cập nhật mã PIN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KẾT QUẢ THỬ THÁCH -->
+    <div id="report-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-800 text-base">📋 Kết quả thử thách</h3>
+                    <span id="copy-success-badge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold hidden">Đã tự động sao chép!</span>
+                </div>
+                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 max-h-72 overflow-y-auto">
+                <pre id="report-preview-text" class="text-xs text-slate-700 whitespace-pre-wrap font-sans"></pre>
+            </div>
+            <p class="text-[11px] text-slate-400 text-center">Nội dung đã được sao chép vào bộ nhớ tạm.</p>
+        </div>
+    </div>
+
+    <!-- MODAL NHẬP GHI CHÚ, UPLOAD ẢNH & XEM TIẾN ĐỘ NHÓM -->
+    <div id="day-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 id="modal-day-title" class="font-bold text-slate-800 text-base">Chi tiết ngày</h3>
+                <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 id="m-personal" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Cá nhân của bạn</h4>
+                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="text-xs font-semibold text-indigo-600 hover:underline">✏️ Chỉnh sửa</button>
+                    </div>
+
+                    <div id="modal-view-section" class="space-y-2">
+                        <div id="view-status"></div>
+                        <div id="view-timestamp" class="text-[11px] text-slate-400 font-medium"></div>
+                        <div id="view-note" class="hidden"></div>
+                        <div id="view-image" class="hidden"></div>
+                    </div>
+
+                    <div id="modal-edit-section" class="space-y-3 hidden">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="modal-checkbox" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                            <span id="m-completed-label" class="text-sm font-semibold text-slate-700">Đã hoàn thành</span>
+                        </label>
+
+                        <div class="space-y-1">
+                            <label id="m-note-label" class="text-xs font-semibold text-slate-500">Ghi chú / Nhật ký & Cảm xúc:</label>
+                            <textarea id="modal-note" rows="2" placeholder="Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?..." 
+                                class="w-full p-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white"></textarea>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label id="m-upload-label" class="text-xs font-semibold text-slate-500 block">Tải ảnh minh họa lên:</label>
+                            <input type="file" id="modal-image-file" accept="image/*" onchange="previewDayImage(event)" 
+                                class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            <div id="modal-image-preview-container" class="mt-2 hidden">
+                                <img id="modal-image-preview" class="rounded-xl max-h-36 object-cover border border-slate-200 w-full">
+                                <button type="button" onclick="removeDayImage()" id="m-remove-img" class="text-[11px] text-red-500 underline mt-1">Xóa ảnh này</button>
+                            </div>
+                        </div>
+
+                        <button onclick="saveDayDetail()" id="m-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-semibold text-sm transition">Lưu cập nhật</button>
+                    </div>
+                </div>
+
+                <div id="group-day-status-container" class="space-y-2 hidden">
+                    <div class="flex justify-between items-center">
+                        <h4 id="m-team-progress" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tiến độ & Ghi chú của nhóm</h4>
+                        <span id="completed-ratio-badge" class="text-xs font-bold bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full"><span id="completed-ratio-text">0/0</span> <span id="m-completed-text">hoàn thành</span></span>
+                    </div>
+                    <div id="group-members-status-list" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto space-y-6">
+        <!-- Header -->
+        <header class="text-center relative space-y-2">
+            <div class="inline-flex items-center justify-center mb-1">
+                <img src="https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png';">
+            </div>
+            <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800">Thử Thách Kỷ Luật BVGP</h1>
+            <p id="slogan-text" class="text-sm text-slate-500 italic px-4 transition-all duration-500"></p>
+            
+            <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
+                <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
+                
+                <div class="flex flex-col items-start">
+                    <span class="text-xs bg-slate-200 text-slate-700 px-3 py-0.5 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
+                    <button onclick="switchUser()" id="t-switch-user" class="text-[10px] text-slate-400 hover:text-red-600 font-semibold underline ml-1 mt-0.5">Thoát</button>
+                </div>
+                
+                <div class="h-4 w-px bg-slate-300 mx-1"></div>
+
+                <!-- Đổi icon cho Kết quả: 📋 -->
+                <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📋 Kết quả</button>
+                
+                <!-- Nút VI/EN thu nhỏ tinh tế -->
+                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-[10px] bg-slate-200 hover:bg-slate-300 text-slate-600 border border-slate-300 px-2 py-0.5 rounded-md font-bold transition">VI</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs (Đổi icon Thử thách chung: 👥) -->
+        <div class="flex justify-center bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm">👥 Thử thách chung</button>
+            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
+        </div>
+
+        <!-- TAB 1: THỬ THÁCH CHUNG -->
+        <div id="tab-dashboard" class="space-y-6">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-slate-700 flex justify-between items-center hover:bg-slate-50 transition">
+                    <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách chung</span>
+                    <span id="shared-create-arrow" class="text-xs text-slate-400">▼</span>
+                </button>
+                <div id="shared-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-slate-100">
+                    <form id="shared-challenge-form" class="space-y-3 pt-4">
+                        <input type="text" id="shared-title-input" placeholder="Tên thử thách (VD: Kỷ luật)..." 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" required>
+                        <div>
+                            <label id="t-start-date" class="text-xs text-slate-500 block mb-1">Ngày bắt đầu:</label>
+                            <input type="date" id="shared-date-input" class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <div class="flex-1">
+                                <label id="t-target-days" class="text-xs text-slate-500 block mb-1">Mục tiêu:</label>
+                                <input type="number" id="shared-target-input" value="30" min="1" max="365" 
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            </div>
+                            <div class="flex-1">
+                                <label id="t-total-days" class="text-xs text-slate-500 block mb-1">Tổng thời gian:</label>
+                                <input type="number" id="shared-days-input" value="35" min="1" max="365" 
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="t-create-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-sm font-medium transition">Tạo thử thách</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-6" id="shared-challenges-container">
+                <div id="shared-challenges-list" class="space-y-6"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: THỬ THÁCH CÁ NHÂN -->
+        <div id="tab-update" class="space-y-6 hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-emerald-200 overflow-hidden">
+                <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 bg-emerald-50/50 flex justify-between items-center hover:bg-emerald-50 transition">
+                    <span id="t-create-personal-toggle" class="flex items-center gap-2">➕ Thêm thử thách cá nhân</span>
+                    <span id="personal-create-arrow" class="text-xs text-emerald-600">▼</span>
+                </button>
+                <div id="personal-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-emerald-100">
+                    <form id="personal-form" class="space-y-3 pt-4">
+                        <input type="text" id="personal-input" placeholder="Tên thử thách cá nhân (VD: Đọc sách)..." 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm" required>
+                        <div>
+                            <label id="t-start-date-2" class="text-xs text-slate-500 block mb-1">Ngày bắt đầu:</label>
+                            <input type="date" id="personal-date-input" class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <div class="flex-1">
+                                <label id="t-target-days-2" class="text-xs text-slate-500 block mb-1">Mục tiêu:</label>
+                                <input type="number" id="personal-target-input" value="30" min="1" max="365" 
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                            </div>
+                            <div class="flex-1">
+                                <label id="t-total-days-2" class="text-xs text-slate-500 block mb-1">Tổng thời gian:</label>
+                                <input type="number" id="personal-days-input" value="35" min="1" max="365" 
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="t-add-habit-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl text-sm font-medium transition">Thêm thử thách cá nhân</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-6" id="personal-challenges-container">
+                <div id="personal-list" class="space-y-6"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript & Firebase Logic -->
+    <script>
+        const slogans = {
+            vi: [
+                "Kỷ luật là cầu nối giữa mục tiêu và thành tựu.",
+                "Hành trình vạn dặm khởi đầu từ một bước chân nhỏ mỗi ngày.",
+                "Động lực giúp bạn bắt đầu, nhưng kỷ luật mới giúp bạn đi đến đích.",
+                "Phiên bản tốt hơn của ngày mai được xây dựng từ sự kiên trì hôm nay.",
+                "Thành công không đến từ những gì bạn làm đôi khi, mà đến từ những gì bạn làm đều đặn."
+            ],
+            en: [
+                "Discipline is the bridge between goals and accomplishment.",
+                "A journey of a thousand miles begins with a single step.",
+                "Motivation gets you started, but discipline keeps you growing.",
+                "A better tomorrow is built on the consistency of today.",
+                "Success doesn't come from what you do occasionally, it comes from what you do consistently."
+            ]
+        };
+
+        function displayRandomSlogan() {
+            const list = slogans[currentLang];
+            const randomMsg = list[Math.floor(Math.random() * list.length)];
+            document.getElementById('slogan-text').innerText = `"${randomMsg}"`;
+        }
+
+        // Chuyển đổi số thành kí tự số mũ (VD: 1 -> ¹, 2 -> ²)
+        function toSuperscript(num) {
+            const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+            return String(num).split('').map(c => supers[c] || c).join('');
+        }
+
+        const translations = {
+            vi: {
+                appTitle: "Thử Thách Kỷ Luật BVGP",
+                tabDashboard: "👥 Thử thách chung",
+                tabUpdate: "📌 Thử thách cá nhân",
+                createSharedToggle: "➕ Tạo thử thách chung",
+                createPersonalToggle: "➕ Thêm thử thách cá nhân",
+                challengePh: "Tên thử thách (VD: Kỷ luật)...",
+                startDate: "Ngày bắt đầu:",
+                targetDays: "Mục tiêu:",
+                totalDays: "Tổng thời gian:",
+                createBtn: "Tạo thử thách",
+                habitPh: "Tên thử thách cá nhân (VD: Đọc sách)...",
+                addHabitBtn: "Thêm thử thách cá nhân",
+                noHabits: "Chưa có thử thách cá nhân nào.",
+                noChallenges: "Chưa có thử thách chung nào.",
+                joinChallenge: "🚀 Tham gia ngay",
+                notJoined: "Bạn chưa tham gia thử thách này.",
+                leaveChallenge: "🚫 Không tham gia",
+                pauseChallenge: "⏸️ Tạm dừng",
+                pausedStatus: "⏸️ Tạm dừng",
+                giveUpChallenge: "🏳️ Bỏ cuộc",
+                givenUpStatus: "🏳️ Bỏ cuộc",
+                notParticipatingStatus: "🚫 Không tham gia",
+                leaderboard: "🏆 Bảng xếp hạng",
+                progress: "Tiến độ",
+                total: "Tổng",
+                todayBadge: "Hôm nay",
+                completed: "✅ Đã hoàn thành",
+                incomplete: "⏳ Chưa hoàn thành",
+                edit: "✏️ Chỉnh sửa",
+                cancel: "Hủy",
+                saveUpdate: "Lưu cập nhật",
+                teamProgress: "Tiến độ & Ghi chú của nhóm",
+                completedText: "hoàn thành",
+                noteLabel: "Ghi chú / Nhật ký & Cảm xúc:",
+                notePh: "Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?...",
+                uploadImgLabel: "Tải ảnh minh họa lên:",
+                removeImg: "Xóa ảnh này",
+                welcome: "👋 Chào mừng đến với BVGP",
+                selectName: "Chọn đúng tên của bạn để tiếp tục.",
+                continueBtn: "Tiếp tục",
+                enterPin: "🔒 Nhập mã PIN bảo mật",
+                pinPh: "Nhập mã PIN 4 số...",
+                backBtn: "Quay lại",
+                confirmBtn: "Xác nhận",
+                forgotPin: "Quên mã PIN?",
+                dayDetails: "Chi tiết ngày",
+                personal: "Cá nhân của bạn",
+                completedThisDay: "Đã hoàn thành",
+                createdBy: "Tạo bởi",
+                alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai."
+            },
+            en: {
+                appTitle: "BVGP Discipline Challenge",
+                tabDashboard: "👥 Shared Challenges",
+                tabUpdate: "📌 Personal Challenges",
+                createSharedToggle: "➕ Create Shared Challenge",
+                createPersonalToggle: "➕ Add Personal Challenge",
+                challengePh: "Challenge name (e.g., Discipline)...",
+                startDate: "Start date:",
+                targetDays: "Target:",
+                totalDays: "Total days:",
+                createBtn: "Create Challenge",
+                habitPh: "Personal challenge name (e.g., Reading)...",
+                addHabitBtn: "Add Personal Challenge",
+                noHabits: "No personal challenges yet.",
+                noChallenges: "No shared challenges yet.",
+                joinChallenge: "🚀 Join Now",
+                notJoined: "You haven't joined this challenge yet.",
+                leaveChallenge: "🚫 Not participating",
+                pauseChallenge: "⏸️ Pause",
+                pausedStatus: "⏸️ Paused",
+                giveUpChallenge: "🏳️ Give Up",
+                givenUpStatus: "🏳️ Given up",
+                notParticipatingStatus: "🚫 Not participating",
+                leaderboard: "🏆 Leaderboard",
+                progress: "Progress",
+                total: "Total",
+                todayBadge: "Today",
+                completed: "✅ Completed",
+                incomplete: "⏳ Incomplete",
+                edit: "✏️ Edit",
+                cancel: "Cancel",
+                saveUpdate: "Save Updates",
+                teamProgress: "Team Progress & Notes",
+                completedText: "completed",
+                noteLabel: "Notes / Journal & Emotions:",
+                notePh: "What did you do today? How did you feel?...",
+                uploadImgLabel: "Upload illustration image:",
+                removeImg: "Remove image",
+                welcome: "👋 Welcome to BVGP",
+                selectName: "Select your name to continue.",
+                continueBtn: "Continue",
+                enterPin: "🔒 Enter Security PIN",
+                pinPh: "Enter 4-digit PIN...",
+                backBtn: "Back",
+                confirmBtn: "Confirm",
+                forgotPin: "Forgot PIN?",
+                dayDetails: "Day Details",
+                personal: "Your Personal",
+                completedThisDay: "Completed",
+                createdBy: "Created by",
+                alertFuture: "⏳ Future date! You cannot view or update results for upcoming days."
+            }
+        };
+
+        let currentLang = localStorage.getItem('bvgpLang') || 'vi';
+
+        function toggleLanguage() {
+            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
+            localStorage.setItem('bvgpLang', currentLang);
+            document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
+            updateStaticTexts();
+            displayRandomSlogan();
+            if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
+                renderDashboard();
             } else {
-                progressGroup.style.display = 'none';
+                renderPersonalChallenges();
             }
         }
 
-        function addChallenge() {
-            const name = document.getElementById('challengeName').value.trim();
-            const status = document.getElementById('challengeStatus').value;
-            const progress = document.getElementById('challengeProgress').value.trim();
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
 
-            if (!name) {
-                alert('Vui lòng nhập tên thử thách!');
+        function updateStaticTexts() {
+            document.getElementById('t-app-title').innerText = t('appTitle');
+            document.getElementById('btn-dashboard').innerText = t('tabDashboard');
+            document.getElementById('btn-update').innerText = t('tabUpdate');
+            document.getElementById('t-create-shared-toggle').innerText = t('createSharedToggle');
+            document.getElementById('t-create-personal-toggle').innerText = t('createPersonalToggle');
+            document.getElementById('shared-title-input').placeholder = t('challengePh');
+            document.getElementById('t-start-date').innerText = t('startDate');
+            document.getElementById('t-target-days').innerText = t('targetDays');
+            document.getElementById('t-total-days').innerText = t('totalDays');
+            document.getElementById('t-create-btn').innerText = t('createBtn');
+            document.getElementById('personal-input').placeholder = t('habitPh');
+            document.getElementById('t-start-date-2').innerText = t('startDate');
+            document.getElementById('t-target-days-2').innerText = t('targetDays');
+            document.getElementById('t-total-days-2').innerText = t('totalDays');
+            document.getElementById('t-add-habit-btn').innerText = t('addHabitBtn');
+
+            document.getElementById('l-welcome').innerText = t('welcome');
+            document.getElementById('l-select-name').innerText = t('selectName');
+            document.getElementById('l-continue-btn').innerText = t('continueBtn');
+            document.getElementById('l-back-btn').innerText = t('backBtn');
+            document.getElementById('l-forgot-pin').innerText = t('forgotPin');
+            document.getElementById('login-pin-input').placeholder = t('pinPh');
+
+            document.getElementById('m-personal').innerText = t('personal');
+            document.getElementById('m-completed-label').innerText = t('completedThisDay');
+            document.getElementById('m-note-label').innerText = t('noteLabel');
+            document.getElementById('modal-note').placeholder = t('notePh');
+            document.getElementById('m-upload-label').innerText = t('uploadImgLabel');
+            document.getElementById('m-remove-img').innerText = t('removeImg');
+            document.getElementById('m-save-btn').innerText = t('saveUpdate');
+            document.getElementById('m-team-progress').innerText = t('teamProgress');
+            document.getElementById('m-completed-text').innerText = t('completedText');
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAY8N4lKXlLexdcEoEuE6DdyVVcA0cDs",
+            authDomain: "bgvp-challenge.firebaseapp.com",
+            databaseURL: "https://bgvp-challenge-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bgvp-challenge",
+            storageBucket: "bgvp-challenge.firebasestorage.app",
+            messagingSenderId: "122013691059",
+            appId: "1:122013691059:web:2e2963a573faf2915bd4c6"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const dbRef = firebase.database().ref('bvgpOfficialTeamData');
+
+        const defaultMembers = [
+            { id: 'member_2', name: 'Vẫn', avatar: '', pin: '' },
+            { id: 'member_3', name: 'Tính', avatar: '', pin: '' },
+            { id: 'member_4', name: 'Nghị', avatar: '', pin: '' },
+            { id: 'member_5', name: 'Lệnh', avatar: '', pin: '' },
+            { id: 'member_6', name: 'Bằng', avatar: '', pin: '' },
+            { id: 'member_7', name: 'Khánh', avatar: '', pin: '' }
+        ];
+
+        let appData = {
+            members: defaultMembers,
+            sharedChallenges: [],
+            personalHabits: {
+                'member_2': [],
+                'member_3': [],
+                'member_4': [],
+                'member_5': [],
+                'member_6': [],
+                'member_7': []
+            }
+        };
+
+        let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
+        let selectedLoginMemberId = null;
+        let isCreatingPin = false;
+        let activeCharts = {};
+        let currentEditingDay = null;
+        let isEditMode = false;
+        let tempAvatarBase64 = '';
+        let tempDayImageBase64 = '';
+
+        document.getElementById('shared-date-input').value = new Date().toISOString().split('T')[0];
+        document.getElementById('personal-date-input').value = new Date().toISOString().split('T')[0];
+
+        dbRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                appData.members = defaultMembers.map(def => {
+                    const found = (data.members || []).find(m => m.id === def.id);
+                    return found ? { ...def, ...found } : def;
+                });
+                appData.sharedChallenges = data.sharedChallenges !== undefined ? (data.sharedChallenges || []) : [];
+                appData.personalHabits = data.personalHabits || appData.personalHabits;
+            } else {
+                dbRef.set(appData);
+            }
+            updateUserLabel();
+            document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
+            updateStaticTexts();
+            displayRandomSlogan();
+            if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
+                renderDashboard();
+            } else {
+                renderPersonalChallenges();
+            }
+        });
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const MAX = 800;
+                    if (width > height) {
+                        if (width > MAX) { height *= MAX / width; width = MAX; }
+                    } else {
+                        if (height > MAX) { width *= MAX / height; height = MAX; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                compressImage(file, (base64) => {
+                    tempAvatarBase64 = base64;
+                    document.getElementById('preview-avatar').innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
+                });
+            }
+        }
+
+        function saveAvatarImage() {
+            if (!tempAvatarBase64) {
+                alert(currentLang === 'vi' ? "Vui lòng chọn ảnh trước khi lưu!" : "Please select an image first!");
+                return;
+            }
+            const memberIndex = appData.members.findIndex(m => m.id === loggedInUserId);
+            if (memberIndex !== -1) {
+                appData.members[memberIndex].avatar = tempAvatarBase64;
+                dbRef.set(appData);
+                alert(currentLang === 'vi' ? "Đã cập nhật Avatar thành công!" : "Avatar updated successfully!");
+                closeSettingsModal();
+            }
+        }
+
+        function previewDayImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                compressImage(file, (base64) => {
+                    tempDayImageBase64 = base64;
+                    document.getElementById('modal-image-preview').src = base64;
+                    document.getElementById('modal-image-preview-container').classList.remove('hidden');
+                });
+            }
+        }
+
+        function removeDayImage() {
+            tempDayImageBase64 = '';
+            document.getElementById('modal-image-file').value = '';
+            document.getElementById('modal-image-preview-container').classList.add('hidden');
+        }
+
+        function checkLogin() {
+            if (!loggedInUserId || !defaultMembers.some(m => m.id === loggedInUserId)) {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('login-step-1').classList.remove('hidden');
+                document.getElementById('login-step-2').classList.add('hidden');
+            } else {
+                updateUserLabel();
+            }
+        }
+
+        function handleLoginNext() {
+            const selectEl = document.getElementById('login-select');
+            selectedLoginMemberId = selectEl.value;
+            const member = appData.members.find(m => m.id === selectedLoginMemberId);
+            
+            document.getElementById('login-step-1').classList.add('hidden');
+            document.getElementById('login-step-2').classList.remove('hidden');
+            
+            const pinTitle = document.getElementById('login-pin-title');
+            const pinBtn = document.getElementById('login-pin-btn');
+            const pinInput = document.getElementById('login-pin-input');
+            pinInput.value = '';
+
+            if (!member.pin || member.pin === '') {
+                pinTitle.innerText = currentLang === 'vi' ? `🔒 Tạo mã PIN 4 số cho ${member.name}` : `🔒 Create 4-digit PIN for ${member.name}`;
+                pinBtn.innerText = currentLang === 'vi' ? 'Tạo mã PIN & Vào app' : 'Create PIN & Enter';
+                isCreatingPin = true;
+            } else {
+                pinTitle.innerText = currentLang === 'vi' ? `🔑 Nhập mã PIN của ${member.name}` : `🔑 Enter PIN for ${member.name}`;
+                pinBtn.innerText = currentLang === 'vi' ? 'Đăng nhập' : 'Login';
+                isCreatingPin = false;
+            }
+        }
+
+        function handleLoginBack() {
+            document.getElementById('login-step-2').classList.add('hidden');
+            document.getElementById('login-step-1').classList.remove('hidden');
+        }
+
+        function handlePinSubmit() {
+            const pinInput = document.getElementById('login-pin-input').value.trim();
+            if (pinInput.length !== 4 || isNaN(pinInput)) {
+                alert(currentLang === 'vi' ? "Mã PIN phải đúng 4 chữ số!" : "PIN must be exactly 4 digits!");
                 return;
             }
 
-            challengeCount++;
-            // Chuyển số thứ tự thành số mũ nhỏ ở cuối tên thử thách
-            const superscriptNum = toSuperscript(challengeCount);
-            const formattedName = `${name} ${superscriptNum}`;
+            const memberIndex = appData.members.findIndex(m => m.id === selectedLoginMemberId);
+            if (memberIndex === -1) return;
 
-            challenges.push({ name: formattedName, status, progress });
-            
-            document.getElementById('challengeName').value = '';
-            document.getElementById('challengeProgress').value = '';
-            updateOutput();
-        }
-
-        function toSuperscript(num) {
-            const map = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
-            return num.toString().split('').map(char => map[char] || char).join('');
-        }
-
-        function updateOutput() {
-            // Icon mới cho Thử thách chung và Kết quả
-            let text = "🎯 Thử thách chung\n";
-            
-            challenges.forEach(item => {
-                let icon = '';
-                let extra = '';
-
-                switch(item.status) {
-                    case 'doing':
-                        icon = '🔥';
-                        if(item.progress) extra = ` (${item.progress})`;
-                        break;
-                    case 'done':
-                        icon = '✅';
-                        break;
-                    case 'paused':
-                        icon = '⏸️';
-                        if(item.progress) extra = ` (${item.progress})`;
-                        break;
-                    case 'givenup':
-                        icon = '❌'; // Icon bỏ cuộc riêng biệt
-                        if(item.progress) extra = ` (${item.progress})`;
-                        break;
-                    case 'none':
-                        icon = '⚪'; // Icon không tham gia riêng biệt (khác bỏ cuộc)
-                        break;
-                }
-
-                text += `- ${item.name}: ${icon}${extra}\n`;
-            });
-
-            text += "\n📋 Kết quả";
-
-            document.getElementById('outputArea').value = text;
-        }
-
-        function copyToClipboard() {
-            const textarea = document.getElementById('outputArea');
-            textarea.select();
-            document.execCommand('copy');
-
-            const toast = document.getElementById('toastMsg');
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-
-        function toggleLang() {
-            currentLang = currentLang === 'vi' ? 'en' : 'vi';
-            if (currentLang === 'en') {
-                document.getElementById('lbl-name').innerText = 'Challenge Name';
-                document.getElementById('lbl-status').innerText = 'Status';
-                document.getElementById('lbl-progress').innerText = 'Progress (e.g., 2/30 days)';
-                document.getElementById('lbl-preview').innerText = 'Preview Content (for Zalo/Messenger)';
-                document.getElementById('btnAdd').innerText = 'Add to list';
-                document.getElementById('btnCopy').innerText = 'Copy';
+            if (isCreatingPin) {
+                appData.members[memberIndex].pin = pinInput;
+                dbRef.set(appData);
+                finishLogin(selectedLoginMemberId);
             } else {
-                document.getElementById('lbl-name').innerText = 'Tên thử thách';
-                document.getElementById('lbl-status').innerText = 'Trạng thái';
-                document.getElementById('lbl-progress').innerText = 'Tiến độ (ví dụ: 2/30 ngày)';
-                document.getElementById('lbl-preview').innerText = 'Nội dung xem trước (dành cho Zalo/Messenger)';
-                document.getElementById('btnAdd').innerText = 'Thêm vào danh sách';
-                document.getElementById('btnCopy').innerText = 'Sao chép';
+                if (appData.members[memberIndex].pin === pinInput) {
+                    finishLogin(selectedLoginMemberId);
+                } else {
+                    alert(currentLang === 'vi' ? "Mã PIN không chính xác!" : "Incorrect PIN!");
+                }
             }
         }
+
+        function handleForgotPin() {
+            const masterPin = prompt(currentLang === 'vi' ? "Nhập mã PIN quản trị (Master PIN):" : "Enter Master PIN:");
+            if (masterPin === "0000") {
+                const memberIndex = appData.members.findIndex(m => m.id === selectedLoginMemberId);
+                if (memberIndex !== -1) {
+                    appData.members[memberIndex].pin = "";
+                    dbRef.set(appData);
+                    alert(currentLang === 'vi' ? "Đã đặt lại mã PIN thành công!" : "PIN reset successfully!");
+                    handleLoginNext();
+                }
+            } else if (masterPin !== null) {
+                alert(currentLang === 'vi' ? "Mã PIN quản trị không chính xác!" : "Incorrect Master PIN!");
+            }
+        }
+
+        function finishLogin(memberId) {
+            loggedInUserId = memberId;
+            localStorage.setItem('bvgpOfficialLoggedInUserId', loggedInUserId);
+            document.getElementById('login-modal').classList.add('hidden');
+            updateUserLabel();
+            renderDashboard();
+        }
+
+        function switchUser() {
+            localStorage.removeItem('bvgpOfficialLoggedInUserId');
+            loggedInUserId = null;
+            checkLogin();
+        }
+
+        function updateUserLabel() {
+            const member = appData.members.find(m => m.id === loggedInUserId);
+            if (member) {
+                document.getElementById('current-user-label').innerText = member.name;
+                const avatarEl = document.getElementById('current-user-avatar');
+                if (member.avatar) {
+                    avatarEl.innerHTML = `<img src="${member.avatar}" class="w-full h-full object-cover">`;
+                } else {
+                    avatarEl.innerHTML = member.name.charAt(0);
+                }
+            }
+        }
+
+        function openSettingsModal() {
+            const member = appData.members.find(m => m.id === loggedInUserId);
+            const previewEl = document.getElementById('preview-avatar');
+            if (member && member.avatar) {
+                previewEl.innerHTML = `<img src="${member.avatar}" class="w-full h-full object-cover">`;
+                tempAvatarBase64 = member.avatar;
+            } else if (member) {
+                previewEl.innerHTML = member.name.charAt(0);
+                tempAvatarBase64 = '';
+            }
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function openReportModal() {
+            const text = getReportText();
+            document.getElementById('report-preview-text').innerText = text;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const badge = document.getElementById('copy-success-badge');
+                badge.classList.remove('hidden');
+                setTimeout(() => badge.classList.add('hidden'), 3000);
+            }).catch(err => console.log(err));
+
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        function toggleSharedCreatePanel() {
+            const panel = document.getElementById('shared-create-panel');
+            const arrow = document.getElementById('shared-create-arrow');
+            panel.classList.toggle('hidden');
+            arrow.innerText = panel.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        function togglePersonalCreatePanel() {
+            const panel = document.getElementById('personal-create-panel');
+            const arrow = document.getElementById('personal-create-arrow');
+            panel.classList.toggle('hidden');
+            arrow.innerText = panel.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        function changePin() {
+            const oldPinInput = document.getElementById('old-pin-input').value.trim();
+            const newPinInput = document.getElementById('new-pin-input').value.trim();
+            const memberIndex = appData.members.findIndex(m => m.id === loggedInUserId);
+            if (memberIndex === -1) return;
+
+            const member = appData.members[memberIndex];
+            if (member.pin && member.pin !== oldPinInput) {
+                alert(currentLang === 'vi' ? "Mã PIN hiện tại không chính xác!" : "Current PIN is incorrect!");
+                return;
+            }
+            if (newPinInput.length !== 4 || isNaN(newPinInput)) {
+                alert(currentLang === 'vi' ? "Mã PIN mới phải đúng 4 chữ số!" : "New PIN must be 4 digits!");
+                return;
+            }
+
+            appData.members[memberIndex].pin = newPinInput;
+            dbRef.set(appData);
+            alert(currentLang === 'vi' ? "Đổi mã PIN thành công!" : "PIN changed successfully!");
+            document.getElementById('old-pin-input').value = '';
+            document.getElementById('new-pin-input').value = '';
+            closeSettingsModal();
+        }
+
+        function switchTab(tab) {
+            const dashboardTab = document.getElementById('tab-dashboard');
+            const updateTab = document.getElementById('tab-update');
+            const btnDashboard = document.getElementById('btn-dashboard');
+            const btnUpdate = document.getElementById('btn-update');
+
+            if (tab === 'dashboard') {
+                dashboardTab.classList.remove('hidden');
+                updateTab.classList.add('hidden');
+                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm";
+                btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition";
+                renderDashboard();
+            } else {
+                dashboardTab.classList.add('hidden');
+                updateTab.classList.remove('hidden');
+                btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-emerald-600 text-white transition shadow-sm";
+                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition";
+                renderPersonalChallenges();
+            }
+        }
+
+        function getDateString(startDateStr, dayIndex) {
+            const start = new Date(startDateStr || Date.now());
+            const d = new Date(start);
+            d.setDate(start.getDate() + dayIndex);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+        }
+
+        function formatDateString(dateInput) {
+            if (!dateInput) return '';
+            const d = new Date(dateInput);
+            if (isNaN(d)) return dateInput;
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        }
+
+        function getTodayIndex(startDateStr) {
+            const start = new Date(startDateStr || Date.now());
+            start.setHours(0,0,0,0);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const diffTime = today - start;
+            return Math.round(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function promptReason() {
+            let reason = prompt(currentLang === 'vi' ? "Vui lòng nhập lý do (bắt buộc):" : "Please enter a mandatory reason (required):");
+            if (reason === null) return null;
+            reason = reason.trim();
+            while (!reason) {
+                alert(currentLang === 'vi' ? "Lý do là bắt buộc!" : "Reason is required!");
+                reason = prompt(currentLang === 'vi' ? "Vui lòng nhập lý do (bắt buộc):" : "Please enter a mandatory reason (required):");
+                if (reason === null) return null;
+                reason = reason.trim();
+            }
+            return reason;
+        }
+
+        // Tạo nội dung báo cáo kết quả (Cập nhật số mũ nhỏ & giữ tiến độ thực hiện cho Bỏ cuộc / Tạm dừng)
+        function getReportText() {
+            let report = currentLang === 'vi' ? "🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n" : "🏆 BVGP TEAM DISCIPLINE REPORT 🏆\n\n";
+            
+            if (appData.sharedChallenges && appData.sharedChallenges.length > 0) {
+                report += currentLang === 'vi' ? "--- THỬ THÁCH CHUNG ---\n" : "--- SHARED CHALLENGES ---\n";
+                const sortedShared = [...appData.sharedChallenges].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+                
+                sortedShared.forEach((c, index) => {
+                    const targetGoal = c.targetDays || 30;
+                    const createdDateStr = formatDateString(c.createdAt || c.id);
+                    // Dùng số mũ nhỏ ở cuối tên
+                    report += `🎯 ${c.title}${toSuperscript(index + 1)} (${t('createdBy')}: ${c.creatorName || 'Team'} - ${createdDateStr})\n`;
+                    
+                    const participantsMap = c.participants || {};
+                    const reasonsMap = c.participantReasons || {};
+                    const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up' || participantsMap[mId] === 'not_participating');
+                    
+                    const sorted = activeMembers.map(mId => {
+                        const mObj = appData.members.find(m => m.id === mId);
+                        const status = participantsMap[mId];
+                        const count = (c.progress && c.progress[mId]) ? c.progress[mId].filter(item => item && item.completed).length : 0;
+                        const reason = reasonsMap[mId] || '';
+                        return { name: mObj ? mObj.name : mId, count, status, reason };
+                    }).sort((a, b) => b.count - a.count);
+
+                    sorted.forEach((m) => {
+                        const isCompletedGoal = m.count >= targetGoal;
+                        const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
+
+                        if (m.status === 'given_up') {
+                            // Cập nhật tiến độ đã thực hiện cho Bỏ cuộc
+                            report += `   - ${m.name}: ${t('givenUpStatus')} (${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${m.reason ? ` - Lý do: ${m.reason}` : ''})\n`;
+                        } else if (m.status === 'not_participating') {
+                            report += `   - ${m.name}: ${t('notParticipatingStatus')}${m.reason ? ` (Lý do: ${m.reason})` : ''}\n`;
+                        } else {
+                            report += `   - ${m.name}: ${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${completedTag}\n`;
+                        }
+                    });
+                    report += "\n";
+                });
+            }
+
+            const currentMember = appData.members.find(m => m.id === loggedInUserId);
+            const personalHabits = (appData.personalHabits && appData.personalHabits[loggedInUserId]) || [];
+            if (personalHabits.length > 0) {
+                report += currentLang === 'vi' ? `--- THỬ THÁCH CÁ NHÂN (${currentMember ? currentMember.name : ''}) ---\n` : `--- PERSONAL CHALLENGES (${currentMember ? currentMember.name : ''}) ---\n`;
+                const sortedPersonal = [...personalHabits].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+                
+                sortedPersonal.forEach((h, index) => {
+                    const targetGoal = h.targetDays || 30;
+                    const habitDays = h.days || [];
+                    const completedCount = habitDays.filter(item => item && item.completed).length;
+                    const status = h.status || 'active';
+                    const reason = h.reason || '';
+                    const createdDateStr = formatDateString(h.createdAt || h.id);
+                    const isCompletedGoal = completedCount >= targetGoal;
+                    const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
+
+                    if (status === 'given_up') {
+                        // Cập nhật tiến độ đã thực hiện cho Bỏ cuộc cá nhân
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('givenUpStatus')} (${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${reason ? ` - Lý do: ${reason}` : ''})\n`;
+                    } else if (status === 'paused') {
+                        // Cập nhật tiến độ đã thực hiện cho Tạm dừng cá nhân
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('pausedStatus')} (${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${reason ? ` - Lý do: ${reason}` : ''})\n`;
+                    } else {
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${completedTag}\n`;
+                    }
+                });
+            }
+
+            return report;
+        }
+
+        function joinChallenge(challengeId) {
+            const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+            if (!challenge) return;
+
+            if (!challenge.participants) challenge.participants = {};
+            challenge.participants[loggedInUserId] = true;
+
+            if (!challenge.progress) challenge.progress = {};
+            if (!challenge.progress[loggedInUserId]) {
+                challenge.progress[loggedInUserId] = Array(challenge.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
+            }
+
+            dbRef.set(appData);
+            alert(currentLang === 'vi' ? "Bạn đã tham gia thử thách thành công!" : "Successfully joined the challenge!");
+        }
+
+        function leaveChallenge(challengeId) {
+            const reason = promptReason();
+            if (reason === null) return;
+
+            const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+            if (!challenge || !challenge.participants) return;
+            if (!challenge.participantReasons) challenge.participantReasons = {};
+            
+            challenge.participants[loggedInUserId] = 'not_participating';
+            challenge.participantReasons[loggedInUserId] = reason;
+            dbRef.set(appData);
+        }
+
+        function pauseChallenge(habitId) {
+            const reason = promptReason();
+            if (reason === null) return;
+
+            const habits = appData.personalHabits[loggedInUserId] || [];
+            const habit = habits.find(h => h.id === habitId);
+            if (habit) {
+                habit.status = 'paused';
+                habit.reason = reason;
+            }
+            dbRef.set(appData);
+        }
+
+        function resumeChallenge(challengeId, isPersonal, habitId) {
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+                if (!challenge || !challenge.participants) return;
+                challenge.participants[loggedInUserId] = true;
+                if (challenge.participantReasons) delete challenge.participantReasons[loggedInUserId];
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === habitId);
+                if (habit) {
+                    habit.status = 'active';
+                    habit.reason = '';
+                }
+            }
+            dbRef.set(appData);
+        }
+
+        function giveUpChallenge(challengeId, isPersonal, habitId) {
+            const reason = promptReason();
+            if (reason === null) return;
+
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+                if (!challenge || !challenge.participants) return;
+                if (!challenge.participantReasons) challenge.participantReasons = {};
+                challenge.participants[loggedInUserId] = 'given_up';
+                challenge.participantReasons[loggedInUserId] = reason;
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === habitId);
+                if (habit) {
+                    habit.status = 'given_up';
+                    habit.reason = reason;
+                }
+            }
+            dbRef.set(appData);
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById('shared-challenges-list');
+            container.innerHTML = '';
+
+            Object.values(activeCharts).forEach(chart => chart.destroy());
+            activeCharts = {};
+
+            if (!appData.sharedChallenges || appData.sharedChallenges.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6 bg-white rounded-3xl border border-slate-200">${t('noChallenges')}</p>`;
+                return;
+            }
+
+            const sortedShared = [...appData.sharedChallenges].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+
+            sortedShared.forEach((challenge, index) => {
+                const totalD = challenge.totalDays || 35;
+                const targetD = challenge.targetDays || 30;
+                if (!challenge.progress) challenge.progress = {};
+                if (!challenge.participants) challenge.participants = {};
+
+                const participantStatus = challenge.participants[loggedInUserId];
+                const isJoined = (participantStatus === true || participantStatus === 'given_up' || participantStatus === 'not_participating');
+                const isGivenUp = (participantStatus === 'given_up');
+                const isNotParticipating = (participantStatus === 'not_participating');
+                const creatorName = challenge.creatorName || 'Team';
+                const createdDateStr = formatDateString(challenge.createdAt || challenge.id);
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-indigo-100 space-y-4";
+                
+                let contentHtml = "";
+
+                if (!isJoined) {
+                    contentHtml = `
+                        <div class="text-center py-6 space-y-3 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-xs text-slate-500">${t('notJoined')}</p>
+                            <button onclick="joinChallenge(${challenge.id})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition shadow-sm">${t('joinChallenge')}</button>
+                        </div>
+                    `;
+                } else {
+                    if (!challenge.progress[loggedInUserId]) {
+                        challenge.progress[loggedInUserId] = Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
+                    }
+                    const memberProgress = challenge.progress[loggedInUserId];
+                    const myCompletedCount = memberProgress.filter(item => item && item.completed).length;
+                    const todayIdx = getTodayIndex(challenge.startDate);
+
+                    let gridHtml = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">`;
+                    memberProgress.forEach((item, dayIdx) => {
+                        const isCompleted = item && item.completed;
+                        const hasNote = item && ((item.note && item.note.trim() !== '') || (item.image && item.image.trim() !== ''));
+                        const dateStr = getDateString(challenge.startDate, dayIdx);
+                        const isToday = (dayIdx === todayIdx);
+                        const isFuture = (dayIdx > todayIdx);
+
+                        let btnStyle = "bg-white text-slate-600 border-slate-200 hover:border-indigo-400";
+                        if (isCompleted) {
+                            btnStyle = "bg-indigo-600 text-white border-indigo-600 shadow-sm";
+                        } else if (isToday) {
+                            btnStyle = "bg-amber-50 text-indigo-700 border-2 border-amber-500 shadow-md ring-2 ring-amber-200 font-extrabold";
+                        } else if (isFuture) {
+                            btnStyle = "bg-slate-100 text-slate-400 border-slate-200 opacity-40 cursor-not-allowed";
+                        }
+
+                        gridHtml += `
+                            <button onclick="openDayModal(${challenge.id}, ${dayIdx}, false)" 
+                                class="relative h-11 rounded-lg text-xs transition flex flex-col items-center justify-center border font-bold ${btnStyle}">
+                                <span class="text-[11px]">${dateStr}</span>
+                                ${isToday ? `<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full font-bold">${t('todayBadge')}</span>` : ''}
+                                ${hasNote ? '<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>' : ''}
+                            </button>`;
+                    });
+                    gridHtml += `</div>`;
+
+                    let actionButtonsHtml = `
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <button onclick="leaveChallenge(${challenge.id})" class="text-slate-500 hover:text-slate-800 underline">${t('leaveChallenge')}</button>
+                            <span>•</span>
+                            <button onclick="giveUpChallenge(${challenge.id}, false)" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
+                        </div>
+                    `;
+
+                    if (isGivenUp) {
+                        actionButtonsHtml = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                            </div>`;
+                    } else if (isNotParticipating) {
+                        actionButtonsHtml = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 font-bold bg-slate-100 px-3 py-1 rounded-full text-xs">${t('notParticipatingStatus')}</span>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                            </div>`;
+                    }
+
+                    contentHtml = `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                <span class="text-slate-500">${t('progress')}: <strong class="text-indigo-600">${myCompletedCount}/${targetD}</strong> (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'})</span>
+                                ${actionButtonsHtml}
+                            </div>
+                            ${(isGivenUp || isNotParticipating) ? '' : gridHtml}
+                            
+                            <div class="pt-4 border-t border-slate-100">
+                                <h5 class="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">${t('leaderboard')}</h5>
+                                <div class="relative h-56 w-full">
+                                    <canvas id="chart-challenge-${challenge.id}"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Tiêu đề gắn số mũ ở cuối
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-0.5">🎯 ${challenge.title}<sup class="text-xs text-indigo-600 font-extrabold ml-0.5">${index + 1}</sup></h4>
+                            <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('createdBy')}: ${creatorName} (${createdDateStr})</span>
+                        </div>
+                        <button onclick="deleteSharedChallenge(${challenge.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
+                    </div>
+                    ${contentHtml}
+                `;
+                container.appendChild(card);
+
+                if (isJoined && !isGivenUp && !isNotParticipating) {
+                    setTimeout(() => {
+                        const canvasEl = document.getElementById(`chart-challenge-${challenge.id}`);
+                        if (canvasEl) {
+                            const participantsMap = challenge.participants || {};
+                            const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true);
+                            const sortedMembers = activeMembers.map(mId => {
+                                const mObj = appData.members.find(m => m.id === mId);
+                                let total = (challenge.progress && challenge.progress[mId]) ? challenge.progress[mId].filter(item => item && item.completed).length : 0;
+                                return { id: mId, name: mObj ? mObj.name : mId, avatar: mObj ? mObj.avatar : '', count: total };
+                            }).sort((a, b) => b.count - a.count);
+
+                            const labels = sortedMembers.map(m => m.name);
+                            const dataCounts = sortedMembers.map(m => m.count);
+
+                            const ctx = canvasEl.getContext('2d');
+                            
+                            const avatarPlugin = {
+                                id: 'avatarPlugin',
+                                afterDraw(chart) {
+                                    const { ctx, scales: { x } } = chart;
+                                    ctx.save();
+                                    sortedMembers.forEach((m, index) => {
+                                        const xPos = x.getPixelForValue(index);
+                                        const yPos = chart.chartArea.bottom + 10;
+                                        
+                                        ctx.beginPath();
+                                        ctx.arc(xPos, yPos + 10, 11, 0, 2 * Math.PI);
+                                        ctx.fillStyle = '#e2e8f0';
+                                        ctx.fill();
+                                        ctx.lineWidth = 1.5;
+                                        ctx.strokeStyle = '#cbd5e1';
+                                        ctx.stroke();
+                                        ctx.closePath();
+                                        ctx.clip();
+
+                                        if (m.avatar) {
+                                            const img = new Image();
+                                            img.src = m.avatar;
+                                            if (img.complete) {
+                                                ctx.drawImage(img, xPos - 11, yPos - 1, 22, 22);
+                                            } else {
+                                                img.onload = () => chart.draw();
+                                            }
+                                        } else {
+                                            ctx.fillStyle = '#475569';
+                                            ctx.font = 'bold 9px sans-serif';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillText(m.name.charAt(0), xPos, yPos + 10);
+                                        }
+                                        ctx.restore();
+                                    });
+                                }
+                            };
+
+                            const barValuePlugin = {
+                                id: 'barValuePlugin',
+                                afterDatasetsDraw(chart) {
+                                    const { ctx } = chart;
+                                    chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                        const meta = chart.getDatasetMeta(datasetIndex);
+                                        meta.data.forEach((bar, index) => {
+                                            const dataValue = dataset.data[index];
+                                            ctx.fillStyle = '#475569';
+                                            ctx.font = 'bold 11px sans-serif';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'bottom';
+                                            ctx.fillText(dataValue, bar.x, bar.y - 5);
+                                        });
+                                    });
+                                }
+                            };
+
+                            activeCharts[challenge.id] = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: currentLang === 'vi' ? 'Số ngày hoàn thành' : 'Completed days',
+                                        data: dataCounts,
+                                        backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                                        borderColor: 'rgb(99, 102, 241)',
+                                        borderWidth: 1,
+                                        borderRadius: 8
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        x: { ticks: { padding: 30 } },
+                                        y: { beginAtZero: true, max: targetD + 2, ticks: { stepSize: 5 } }
+                                    },
+                                    plugins: { legend: { display: false } }
+                                },
+                                plugins: [avatarPlugin, barValuePlugin]
+                            });
+                        }
+                    }, 50);
+                }
+            });
+        }
+
+        function renderPersonalChallenges() {
+            const container = document.getElementById('personal-list');
+            container.innerHTML = '';
+            const habits = (appData.personalHabits && appData.personalHabits[loggedInUserId]) || [];
+
+            if (habits.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6 bg-white rounded-3xl border border-slate-200">${t('noHabits')}</p>`;
+                return;
+            }
+
+            const sortedHabits = [...habits].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+
+            sortedHabits.forEach((habit, index) => {
+                const totalD = habit.totalDays || 35;
+                const targetD = habit.targetDays || 30;
+                const habitDays = habit.days || Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
+                const completedHabitCount = habitDays.filter(item => item && item.completed).length;
+                const todayIdx = getTodayIndex(habit.startDate);
+                const status = habit.status || 'active';
+                const createdDateStr = formatDateString(habit.createdAt || habit.id);
+                
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-emerald-200 space-y-4";
+                
+                let gridHtml = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">`;
+                habitDays.forEach((dayObj, dayIdx) => {
+                    const isCompleted = dayObj && dayObj.completed;
+                    const hasNote = dayObj && ((dayObj.note && dayObj.note.trim() !== '') || (dayObj.image && dayObj.image.trim() !== ''));
+                    const dateStr = getDateString(habit.startDate, dayIdx);
+                    const isToday = (dayIdx === todayIdx);
+                    const isFuture = (dayIdx > todayIdx);
+
+                    let btnStyle = "bg-white text-slate-600 border-slate-200 hover:border-emerald-400";
+                    if (isCompleted) {
+                        btnStyle = "bg-emerald-600 text-white border-emerald-600 shadow-sm";
+                    } else if (isToday) {
+                        btnStyle = "bg-amber-50 text-emerald-700 border-2 border-amber-500 shadow-md ring-2 ring-amber-200 font-extrabold";
+                    } else if (isFuture) {
+                        btnStyle = "bg-slate-100 text-slate-400 border-slate-200 opacity-40 cursor-not-allowed";
+                    }
+
+                    gridHtml += `
+                        <button onclick="openDayModal(${habit.id}, ${dayIdx}, true)" 
+                            class="relative h-11 rounded-lg text-xs font-bold transition flex flex-col items-center justify-center border ${btnStyle}">
+                            <span class="text-[11px]">${dateStr}</span>
+                            ${isToday ? `<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full font-bold">${t('todayBadge')}</span>` : ''}
+                            ${hasNote ? '<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>' : ''}
+                        </button>`;
+                });
+                gridHtml += `</div>`;
+
+                let actionHtml = `
+                    <div class="flex gap-2 items-center text-xs">
+                        <button onclick="pauseChallenge(${habit.id})" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
+                        <span>•</span>
+                        <button onclick="giveUpChallenge(null, true, ${habit.id})" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
+                    </div>
+                `;
+
+                if (status === 'given_up') {
+                    actionHtml = `
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                        </div>`;
+                } else if (status === 'paused') {
+                    actionHtml = `
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full text-xs">${t('pausedStatus')}</span>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                        </div>`;
+                }
+
+                // Tiêu đề gắn số mũ ở cuối
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-0.5">📌 ${habit.text}<sup class="text-xs text-emerald-600 font-extrabold ml-0.5">${index + 1}</sup></h4>
+                            <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('progress')}: ${completedHabitCount}/${targetD} (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'}) • ${createdDateStr}</span>
+                        </div>
+                        <button onclick="deletePersonalHabit(${habit.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
+                    </div>
+                    <div class="flex justify-between items-center text-xs pt-1">
+                        ${actionHtml}
+                    </div>
+                    ${(status === 'given_up' || status === 'paused') ? '' : gridHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        const sharedChallengeForm = document.getElementById('shared-challenge-form');
+        sharedChallengeForm.onsubmit = (e) => {
+            e.preventDefault();
+            const title = document.getElementById('shared-title-input').value.trim();
+            const startDate = document.getElementById('shared-date-input').value;
+            const targetDays = parseInt(document.getElementById('shared-target-input').value) || 30;
+            const totalDays = parseInt(document.getElementById('shared-days-input').value) || 35;
+            const creatorMember = appData.members.find(m => m.id === loggedInUserId);
+            const creatorName = creatorMember ? creatorMember.name : 'Member';
+            const nowTimestamp = Date.now();
+
+            if (title) {
+                if (!appData.sharedChallenges) appData.sharedChallenges = [];
+                const newChallenge = {
+                    id: nowTimestamp,
+                    createdAt: nowTimestamp,
+                    title: title,
+                    creatorName: creatorName,
+                    totalDays: totalDays,
+                    targetDays: targetDays,
+                    startDate: startDate,
+                    participants: {
+                        [loggedInUserId]: true
+                    },
+                    progress: {
+                        [loggedInUserId]: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }))
+                    }
+                };
+                appData.sharedChallenges.push(newChallenge);
+                document.getElementById('shared-title-input').value = '';
+                dbRef.set(appData);
+                toggleSharedCreatePanel();
+            }
+        };
+
+        function deleteSharedChallenge(challengeId) {
+            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn xóa thử thách chung này không?" : "Are you sure you want to delete this challenge?")) {
+                appData.sharedChallenges = appData.sharedChallenges.filter(c => c.id !== challengeId);
+                dbRef.set(appData);
+            }
+        }
+
+        const personalForm = document.getElementById('personal-form');
+        personalForm.onsubmit = (e) => {
+            e.preventDefault();
+            const text = document.getElementById('personal-input').value.trim();
+            const startDate = document.getElementById('personal-date-input').value;
+            const targetDays = parseInt(document.getElementById('personal-target-input').value) || 30;
+            const totalDays = parseInt(document.getElementById('personal-days-input').value) || 35;
+            const nowTimestamp = Date.now();
+
+            if (text) {
+                if (!appData.personalHabits) appData.personalHabits = {};
+                if (!appData.personalHabits[loggedInUserId]) appData.personalHabits[loggedInUserId] = [];
+                
+                appData.personalHabits[loggedInUserId].push({ 
+                    id: nowTimestamp,
+                    createdAt: nowTimestamp,
+                    text: text, 
+                    startDate: startDate,
+                    totalDays: totalDays,
+                    targetDays: targetDays,
+                    status: 'active',
+                    reason: '',
+                    days: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }))
+                });
+                document.getElementById('personal-input').value = '';
+                dbRef.set(appData);
+                togglePersonalCreatePanel();
+            }
+        };
+
+        function deletePersonalHabit(habitId) {
+            if (confirm(currentLang === 'vi' ? "Bạn có chắc chắn muốn xóa thử thách cá nhân này không?" : "Are you sure you want to delete this personal challenge?")) {
+                if (!appData.personalHabits || !appData.personalHabits[loggedInUserId]) return;
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].filter(h => h.id !== habitId);
+                dbRef.set(appData);
+            }
+        }
+
+        function openDayModal(id, dayIndex, isPersonal) {
+            let startDate = '';
+            
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === id);
+                if (!challenge) return;
+                startDate = challenge.startDate;
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === id);
+                if (!habit) return;
+                startDate = habit.startDate;
+            }
+
+            const todayIdx = getTodayIndex(startDate);
+            if (dayIndex > todayIdx) {
+                alert(t('alertFuture'));
+                return;
+            }
+
+            currentEditingDay = { id, dayIndex, isPersonal };
+            let dateStr = '';
+            let titleText = '';
+            let itemData;
+            tempDayImageBase64 = '';
+            document.getElementById('modal-image-file').value = '';
+
+            const groupStatusContainer = document.getElementById('group-day-status-container');
+
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === id);
+                dateStr = getDateString(challenge.startDate, dayIndex);
+                titleText = challenge.title;
+                itemData = challenge.progress[loggedInUserId][dayIndex] || { completed: false, note: '', image: '', timestamp: '' };
+
+                groupStatusContainer.classList.remove('hidden');
+                
+                const participantsMap = challenge.participants || {};
+                const joinedParticipants = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true);
+                let totalJoined = joinedParticipants.length;
+                let completedCount = 0;
+                
+                joinedParticipants.forEach(mId => {
+                    if (challenge.progress[mId] && challenge.progress[mId][dayIndex] && challenge.progress[mId][dayIndex].completed) {
+                        completedCount++;
+                    }
+                });
+                document.getElementById('completed-ratio-text').innerText = `${completedCount}/${totalJoined}`;
+
+                const groupListEl = document.getElementById('group-members-status-list');
+                groupListEl.innerHTML = '';
+                joinedParticipants.forEach(mId => {
+                    const mObj = appData.members.find(m => m.id === mId);
+                    const mProg = challenge.progress[mId] && challenge.progress[mId][dayIndex];
+                    const isDone = mProg && mProg.completed;
+                    const noteText = mProg && mProg.note ? mProg.note.trim() : '';
+                    const imgUrl = mProg && mProg.image ? mProg.image.trim() : '';
+                    const timeText = mProg && mProg.timestamp ? mProg.timestamp : '';
+
+                    const row = document.createElement('div');
+                    row.className = "p-2.5 bg-white rounded-xl border border-slate-200 text-xs space-y-2";
+                    row.innerHTML = `
+                        <div class="flex items-center justify-between font-semibold">
+                            <span class="text-slate-700">${mObj ? mObj.name : mId} ${timeText ? `<span class="text-[10px] text-slate-400 font-normal">(${timeText})</span>` : ''}</span>
+                            <span class="${isDone ? 'text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md font-bold' : 'text-slate-400'}">
+                                ${isDone ? (currentLang === 'vi' ? '✅ Đã hoàn thành' : '✅ Completed') : (currentLang === 'vi' ? '⏳ Chưa làm' : '⏳ Incomplete')}
+                            </span>
+                        </div>
+                        ${noteText ? `<p class="text-slate-500 italic bg-slate-50 p-2 rounded-lg border border-slate-100">💬 "${noteText}"</p>` : ''}
+                        ${imgUrl ? `<img src="${imgUrl}" class="rounded-xl max-h-36 object-cover border border-slate-200 w-full">` : ''}
+                    `;
+                    groupListEl.appendChild(row);
+                });
+
+            } else {
+                groupStatusContainer.classList.add('hidden');
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === id);
+                dateStr = getDateString(habit.startDate, dayIndex);
+                titleText = habit.text;
+                itemData = habit.days[dayIndex] || { completed: false, note: '', image: '', timestamp: '' };
+            }
+
+            document.getElementById('modal-day-title').innerText = `${titleText} (${dateStr})`;
+            
+            document.getElementById('modal-checkbox').checked = itemData.completed;
+            document.getElementById('modal-note').value = itemData.note || '';
+
+            if (itemData.image) {
+                tempDayImageBase64 = itemData.image;
+                document.getElementById('modal-image-preview').src = itemData.image;
+                document.getElementById('modal-image-preview-container').classList.remove('hidden');
+            } else {
+                document.getElementById('modal-image-preview-container').classList.add('hidden');
+            }
+
+            updateModalView(itemData);
+
+            if (itemData.completed || (itemData.note && itemData.note.trim() !== '') || (itemData.image && itemData.image.trim() !== '')) {
+                setModalMode(false);
+            } else {
+                setModalMode(true);
+            }
+
+            document.getElementById('day-modal').classList.remove('hidden');
+        }
+
+        function updateModalView(itemData) {
+            const viewStatus = document.getElementById('view-status');
+            const viewTimestamp = document.getElementById('view-timestamp');
+            const viewNote = document.getElementById('view-note');
+            const viewImage = document.getElementById('view-image');
+
+            if (itemData.completed) {
+                viewStatus.innerHTML = `<span class="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg font-bold text-xs inline-block">${t('completed')}</span>`;
+            } else {
+                viewStatus.innerHTML = `<span class="text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg font-medium text-xs inline-block">${t('incomplete')}</span>`;
+            }
+
+            if (itemData.timestamp) {
+                viewTimestamp.innerText = `Cập nhật lúc: ${itemData.timestamp}`;
+                viewTimestamp.classList.remove('hidden');
+            } else {
+                viewTimestamp.innerText = '';
+                viewTimestamp.classList.add('hidden');
+            }
+
+            if (itemData.note && itemData.note.trim() !== '') {
+                viewNote.innerHTML = `<p class="text-slate-700 italic bg-slate-50 p-3 rounded-xl border border-slate-200 text-sm">💬 "${itemData.note}"</p>`;
+                viewNote.classList.remove('hidden');
+            } else {
+                viewNote.innerHTML = '';
+                viewNote.classList.add('hidden');
+            }
+
+            if (itemData.image && itemData.image.trim() !== '') {
+                viewImage.innerHTML = `<img src="${itemData.image}" class="rounded-xl max-h-48 object-cover border border-slate-200 w-full mt-2">`;
+                viewImage.classList.remove('hidden');
+            } else {
+                viewImage.innerHTML = '';
+                viewImage.classList.add('hidden');
+            }
+        }
+
+        function setModalMode(editing) {
+            isEditMode = editing;
+            const editSection = document.getElementById('modal-edit-section');
+            const viewSection = document.getElementById('modal-view-section');
+            const editBtn = document.getElementById('modal-edit-btn');
+
+            if (editing) {
+                editSection.classList.remove('hidden');
+                viewSection.classList.add('hidden');
+                editBtn.innerText = t('cancel');
+            } else {
+                editSection.classList.add('hidden');
+                viewSection.classList.remove('hidden');
+                editBtn.innerText = t('edit');
+            }
+        }
+
+        function toggleModalEdit() {
+            setModalMode(!isEditMode);
+        }
+
+        function closeDayModal() {
+            document.getElementById('day-modal').classList.add('hidden');
+            currentEditingDay = null;
+        }
+
+        function saveDayDetail() {
+            if (!currentEditingDay) return;
+            const { id, dayIndex, isPersonal } = currentEditingDay;
+            const isCompleted = document.getElementById('modal-checkbox').checked;
+            const noteText = document.getElementById('modal-note').value.trim();
+
+            const now = new Date();
+            const timestampStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+
+            const updatedData = { completed: isCompleted, note: noteText, image: tempDayImageBase64, timestamp: timestampStr };
+
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === id);
+                if (challenge) {
+                    if (!challenge.progress[loggedInUserId]) {
+                        challenge.progress[loggedInUserId] = Array(challenge.totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
+                    }
+                    challenge.progress[loggedInUserId][dayIndex] = updatedData;
+                }
+            } else {
+                if (!appData.personalHabits[loggedInUserId]) return;
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => {
+                    if (h.id === id) {
+                        const updatedDays = h.days ? [...h.days] : Array(h.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
+                        updatedDays[dayIndex] = updatedData;
+                        return { ...h, days: updatedDays };
+                    }
+                    return h;
+                });
+            }
+
+            dbRef.set(appData);
+
+            updateModalView(updatedData);
+            setModalMode(false);
+        }
+
+        checkLogin();
     </script>
 </body>
 </html>
