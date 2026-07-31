@@ -89,7 +89,7 @@
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
-                    <h3 class="font-bold text-slate-800 text-base">📋 Kết quả thử thách</h3>
+                    <h3 id="report-modal-title" class="font-bold text-slate-800 text-base">📋 Kết quả thử thách</h3>
                     <span id="copy-success-badge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold hidden">Đã tự động sao chép!</span>
                 </div>
                 <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
@@ -98,7 +98,7 @@
             <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 max-h-72 overflow-y-auto">
                 <pre id="report-preview-text" class="text-xs text-slate-700 whitespace-pre-wrap font-sans"></pre>
             </div>
-            <p class="text-[11px] text-slate-400 text-center">Nội dung đã được sao chép vào bộ nhớ tạm.</p>
+            <p id="copy-notice-text" class="text-[11px] text-slate-400 text-center">Nội dung đã được sao chép vào bộ nhớ tạm.</p>
         </div>
     </div>
 
@@ -165,7 +165,7 @@
         <!-- Header -->
         <header class="text-center relative space-y-2">
             <div class="inline-flex items-center justify-center mb-1">
-                <img src="https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png';">
+                <img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/52kcwzjC/Logo-BVGP.png';">
             </div>
             <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800">Thử Thách Kỷ Luật BVGP</h1>
             <p id="slogan-text" class="text-sm text-slate-500 italic px-4 transition-all duration-500"></p>
@@ -180,17 +180,18 @@
                 
                 <div class="h-4 w-px bg-slate-300 mx-1"></div>
 
-                <!-- Đổi icon cho Kết quả: 📋 -->
-                <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📋 Kết quả</button>
+                <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📋 Kết quả</button>
                 
-                <!-- Nút VI/EN thu nhỏ tinh tế -->
                 <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-[10px] bg-slate-200 hover:bg-slate-300 text-slate-600 border border-slate-300 px-2 py-0.5 rounded-md font-bold transition">VI</button>
             </div>
         </header>
 
-        <!-- Navigation Tabs (Đổi icon Thử thách chung: 👥) -->
+        <!-- Navigation Tabs (Sử dụng logo BVGP mới) -->
         <div class="flex justify-center bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm">👥 Thử thách chung</button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-1.5">
+                <img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover" alt="Logo">
+                <span>Thử thách chung</span>
+            </button>
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
         </div>
 
@@ -294,7 +295,6 @@
             document.getElementById('slogan-text').innerText = `"${randomMsg}"`;
         }
 
-        // Chuyển đổi số thành kí tự số mũ (VD: 1 -> ¹, 2 -> ²)
         function toSuperscript(num) {
             const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
             return String(num).split('').map(c => supers[c] || c).join('');
@@ -303,8 +303,13 @@
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
-                tabDashboard: "👥 Thử thách chung",
+                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
+                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách chung',
                 tabUpdate: "📌 Thử thách cá nhân",
+                reportBtn: "📋 Kết quả",
+                reportModalTitle: "📋 Kết quả thử thách",
+                copySuccess: "Đã tự động sao chép!",
+                copyNotice: "Nội dung đã được sao chép vào bộ nhớ tạm.",
                 createSharedToggle: "➕ Tạo thử thách chung",
                 createPersonalToggle: "➕ Thêm thử thách cá nhân",
                 challengePh: "Tên thử thách (VD: Kỷ luật)...",
@@ -324,6 +329,8 @@
                 giveUpChallenge: "🏳️ Bỏ cuộc",
                 givenUpStatus: "🏳️ Bỏ cuộc",
                 notParticipatingStatus: "🚫 Không tham gia",
+                resumeChallenge: "Tiếp tục tham gia",
+                resumeHabit: "Tiếp tục",
                 leaderboard: "🏆 Bảng xếp hạng",
                 progress: "Tiến độ",
                 total: "Tổng",
@@ -355,8 +362,13 @@
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
-                tabDashboard: "👥 Shared Challenges",
+                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
+                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
                 tabUpdate: "📌 Personal Challenges",
+                reportBtn: "📋 Results",
+                reportModalTitle: "📋 Challenge Results",
+                copySuccess: "Automatically copied!",
+                copyNotice: "Content copied to clipboard.",
                 createSharedToggle: "➕ Create Shared Challenge",
                 createPersonalToggle: "➕ Add Personal Challenge",
                 challengePh: "Challenge name (e.g., Discipline)...",
@@ -376,6 +388,8 @@
                 giveUpChallenge: "🏳️ Give Up",
                 givenUpStatus: "🏳️ Given up",
                 notParticipatingStatus: "🚫 Not participating",
+                resumeChallenge: "Resume participation",
+                resumeHabit: "Resume",
                 leaderboard: "🏆 Leaderboard",
                 progress: "Progress",
                 total: "Total",
@@ -428,8 +442,13 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerText = t('tabDashboard');
+            document.getElementById('btn-dashboard').innerHTML = (currentLang === 'vi') ? t('tabDashboardVi') : t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
+            document.getElementById('btn-report').innerText = t('reportBtn');
+            document.getElementById('report-modal-title').innerText = t('reportModalTitle');
+            document.getElementById('copy-success-badge').innerText = t('copySuccess');
+            document.getElementById('copy-notice-text').innerText = t('copyNotice');
+
             document.getElementById('t-create-shared-toggle').innerText = t('createSharedToggle');
             document.getElementById('t-create-personal-toggle').innerText = t('createPersonalToggle');
             document.getElementById('shared-title-input').placeholder = t('challengePh');
@@ -782,14 +801,14 @@
             if (tab === 'dashboard') {
                 dashboardTab.classList.remove('hidden');
                 updateTab.classList.add('hidden');
-                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm";
+                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-1.5";
                 btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition";
                 renderDashboard();
             } else {
                 dashboardTab.classList.add('hidden');
                 updateTab.classList.remove('hidden');
                 btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-emerald-600 text-white transition shadow-sm";
-                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition";
+                btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition flex items-center justify-center gap-1.5";
                 renderPersonalChallenges();
             }
         }
@@ -830,7 +849,6 @@
             return reason;
         }
 
-        // Tạo nội dung báo cáo kết quả (Cập nhật số mũ nhỏ & giữ tiến độ thực hiện cho Bỏ cuộc / Tạm dừng)
         function getReportText() {
             let report = currentLang === 'vi' ? "🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n" : "🏆 BVGP TEAM DISCIPLINE REPORT 🏆\n\n";
             
@@ -841,7 +859,6 @@
                 sortedShared.forEach((c, index) => {
                     const targetGoal = c.targetDays || 30;
                     const createdDateStr = formatDateString(c.createdAt || c.id);
-                    // Dùng số mũ nhỏ ở cuối tên
                     report += `🎯 ${c.title}${toSuperscript(index + 1)} (${t('createdBy')}: ${c.creatorName || 'Team'} - ${createdDateStr})\n`;
                     
                     const participantsMap = c.participants || {};
@@ -861,7 +878,6 @@
                         const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
 
                         if (m.status === 'given_up') {
-                            // Cập nhật tiến độ đã thực hiện cho Bỏ cuộc
                             report += `   - ${m.name}: ${t('givenUpStatus')} (${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${m.reason ? ` - Lý do: ${m.reason}` : ''})\n`;
                         } else if (m.status === 'not_participating') {
                             report += `   - ${m.name}: ${t('notParticipatingStatus')}${m.reason ? ` (Lý do: ${m.reason})` : ''}\n`;
@@ -890,10 +906,8 @@
                     const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
 
                     if (status === 'given_up') {
-                        // Cập nhật tiến độ đã thực hiện cho Bỏ cuộc cá nhân
                         report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('givenUpStatus')} (${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${reason ? ` - Lý do: ${reason}` : ''})\n`;
                     } else if (status === 'paused') {
-                        // Cập nhật tiến độ đã thực hiện cho Tạm dừng cá nhân
                         report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('pausedStatus')} (${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${reason ? ` - Lý do: ${reason}` : ''})\n`;
                     } else {
                         report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${completedTag}\n`;
@@ -1070,13 +1084,13 @@
                         actionButtonsHtml = `
                             <div class="flex justify-between items-center">
                                 <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
-                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">${t('resumeChallenge')}</button>
                             </div>`;
                     } else if (isNotParticipating) {
                         actionButtonsHtml = `
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-600 font-bold bg-slate-100 px-3 py-1 rounded-full text-xs">${t('notParticipatingStatus')}</span>
-                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">${t('resumeChallenge')}</button>
                             </div>`;
                     }
 
@@ -1098,7 +1112,6 @@
                     `;
                 }
 
-                // Tiêu đề gắn số mũ ở cuối
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
@@ -1278,17 +1291,16 @@
                     actionHtml = `
                         <div class="flex justify-between items-center text-xs">
                             <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
-                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">${t('resumeHabit')}</button>
                         </div>`;
                 } else if (status === 'paused') {
                     actionHtml = `
                         <div class="flex justify-between items-center text-xs">
                             <span class="text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full text-xs">${t('pausedStatus')}</span>
-                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">${t('resumeHabit')}</button>
                         </div>`;
                 }
 
-                // Tiêu đề gắn số mũ ở cuối
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
