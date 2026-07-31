@@ -213,7 +213,7 @@
                 <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📋 Kết quả</button>
                 
                 <!-- NÚT BẬT/TẮT NHẠC NỀN -->
-                <button onclick="toggleMusic()" id="music-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1">🎵 Nhạc: Tắt</button>
+                <button onclick="toggleMusic()" id="music-toggle-btn" class="text-[10px] bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1 animate-pulse">🎶 Nhạc: Bật</button>
 
                 <!-- NÚT CHUYỂN LIGHT / DARK MODE -->
                 <button onclick="toggleTheme()" id="theme-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1">🌙 Tối</button>
@@ -337,62 +337,6 @@
             ]
         };
 
-        /* QUẢN LÝ THEME (LIGHT / DARK) */
-        let currentTheme = localStorage.getItem('bvgpTheme') || 'light';
-
-        function applyTheme(theme) {
-            currentTheme = theme;
-            localStorage.setItem('bvgpTheme', currentTheme);
-            const htmlEl = document.documentElement;
-            const btn = document.getElementById('theme-toggle-btn');
-
-            if (currentTheme === 'dark') {
-                htmlEl.classList.add('dark');
-                if (btn) btn.innerText = '☀️ Sáng';
-            } else {
-                htmlEl.classList.remove('dark');
-                if (btn) btn.innerText = '🌙 Tối';
-            }
-            if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
-                renderDashboard();
-            }
-        }
-
-        function toggleTheme() {
-            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        }
-
-        /* QUẢN LÝ NHẠC NỀN */
-        let isMusicPlaying = false;
-        function toggleMusic() {
-            const music = document.getElementById('bg-music');
-            const btn = document.getElementById('music-toggle-btn');
-            if (isMusicPlaying) {
-                music.pause();
-                btn.innerText = '🎵 Nhạc: Tắt';
-                btn.className = "text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1";
-            } else {
-                music.play().then(() => {
-                    btn.innerText = '🎶 Nhạc: Bật';
-                    btn.className = "text-[10px] bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1 animate-pulse";
-                }).catch(err => {
-                    alert(currentLang === 'vi' ? 'Vui lòng bấm vào màn hình trước khi bật nhạc!' : 'Please click on the screen first!');
-                });
-            }
-            isMusicPlaying = !isMusicPlaying;
-        }
-
-        function displayRandomSlogan() {
-            const list = slogans[currentLang];
-            const randomMsg = list[Math.floor(Math.random() * list.length)];
-            document.getElementById('slogan-text').innerText = `"${randomMsg}"`;
-        }
-
-        function toSuperscript(num) {
-            const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
-            return String(num).split('').map(c => supers[c] || c).join('');
-        }
-
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
@@ -464,7 +408,11 @@
                 chooseFileBtn: "📁 Chọn tệp...",
                 noFileSelected: "Chưa chọn tệp",
                 noDescription: "Chưa có mô tả cho thử thách này.",
-                closeBtn: "Đóng"
+                closeBtn: "Đóng",
+                musicOn: "🎶 Nhạc: Bật",
+                musicOff: "🎵 Nhạc: Tắt",
+                btnThemeDark: "🌙 Tối",
+                btnThemeLight: "☀️ Sáng"
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
@@ -536,11 +484,93 @@
                 chooseFileBtn: "📁 Choose File...",
                 noFileSelected: "No file chosen",
                 noDescription: "No description available for this challenge.",
-                closeBtn: "Close"
+                closeBtn: "Close",
+                musicOn: "🎶 Music: On",
+                musicOff: "🎵 Music: Off",
+                btnThemeDark: "🌙 Dark",
+                btnThemeLight: "☀️ Light"
             }
         };
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
+
+        /* QUẢN LÝ THEME (MẶC ĐỊNH SÁNG - LIGHT) */
+        let currentTheme = localStorage.getItem('bvgpTheme') || 'light';
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('bvgpTheme', currentTheme);
+            const htmlEl = document.documentElement;
+            const btn = document.getElementById('theme-toggle-btn');
+
+            if (currentTheme === 'dark') {
+                htmlEl.classList.add('dark');
+                if (btn) btn.innerText = t('btnThemeLight');
+            } else {
+                htmlEl.classList.remove('dark');
+                if (btn) btn.innerText = t('btnThemeDark');
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
+                renderDashboard();
+            }
+        }
+
+        /* QUẢN LÝ NHẠC NỀN (MẶC ĐỊNH BẬT - MUSIC ON) */
+        let isMusicPlaying = true;
+
+        function updateMusicButtonUI() {
+            const btn = document.getElementById('music-toggle-btn');
+            if (!btn) return;
+            if (isMusicPlaying) {
+                btn.innerText = t('musicOn');
+                btn.className = "text-[10px] bg-indigo-100 dark:bg-indigo-900/60 hover:bg-indigo-200 text-indigo-700 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1 animate-pulse";
+            } else {
+                btn.innerText = t('musicOff');
+                btn.className = "text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1";
+            }
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            if (isMusicPlaying) {
+                music.pause();
+                isMusicPlaying = false;
+            } else {
+                music.play().then(() => {
+                    isMusicPlaying = true;
+                }).catch(err => {
+                    isMusicPlaying = false;
+                    alert(currentLang === 'vi' ? 'Vui lòng bấm vào màn hình trước khi bật nhạc!' : 'Please click on the screen first!');
+                });
+            }
+            updateMusicButtonUI();
+        }
+
+        function autoStartMusic() {
+            const music = document.getElementById('bg-music');
+            isMusicPlaying = true;
+            updateMusicButtonUI();
+            
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Trình duyệt chặn Autoplay tự động -> Bật khi người dùng bấm bất kỳ đâu trên màn hình
+                    const startAudioOnInteraction = () => {
+                        if (isMusicPlaying) {
+                            music.play().catch(() => {});
+                        }
+                        document.removeEventListener('click', startAudioOnInteraction);
+                        document.removeEventListener('keydown', startAudioOnInteraction);
+                    };
+                    document.addEventListener('click', startAudioOnInteraction, { once: true });
+                    document.addEventListener('keydown', startAudioOnInteraction, { once: true });
+                });
+            }
+        }
 
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
@@ -618,6 +648,20 @@
             }
 
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
+
+            updateMusicButtonUI();
+            applyTheme(currentTheme);
+        }
+
+        function displayRandomSlogan() {
+            const list = slogans[currentLang];
+            const randomMsg = list[Math.floor(Math.random() * list.length)];
+            document.getElementById('slogan-text').innerText = `"${randomMsg}"`;
+        }
+
+        function toSuperscript(num) {
+            const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+            return String(num).split('').map(c => supers[c] || c).join('');
         }
 
         const firebaseConfig = {
@@ -668,6 +712,7 @@
         document.getElementById('personal-date-input').value = new Date().toISOString().split('T')[0];
 
         applyTheme(currentTheme);
+        autoStartMusic();
 
         dbRef.on('value', (snapshot) => {
             const data = snapshot.val();
