@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- MODAL CÀI ĐẶT TÀI KHOẢN (Đã cập nhật đa ngôn ngữ & Nút Chọn Tệp mới) -->
+    <!-- MODAL CÀI ĐẶT TÀI KHOẢN -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
@@ -192,23 +192,23 @@
             </div>
         </header>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs (Đổi tên thành Thử thách nhóm) -->
         <div class="flex justify-center bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-1.5">
                 <img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover" alt="Logo">
-                <span>Thử thách chung</span>
+                <span>Thử thách nhóm</span>
             </button>
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
         </div>
 
-        <!-- TAB 1: THỬ THÁCH CHUNG -->
+        <!-- TAB 1: THỬ THÁCH NHÓM (Cập nhật đường viền tím nhẹ & Nền tiêu đề tím nhẹ) -->
         <div id="tab-dashboard" class="space-y-6">
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-slate-700 flex justify-between items-center hover:bg-slate-50 transition">
-                    <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách chung</span>
-                    <span id="shared-create-arrow" class="text-xs text-slate-400">▼</span>
+            <div class="bg-white rounded-3xl shadow-sm border border-indigo-200 overflow-hidden">
+                <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-indigo-800 bg-indigo-50/50 flex justify-between items-center hover:bg-indigo-50 transition">
+                    <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách nhóm</span>
+                    <span id="shared-create-arrow" class="text-xs text-indigo-600">▼</span>
                 </button>
-                <div id="shared-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-slate-100">
+                <div id="shared-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-indigo-100">
                     <form id="shared-challenge-form" class="space-y-3 pt-4">
                         <input type="text" id="shared-title-input" placeholder="Tên thử thách (VD: Kỷ luật)..." 
                             class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" required>
@@ -309,13 +309,14 @@
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
-                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách chung',
+                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
+                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách nhóm',
                 tabUpdate: "📌 Thử thách cá nhân",
                 reportBtn: "📋 Kết quả",
                 reportModalTitle: "📋 Kết quả thử thách",
                 copySuccess: "Đã tự động sao chép!",
                 copyNotice: "Nội dung đã được sao chép vào bộ nhớ tạm.",
-                createSharedToggle: "➕ Tạo thử thách chung",
+                createSharedToggle: "➕ Tạo thử thách nhóm",
                 createPersonalToggle: "➕ Thêm thử thách cá nhân",
                 challengePh: "Tên thử thách (VD: Kỷ luật)...",
                 startDate: "Ngày bắt đầu:",
@@ -325,7 +326,7 @@
                 habitPh: "Tên thử thách cá nhân (VD: Đọc sách)...",
                 addHabitBtn: "Thêm thử thách cá nhân",
                 noHabits: "Chưa có thử thách cá nhân nào.",
-                noChallenges: "Chưa có thử thách chung nào.",
+                noChallenges: "Chưa có thử thách nhóm nào.",
                 joinChallenge: "🚀 Tham gia ngay",
                 notJoined: "Bạn chưa tham gia thử thách này.",
                 leaveChallenge: "🚫 Không tham gia",
@@ -364,7 +365,6 @@
                 completedThisDay: "Đã hoàn thành",
                 createdBy: "Tạo bởi",
                 alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai.",
-                // Các từ khóa đa ngôn ngữ cho Cài đặt tài khoản & Chọn tệp
                 settingsTitle: "⚙️ Cài đặt tài khoản",
                 uploadAvatarTitle: "🖼️ Tải lên Avatar cá nhân",
                 saveAvatarBtn: "Lưu Avatar",
@@ -377,13 +377,14 @@
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
-                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Shared Challenges',
+                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
+                tabDashboardVi: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
                 tabUpdate: "📌 Personal Challenges",
                 reportBtn: "📋 Results",
                 reportModalTitle: "📋 Challenge Results",
                 copySuccess: "Automatically copied!",
                 copyNotice: "Content copied to clipboard.",
-                createSharedToggle: "➕ Create Shared Challenge",
+                createSharedToggle: "➕ Create Group Challenge",
                 createPersonalToggle: "➕ Add Personal Challenge",
                 challengePh: "Challenge name (e.g., Discipline)...",
                 startDate: "Start date:",
@@ -393,7 +394,7 @@
                 habitPh: "Personal challenge name (e.g., Reading)...",
                 addHabitBtn: "Add Personal Challenge",
                 noHabits: "No personal challenges yet.",
-                noChallenges: "No shared challenges yet.",
+                noChallenges: "No group challenges yet.",
                 joinChallenge: "🚀 Join Now",
                 notJoined: "You haven't joined this challenge yet.",
                 leaveChallenge: "🚫 Not participating",
@@ -432,7 +433,6 @@
                 completedThisDay: "Completed",
                 createdBy: "Created by",
                 alertFuture: "⏳ Future date! You cannot view or update results for upcoming days.",
-                // English translation keys
                 settingsTitle: "⚙️ Account Settings",
                 uploadAvatarTitle: "🖼️ Upload Personal Avatar",
                 saveAvatarBtn: "Save Avatar",
@@ -466,7 +466,7 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = t('tabDashboard');
+            document.getElementById('btn-dashboard').innerHTML = (currentLang === 'vi') ? t('tabDashboardVi') : t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
             document.getElementById('btn-report').innerText = t('reportBtn');
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
@@ -503,7 +503,6 @@
             document.getElementById('m-team-progress').innerText = t('teamProgress');
             document.getElementById('m-completed-text').innerText = t('completedText');
 
-            // Cập nhật tĩnh cho Cài đặt tài khoản & Nút chọn tệp
             document.getElementById('s-modal-title').innerText = t('settingsTitle');
             document.getElementById('s-avatar-title').innerText = t('uploadAvatarTitle');
             document.getElementById('s-save-avatar-btn').innerText = t('saveAvatarBtn');
@@ -902,7 +901,7 @@
             let report = currentLang === 'vi' ? "🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n" : "🏆 BVGP TEAM DISCIPLINE REPORT 🏆\n\n";
             
             if (appData.sharedChallenges && appData.sharedChallenges.length > 0) {
-                report += currentLang === 'vi' ? "--- THỬ THÁCH CHUNG ---\n" : "--- SHARED CHALLENGES ---\n";
+                report += currentLang === 'vi' ? "--- THỬ THÁCH NHÓM ---\n" : "--- GROUP CHALLENGES ---\n";
                 const sortedShared = [...appData.sharedChallenges].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
                 
                 sortedShared.forEach((c, index) => {
@@ -1403,7 +1402,7 @@
         };
 
         function deleteSharedChallenge(challengeId) {
-            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn xóa thử thách chung này không?" : "Are you sure you want to delete this challenge?")) {
+            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn xóa thử thách nhóm này không?" : "Are you sure you want to delete this challenge?")) {
                 appData.sharedChallenges = appData.sharedChallenges.filter(c => c.id !== challengeId);
                 dbRef.set(appData);
             }
