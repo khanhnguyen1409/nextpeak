@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <!-- MODAL KẾT QUẢ THỬ THÁCH (Xem trực quan + Tự động sao chép, không có icon zalo/mess) -->
+    <!-- MODAL KẾT QUẢ THỬ THÁCH -->
     <div id="report-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4">
             <div class="flex justify-between items-center">
@@ -127,7 +127,7 @@
                     <div id="modal-edit-section" class="space-y-3 hidden">
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" id="modal-checkbox" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
-                            <span id="m-completed-label" class="text-sm font-semibold text-slate-700">Đã hoàn thành ngày này</span>
+                            <span id="m-completed-label" class="text-sm font-semibold text-slate-700">Đã hoàn thành</span>
                         </label>
 
                         <div class="space-y-1">
@@ -168,19 +168,22 @@
                 <img src="https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png';">
             </div>
             <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800">Thử Thách Kỷ Luật BVGP</h1>
-            <!-- Slogan ngẫu nhiên truyền cảm hứng chuẩn tiếng Việt -->
             <p id="slogan-text" class="text-sm text-slate-500 italic px-4 transition-all duration-500"></p>
             
-            <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
+            <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
                 <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
-                <span class="text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
-                <button onclick="switchUser()" id="t-switch-user" class="text-xs text-slate-500 hover:text-red-600 font-semibold underline ml-1">Thoát</button>
+                
+                <!-- Tên người dùng & Chữ Thoát nhỏ nằm ngay bên dưới -->
+                <div class="flex flex-col items-start">
+                    <span class="text-xs bg-slate-200 text-slate-700 px-3 py-0.5 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
+                    <button onclick="switchUser()" id="t-switch-user" class="text-[10px] text-slate-400 hover:text-red-600 font-semibold underline ml-1 mt-0.5">Thoát</button>
+                </div>
                 
                 <div class="h-4 w-px bg-slate-300 mx-1"></div>
 
-                <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📤 Kết quả</button>
+                <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📤 Kết quả</button>
                 
-                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-1 rounded-full font-bold transition shadow-sm">VI</button>
+                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-full font-bold transition shadow-sm">VI</button>
             </div>
         </header>
 
@@ -227,7 +230,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: THỬ THÁCH CÁ NHÂN (Có bổ sung Bỏ cuộc & Tạm dừng) -->
+        <!-- TAB 2: THỬ THÁCH CÁ NHÂN -->
         <div id="tab-update" class="space-y-6 hidden">
             <div class="bg-white rounded-3xl shadow-sm border border-emerald-200 overflow-hidden">
                 <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 bg-emerald-50/50 flex justify-between items-center hover:bg-emerald-50 transition">
@@ -308,11 +311,12 @@
                 noChallenges: "Chưa có thử thách chung nào.",
                 joinChallenge: "🚀 Tham gia ngay",
                 notJoined: "Bạn chưa tham gia thử thách này.",
-                leaveChallenge: "🚪 Rời thử thách",
+                leaveChallenge: "🚪 Không tham gia",
                 pauseChallenge: "⏸️ Tạm dừng",
-                pausedStatus: "⏸️ Đang tạm dừng",
+                pausedStatus: "⏸️ Tạm dừng",
                 giveUpChallenge: "🏳️ Bỏ cuộc",
-                givenUpStatus: "🚫 Đã bỏ cuộc",
+                givenUpStatus: "🚫 Bỏ cuộc",
+                notParticipatingStatus: "🚫 Không tham gia",
                 leaderboard: "🏆 Bảng xếp hạng",
                 progress: "Tiến độ",
                 total: "Tổng",
@@ -338,7 +342,7 @@
                 forgotPin: "Quên mã PIN?",
                 dayDetails: "Chi tiết ngày",
                 personal: "Cá nhân của bạn",
-                completedThisDay: "Đã hoàn thành ngày này",
+                completedThisDay: "Đã hoàn thành",
                 createdBy: "Tạo bởi",
                 alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai."
             },
@@ -359,11 +363,12 @@
                 noChallenges: "No shared challenges yet.",
                 joinChallenge: "🚀 Join Now",
                 notJoined: "You haven't joined this challenge yet.",
-                leaveChallenge: "🚪 Leave Challenge",
+                leaveChallenge: "🚪 Not participating",
                 pauseChallenge: "⏸️ Pause",
                 pausedStatus: "⏸️ Paused",
                 giveUpChallenge: "🏳️ Give Up",
                 givenUpStatus: "🚫 Given up",
+                notParticipatingStatus: "🚫 Not participating",
                 leaderboard: "🏆 Leaderboard",
                 progress: "Progress",
                 total: "Total",
@@ -389,7 +394,7 @@
                 forgotPin: "Forgot PIN?",
                 dayDetails: "Day Details",
                 personal: "Your Personal",
-                completedThisDay: "Completed this day",
+                completedThisDay: "Completed",
                 createdBy: "Created by",
                 alertFuture: "⏳ Future date! You cannot view or update results for upcoming days."
             }
@@ -710,7 +715,6 @@
             const text = getReportText();
             document.getElementById('report-preview-text').innerText = text;
             
-            // Tự động sao chép vào bộ nhớ tạm
             navigator.clipboard.writeText(text).then(() => {
                 const badge = document.getElementById('copy-success-badge');
                 badge.classList.remove('hidden');
@@ -790,6 +794,13 @@
             return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
         }
 
+        function formatDateString(dateInput) {
+            if (!dateInput) return '';
+            const d = new Date(dateInput);
+            if (isNaN(d)) return dateInput;
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        }
+
         function getTodayIndex(startDateStr) {
             const start = new Date(startDateStr || Date.now());
             start.setHours(0,0,0,0);
@@ -799,32 +810,53 @@
             return Math.round(diffTime / (1000 * 60 * 60 * 24));
         }
 
+        function promptReason() {
+            let reason = prompt(currentLang === 'vi' ? "Vui lòng nhập lý do (bắt buộc):" : "Please enter a mandatory reason (required):");
+            if (reason === null) return null;
+            reason = reason.trim();
+            while (!reason) {
+                alert(currentLang === 'vi' ? "Lý do là bắt buộc!" : "Reason is required!");
+                reason = prompt(currentLang === 'vi' ? "Vui lòng nhập lý do (bắt buộc):" : "Please enter a mandatory reason (required):");
+                if (reason === null) return null;
+                reason = reason.trim();
+            }
+            return reason;
+        }
+
         function getReportText() {
             let report = currentLang === 'vi' ? "🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n" : "🏆 BVGP TEAM DISCIPLINE REPORT 🏆\n\n";
             
             if (appData.sharedChallenges && appData.sharedChallenges.length > 0) {
                 report += currentLang === 'vi' ? "--- THỬ THÁCH CHUNG ---\n" : "--- SHARED CHALLENGES ---\n";
-                appData.sharedChallenges.forEach(c => {
+                // Sắp xếp theo thời gian tạo tăng dần
+                const sortedShared = [...appData.sharedChallenges].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+                sortedShared.forEach((c, index) => {
                     const targetGoal = c.targetDays || 30;
-                    report += `🎯 ${c.title} (${t('createdBy')}: ${c.creatorName || 'Team'})\n`;
+                    const createdDateStr = formatDateString(c.createdAt || c.id);
+                    report += `${index + 1}. 🎯 ${c.title} (${t('createdBy')}: ${c.creatorName || 'Team'} - ${createdDateStr})\n`;
                     
                     const participantsMap = c.participants || {};
-                    const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up' || participantsMap[mId] === 'paused');
+                    const reasonsMap = c.participantReasons || {};
+                    const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up' || participantsMap[mId] === 'not_participating');
                     
                     const sorted = activeMembers.map(mId => {
                         const mObj = appData.members.find(m => m.id === mId);
                         const status = participantsMap[mId];
                         const count = (c.progress && c.progress[mId]) ? c.progress[mId].filter(item => item && item.completed).length : 0;
-                        return { name: mObj ? mObj.name : mId, count, status };
+                        const reason = reasonsMap[mId] || '';
+                        return { name: mObj ? mObj.name : mId, count, status, reason };
                     }).sort((a, b) => b.count - a.count);
 
                     sorted.forEach((m, idx) => {
+                        const isCompletedGoal = m.count >= targetGoal;
+                        const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
+
                         if (m.status === 'given_up') {
-                            report += `   ${idx + 1}. ${m.name}: ${t('givenUpStatus')}\n`;
-                        } else if (m.status === 'paused') {
-                            report += `   ${idx + 1}. ${m.name}: ${t('pausedStatus')}\n`;
+                            report += `   - ${m.name}: ${t('givenUpStatus')}${m.reason ? ` (Lý do: ${m.reason})` : ''}\n`;
+                        } else if (m.status === 'not_participating') {
+                            report += `   - ${m.name}: ${t('notParticipatingStatus')}${m.reason ? ` (Lý do: ${m.reason})` : ''}\n`;
                         } else {
-                            report += `   ${idx + 1}. ${m.name}: ${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}\n`;
+                            report += `   - ${m.name}: ${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${completedTag}\n`;
                         }
                     });
                     report += "\n";
@@ -835,17 +867,24 @@
             const personalHabits = (appData.personalHabits && appData.personalHabits[loggedInUserId]) || [];
             if (personalHabits.length > 0) {
                 report += currentLang === 'vi' ? `--- THỬ THÁCH CÁ NHÂN (${currentMember ? currentMember.name : ''}) ---\n` : `--- PERSONAL CHALLENGES (${currentMember ? currentMember.name : ''}) ---\n`;
-                personalHabits.forEach(h => {
+                // Sắp xếp theo thời gian tạo tăng dần
+                const sortedPersonal = [...personalHabits].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+                sortedPersonal.forEach((h, index) => {
                     const targetGoal = h.targetDays || 30;
                     const habitDays = h.days || [];
                     const completedCount = habitDays.filter(item => item && item.completed).length;
-                    const status = h.status;
+                    const status = h.status || 'active';
+                    const reason = h.reason || '';
+                    const createdDateStr = formatDateString(h.createdAt || h.id);
+                    const isCompletedGoal = completedCount >= targetGoal;
+                    const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Đã hoàn thành" : " - Completed") : "";
+
                     if (status === 'given_up') {
-                        report += `📌 ${h.text}: ${t('givenUpStatus')}\n`;
+                        report += `${index + 1}. 📌 ${h.text} (${createdDateStr}): ${t('givenUpStatus')}${reason ? ` (Lý do: ${reason})` : ''}\n`;
                     } else if (status === 'paused') {
-                        report += `📌 ${h.text}: ${t('pausedStatus')}\n`;
+                        report += `${index + 1}. 📌 ${h.text} (${createdDateStr}): ${t('pausedStatus')}${reason ? ` (Lý do: ${reason})` : ''}\n`;
                     } else {
-                        report += `📌 ${h.text}: ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}\n`;
+                        report += `${index + 1}. 📌 ${h.text} (${createdDateStr}): ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}${completedTag}\n`;
                     }
                 });
             }
@@ -870,27 +909,29 @@
         }
 
         function leaveChallenge(challengeId) {
-            if (confirm(currentLang === 'vi' ? "Bạn có chắc chắn muốn rời khỏi thử thách này không?" : "Are you sure you want to leave this challenge?")) {
-                const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
-                if (!challenge || !challenge.participants) return;
-                challenge.participants[loggedInUserId] = false;
-                dbRef.set(appData);
-            }
+            const reason = promptReason();
+            if (reason === null) return;
+
+            const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+            if (!challenge || !challenge.participants) return;
+            if (!challenge.participantReasons) challenge.participantReasons = {};
+            
+            challenge.participants[loggedInUserId] = 'not_participating';
+            challenge.participantReasons[loggedInUserId] = reason;
+            dbRef.set(appData);
         }
 
-        function pauseChallenge(challengeId, isPersonal, habitId) {
-            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn Tạm dừng thử thách này do lý do khách quan?" : "Are you sure you want to pause this challenge?")) {
-                if (!isPersonal) {
-                    const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
-                    if (!challenge || !challenge.participants) return;
-                    challenge.participants[loggedInUserId] = 'paused';
-                } else {
-                    const habits = appData.personalHabits[loggedInUserId] || [];
-                    const habit = habits.find(h => h.id === habitId);
-                    if (habit) habit.status = 'paused';
-                }
-                dbRef.set(appData);
+        function pauseChallenge(habitId) {
+            const reason = promptReason();
+            if (reason === null) return;
+
+            const habits = appData.personalHabits[loggedInUserId] || [];
+            const habit = habits.find(h => h.id === habitId);
+            if (habit) {
+                habit.status = 'paused';
+                habit.reason = reason;
             }
+            dbRef.set(appData);
         }
 
         function resumeChallenge(challengeId, isPersonal, habitId) {
@@ -898,27 +939,37 @@
                 const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
                 if (!challenge || !challenge.participants) return;
                 challenge.participants[loggedInUserId] = true;
+                if (challenge.participantReasons) delete challenge.participantReasons[loggedInUserId];
             } else {
                 const habits = appData.personalHabits[loggedInUserId] || [];
                 const habit = habits.find(h => h.id === habitId);
-                if (habit) habit.status = 'active';
+                if (habit) {
+                    habit.status = 'active';
+                    habit.reason = '';
+                }
             }
             dbRef.set(appData);
         }
 
         function giveUpChallenge(challengeId, isPersonal, habitId) {
-            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn Bỏ cuộc? Trạng thái sẽ được ghi vào báo cáo!" : "Are you sure you want to give up?")) {
-                if (!isPersonal) {
-                    const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
-                    if (!challenge || !challenge.participants) return;
-                    challenge.participants[loggedInUserId] = 'given_up';
-                } else {
-                    const habits = appData.personalHabits[loggedInUserId] || [];
-                    const habit = habits.find(h => h.id === habitId);
-                    if (habit) habit.status = 'given_up';
+            const reason = promptReason();
+            if (reason === null) return;
+
+            if (!isPersonal) {
+                const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+                if (!challenge || !challenge.participants) return;
+                if (!challenge.participantReasons) challenge.participantReasons = {};
+                challenge.participants[loggedInUserId] = 'given_up';
+                challenge.participantReasons[loggedInUserId] = reason;
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === habitId);
+                if (habit) {
+                    habit.status = 'given_up';
+                    habit.reason = reason;
                 }
-                dbRef.set(appData);
             }
+            dbRef.set(appData);
         }
 
         function renderDashboard() {
@@ -933,17 +984,21 @@
                 return;
             }
 
-            appData.sharedChallenges.forEach(challenge => {
+            // Sắp xếp theo thời gian tạo tăng dần
+            const sortedShared = [...appData.sharedChallenges].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+
+            sortedShared.forEach((challenge, index) => {
                 const totalD = challenge.totalDays || 35;
                 const targetD = challenge.targetDays || 30;
                 if (!challenge.progress) challenge.progress = {};
                 if (!challenge.participants) challenge.participants = {};
 
                 const participantStatus = challenge.participants[loggedInUserId];
-                const isJoined = (participantStatus === true || participantStatus === 'given_up' || participantStatus === 'paused');
+                const isJoined = (participantStatus === true || participantStatus === 'given_up' || participantStatus === 'not_participating');
                 const isGivenUp = (participantStatus === 'given_up');
-                const isPaused = (participantStatus === 'paused');
+                const isNotParticipating = (participantStatus === 'not_participating');
                 const creatorName = challenge.creatorName || 'Team';
+                const createdDateStr = formatDateString(challenge.createdAt || challenge.id);
 
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-3xl shadow-sm border border-indigo-100 space-y-4";
@@ -996,8 +1051,6 @@
                         <div class="flex gap-2 items-center flex-wrap">
                             <button onclick="leaveChallenge(${challenge.id})" class="text-slate-500 hover:text-slate-800 underline">${t('leaveChallenge')}</button>
                             <span>•</span>
-                            <button onclick="pauseChallenge(${challenge.id}, false)" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
-                            <span>•</span>
                             <button onclick="giveUpChallenge(${challenge.id}, false)" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
                         </div>
                     `;
@@ -1008,10 +1061,10 @@
                                 <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
                                 <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
                             </div>`;
-                    } else if (isPaused) {
+                    } else if (isNotParticipating) {
                         actionButtonsHtml = `
                             <div class="flex justify-between items-center">
-                                <span class="text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full text-xs">${t('pausedStatus')}</span>
+                                <span class="text-slate-600 font-bold bg-slate-100 px-3 py-1 rounded-full text-xs">${t('notParticipatingStatus')}</span>
                                 <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
                             </div>`;
                     }
@@ -1022,7 +1075,7 @@
                                 <span class="text-slate-500">${t('progress')}: <strong class="text-indigo-600">${myCompletedCount}/${targetD}</strong> (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'})</span>
                                 ${actionButtonsHtml}
                             </div>
-                            ${(isGivenUp || isPaused) ? '' : gridHtml}
+                            ${(isGivenUp || isNotParticipating) ? '' : gridHtml}
                             
                             <div class="pt-4 border-t border-slate-100">
                                 <h5 class="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">${t('leaderboard')}</h5>
@@ -1037,8 +1090,8 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">🎯 ${challenge.title}</h4>
-                            <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('createdBy')}: ${creatorName}</span>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">${index + 1}. 🎯 ${challenge.title}</h4>
+                            <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('createdBy')}: ${creatorName} (${createdDateStr})</span>
                         </div>
                         <button onclick="deleteSharedChallenge(${challenge.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
                     </div>
@@ -1046,7 +1099,7 @@
                 `;
                 container.appendChild(card);
 
-                if (isJoined && !isGivenUp && !isPaused) {
+                if (isJoined && !isGivenUp && !isNotParticipating) {
                     setTimeout(() => {
                         const canvasEl = document.getElementById(`chart-challenge-${challenge.id}`);
                         if (canvasEl) {
@@ -1063,6 +1116,7 @@
 
                             const ctx = canvasEl.getContext('2d');
                             
+                            // Custom Plugin vẽ Avatar nhỏ bên dưới tên, có khoảng cách hợp lý
                             const avatarPlugin = {
                                 id: 'avatarPlugin',
                                 afterDraw(chart) {
@@ -1070,10 +1124,10 @@
                                     ctx.save();
                                     sortedMembers.forEach((m, index) => {
                                         const xPos = x.getPixelForValue(index);
-                                        const yPos = chart.chartArea.bottom + 6;
+                                        const yPos = chart.chartArea.bottom + 10; // Không bị sát quá
                                         
                                         ctx.beginPath();
-                                        ctx.arc(xPos, yPos + 12, 12, 0, 2 * Math.PI);
+                                        ctx.arc(xPos, yPos + 10, 11, 0, 2 * Math.PI);
                                         ctx.fillStyle = '#e2e8f0';
                                         ctx.fill();
                                         ctx.lineWidth = 1.5;
@@ -1086,18 +1140,37 @@
                                             const img = new Image();
                                             img.src = m.avatar;
                                             if (img.complete) {
-                                                ctx.drawImage(img, xPos - 12, yPos, 24, 24);
+                                                ctx.drawImage(img, xPos - 11, yPos - 1, 22, 22);
                                             } else {
                                                 img.onload = () => chart.draw();
                                             }
                                         } else {
                                             ctx.fillStyle = '#475569';
-                                            ctx.font = 'bold 10px sans-serif';
+                                            ctx.font = 'bold 9px sans-serif';
                                             ctx.textAlign = 'center';
                                             ctx.textBaseline = 'middle';
-                                            ctx.fillText(m.name.charAt(0), xPos, yPos + 12);
+                                            ctx.fillText(m.name.charAt(0), xPos, yPos + 10);
                                         }
                                         ctx.restore();
+                                    });
+                                }
+                            };
+
+                            // Custom Plugin hiển thị con số nhỏ trên đầu mỗi cột biểu đồ
+                            const barValuePlugin = {
+                                id: 'barValuePlugin',
+                                afterDatasetsDraw(chart) {
+                                    const { ctx } = chart;
+                                    chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                        const meta = chart.getDatasetMeta(datasetIndex);
+                                        meta.data.forEach((bar, index) => {
+                                            const dataValue = dataset.data[index];
+                                            ctx.fillStyle = '#475569';
+                                            ctx.font = 'bold 11px sans-serif';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'bottom';
+                                            ctx.fillText(dataValue, bar.x, bar.y - 5);
+                                        });
                                     });
                                 }
                             };
@@ -1119,12 +1192,12 @@
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
-                                        x: { ticks: { padding: 22 } },
-                                        y: { beginAtZero: true, max: targetD, ticks: { stepSize: 5 } }
+                                        x: { ticks: { padding: 30 } }, // Chừa chỗ cho avatar phía dưới
+                                        y: { beginAtZero: true, max: targetD + 2, ticks: { stepSize: 5 } }
                                     },
                                     plugins: { legend: { display: false } }
                                 },
-                                plugins: [avatarPlugin]
+                                plugins: [avatarPlugin, barValuePlugin]
                             });
                         }
                     }, 50);
@@ -1142,13 +1215,17 @@
                 return;
             }
 
-            habits.forEach(habit => {
+            // Sắp xếp theo thời gian tạo tăng dần
+            const sortedHabits = [...habits].sort((a, b) => (a.createdAt || a.id) - (b.createdAt || b.id));
+
+            sortedHabits.forEach((habit, index) => {
                 const totalD = habit.totalDays || 35;
                 const targetD = habit.targetDays || 30;
                 const habitDays = habit.days || Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
                 const completedHabitCount = habitDays.filter(item => item && item.completed).length;
                 const todayIdx = getTodayIndex(habit.startDate);
                 const status = habit.status || 'active';
+                const createdDateStr = formatDateString(habit.createdAt || habit.id);
                 
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-3xl shadow-sm border border-emerald-200 space-y-4";
@@ -1182,7 +1259,7 @@
 
                 let actionHtml = `
                     <div class="flex gap-2 items-center text-xs">
-                        <button onclick="pauseChallenge(null, true, ${habit.id})" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
+                        <button onclick="pauseChallenge(${habit.id})" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
                         <span>•</span>
                         <button onclick="giveUpChallenge(null, true, ${habit.id})" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
                     </div>
@@ -1205,8 +1282,8 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">📌 ${habit.text}</h4>
-                            <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('progress')}: ${completedHabitCount}/${targetD} (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'})</span>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">${index + 1}. 📌 ${habit.text}</h4>
+                            <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('progress')}: ${completedHabitCount}/${targetD} (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'}) • ${createdDateStr}</span>
                         </div>
                         <button onclick="deletePersonalHabit(${habit.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
                     </div>
@@ -1228,12 +1305,13 @@
             const totalDays = parseInt(document.getElementById('shared-days-input').value) || 35;
             const creatorMember = appData.members.find(m => m.id === loggedInUserId);
             const creatorName = creatorMember ? creatorMember.name : 'Member';
+            const nowTimestamp = Date.now();
 
             if (title) {
                 if (!appData.sharedChallenges) appData.sharedChallenges = [];
-                const newId = Date.now();
                 const newChallenge = {
-                    id: newId,
+                    id: nowTimestamp,
+                    createdAt: nowTimestamp,
                     title: title,
                     creatorName: creatorName,
                     totalDays: totalDays,
@@ -1267,18 +1345,21 @@
             const startDate = document.getElementById('personal-date-input').value;
             const targetDays = parseInt(document.getElementById('personal-target-input').value) || 30;
             const totalDays = parseInt(document.getElementById('personal-days-input').value) || 35;
+            const nowTimestamp = Date.now();
 
             if (text) {
                 if (!appData.personalHabits) appData.personalHabits = {};
                 if (!appData.personalHabits[loggedInUserId]) appData.personalHabits[loggedInUserId] = [];
                 
                 appData.personalHabits[loggedInUserId].push({ 
-                    id: Date.now(), 
+                    id: nowTimestamp,
+                    createdAt: nowTimestamp,
                     text: text, 
                     startDate: startDate,
                     totalDays: totalDays,
                     targetDays: targetDays,
                     status: 'active',
+                    reason: '',
                     days: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }))
                 });
                 document.getElementById('personal-input').value = '';
@@ -1471,7 +1552,6 @@
             const isCompleted = document.getElementById('modal-checkbox').checked;
             const noteText = document.getElementById('modal-note').value.trim();
 
-            // Tự động lấy thời gian hiện tại (VD: 19:30)
             const now = new Date();
             const timestampStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
 
