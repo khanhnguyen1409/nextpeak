@@ -84,31 +84,21 @@
         </div>
     </div>
 
-    <!-- MODAL KẾT QUẢ THỬ THÁCH (Xem trực quan + Tự động sao chép + Icon Zalo/Messenger) -->
+    <!-- MODAL KẾT QUẢ THỬ THÁCH (Xem trực quan + Tự động sao chép, không có icon zalo/mess) -->
     <div id="report-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <h3 class="font-bold text-slate-800 text-base">📤 Kết quả thử thách</h3>
-                    <span id="copy-success-badge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold hidden">Đã sao chép!</span>
+                    <span id="copy-success-badge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold hidden">Đã tự động sao chép!</span>
                 </div>
                 <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
             
-            <!-- Khung hiển thị trực quan nội dung báo cáo -->
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 max-h-60 overflow-y-auto">
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 max-h-72 overflow-y-auto">
                 <pre id="report-preview-text" class="text-xs text-slate-700 whitespace-pre-wrap font-sans"></pre>
             </div>
-
-            <!-- 2 Icon Zalo & Messenger tối giản -->
-            <div class="flex justify-center items-center gap-4 pt-2">
-                <button onclick="shareToZalo()" title="Chia sẻ qua Zalo" class="w-11 h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center justify-center shadow-md transition hover:scale-105">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.48-.42-1.42-.89.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.96 8.22-3.52 3.91-1.63 4.72-1.91 5.25-1.92.12 0 .39.03.56.17.14.12.18.28.2.4-.02.11-.02.32-.05.51z"/></svg>
-                </button>
-                <button onclick="shareToMessenger()" title="Chia sẻ qua Messenger" class="w-11 h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl flex items-center justify-center shadow-md transition hover:scale-105">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.51 3.13 7.34V22l3.41-1.87c1.01.28 2.08.43 3.46.43 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm1.09 13.06l-2.55-2.72-4.97 2.72 5.46-5.8 2.61 2.72 4.91-2.72-5.46 5.8z"/></svg>
-                </button>
-            </div>
+            <p class="text-[11px] text-slate-400 text-center">Nội dung đã được sao chép vào bộ nhớ tạm để bạn dán vào Zalo/Messenger.</p>
         </div>
     </div>
 
@@ -129,6 +119,7 @@
 
                     <div id="modal-view-section" class="space-y-2">
                         <div id="view-status"></div>
+                        <div id="view-timestamp" class="text-[11px] text-slate-400 font-medium"></div>
                         <div id="view-note" class="hidden"></div>
                         <div id="view-image" class="hidden"></div>
                     </div>
@@ -177,9 +168,9 @@
                 <img src="https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png';">
             </div>
             <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800">Thử Thách Kỷ Luật BVGP</h1>
-            <p id="t-app-sub" class="text-sm text-slate-500">Kỷ luật hôm nay, phiên bản tốt hơn ngày mai</p>
+            <!-- Slogan ngẫu nhiên truyền cảm hứng chuẩn tiếng Việt -->
+            <p id="slogan-text" class="text-sm text-slate-500 italic px-4 transition-all duration-500"></p>
             
-            <!-- User info & quick action bar -->
             <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
                 <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
                 <span class="text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
@@ -189,12 +180,11 @@
 
                 <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📤 Kết quả</button>
                 
-                <!-- Nút chuyển đổi ngôn ngữ độc lập VI/EN -->
                 <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-1 rounded-full font-bold transition shadow-sm">VI</button>
             </div>
         </header>
 
-        <!-- Navigation Tabs (2 phần chính) -->
+        <!-- Navigation Tabs -->
         <div class="flex justify-center bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm">📊 Thử thách chung</button>
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
@@ -237,7 +227,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: THỬ THÁCH CÁ NHÂN -->
+        <!-- TAB 2: THỬ THÁCH CÁ NHÂN (Có bổ sung Bỏ cuộc & Tạm dừng) -->
         <div id="tab-update" class="space-y-6 hidden">
             <div class="bg-white rounded-3xl shadow-sm border border-emerald-200 overflow-hidden">
                 <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 bg-emerald-50/50 flex justify-between items-center hover:bg-emerald-50 transition">
@@ -277,10 +267,32 @@
 
     <!-- JavaScript & Firebase Logic -->
     <script>
+        const slogans = {
+            vi: [
+                "Kỷ luật là cầu nối giữa mục tiêu và thành tựu.",
+                "Hành trình vạn dặm khởi đầu từ một bước chân nhỏ mỗi ngày.",
+                "Động lực giúp bạn bắt đầu, nhưng kỷ luật mới giúp bạn đi đến đích.",
+                "Phiên bản tốt hơn của ngày mai được xây dựng từ sự kiên trì hôm nay.",
+                "Thành công không đến từ những gì bạn làm đôi khi, mà đến từ những gì bạn làm đều đặn."
+            ],
+            en: [
+                "Discipline is the bridge between goals and accomplishment.",
+                "A journey of a thousand miles begins with a single step.",
+                "Motivation gets you started, but discipline keeps you growing.",
+                "A better tomorrow is built on the consistency of today.",
+                "Success doesn't come from what you do occasionally, it comes from what you do consistently."
+            ]
+        };
+
+        function displayRandomSlogan() {
+            const list = slogans[currentLang];
+            const randomMsg = list[Math.floor(Math.random() * list.length)];
+            document.getElementById('slogan-text').innerText = `"${randomMsg}"`;
+        }
+
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
-                appSub: "Kỷ luật hôm nay, phiên bản tốt hơn ngày mai",
                 tabDashboard: "📊 Thử thách chung",
                 tabUpdate: "📌 Thử thách cá nhân",
                 createSharedToggle: "➕ Tạo thử thách chung",
@@ -297,6 +309,8 @@
                 joinChallenge: "🚀 Tham gia ngay",
                 notJoined: "Bạn chưa tham gia thử thách này.",
                 leaveChallenge: "🚪 Rời thử thách",
+                pauseChallenge: "⏸️ Tạm dừng",
+                pausedStatus: "⏸️ Đang tạm dừng",
                 giveUpChallenge: "🏳️ Bỏ cuộc",
                 givenUpStatus: "🚫 Đã bỏ cuộc",
                 leaderboard: "🏆 Bảng xếp hạng",
@@ -330,7 +344,6 @@
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
-                appSub: "Discipline today, a better version tomorrow",
                 tabDashboard: "📊 Shared Challenges",
                 tabUpdate: "📌 Personal Challenges",
                 createSharedToggle: "➕ Create Shared Challenge",
@@ -347,6 +360,8 @@
                 joinChallenge: "🚀 Join Now",
                 notJoined: "You haven't joined this challenge yet.",
                 leaveChallenge: "🚪 Leave Challenge",
+                pauseChallenge: "⏸️ Pause",
+                pausedStatus: "⏸️ Paused",
                 giveUpChallenge: "🏳️ Give Up",
                 givenUpStatus: "🚫 Given up",
                 leaderboard: "🏆 Leaderboard",
@@ -387,6 +402,7 @@
             localStorage.setItem('bvgpLang', currentLang);
             document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
             updateStaticTexts();
+            displayRandomSlogan();
             if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
                 renderDashboard();
             } else {
@@ -400,7 +416,6 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('t-app-sub').innerText = t('appSub');
             document.getElementById('btn-dashboard').innerText = t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
             document.getElementById('t-create-shared-toggle').innerText = t('createSharedToggle');
@@ -496,6 +511,7 @@
             updateUserLabel();
             document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
             updateStaticTexts();
+            displayRandomSlogan();
             if (!document.getElementById('tab-dashboard').classList.contains('hidden')) {
                 renderDashboard();
             } else {
@@ -793,18 +809,20 @@
                     report += `🎯 ${c.title} (${t('createdBy')}: ${c.creatorName || 'Team'})\n`;
                     
                     const participantsMap = c.participants || {};
-                    const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up');
+                    const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up' || participantsMap[mId] === 'paused');
                     
                     const sorted = activeMembers.map(mId => {
                         const mObj = appData.members.find(m => m.id === mId);
-                        const isGivenUp = (participantsMap[mId] === 'given_up');
+                        const status = participantsMap[mId];
                         const count = (c.progress && c.progress[mId]) ? c.progress[mId].filter(item => item && item.completed).length : 0;
-                        return { name: mObj ? mObj.name : mId, count, isGivenUp };
+                        return { name: mObj ? mObj.name : mId, count, status };
                     }).sort((a, b) => b.count - a.count);
 
                     sorted.forEach((m, idx) => {
-                        if (m.isGivenUp) {
+                        if (m.status === 'given_up') {
                             report += `   ${idx + 1}. ${m.name}: ${t('givenUpStatus')}\n`;
+                        } else if (m.status === 'paused') {
+                            report += `   ${idx + 1}. ${m.name}: ${t('pausedStatus')}\n`;
                         } else {
                             report += `   ${idx + 1}. ${m.name}: ${m.count}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}\n`;
                         }
@@ -821,23 +839,18 @@
                     const targetGoal = h.targetDays || 30;
                     const habitDays = h.days || [];
                     const completedCount = habitDays.filter(item => item && item.completed).length;
-                    report += `📌 ${h.text}: ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}\n`;
+                    const status = h.status;
+                    if (status === 'given_up') {
+                        report += `📌 ${h.text}: ${t('givenUpStatus')}\n`;
+                    } else if (status === 'paused') {
+                        report += `📌 ${h.text}: ${t('pausedStatus')}\n`;
+                    } else {
+                        report += `📌 ${h.text}: ${completedCount}/${targetGoal} ${currentLang === 'vi' ? 'ngày' : 'days'}\n`;
+                    }
                 });
             }
 
             return report;
-        }
-
-        function shareToZalo() {
-            const text = encodeURIComponent(getReportText());
-            window.open(`https://zalo.me/share?text=${text}`, '_blank');
-            closeReportModal();
-        }
-
-        function shareToMessenger() {
-            const text = encodeURIComponent(getReportText());
-            window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(window.location.href)}&app_id=291494419107518&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank');
-            closeReportModal();
         }
 
         function joinChallenge(challengeId) {
@@ -849,7 +862,7 @@
 
             if (!challenge.progress) challenge.progress = {};
             if (!challenge.progress[loggedInUserId]) {
-                challenge.progress[loggedInUserId] = Array(challenge.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '' }));
+                challenge.progress[loggedInUserId] = Array(challenge.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
             }
 
             dbRef.set(appData);
@@ -865,11 +878,45 @@
             }
         }
 
-        function giveUpChallenge(challengeId) {
-            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn Bỏ cuộc? Trạng thái sẽ được ghi vào báo cáo chung!" : "Are you sure you want to give up? This will be recorded in the team report!")) {
+        function pauseChallenge(challengeId, isPersonal, habitId) {
+            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn Tạm dừng thử thách này do lý do khách quan?" : "Are you sure you want to pause this challenge?")) {
+                if (!isPersonal) {
+                    const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+                    if (!challenge || !challenge.participants) return;
+                    challenge.participants[loggedInUserId] = 'paused';
+                } else {
+                    const habits = appData.personalHabits[loggedInUserId] || [];
+                    const habit = habits.find(h => h.id === habitId);
+                    if (habit) habit.status = 'paused';
+                }
+                dbRef.set(appData);
+            }
+        }
+
+        function resumeChallenge(challengeId, isPersonal, habitId) {
+            if (!isPersonal) {
                 const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
                 if (!challenge || !challenge.participants) return;
-                challenge.participants[loggedInUserId] = 'given_up';
+                challenge.participants[loggedInUserId] = true;
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const habit = habits.find(h => h.id === habitId);
+                if (habit) habit.status = 'active';
+            }
+            dbRef.set(appData);
+        }
+
+        function giveUpChallenge(challengeId, isPersonal, habitId) {
+            if (confirm(currentLang === 'vi' ? "Bạn có chắc muốn Bỏ cuộc? Trạng thái sẽ được ghi vào báo cáo!" : "Are you sure you want to give up?")) {
+                if (!isPersonal) {
+                    const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+                    if (!challenge || !challenge.participants) return;
+                    challenge.participants[loggedInUserId] = 'given_up';
+                } else {
+                    const habits = appData.personalHabits[loggedInUserId] || [];
+                    const habit = habits.find(h => h.id === habitId);
+                    if (habit) habit.status = 'given_up';
+                }
                 dbRef.set(appData);
             }
         }
@@ -893,8 +940,9 @@
                 if (!challenge.participants) challenge.participants = {};
 
                 const participantStatus = challenge.participants[loggedInUserId];
-                const isJoined = (participantStatus === true || participantStatus === 'given_up');
+                const isJoined = (participantStatus === true || participantStatus === 'given_up' || participantStatus === 'paused');
                 const isGivenUp = (participantStatus === 'given_up');
+                const isPaused = (participantStatus === 'paused');
                 const creatorName = challenge.creatorName || 'Team';
 
                 const card = document.createElement('div');
@@ -911,7 +959,7 @@
                     `;
                 } else {
                     if (!challenge.progress[loggedInUserId]) {
-                        challenge.progress[loggedInUserId] = Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '' }));
+                        challenge.progress[loggedInUserId] = Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
                     }
                     const memberProgress = challenge.progress[loggedInUserId];
                     const myCompletedCount = memberProgress.filter(item => item && item.completed).length;
@@ -945,15 +993,27 @@
                     gridHtml += `</div>`;
 
                     let actionButtonsHtml = `
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 items-center flex-wrap">
                             <button onclick="leaveChallenge(${challenge.id})" class="text-slate-500 hover:text-slate-800 underline">${t('leaveChallenge')}</button>
                             <span>•</span>
-                            <button onclick="giveUpChallenge(${challenge.id})" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
+                            <button onclick="pauseChallenge(${challenge.id}, false)" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
+                            <span>•</span>
+                            <button onclick="giveUpChallenge(${challenge.id}, false)" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
                         </div>
                     `;
 
                     if (isGivenUp) {
-                        actionButtonsHtml = `<span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>`;
+                        actionButtonsHtml = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                            </div>`;
+                    } else if (isPaused) {
+                        actionButtonsHtml = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full text-xs">${t('pausedStatus')}</span>
+                                <button onclick="resumeChallenge(${challenge.id}, false)" class="text-xs text-indigo-600 underline font-semibold">Tiếp tục tham gia</button>
+                            </div>`;
                     }
 
                     contentHtml = `
@@ -962,7 +1022,7 @@
                                 <span class="text-slate-500">${t('progress')}: <strong class="text-indigo-600">${myCompletedCount}/${targetD}</strong> (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'})</span>
                                 ${actionButtonsHtml}
                             </div>
-                            ${isGivenUp ? `<div class="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium text-center">Bạn đã tuyên bố bỏ cuộc thử thách này.</div>` : gridHtml}
+                            ${(isGivenUp || isPaused) ? '' : gridHtml}
                             
                             <div class="pt-4 border-t border-slate-100">
                                 <h5 class="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">${t('leaderboard')}</h5>
@@ -986,7 +1046,7 @@
                 `;
                 container.appendChild(card);
 
-                if (isJoined && !isGivenUp) {
+                if (isJoined && !isGivenUp && !isPaused) {
                     setTimeout(() => {
                         const canvasEl = document.getElementById(`chart-challenge-${challenge.id}`);
                         if (canvasEl) {
@@ -1003,7 +1063,6 @@
 
                             const ctx = canvasEl.getContext('2d');
                             
-                            // Custom plugin để vẽ hình ảnh Avatar bên dưới nhãn trục X
                             const avatarPlugin = {
                                 id: 'avatarPlugin',
                                 afterDraw(chart) {
@@ -1013,7 +1072,6 @@
                                         const xPos = x.getPixelForValue(index);
                                         const yPos = chart.chartArea.bottom + 6;
                                         
-                                        // Vẽ khung avatar tròn
                                         ctx.beginPath();
                                         ctx.arc(xPos, yPos + 12, 12, 0, 2 * Math.PI);
                                         ctx.fillStyle = '#e2e8f0';
@@ -1061,11 +1119,7 @@
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
-                                        x: {
-                                            ticks: {
-                                                padding: 22 // tạo khoảng trống bên dưới nhãn tên để chứa avatar
-                                            }
-                                        },
+                                        x: { ticks: { padding: 22 } },
                                         y: { beginAtZero: true, max: targetD, ticks: { stepSize: 5 } }
                                     },
                                     plugins: { legend: { display: false } }
@@ -1091,9 +1145,10 @@
             habits.forEach(habit => {
                 const totalD = habit.totalDays || 35;
                 const targetD = habit.targetDays || 30;
-                const habitDays = habit.days || Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '' }));
+                const habitDays = habit.days || Array(totalD).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
                 const completedHabitCount = habitDays.filter(item => item && item.completed).length;
                 const todayIdx = getTodayIndex(habit.startDate);
+                const status = habit.status || 'active';
                 
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-3xl shadow-sm border border-emerald-200 space-y-4";
@@ -1125,6 +1180,28 @@
                 });
                 gridHtml += `</div>`;
 
+                let actionHtml = `
+                    <div class="flex gap-2 items-center text-xs">
+                        <button onclick="pauseChallenge(null, true, ${habit.id})" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>
+                        <span>•</span>
+                        <button onclick="giveUpChallenge(null, true, ${habit.id})" class="text-red-500 hover:underline font-semibold">${t('giveUpChallenge')}</button>
+                    </div>
+                `;
+
+                if (status === 'given_up') {
+                    actionHtml = `
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-full text-xs">${t('givenUpStatus')}</span>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                        </div>`;
+                } else if (status === 'paused') {
+                    actionHtml = `
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full text-xs">${t('pausedStatus')}</span>
+                            <button onclick="resumeChallenge(null, true, ${habit.id})" class="text-indigo-600 underline font-semibold">Tiếp tục</button>
+                        </div>`;
+                }
+
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
@@ -1133,7 +1210,10 @@
                         </div>
                         <button onclick="deletePersonalHabit(${habit.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
                     </div>
-                    ${gridHtml}
+                    <div class="flex justify-between items-center text-xs pt-1">
+                        ${actionHtml}
+                    </div>
+                    ${(status === 'given_up' || status === 'paused') ? '' : gridHtml}
                 `;
                 container.appendChild(card);
             });
@@ -1163,7 +1243,7 @@
                         [loggedInUserId]: true
                     },
                     progress: {
-                        [loggedInUserId]: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '' }))
+                        [loggedInUserId]: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }))
                     }
                 };
                 appData.sharedChallenges.push(newChallenge);
@@ -1198,7 +1278,8 @@
                     startDate: startDate,
                     totalDays: totalDays,
                     targetDays: targetDays,
-                    days: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '' }))
+                    status: 'active',
+                    days: Array(totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }))
                 });
                 document.getElementById('personal-input').value = '';
                 dbRef.set(appData);
@@ -1247,7 +1328,7 @@
                 const challenge = appData.sharedChallenges.find(c => c.id === id);
                 dateStr = getDateString(challenge.startDate, dayIndex);
                 titleText = challenge.title;
-                itemData = challenge.progress[loggedInUserId][dayIndex] || { completed: false, note: '', image: '' };
+                itemData = challenge.progress[loggedInUserId][dayIndex] || { completed: false, note: '', image: '', timestamp: '' };
 
                 groupStatusContainer.classList.remove('hidden');
                 
@@ -1271,12 +1352,13 @@
                     const isDone = mProg && mProg.completed;
                     const noteText = mProg && mProg.note ? mProg.note.trim() : '';
                     const imgUrl = mProg && mProg.image ? mProg.image.trim() : '';
+                    const timeText = mProg && mProg.timestamp ? mProg.timestamp : '';
 
                     const row = document.createElement('div');
                     row.className = "p-2.5 bg-white rounded-xl border border-slate-200 text-xs space-y-2";
                     row.innerHTML = `
                         <div class="flex items-center justify-between font-semibold">
-                            <span class="text-slate-700">${mObj ? mObj.name : mId}</span>
+                            <span class="text-slate-700">${mObj ? mObj.name : mId} ${timeText ? `<span class="text-[10px] text-slate-400 font-normal">(${timeText})</span>` : ''}</span>
                             <span class="${isDone ? 'text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md font-bold' : 'text-slate-400'}">
                                 ${isDone ? (currentLang === 'vi' ? '✅ Đã hoàn thành' : '✅ Completed') : (currentLang === 'vi' ? '⏳ Chưa làm' : '⏳ Incomplete')}
                             </span>
@@ -1293,7 +1375,7 @@
                 const habit = habits.find(h => h.id === id);
                 dateStr = getDateString(habit.startDate, dayIndex);
                 titleText = habit.text;
-                itemData = habit.days[dayIndex] || { completed: false, note: '', image: '' };
+                itemData = habit.days[dayIndex] || { completed: false, note: '', image: '', timestamp: '' };
             }
 
             document.getElementById('modal-day-title').innerText = `${titleText} (${dateStr})`;
@@ -1322,6 +1404,7 @@
 
         function updateModalView(itemData) {
             const viewStatus = document.getElementById('view-status');
+            const viewTimestamp = document.getElementById('view-timestamp');
             const viewNote = document.getElementById('view-note');
             const viewImage = document.getElementById('view-image');
 
@@ -1329,6 +1412,14 @@
                 viewStatus.innerHTML = `<span class="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg font-bold text-xs inline-block">${t('completed')}</span>`;
             } else {
                 viewStatus.innerHTML = `<span class="text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg font-medium text-xs inline-block">${t('incomplete')}</span>`;
+            }
+
+            if (itemData.timestamp) {
+                viewTimestamp.innerText = `Cập nhật lúc: ${itemData.timestamp}`;
+                viewTimestamp.classList.remove('hidden');
+            } else {
+                viewTimestamp.innerText = '';
+                viewTimestamp.classList.add('hidden');
             }
 
             if (itemData.note && itemData.note.trim() !== '') {
@@ -1380,13 +1471,17 @@
             const isCompleted = document.getElementById('modal-checkbox').checked;
             const noteText = document.getElementById('modal-note').value.trim();
 
-            const updatedData = { completed: isCompleted, note: noteText, image: tempDayImageBase64 };
+            // Tự động lấy thời gian hiện tại (VD: 19:30)
+            const now = new Date();
+            const timestampStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+
+            const updatedData = { completed: isCompleted, note: noteText, image: tempDayImageBase64, timestamp: timestampStr };
 
             if (!isPersonal) {
                 const challenge = appData.sharedChallenges.find(c => c.id === id);
                 if (challenge) {
                     if (!challenge.progress[loggedInUserId]) {
-                        challenge.progress[loggedInUserId] = Array(challenge.totalDays).fill(null).map(() => ({ completed: false, note: '', image: '' }));
+                        challenge.progress[loggedInUserId] = Array(challenge.totalDays).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
                     }
                     challenge.progress[loggedInUserId][dayIndex] = updatedData;
                 }
@@ -1394,7 +1489,7 @@
                 if (!appData.personalHabits[loggedInUserId]) return;
                 appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => {
                     if (h.id === id) {
-                        const updatedDays = h.days ? [...h.days] : Array(h.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '' }));
+                        const updatedDays = h.days ? [...h.days] : Array(h.totalDays || 35).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
                         updatedDays[dayIndex] = updatedData;
                         return { ...h, days: updatedDays };
                     }
