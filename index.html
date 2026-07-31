@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- MODAL CÀI ĐẶT TÀI KHOẢN (Đưa lên trên) -->
+    <!-- MODAL CÀI ĐẶT TÀI KHOẢN (Mở khi bấm vào Avatar) -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-6 rounded-3xl shadow-xl max-w-md w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
@@ -134,8 +134,8 @@
                         </label>
 
                         <div class="space-y-1">
-                            <label id="m-note-label" class="text-xs font-semibold text-slate-500">Ghi chú / Nhật ký:</label>
-                            <textarea id="modal-note" rows="2" placeholder="Hôm nay bạn đã làm gì?..." 
+                            <label id="m-note-label" class="text-xs font-semibold text-slate-500">Ghi chú / Nhật ký & Cảm xúc:</label>
+                            <textarea id="modal-note" rows="2" placeholder="Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?..." 
                                 class="w-full p-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white"></textarea>
                         </div>
 
@@ -168,19 +168,23 @@
         <!-- Header -->
         <header class="text-center relative space-y-2">
             <div class="inline-flex items-center justify-center mb-1">
-                <img src="https://i.postimg.cc/tJFpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpKz/Logo-BVGP.png';">
+                <img src="https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png" alt="Logo BVGP" class="w-16 h-16 object-cover rounded-2xl shadow-md bg-white" onerror="this.onerror=null; this.src='https://i.postimg.cc/tJFpVpKz/Logo-BVGP.png';">
             </div>
             <h1 id="t-app-title" class="text-2xl font-extrabold text-slate-800">Thử Thách Kỷ Luật BVGP</h1>
             <p id="t-app-sub" class="text-sm text-slate-500">Kỷ luật hôm nay, phiên bản tốt hơn ngày mai</p>
             
-            <div class="flex items-center justify-center gap-2 mt-2 flex-wrap">
-                <div id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border border-indigo-300 flex items-center justify-center text-xs font-bold text-indigo-600">👤</div>
-                <span class="text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-full font-medium"><span id="t-logged-in">Đang đăng nhập</span>: <strong id="current-user-label" class="text-indigo-600">---</strong></span>
-                <button onclick="switchUser()" id="t-switch-user" class="text-xs text-indigo-600 underline ml-1 hover:text-indigo-800">Đổi người</button>
-                <button onclick="openSettingsModal()" class="text-xs bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full font-semibold hover:bg-indigo-100 transition">⚙️ Cài đặt</button>
-                <button onclick="openReportModal()" class="text-xs bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full font-semibold hover:bg-emerald-100 transition">📤 Kết quả</button>
+            <!-- User info & quick action bar -->
+            <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
+                <!-- Avatar bấm vào để mở Cài đặt -->
+                <div onclick="openSettingsModal()" id="current-user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-400 flex items-center justify-center text-xs font-bold text-indigo-600 cursor-pointer shadow-sm hover:scale-105 transition" title="Bấm để cài đặt tài khoản">👤</div>
+                <span class="text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-full font-bold"><strong id="current-user-label" class="text-indigo-600">---</strong></span>
+                <button onclick="switchUser()" id="t-switch-user" class="text-xs text-slate-500 hover:text-red-600 font-semibold underline ml-1">Thoát</button>
                 
-                <div class="flex gap-1 ml-2">
+                <div class="h-4 w-px bg-slate-300 mx-1"></div>
+
+                <button onclick="openReportModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-full font-semibold transition shadow-sm flex items-center gap-1">📤 Kết quả</button>
+                
+                <div class="flex gap-1 ml-1">
                     <button onclick="setLanguage('vi')" id="lang-vi-btn" class="text-[11px] px-2 py-0.5 rounded font-bold bg-indigo-600 text-white">VI</button>
                     <button onclick="setLanguage('en')" id="lang-en-btn" class="text-[11px] px-2 py-0.5 rounded font-bold bg-slate-200 text-slate-600">EN</button>
                 </div>
@@ -193,9 +197,9 @@
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition">📌 Thử thách cá nhân</button>
         </div>
 
-        <!-- TAB 1: THỬ THÁCH CHUNG -->
+        <!-- TAB 1: THỬ THÁCH CHUNG (Tông màu Indigo / Xanh dương) -->
         <div id="tab-dashboard" class="space-y-6">
-            <!-- Tạo Thử Thách Chung (Thu gọn) -->
+            <!-- Tạo Thử Thách Chung (Thu gọn mặc định) -->
             <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
                 <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-slate-700 flex justify-between items-center hover:bg-slate-50 transition">
                     <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách chung</span>
@@ -232,40 +236,40 @@
             </div>
         </div>
 
-        <!-- TAB 2: THỬ THÁCH CÁ NHÂN -->
+        <!-- TAB 2: THỬ THÁCH CÁ NHÂN (Tông màu Emerald / Xanh lá phân biệt rõ ràng) -->
         <div id="tab-update" class="space-y-6 hidden">
-            <!-- Thêm thử thách cá nhân (Thu gọn) -->
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-slate-700 flex justify-between items-center hover:bg-slate-50 transition">
+            <!-- Thêm thử thách cá nhân (Thu gọn mặc định) -->
+            <div class="bg-white rounded-3xl shadow-sm border border-emerald-200 overflow-hidden">
+                <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 bg-emerald-50/50 flex justify-between items-center hover:bg-emerald-50 transition">
                     <span id="t-create-personal-toggle" class="flex items-center gap-2">➕ Thêm thử thách cá nhân</span>
-                    <span id="personal-create-arrow" class="text-xs text-slate-400">▼</span>
+                    <span id="personal-create-arrow" class="text-xs text-emerald-600">▼</span>
                 </button>
-                <div id="personal-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-slate-100">
+                <div id="personal-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-emerald-100">
                     <form id="personal-form" class="space-y-3 pt-4">
                         <input type="text" id="personal-input" placeholder="Tên thử thách cá nhân (VD: Đọc sách)..." 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" required>
+                            class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm" required>
                         <div>
                             <label id="t-start-date-2" class="text-xs text-slate-500 block mb-1">Ngày bắt đầu:</label>
-                            <input type="date" id="personal-date-input" class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            <input type="date" id="personal-date-input" class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                         </div>
                         <div class="flex gap-2 items-center">
                             <div class="flex-1">
                                 <label id="t-target-days-2" class="text-xs text-slate-500 block mb-1">Mục tiêu:</label>
                                 <input type="number" id="personal-target-input" value="30" min="1" max="365" 
-                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                             </div>
                             <div class="flex-1">
                                 <label id="t-total-days-2" class="text-xs text-slate-500 block mb-1">Tổng thời gian:</label>
                                 <input type="number" id="personal-days-input" value="35" min="1" max="365" 
-                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                    class="w-full px-3 py-1.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                             </div>
                         </div>
-                        <button type="submit" id="t-add-habit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-sm font-medium transition">Thêm thử thách cá nhân</button>
+                        <button type="submit" id="t-add-habit-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl text-sm font-medium transition">Thêm thử thách cá nhân</button>
                     </form>
                 </div>
             </div>
 
-            <!-- Danh sách thử thách cá nhân thiết kế tương tự Thử thách chung -->
+            <!-- Danh sách thử thách cá nhân -->
             <div class="space-y-6" id="personal-challenges-container">
                 <div id="personal-list" class="space-y-6"></div>
             </div>
@@ -278,8 +282,6 @@
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
                 appSub: "Kỷ luật hôm nay, phiên bản tốt hơn ngày mai",
-                loggedIn: "Đang đăng nhập",
-                switchUser: "Đổi người",
                 tabDashboard: "📊 Thử thách chung",
                 tabUpdate: "📌 Thử thách cá nhân",
                 createSharedToggle: "➕ Tạo thử thách chung",
@@ -309,8 +311,8 @@
                 saveUpdate: "Lưu cập nhật",
                 teamProgress: "Tiến độ & Ghi chú của nhóm",
                 completedText: "hoàn thành",
-                noteLabel: "Ghi chú / Nhật ký:",
-                notePh: "Hôm nay bạn đã làm gì?...",
+                noteLabel: "Ghi chú / Nhật ký & Cảm xúc:",
+                notePh: "Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?...",
                 uploadImgLabel: "Tải ảnh minh họa lên:",
                 removeImg: "Xóa ảnh này",
                 welcome: "👋 Chào mừng đến với BVGP",
@@ -330,8 +332,6 @@
             en: {
                 appTitle: "BVGP Discipline Challenge",
                 appSub: "Discipline today, a better version tomorrow",
-                loggedIn: "Logged in",
-                switchUser: "Switch",
                 tabDashboard: "📊 Shared Challenges",
                 tabUpdate: "📌 Personal Challenges",
                 createSharedToggle: "➕ Create Shared Challenge",
@@ -361,8 +361,8 @@
                 saveUpdate: "Save Updates",
                 teamProgress: "Team Progress & Notes",
                 completedText: "completed",
-                noteLabel: "Notes / Journal:",
-                notePh: "What did you do today?...",
+                noteLabel: "Notes / Journal & Emotions:",
+                notePh: "What did you do today? How did you feel?...",
                 uploadImgLabel: "Upload illustration image:",
                 removeImg: "Remove image",
                 welcome: "👋 Welcome to BVGP",
@@ -405,8 +405,6 @@
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
             document.getElementById('t-app-sub').innerText = t('appSub');
-            document.getElementById('t-logged-in').innerText = t('loggedIn');
-            document.getElementById('t-switch-user').innerText = t('switchUser');
             document.getElementById('btn-dashboard').innerText = t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
             document.getElementById('t-create-shared-toggle').innerText = t('createSharedToggle');
@@ -519,7 +517,8 @@
                     const found = (data.members || []).find(m => m.id === def.id);
                     return found ? { ...def, ...found } : def;
                 });
-                appData.sharedChallenges = data.sharedChallenges || appData.sharedChallenges;
+                // Cho phép sharedChallenges lưu trạng thái đã xóa vĩnh viễn trên Firebase
+                appData.sharedChallenges = data.sharedChallenges !== undefined ? (data.sharedChallenges || []) : appData.sharedChallenges;
                 appData.personalHabits = data.personalHabits || appData.personalHabits;
             } else {
                 dbRef.set(appData);
@@ -776,7 +775,7 @@
             } else {
                 dashboardTab.classList.add('hidden');
                 updateTab.classList.remove('hidden');
-                btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition shadow-sm";
+                btnUpdate.className = "flex-1 py-2 text-sm font-semibold rounded-xl bg-emerald-600 text-white transition shadow-sm";
                 btnDashboard.className = "flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 transition";
                 renderPersonalChallenges();
             }
@@ -909,7 +908,7 @@
             activeCharts = {};
 
             if (!appData.sharedChallenges || appData.sharedChallenges.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-4 bg-white rounded-2xl border border-slate-200">${t('noChallenges')}</p>`;
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6 bg-white rounded-3xl border border-slate-200">${t('noChallenges')}</p>`;
                 return;
             }
 
@@ -925,7 +924,7 @@
                 const creatorName = challenge.creatorName || 'Team';
 
                 const card = document.createElement('div');
-                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4";
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-indigo-100 space-y-4";
                 
                 let contentHtml = "";
 
@@ -1004,7 +1003,7 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-base">🎯 ${challenge.title}</h4>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">🎯 ${challenge.title}</h4>
                             <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('createdBy')}: ${creatorName}</span>
                         </div>
                         <button onclick="deleteSharedChallenge(${challenge.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
@@ -1063,7 +1062,7 @@
             const habits = (appData.personalHabits && appData.personalHabits[loggedInUserId]) || [];
 
             if (habits.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4 bg-white rounded-2xl border border-slate-200">${t('noHabits')}</p>`;
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6 bg-white rounded-3xl border border-slate-200">${t('noHabits')}</p>`;
                 return;
             }
 
@@ -1075,7 +1074,7 @@
                 const todayIdx = getTodayIndex(habit.startDate);
                 
                 const card = document.createElement('div');
-                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4";
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-emerald-200 space-y-4";
                 
                 let gridHtml = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">`;
                 habitDays.forEach((dayObj, dayIdx) => {
@@ -1087,9 +1086,9 @@
 
                     let btnStyle = "bg-white text-slate-600 border-slate-200 hover:border-emerald-400";
                     if (isCompleted) {
-                        btnStyle = "bg-emerald-600 text-white border-emerald-600";
+                        btnStyle = "bg-emerald-600 text-white border-emerald-600 shadow-sm";
                     } else if (isToday) {
-                        btnStyle = "bg-amber-50 text-emerald-700 border-2 border-amber-500 shadow-sm ring-2 ring-amber-200 font-extrabold";
+                        btnStyle = "bg-amber-50 text-emerald-700 border-2 border-amber-500 shadow-md ring-2 ring-amber-200 font-extrabold";
                     } else if (isFuture) {
                         btnStyle = "bg-slate-100 text-slate-400 border-slate-200 opacity-40 cursor-not-allowed";
                     }
@@ -1107,7 +1106,7 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-base">📌 ${habit.text}</h4>
+                            <h4 class="font-bold text-slate-800 text-base flex items-center gap-1.5">📌 ${habit.text}</h4>
                             <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('progress')}: ${completedHabitCount}/${targetD} (${t('total')}: ${totalD} ${currentLang === 'vi' ? 'ngày' : 'days'})</span>
                         </div>
                         <button onclick="deletePersonalHabit(${habit.id})" class="text-xs text-slate-400 hover:text-red-500 p-1 font-bold">✕</button>
@@ -1148,6 +1147,8 @@
                 appData.sharedChallenges.push(newChallenge);
                 document.getElementById('shared-title-input').value = '';
                 dbRef.set(appData);
+                // Tự động thu gọn lại sau khi tạo thành công
+                toggleSharedCreatePanel();
             }
         };
 
@@ -1180,6 +1181,8 @@
                 });
                 document.getElementById('personal-input').value = '';
                 dbRef.set(appData);
+                // Tự động thu gọn lại sau khi thêm thành công
+                togglePersonalCreatePanel();
             }
         };
 
