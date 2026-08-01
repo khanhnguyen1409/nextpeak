@@ -217,8 +217,9 @@
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
                 <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 space-y-1">
                     <strong class="block font-bold">📜 Quy tắc Kỷ Luật Team BVGP:</strong>
-                    <p>• <strong>Mặc định:</strong> -100k nếu bỏ cuộc, +1 Sách nếu đạt mục tiêu.</p>
-                    <p>• <strong>Thử thách 🔥 Chơi lớn:</strong> Áp dụng mức Thưởng/Phạt tiền tùy chỉnh riêng.</p>
+                    <p>• <strong>Thử thách Nhóm thông thường:</strong> -100k nếu bỏ cuộc, +1 Sách nếu đạt mục tiêu.</p>
+                    <p>• <strong>Thử thách Nhóm 🔥 Chơi lớn:</strong> Áp dụng mức Thưởng/Phạt tiền tùy chỉnh riêng.</p>
+                    <p>• <strong>Thử thách Cá nhân:</strong> Áp dụng cam kết riêng "Nếu... thì..." (Tự thưởng & Phạt).</p>
                 </div>
                 <div id="rewards-summary-list" class="space-y-2"></div>
             </div>
@@ -371,7 +372,7 @@
                             </div>
                         </div>
 
-                        <!-- CHỌN CHẾ ĐỘ CHƠI LỚN -->
+                        <!-- CHỌN CHẾ ĐỘ CHƠI LỚN CHO THỬ THÁCH NHÓM -->
                         <div class="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">
                             <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600 dark:text-rose-400">
                                 <input type="checkbox" id="shared-bigplay-checkbox" onchange="toggleBigPlayInputs('shared')" class="w-4 h-4 text-rose-600 rounded focus:ring-rose-500">
@@ -379,11 +380,11 @@
                             </label>
                             <div id="shared-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2.5 bg-rose-50/70 dark:bg-rose-950/30 rounded-2xl border border-rose-100 dark:border-rose-900/40">
                                 <div>
-                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức thưởng (k):</label>
+                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức thưởng (k) <span class="text-rose-500">*</span>:</label>
                                     <input type="number" id="shared-reward-input" placeholder="VD: 30 (30k)" min="0" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức phạt (k):</label>
+                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức phạt (k) <span class="text-rose-500">*</span>:</label>
                                     <input type="number" id="shared-penalty-input" placeholder="VD: 200 (200k)" min="0" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
                                 </div>
                             </div>
@@ -440,20 +441,20 @@
                             </div>
                         </div>
 
-                        <!-- CHỌN CHẾ ĐỘ CHƠI LỚN CHO CÁ NHÂN -->
-                        <div class="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">
-                            <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600 dark:text-rose-400">
-                                <input type="checkbox" id="personal-bigplay-checkbox" onchange="toggleBigPlayInputs('personal')" class="w-4 h-4 text-rose-600 rounded focus:ring-rose-500">
-                                <span>🔥 Chơi lớn (Thưởng & Phạt tùy chỉnh)</span>
-                            </label>
-                            <div id="personal-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2.5 bg-rose-50/70 dark:bg-rose-950/30 rounded-2xl border border-rose-100 dark:border-rose-900/40">
+                        <!-- QUY TẮC NẾU... THÌ... DÀNH RIÊNG CHO THỬ THÁCH CÁ NHÂN -->
+                        <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+                            <button type="button" onclick="toggleIfThenPanel()" class="w-full flex justify-between items-center text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition">
+                                <span class="flex items-center gap-1.5">⚡ Quy tắc "Nếu... thì..." (Tự thưởng & Phạt)</span>
+                                <span id="if-then-arrow" class="text-[10px]">▲</span>
+                            </button>
+                            <div id="if-then-inputs" class="space-y-2 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
                                 <div>
-                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức thưởng (k):</label>
-                                    <input type="number" id="personal-reward-input" placeholder="VD: 30 (30k)" min="0" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                    <label class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">🎁 Tự thưởng (nếu hoàn thành) <span class="text-rose-500">*</span>:</label>
+                                    <input type="text" id="personal-reward-text-input" placeholder="VD: Mua 1 cuốn sách mới, đi ăn buffet..." class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100" required>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Mức phạt (k):</label>
-                                    <input type="number" id="personal-penalty-input" placeholder="VD: 200 (200k)" min="0" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                    <label class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">💸 Phạt (nếu bỏ cuộc / thất bại) <span class="text-rose-500">*</span>:</label>
+                                    <input type="text" id="personal-penalty-text-input" placeholder="VD: Chống đẩy 100 cái, dọn dẹp nhà cửa..." class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100" required>
                                 </div>
                             </div>
                         </div>
@@ -818,7 +819,7 @@
             return String(num).split('').map(c => supers[c] || c).join('');
         }
 
-        /* TOGGLE CHƠI LỚN INPUTS */
+        /* TOGGLE CHƠI LỚN INPUTS FOR GROUP */
         function toggleBigPlayInputs(type) {
             const checkbox = document.getElementById(`${type}-bigplay-checkbox`);
             const inputs = document.getElementById(`${type}-bigplay-inputs`);
@@ -827,6 +828,14 @@
             } else {
                 inputs.classList.add('hidden');
             }
+        }
+
+        /* TOGGLE NẾU... THÌ... FOR PERSONAL */
+        function toggleIfThenPanel() {
+            const inputs = document.getElementById('if-then-inputs');
+            const arrow = document.getElementById('if-then-arrow');
+            inputs.classList.toggle('hidden');
+            arrow.innerText = inputs.classList.contains('hidden') ? '▼' : '▲';
         }
 
         const firebaseConfig = {
@@ -1282,7 +1291,7 @@
             }
         }
 
-        /* BẢNG TỔNG HỢP THƯỞNG PHẠT - ĐÃ CẬP NHẬT CHẾ ĐỘ CHƠI LỚN TÙY CHỈNH */
+        /* BẢNG TỔNG HỢP THƯỞNG PHẠT - ĐÃ CẬP NHẬT THEO CÁC NGUYÊN TẮC MỚI */
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list');
             container.innerHTML = '';
@@ -1334,23 +1343,9 @@
                         const completedCount = (h.days || []).filter(i => i && i.completed).length;
 
                         if (h.status === 'given_up') {
-                            if (h.isBigPlay) {
-                                const pen = h.customPenalty || 0;
-                                penaltyMoneyTotal += pen;
-                                detailsLog.push(`Thử thách cá nhân 🔥 [Chơi lớn] "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Bỏ cuộc (-${pen}k)`);
-                            } else {
-                                penaltyMoneyTotal += 100;
-                                detailsLog.push(`Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Bỏ cuộc (-100k)`);
-                            }
+                            detailsLog.push(`Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Bỏ cuộc ➔ 💸 <strong>Phạt:</strong> ${h.selfPenalty || 'Thất bại'}`);
                         } else if (completedCount >= targetD) {
-                            if (h.isBigPlay) {
-                                const rew = h.customReward || 0;
-                                rewardMoneyTotal += rew;
-                                detailsLog.push(`Thử thách cá nhân 🔥 [Chơi lớn] "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Hoàn thành (${completedCount}/${targetD} ngày) ➔ +${rew}k`);
-                            } else {
-                                rewardsBookCount++;
-                                detailsLog.push(`Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Hoàn thành (${completedCount}/${targetD} ngày) ➔ +1 Sách`);
-                            }
+                            detailsLog.push(`Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Hoàn thành (${completedCount}/${targetD} ngày) ➔ 🎁 <strong>Tự thưởng:</strong> ${h.selfReward || 'Thành công'}`);
                         }
                     });
                 }
@@ -1402,7 +1397,7 @@
         }
 
         function showDescriptionModalById(id, isPersonal) {
-            let title = "", desc = "", startDate = "", targetD = 21, totalD = 25, creator = "", isBigPlay = false, customReward = 0, customPenalty = 0;
+            let title = "", desc = "", startDate = "", targetD = 21, totalD = 25, creator = "", isBigPlay = false, customReward = 0, customPenalty = 0, selfReward = '', selfPenalty = '';
             let membersListHtml = "";
 
             if (!isPersonal) {
@@ -1434,7 +1429,7 @@
                 if (h) { 
                     title = h.text; desc = h.description; startDate = h.startDate;
                     targetD = h.targetDays || 21; totalD = h.totalDays || 25; creator = "Cá nhân";
-                    isBigPlay = h.isBigPlay || false; customReward = h.customReward || 0; customPenalty = h.customPenalty || 0;
+                    selfReward = h.selfReward || ''; selfPenalty = h.selfPenalty || '';
 
                     const count = (h.days || []).filter(item => item && item.completed).length;
                     const isDone = count >= targetD;
@@ -1453,7 +1448,7 @@
                 <div><strong>📅 Ngày bắt đầu:</strong> ${formatDateString(startDate)}</div>
                 <div><strong>🎯 Mục tiêu:</strong> ${targetD} ngày (Tổng thời gian: ${totalD} ngày)</div>
                 <div><strong>👤 Tạo bởi:</strong> ${creator}</div>
-                ${isBigPlay ? `<div class="text-rose-600 dark:text-rose-400 font-bold"><strong>🔥 CHƠI LỚN:</strong> Thưởng +${customReward}k / Phạt -${customPenalty}k</div>` : ''}
+                ${!isPersonal ? (isBigPlay ? `<div class="text-rose-600 dark:text-rose-400 font-bold"><strong>🔥 CHƠI LỚN:</strong> Thưởng +${customReward}k / Phạt -${customPenalty}k</div>` : `<div class="text-indigo-600 dark:text-indigo-400 font-bold"><strong>🎁 THƯỞNG PHẠT:</strong> +1 Sách / -100k</div>`) : `<div class="text-emerald-600 dark:text-emerald-400 font-bold"><strong>🎁 Tự thưởng:</strong> ${selfReward}</div><div class="text-rose-600 dark:text-rose-400 font-bold"><strong>💸 Phạt:</strong> ${selfPenalty}</div>`}
             `;
             document.getElementById('desc-modal-content').innerText = (desc && desc.trim() !== '') ? desc : t('noDescription');
             document.getElementById('desc-modal-members-list').innerHTML = membersListHtml;
@@ -1702,14 +1697,13 @@
                     const isCompletedGoal = completedCount >= targetGoal;
                     const pct = Math.round((completedCount / targetGoal) * 100);
                     const completedTag = isCompletedGoal ? (currentLang === 'vi' ? " - Hoàn thành" : " - Completed") : "";
-                    const bigPlayTag = h.isBigPlay ? " 🔥 [Chơi lớn]" : "";
 
                     if (status === 'given_up') {
-                        report += `📌 ${h.text}${toSuperscript(index + 1)}${bigPlayTag} (${createdDateStr}): ${t('givenUpStatus')} (${completedCount}/${targetGoal} ngày - ${pct}%${reason ? ` - Lý do: ${reason}` : ''})\n`;
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('givenUpStatus')} (${completedCount}/${targetGoal} ngày - ${pct}%${reason ? ` - Lý do: ${reason}` : ''})\n`;
                     } else if (status === 'paused') {
-                        report += `📌 ${h.text}${toSuperscript(index + 1)}${bigPlayTag} (${createdDateStr}): ${t('pausedStatus')} (${completedCount}/${targetGoal} ngày - ${pct}%${reason ? ` - Lý do: ${reason}` : ''})\n`;
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${t('pausedStatus')} (${completedCount}/${targetGoal} ngày - ${pct}%${reason ? ` - Lý do: ${reason}` : ''})\n`;
                     } else {
-                        report += `📌 ${h.text}${toSuperscript(index + 1)}${bigPlayTag} (${createdDateStr}): ${completedCount}/${targetGoal} ngày (${pct}%)${completedTag}\n`;
+                        report += `📌 ${h.text}${toSuperscript(index + 1)} (${createdDateStr}): ${completedCount}/${targetGoal} ngày (${pct}%)${completedTag}\n`;
                     }
                 });
             }
@@ -1783,8 +1777,7 @@
                 if (habit) {
                     habit.status = 'given_up';
                     habit.reason = reason;
-                    const penaltyInfo = habit.isBigPlay ? `-${habit.customPenalty || 0}k` : `-100k`;
-                    if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách cá nhân "${habit.text}" (${penaltyInfo})`);
+                    if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách cá nhân "${habit.text}"`);
                 }
             }
             dbRef.set(appData);
@@ -1829,8 +1822,11 @@
                 const createdDateStr = formatDateString(challenge.createdAt || challenge.id);
                 const isReadOnly = challenge.restoredReadOnly === true;
 
+                /* HIỂN THỊ LABEL VÀ MỨC THƯỞNG PHẠT RA BÊN NGOÀI */
                 const bigPlayBadge = challenge.isBigPlay ? `<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm ml-1.5 inline-flex items-center gap-0.5">🔥 CHƠI LỚN</span>` : '';
-                const bigPlayDetail = challenge.isBigPlay ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900">🎁 +${challenge.customReward || 0}k / 💸 -${challenge.customPenalty || 0}k</span>` : '';
+                const rewardPenaltyDetail = challenge.isBigPlay 
+                    ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900">🎁 +${challenge.customReward || 0}k / 💸 -${challenge.customPenalty || 0}k</span>` 
+                    : `<span class="text-[10px] bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-indigo-200 dark:border-indigo-900">🎁 +1 Sách / 💸 -100k</span>`;
 
                 const activeMemberIds = Object.keys(challenge.participants).filter(mId => challenge.participants[mId] === true || challenge.participants[mId] === 'given_up');
                 let avatarsHtml = `<div class="flex -space-x-1.5 overflow-hidden my-1">`;
@@ -1925,7 +1921,7 @@
                             <h4 onclick="showDescriptionModalById(${challenge.id}, false)" class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center flex-wrap gap-0.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition group" title="Bấm để xem chi tiết">🎯 <span class="group-hover:underline">${challenge.title}</span><sup class="text-xs text-indigo-600 dark:text-indigo-400 font-extrabold ml-0.5">${index + 1}</sup> ${bigPlayBadge}</h4>
                             ${avatarsHtml}
                             <span class="text-[11px] bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 px-2.5 py-0.5 rounded-full font-medium inline-block mt-0.5">${t('createdBy')}: ${creatorName} (${createdDateStr})</span>
-                            ${bigPlayDetail}
+                            ${rewardPenaltyDetail}
                             ${isReadOnly ? `<span class="text-[10px] bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 px-2 py-0.5 rounded-full font-bold ml-1">🔒 Chỉ xem</span>` : ''}
                         </div>
                         <button onclick="openActionMenuModal(${challenge.id}, false)" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 text-lg font-bold">⋮</button>
@@ -2041,6 +2037,7 @@
             });
         }
 
+        /* RENDER THỬ THÁCH CÁ NHÂN VỚI QUY TẮC "NẾU... THÌ..." TỰ THƯỞNG PHẠT */
         function renderPersonalChallenges() {
             const container = document.getElementById('personal-list');
             container.innerHTML = '';
@@ -2066,8 +2063,8 @@
                 const progressPercent = Math.round((completedHabitCount / targetD) * 100);
                 const isReadOnly = habit.restoredReadOnly === true;
 
-                const bigPlayBadge = habit.isBigPlay ? `<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm ml-1.5 inline-flex items-center gap-0.5">🔥 CHƠI LỚN</span>` : '';
-                const bigPlayDetail = habit.isBigPlay ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900">🎁 +${habit.customReward || 0}k / 💸 -${habit.customPenalty || 0}k</span>` : '';
+                const selfReward = habit.selfReward || '---';
+                const selfPenalty = habit.selfPenalty || '---';
                 
                 const card = document.createElement('div');
                 card.className = "bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/40 space-y-4 relative";
@@ -2125,10 +2122,15 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 onclick="showDescriptionModalById(${habit.id}, true)" class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center flex-wrap gap-0.5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition group" title="Bấm để xem chi tiết">📌 <span class="group-hover:underline">${habit.text}</span><sup class="text-xs text-emerald-600 dark:text-emerald-400 font-extrabold ml-0.5">${index + 1}</sup> ${bigPlayBadge}</h4>
+                            <h4 onclick="showDescriptionModalById(${habit.id}, true)" class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center flex-wrap gap-0.5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition group" title="Bấm để xem chi tiết">📌 <span class="group-hover:underline">${habit.text}</span><sup class="text-xs text-emerald-600 dark:text-emerald-400 font-extrabold ml-0.5">${index + 1}</sup></h4>
                             <span class="text-[11px] bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-medium inline-block mt-1">${t('createdBy')}: Cá nhân (${createdDateStr})</span>
-                            ${bigPlayDetail}
                             ${isReadOnly ? `<span class="text-[10px] bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 px-2 py-0.5 rounded-full font-bold ml-1">🔒 Chỉ xem</span>` : ''}
+                            
+                            <!-- HIỂN THỊ QUY TẮC NẾU... THÌ... -->
+                            <div class="text-[11px] bg-emerald-50/80 dark:bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/60 space-y-0.5 mt-2">
+                                <div class="text-emerald-700 dark:text-emerald-300"><strong>🎁 Tự thưởng:</strong> ${selfReward}</div>
+                                <div class="text-rose-600 dark:text-rose-400"><strong>💸 Phạt:</strong> ${selfPenalty}</div>
+                            </div>
                         </div>
                         <button onclick="openActionMenuModal(${habit.id}, true)" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 text-lg font-bold">⋮</button>
                     </div>
@@ -2175,6 +2177,7 @@
             }
         }
 
+        /* FORM SUBMIT THỬ THÁCH NHÓM - KIỂM TRA CHƠI LỚN BẮT BUỘC */
         const sharedChallengeForm = document.getElementById('shared-challenge-form');
         sharedChallengeForm.onsubmit = (e) => {
             e.preventDefault();
@@ -2185,8 +2188,20 @@
             const totalDays = parseInt(document.getElementById('shared-days-input').value) || 25;
             
             const isBigPlay = document.getElementById('shared-bigplay-checkbox').checked;
-            const customReward = isBigPlay ? (parseInt(document.getElementById('shared-reward-input').value) || 0) : null;
-            const customPenalty = isBigPlay ? (parseInt(document.getElementById('shared-penalty-input').value) || 0) : null;
+            let customReward = null;
+            let customPenalty = null;
+
+            if (isBigPlay) {
+                const rewVal = document.getElementById('shared-reward-input').value.trim();
+                const penVal = document.getElementById('shared-penalty-input').value.trim();
+
+                if (!rewVal || !penVal || isNaN(rewVal) || isNaN(penVal)) {
+                    alert(currentLang === 'vi' ? "Khi chọn Chơi lớn, số tiền Thưởng và Phạt là BẮT BUỘC và không được để trống!" : "When Big Play is enabled, Reward and Penalty amounts are mandatory!");
+                    return;
+                }
+                customReward = parseInt(rewVal);
+                customPenalty = parseInt(penVal);
+            }
 
             const creatorMember = appData.members.find(m => m.id === loggedInUserId);
             const creatorName = creatorMember ? creatorMember.name : 'Member';
@@ -2228,6 +2243,7 @@
             }
         };
 
+        /* FORM SUBMIT THỬ THÁCH CÁ NHÂN - KIỂM TRA NẾU... THÌ... BẮT BUỘC */
         const personalForm = document.getElementById('personal-form');
         personalForm.onsubmit = (e) => {
             e.preventDefault();
@@ -2237,9 +2253,13 @@
             const targetDays = parseInt(document.getElementById('personal-target-input').value) || 21;
             const totalDays = parseInt(document.getElementById('personal-days-input').value) || 25;
             
-            const isBigPlay = document.getElementById('personal-bigplay-checkbox').checked;
-            const customReward = isBigPlay ? (parseInt(document.getElementById('personal-reward-input').value) || 0) : null;
-            const customPenalty = isBigPlay ? (parseInt(document.getElementById('personal-penalty-input').value) || 0) : null;
+            const selfReward = document.getElementById('personal-reward-text-input').value.trim();
+            const selfPenalty = document.getElementById('personal-penalty-text-input').value.trim();
+
+            if (!selfReward || !selfPenalty) {
+                alert(currentLang === 'vi' ? "Mục Tự thưởng và Phạt cho thử thách cá nhân là BẮT BUỘC và không được để trống!" : "Self-reward and Self-penalty fields are mandatory for personal challenges!");
+                return;
+            }
 
             const nowTimestamp = Date.now();
 
@@ -2255,9 +2275,8 @@
                     startDate: startDate,
                     totalDays: totalDays,
                     targetDays: targetDays,
-                    isBigPlay: isBigPlay,
-                    customReward: customReward,
-                    customPenalty: customPenalty,
+                    selfReward: selfReward,
+                    selfPenalty: selfPenalty,
                     status: 'active',
                     reason: '',
                     archived: false,
@@ -2266,10 +2285,8 @@
                 });
                 document.getElementById('personal-input').value = '';
                 document.getElementById('personal-desc-input').value = '';
-                document.getElementById('personal-bigplay-checkbox').checked = false;
-                document.getElementById('personal-reward-input').value = '';
-                document.getElementById('personal-penalty-input').value = '';
-                toggleBigPlayInputs('personal');
+                document.getElementById('personal-reward-text-input').value = '';
+                document.getElementById('personal-penalty-text-input').value = '';
 
                 dbRef.set(appData);
                 togglePersonalCreatePanel();
