@@ -77,6 +77,25 @@
         </div>
     </div>
 
+    <!-- MODAL CHUÔNG THÔNG BÁO -->
+    <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
+                    🔔 <span>Thông báo của bạn</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button onclick="markAllNotificationsRead()" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-bold">Đánh dấu đã đọc</button>
+                    <button onclick="closeNotificationModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
+                </div>
+            </div>
+
+            <div id="notification-list" class="space-y-2 overflow-y-auto flex-1 text-xs pr-1"></div>
+
+            <button onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold transition">Đóng</button>
+        </div>
+    </div>
+
     <!-- MODAL GỢI Ý THỬ THÁCH -->
     <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
@@ -319,6 +338,10 @@
                 </div>
 
                 <div class="flex items-center gap-1 shrink-0">
+                    <button onclick="openNotificationModal()" id="btn-notification" class="relative text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0" title="Thông báo">
+                        🔔
+                        <span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
                     <button onclick="openHintModal()" id="btn-hint" class="text-[10px] sm:text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded-lg font-semibold transition shadow-sm flex items-center gap-0.5 shrink-0" title="Gợi ý thử thách khi bí ý tưởng">💡 <span id="btn-hint-text">Gợi ý</span></button>
                     <button onclick="openReportModal()" id="btn-report" class="text-[10px] sm:text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded-lg font-semibold transition shadow-sm flex items-center gap-0.5 shrink-0">📋 <span id="btn-report-text">Kết quả</span></button>
                     <button onclick="toggleMusic()" id="music-toggle-btn" class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0" title="Bật/Tắt Nhạc nền">🎵</button>
@@ -582,7 +605,7 @@
                 saveAvatarBtn: "Lưu Avatar",
                 changePinTitle: "🔒 Đổi mã PIN bảo mật",
                 oldPinPh: "Mã PIN hiện tại (4 số)",
-                newPinPh: "Mã PIN mới (4 số)",
+                newPinPh: "New PIN mới (4 số)",
                 updatePinBtn: "Cập nhật mã PIN",
                 chooseFileBtn: "📁 Chọn tệp...",
                 noFileSelected: "Chưa chọn tệp",
@@ -871,7 +894,8 @@
             sharedChallenges: [],
             personalHabits: {
                 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': []
-            }
+            },
+            notifications: {}
         };
 
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
@@ -884,6 +908,9 @@
         let tempDayImageBase64 = '';
         let selectedMenuChallenge = null;
         let currentSharedFilter = 'all';
+
+        // Biến lưu trạng thái Reply cho từng challenge
+        let activeReplyTo = {};
 
         document.getElementById('shared-date-input').value = new Date().toISOString().split('T')[0];
         document.getElementById('personal-date-input').value = new Date().toISOString().split('T')[0];
@@ -900,10 +927,12 @@
                 });
                 appData.sharedChallenges = data.sharedChallenges !== undefined ? (data.sharedChallenges || []) : [];
                 appData.personalHabits = data.personalHabits || appData.personalHabits;
+                appData.notifications = data.notifications || {};
             } else {
                 dbRef.set(appData);
             }
             updateUserLabel();
+            updateNotificationBadge();
             document.getElementById('lang-toggle-btn').innerText = currentLang.toUpperCase();
             updateStaticTexts();
             displayRandomSlogan();
@@ -913,6 +942,92 @@
                 renderPersonalChallenges();
             }
         });
+
+        /* XỬ LÝ CHUÔNG THÔNG BÁO */
+        function updateNotificationBadge() {
+            if (!loggedInUserId) return;
+            const userNotifs = appData.notifications[loggedInUserId] || [];
+            const unreadCount = userNotifs.filter(n => !n.read).length;
+            const badgeEl = document.getElementById('notif-badge');
+            if (badgeEl) {
+                if (unreadCount > 0) {
+                    badgeEl.innerText = unreadCount > 9 ? '9+' : unreadCount;
+                    badgeEl.classList.remove('hidden');
+                } else {
+                    badgeEl.classList.add('hidden');
+                }
+            }
+        }
+
+        function sendNotification(targetUserId, type, senderName, challengeTitle, textPreview) {
+            if (!targetUserId || targetUserId === loggedInUserId) return;
+            if (!appData.notifications) appData.notifications = {};
+            if (!appData.notifications[targetUserId]) appData.notifications[targetUserId] = [];
+
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+
+            appData.notifications[targetUserId].unshift({
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                type: type, // 'tag' hoặc 'reply'
+                senderName: senderName,
+                challengeTitle: challengeTitle,
+                text: textPreview,
+                timestamp: timeStr,
+                read: false
+            });
+        }
+
+        function openNotificationModal() {
+            renderNotificationList();
+            document.getElementById('notification-modal').classList.remove('hidden');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal').classList.add('hidden');
+        }
+
+        function renderNotificationList() {
+            const container = document.getElementById('notification-list');
+            container.innerHTML = '';
+
+            const userNotifs = (appData.notifications && appData.notifications[loggedInUserId]) || [];
+
+            if (userNotifs.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 italic text-center py-6">Bạn chưa có thông báo nào.</p>`;
+                return;
+            }
+
+            userNotifs.forEach(n => {
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 dark:border-indigo-800 font-medium'}`;
+                
+                const icon = n.type === 'tag' ? '🏷️' : '↩️';
+                const actionText = n.type === 'tag' ? 'đã nhắc đến bạn' : 'đã trả lời bình luận của bạn';
+
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="space-y-1">
+                            <p class="text-slate-800 dark:text-slate-100">
+                                <strong>${icon} ${n.senderName}</strong> ${actionText} trong <strong>"${n.challengeTitle}"</strong>
+                            </p>
+                            ${n.text ? `<p class="text-slate-500 dark:text-slate-300 italic text-[11px] bg-white/60 dark:bg-slate-900/40 p-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700">"${n.text}"</p>` : ''}
+                            <span class="text-[10px] text-slate-400 block">${n.timestamp}</span>
+                        </div>
+                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1"></span>` : ''}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function markAllNotificationsRead() {
+            if (!loggedInUserId || !appData.notifications || !appData.notifications[loggedInUserId]) return;
+            appData.notifications[loggedInUserId].forEach(n => n.read = true);
+            dbRef.set(appData);
+            renderNotificationList();
+            updateNotificationBadge();
+        }
 
         function openHintModal() {
             renderHintList();
@@ -1162,6 +1277,7 @@
             localStorage.setItem('bvgpOfficialLoggedInUserId', loggedInUserId);
             document.getElementById('login-modal').classList.add('hidden');
             updateUserLabel();
+            updateNotificationBadge();
             renderDashboard();
         }
 
@@ -1645,7 +1761,38 @@
             return reason;
         }
 
-        /* XỬ LÝ BÌNH LUẬN VÀ ĐÍNH KÈM ẢNH */
+        /* HÀM CHÈN THẺ TAG NICKNAME VÀO BÌNH LUẬN */
+        function insertTagToComment(challengeId, name) {
+            const input = document.getElementById(`comment-text-${challengeId}`);
+            if (!input) return;
+            const tagStr = `@${name} `;
+            if (!input.value.includes(tagStr)) {
+                input.value = tagStr + input.value;
+            }
+            input.focus();
+        }
+
+        /* HÀM THIẾT LẬP PHẢN HỒI (REPLY) */
+        function setReplyToComment(challengeId, commentId, authorName, authorId) {
+            activeReplyTo[challengeId] = { commentId, authorName, authorId };
+            
+            const replyBanner = document.getElementById(`reply-banner-${challengeId}`);
+            const replyNameEl = document.getElementById(`reply-name-${challengeId}`);
+            if (replyBanner && replyNameEl) {
+                replyNameEl.innerText = `@${authorName}`;
+                replyBanner.classList.remove('hidden');
+            }
+
+            insertTagToComment(challengeId, authorName);
+        }
+
+        function cancelReplyToComment(challengeId) {
+            delete activeReplyTo[challengeId];
+            const replyBanner = document.getElementById(`reply-banner-${challengeId}`);
+            if (replyBanner) replyBanner.classList.add('hidden');
+        }
+
+        /* XỬ LÝ BÌNH LUẬN, REPLY & CHUÔNG THÔNG BÁO */
         function addComment(challengeId, isPersonal) {
             const textInput = document.getElementById(`comment-text-${challengeId}`);
             const fileInput = document.getElementById(`comment-file-${challengeId}`);
@@ -1663,6 +1810,18 @@
             const now = new Date();
             const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
 
+            let titleOfChallenge = "Thử thách";
+            if (!isPersonal) {
+                const c = appData.sharedChallenges.find(x => x.id === challengeId);
+                if (c) titleOfChallenge = c.title;
+            } else {
+                const habits = appData.personalHabits[loggedInUserId] || [];
+                const h = habits.find(x => x.id === challengeId);
+                if (h) titleOfChallenge = h.text;
+            }
+
+            const replyObj = activeReplyTo[challengeId] || null;
+
             const saveCommentObj = (imageBase64 = '') => {
                 const commentObj = {
                     id: Date.now(),
@@ -1671,7 +1830,8 @@
                     memberAvatar: authorAvatar,
                     text: text,
                     image: imageBase64,
-                    timestamp: timeStr
+                    timestamp: timeStr,
+                    replyTo: replyObj ? { commentId: replyObj.commentId, authorName: replyObj.authorName } : null
                 };
 
                 if (!isPersonal) {
@@ -1689,6 +1849,19 @@
                     }
                 }
 
+                // KÍCH HOẠT THÔNG BÁO CHO NGƯỜI ĐƯỢC REPLY HOẶC TAG
+                if (replyObj && replyObj.authorId) {
+                    sendNotification(replyObj.authorId, 'reply', authorName, titleOfChallenge, text);
+                }
+
+                // QUÉT THẺ TAG @NAME VÀ GỬI THÔNG BÁO
+                appData.members.forEach(m => {
+                    if (text.includes(`@${m.name}`) && (!replyObj || replyObj.authorId !== m.id)) {
+                        sendNotification(m.id, 'tag', authorName, titleOfChallenge, text);
+                    }
+                });
+
+                cancelReplyToComment(challengeId);
                 dbRef.set(appData);
             };
 
@@ -1728,6 +1901,17 @@
             }
         }
 
+        /* ĐỊNH DẠNG HIGHLIGHT CÁC THẺ @TAG TÊN VÀO NỘI DUNG */
+        function highlightTags(text) {
+            if (!text) return '';
+            let formatted = text;
+            appData.members.forEach(m => {
+                const regex = new RegExp(`@${m.name}`, 'g');
+                formatted = formatted.replace(regex, `<span class="bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5">@${m.name}</span>`);
+            });
+            return formatted;
+        }
+
         function renderCommentSectionHTML(challengeId, comments = [], isPersonal = false) {
             let commentsListHtml = '';
             if (comments.length === 0) {
@@ -1735,6 +1919,8 @@
             } else {
                 comments.forEach(cm => {
                     const isOwner = cm.memberId === loggedInUserId;
+                    const highlightedText = highlightTags(cm.text);
+
                     commentsListHtml += `
                         <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200/80 dark:border-slate-700 space-y-1.5 text-xs">
                             <div class="flex items-center justify-between">
@@ -1743,14 +1929,27 @@
                                     <span>${cm.memberName}</span>
                                     <span class="text-[10px] text-slate-400 font-normal">(${cm.timestamp})</span>
                                 </div>
-                                ${isOwner ? `<button onclick="deleteComment(${challengeId}, ${cm.id}, ${isPersonal})" class="text-rose-500 hover:underline text-[10px] font-semibold">🗑️ Xóa</button>` : ''}
+                                <div class="flex items-center gap-2">
+                                    <button onclick="setReplyToComment(${challengeId}, ${cm.id}, '${cm.memberName.replace(/'/g, "\\'")}', '${cm.memberId}')" class="text-indigo-600 dark:text-indigo-400 hover:underline text-[10px] font-bold">↩️ Trả lời</button>
+                                    ${isOwner ? `<button onclick="deleteComment(${challengeId}, ${cm.id}, ${isPersonal})" class="text-rose-500 hover:underline text-[10px] font-semibold">🗑️ Xóa</button>` : ''}
+                                </div>
                             </div>
-                            ${cm.text ? `<p class="text-slate-700 dark:text-slate-300 pl-6 whitespace-pre-wrap leading-relaxed">${cm.text}</p>` : ''}
-                            ${cm.image ? `<div class="pl-6"><img src="${cm.image}" class="max-h-40 rounded-xl border border-slate-200 dark:border-slate-700 object-cover mt-1"></div>` : ''}
+
+                            ${cm.replyTo ? `<div class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50/80 dark:bg-indigo-950/40 px-2 py-0.5 rounded-lg w-fit border border-indigo-100 dark:border-indigo-900">↩️ Đang trả lời @${cm.replyTo.authorName}</div>` : ''}
+
+                            ${cm.text ? `<p class="text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">${highlightedText}</p>` : ''}
+                            ${cm.image ? `<div><img src="${cm.image}" class="max-h-40 rounded-xl border border-slate-200 dark:border-slate-700 object-cover mt-1"></div>` : ''}
                         </div>
                     `;
                 });
             }
+
+            // TẠO CHIPS TAG NHANH THÀNH VIÊN
+            let tagChipsHtml = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">Tag nhanh:</span>`;
+            appData.members.forEach(m => {
+                tagChipsHtml += `<button type="button" onclick="insertTagToComment(${challengeId}, '${m.name}')" class="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-bold hover:bg-indigo-100 dark:hover:bg-indigo-900/70 shrink-0">@${m.name}</button>`;
+            });
+            tagChipsHtml += `</div>`;
 
             return `
                 <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
@@ -1765,7 +1964,15 @@
                         </div>
 
                         <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                            <textarea id="comment-text-${challengeId}" rows="2" placeholder="Viết bình luận, cổ vũ hoặc nhắn gửi..." class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <!-- THANH HIỂN THỊ ĐANG REPLY -->
+                            <div id="reply-banner-${challengeId}" class="hidden flex justify-between items-center bg-indigo-100 dark:bg-indigo-950 px-2.5 py-1 rounded-xl text-xs text-indigo-700 dark:text-indigo-300 font-bold">
+                                <span>↩️ Đang trả lời <span id="reply-name-${challengeId}"></span></span>
+                                <button type="button" onclick="cancelReplyToComment(${challengeId})" class="text-rose-500 hover:text-rose-700 font-extrabold text-sm">✕</button>
+                            </div>
+
+                            ${tagChipsHtml}
+
+                            <textarea id="comment-text-${challengeId}" rows="2" placeholder="Viết bình luận, cổ vũ hoặc nhắn gửi (@tên)..." class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             
                             <div class="flex items-center justify-between gap-2">
                                 <div class="flex items-center gap-1.5">
