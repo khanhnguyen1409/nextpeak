@@ -219,6 +219,15 @@
                     <h5 class="font-bold text-slate-600 dark:text-slate-400 text-[11px] uppercase">📜 Lịch sử thao tác & Security Log</h5>
                     <div id="pin-history-list" class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 max-h-28 overflow-y-auto space-y-1"></div>
                 </div>
+
+                <!-- KHU VỰC RESET DÀNH RIÊNG CHO CHỈ KHÁNH (MEMBER_7) -->
+                <div id="tester-reset-wrapper" class="hidden space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+                    <h4 class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase tracking-wider">🛠️ Công cụ Admin (Chỉ Khánh)</h4>
+                    <p class="text-[11px] text-slate-400">Xóa avatar các thành viên, thông báo, nhật ký & dữ liệu rác phát sinh khi test. Giữ nguyên bố cục trang web.</p>
+                    <button onclick="handleResetTestData()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center gap-1.5">
+                        🧹 Reset toàn bộ dữ liệu Test (Master Only)
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1340,12 +1349,93 @@
                 });
             }
 
+            // KIỂM TRA QUYỀN HIỂN THỊ NÚT RESET: CHỈ HIỂN THỊ KHI ĐĂNG NHẬP LÀ KHÁNH (member_7)
+            const testerWrapper = document.getElementById('tester-reset-wrapper');
+            if (loggedInUserId === 'member_7') {
+                testerWrapper.classList.remove('hidden');
+            } else {
+                testerWrapper.classList.add('hidden');
+            }
+
             setFontSize(currentFontSize);
             document.getElementById('settings-modal').classList.remove('hidden');
         }
 
         function closeSettingsModal() {
             document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        /* HÀM RESET DỮ LIỆU TEST (CHỈ DÀNH CHO KHÁNH - BẢO VỆ BẰNG PIN Master "0000") */
+        function handleResetTestData() {
+            if (loggedInUserId !== 'member_7') {
+                alert("Bạn không có quyền thực hiện thao tác này!");
+                return;
+            }
+
+            const masterPin = prompt(currentLang === 'vi' ? "Xác nhận mã PIN Quản trị (Master PIN - Mặc định: 0000):" : "Enter Master PIN (Default: 0000):");
+            if (masterPin === "0000") {
+                if (!confirm(currentLang === 'vi' ? "⚠️ BẠN CÓ CHẮC CHẮN MUỐN RESET DỮ LIỆU TEST?\n\nThao tác này sẽ:\n- Xóa Avatar của TẤT CẢ thành viên\n- Xóa sạch danh sách thông báo & nhật ký PIN\n- Xóa các bình luận (comments), ảnh minh họa & tiến độ thực hiện test\n- Reset tiến độ các thử thách về 0 nhưng BẢO TỒN BỐ CỤC & Cấu hình thử thách ban đầu." : "Are you sure you want to reset test data?")) {
+                    return;
+                }
+
+                // 1. Xóa avatar & lịch sử PIN của tất cả thành viên
+                appData.members.forEach(m => {
+                    m.avatar = '';
+                    m.pinHistory = [];
+                });
+
+                // 2. Xóa toàn bộ thông báo
+                appData.notifications = {};
+
+                // 3. Reset dữ liệu thử thách nhóm
+                if (appData.sharedChallenges) {
+                    appData.sharedChallenges.forEach(c => {
+                        c.comments = [];
+                        c.archived = false;
+                        c.restoredReadOnly = false;
+                        if (c.progress) {
+                            Object.keys(c.progress).forEach(mId => {
+                                c.progress[mId] = Array(c.totalDays || 25).fill(null).map(() => ({
+                                    completed: false, note: '', image: '', timestamp: ''
+                                }));
+                            });
+                        }
+                        if (c.participantReasons) {
+                            c.participantReasons = {};
+                        }
+                        if (c.participants) {
+                            Object.keys(c.participants).forEach(mId => {
+                                if (c.participants[mId] === 'given_up') {
+                                    c.participants[mId] = true;
+                                }
+                            });
+                        }
+                    });
+                }
+
+                // 4. Reset dữ liệu thử thách cá nhân
+                if (appData.personalHabits) {
+                    Object.keys(appData.personalHabits).forEach(mId => {
+                        appData.personalHabits[mId].forEach(h => {
+                            h.comments = [];
+                            h.archived = false;
+                            h.restoredReadOnly = false;
+                            h.status = 'active';
+                            h.reason = '';
+                            h.days = Array(h.totalDays || 25).fill(null).map(() => ({
+                                completed: false, note: '', image: '', timestamp: ''
+                            }));
+                        });
+                    });
+                }
+
+                // 5. Lưu lên Firebase & Cập nhật UI
+                dbRef.set(appData);
+                alert(currentLang === 'vi' ? "✨ Đã dọn dẹp sạch dữ liệu rác test thành công!" : "Test data reset successfully!");
+                closeSettingsModal();
+            } else if (masterPin !== null) {
+                alert(currentLang === 'vi' ? "Mã PIN Quản trị không chính xác!" : "Incorrect Master PIN!");
+            }
         }
 
         function openReportModal() {
