@@ -40,7 +40,7 @@
     <!-- MODAL ĐĂNG NHẬP -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
-            <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng đến với BVGP</h2>
+            <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">Chào mừng đến với BVGP</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
                 <img src="https://i.postimg.cc/fTGqZvtD/file-0000000043547206bb4b4d66521af0ab.png" alt="BVGP Team" class="w-full h-full object-cover object-[center_60%]">
             </div>
@@ -57,7 +57,7 @@
                 <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
             </div>
             <div id="login-step-2" class="space-y-3 hidden">
-                <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">🔒 Nhập mã PIN bảo mật</p>
+                <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Nhập mã PIN bảo mật</p>
                 <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100">
                 <div class="flex gap-2">
                     <button onclick="handleLoginBack()" id="l-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-semibold text-xs transition">Quay lại</button>
@@ -74,7 +74,7 @@
     <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">Bảng Xếp Hạng</span></h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5"><span id="leaderboard-modal-title">Bảng Xếp Hạng</span></h3>
                 <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
             </div>
             <div class="relative h-64 sm:h-80 w-full py-2 flex-1"><canvas id="modal-leaderboard-chart"></canvas></div>
@@ -86,7 +86,7 @@
     <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🔔 <span id="notif-title">Thông báo của bạn</span></h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2"><span id="notif-title">Thông báo của bạn</span></h3>
                 <div class="flex items-center gap-2">
                     <button onclick="markAllNotificationsRead()" id="notif-read-btn" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-bold">Đánh dấu đã đọc</button>
                     <button onclick="closeNotificationModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
@@ -101,20 +101,20 @@
     <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">💡 <span id="hint-modal-title">Gợi ý ý tưởng</span></h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5"><span id="hint-modal-title">Gợi ý ý tưởng</span></h3>
                 <div class="flex items-center gap-2">
-                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-xs bg-amber-100 dark:bg-amber-900/50 hover:bg-amber-200 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1">🔄 Đổi gợi ý</button>
+                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-xs bg-amber-100 dark:bg-amber-900/50 hover:bg-amber-200 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1">Đổi gợi ý</button>
                     <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
                 </div>
             </div>
             <div class="space-y-4 text-xs">
                 <div class="space-y-2">
-                    <h4 id="hint-group-title" class="font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1">🎯 Thử thách Nhóm:</h4>
+                    <h4 id="hint-group-title" class="font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1">Thử thách Nhóm:</h4>
                     <div id="group-hints-list" class="space-y-2"></div>
                 </div>
                 <hr class="border-slate-100 dark:border-slate-700">
                 <div class="space-y-2">
-                    <h4 id="hint-personal-title" class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1">📌 Thử thách Cá nhân:</h4>
+                    <h4 id="hint-personal-title" class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1">Thử thách Cá nhân:</h4>
                     <div id="personal-hints-list" class="space-y-2"></div>
                 </div>
             </div>
@@ -126,17 +126,17 @@
     <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🎯 <span id="desc-modal-title-text">Chi tiết</span></h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5"><span id="desc-modal-title-text">Chi tiết</span></h3>
                 <button onclick="closeDescriptionModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold">✕</button>
             </div>
             <div class="space-y-3 text-xs">
                 <div id="desc-modal-info" class="p-3 bg-indigo-50/50 dark:bg-slate-700/40 rounded-2xl border border-indigo-100 dark:border-slate-600 space-y-1"></div>
                 <div>
-                    <h4 id="desc-rule-title" class="font-bold text-slate-700 dark:text-slate-300 mb-1">📝 Mô tả / Quy tắc:</h4>
+                    <h4 id="desc-rule-title" class="font-bold text-slate-700 dark:text-slate-300 mb-1">Mô tả / Quy tắc:</h4>
                     <div class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap py-2 leading-relaxed bg-slate-50 dark:bg-slate-900/50 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 min-h-[60px]" id="desc-modal-content"></div>
                 </div>
                 <div id="desc-modal-members-section" class="space-y-2 pt-2">
-                    <h4 id="desc-progress-title" class="font-bold text-slate-700 dark:text-slate-300">👥 Tiến độ các thành viên:</h4>
+                    <h4 id="desc-progress-title" class="font-bold text-slate-700 dark:text-slate-300">Tiến độ các thành viên:</h4>
                     <div id="desc-modal-members-list" class="space-y-1.5"></div>
                 </div>
             </div>
@@ -148,12 +148,12 @@
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-5 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center">
-                <h3 id="s-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">⚙️ Cài đặt tài khoản</h3>
+                <h3 id="s-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">Cài đặt tài khoản</h3>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold">✕</button>
             </div>
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <h4 id="s-font-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">🔠 Cỡ chữ hiển thị</h4>
+                    <h4 id="s-font-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Cỡ chữ hiển thị</h4>
                     <div class="grid grid-cols-3 gap-2">
                         <button onclick="setFontSize('small')" id="font-btn-small" class="py-1.5 rounded-xl border border-slate-300 dark:border-slate-600 text-xs font-semibold hover:border-indigo-500 transition">Nhỏ</button>
                         <button onclick="setFontSize('normal')" id="font-btn-normal" class="py-1.5 rounded-xl border border-slate-300 dark:border-slate-600 text-xs font-semibold hover:border-indigo-500 transition">Vừa</button>
@@ -162,12 +162,12 @@
                 </div>
                 <hr class="border-slate-100 dark:border-slate-700">
                 <div class="space-y-2">
-                    <h4 id="s-avatar-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">🖼️ Tải lên Avatar</h4>
+                    <h4 id="s-avatar-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Tải lên Avatar</h4>
                     <div class="flex items-center gap-4">
                         <div id="preview-avatar" class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-slate-500 dark:text-slate-300 shadow-sm">👤</div>
                         <div class="flex-1 space-y-2">
                             <div class="flex items-center gap-2">
-                                <label for="avatar-file-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">📁 Chọn tệp...</label>
+                                <label for="avatar-file-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">Chọn tệp...</label>
                                 <span id="avatar-file-name" class="text-[11px] text-slate-400 truncate max-w-[110px]">Chưa chọn tệp</span>
                                 <input type="file" id="avatar-file-input" accept="image/*" onchange="previewAvatarImage(event)" class="hidden">
                             </div>
@@ -177,7 +177,7 @@
                 </div>
                 <hr class="border-slate-100 dark:border-slate-700">
                 <div class="space-y-2">
-                    <h4 id="s-pin-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">🔒 Đổi mã PIN</h4>
+                    <h4 id="s-pin-title" class="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Đổi mã PIN</h4>
                     <div class="space-y-2">
                         <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none">
                         <input type="password" id="new-pin-input" placeholder="Mã PIN mới" maxlength="4" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none">
@@ -185,16 +185,16 @@
                     </div>
                 </div>
                 <div class="space-y-1 pt-2">
-                    <h5 id="s-history-title" class="font-bold text-slate-600 dark:text-slate-400 text-[11px] uppercase">📜 Lịch sử thao tác</h5>
+                    <h5 id="s-history-title" class="font-bold text-slate-600 dark:text-slate-400 text-[11px] uppercase">Lịch sử thao tác</h5>
                     <div id="pin-history-list" class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 max-h-28 overflow-y-auto space-y-1"></div>
                 </div>
 
                 <!-- ADMIN RESET (Chỉ Khánh / member_7) -->
                 <div id="tester-reset-wrapper" class="hidden space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
-                    <h4 id="admin-tool-title" class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase tracking-wider">🛠️ Công cụ Admin</h4>
+                    <h4 id="admin-tool-title" class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase tracking-wider">Công cụ Admin</h4>
                     <p id="admin-tool-desc" class="text-[11px] text-slate-400">Xóa dữ liệu rác, avatar, comment khi test. Giữ nguyên cấu hình.</p>
                     <button onclick="handleResetTestData()" id="admin-reset-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center gap-1.5">
-                        🧹 Reset toàn bộ dữ liệu Test
+                        Reset toàn bộ dữ liệu Test
                     </button>
                 </div>
             </div>
@@ -206,16 +206,16 @@
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
-                    <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả</h3>
+                    <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">Kết quả</h3>
                     <span id="copy-success-badge" class="text-[10px] bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold hidden">Đã chép!</span>
                 </div>
                 <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold">✕</button>
             </div>
             
             <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
-                <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition">📊 Hoạt động</button>
-                <button onclick="switchReportTab('archived')" id="btn-report-archived" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">📦 Lưu trữ</button>
-                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">💰 Thưởng/Phạt</button>
+                <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition">Hoạt động</button>
+                <button onclick="switchReportTab('archived')" id="btn-report-archived" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Lưu trữ</button>
+                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng/Phạt</button>
             </div>
 
             <div id="report-active-view" class="space-y-2 overflow-y-auto flex-1">
@@ -238,9 +238,10 @@
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center">Tùy chọn</h4>
-            <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
-            <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-600 rounded-xl transition flex items-center gap-2">📦 Lưu trữ</button>
-            <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ Xóa vĩnh viễn</button>
+            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-600 rounded-xl transition flex items-center gap-2">Tạm dừng</button>
+            <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 rounded-xl transition flex items-center gap-2">Bỏ cuộc</button>
+            <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-600 rounded-xl transition flex items-center gap-2">Lưu trữ</button>
+            <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 rounded-xl transition flex items-center gap-2">Xóa vĩnh viễn</button>
         </div>
     </div>
 
@@ -253,14 +254,14 @@
             </div>
             
             <div id="modal-read-only-notice" class="hidden p-2.5 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-xs rounded-xl font-bold text-center">
-                🔒 Thử thách đã khôi phục (Chế độ Chỉ xem)
+                Thử thách đã khôi phục (Chế độ Chỉ xem)
             </div>
 
             <div class="space-y-4">
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                     <div class="flex justify-between items-center">
                         <h4 id="m-personal" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Cá nhân của bạn</h4>
-                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">✏️ Chỉnh sửa</button>
+                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Chỉnh sửa</button>
                     </div>
 
                     <div id="modal-view-section" class="space-y-2">
@@ -282,7 +283,7 @@
                         <div class="space-y-1">
                             <label id="m-upload-label" class="text-xs font-semibold text-slate-500 dark:text-slate-400 block">Tải ảnh lên:</label>
                             <div class="flex items-center gap-2">
-                                <label for="modal-image-file" id="day-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs transition">📁 Chọn tệp...</label>
+                                <label for="modal-image-file" id="day-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs transition">Chọn tệp...</label>
                                 <span id="day-file-name" class="text-[11px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
                                 <input type="file" id="modal-image-file" accept="image/*" onchange="previewDayImage(event)" class="hidden">
                             </div>
@@ -326,8 +327,8 @@
                     <button onclick="openNotificationModal()" class="relative text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0">
                         🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </button>
-                    <button onclick="openHintModal()" id="btn-hint" class="text-[10px] sm:text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded-lg font-semibold transition flex items-center gap-0.5 shrink-0">💡 <span id="btn-hint-text">Gợi ý</span></button>
-                    <button onclick="openReportModal()" id="btn-report" class="text-[10px] sm:text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded-lg font-semibold transition flex items-center gap-0.5 shrink-0">📋 <span id="btn-report-text">Kết quả</span></button>
+                    <button onclick="openHintModal()" id="btn-hint" class="text-[10px] sm:text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded-lg font-semibold transition flex items-center gap-0.5 shrink-0"><span id="btn-hint-text">Gợi ý</span></button>
+                    <button onclick="openReportModal()" id="btn-report" class="text-[10px] sm:text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded-lg font-semibold transition flex items-center gap-0.5 shrink-0"><span id="btn-report-text">Kết quả</span></button>
                     <button onclick="toggleMusic()" id="music-toggle-btn" class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0">🎵</button>
                     <button onclick="toggleTheme()" id="theme-toggle-btn" class="text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 w-7 h-7 rounded-lg font-bold transition flex items-center justify-center shrink-0">🌙</button>
                     <button onclick="toggleLanguage()" id="lang-toggle-btn" class="text-[10px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 px-1.5 py-1 rounded-lg font-bold transition shrink-0">VI</button>
@@ -341,14 +342,14 @@
 
         <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-sm font-semibold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-1.5">Thử thách nhóm</button>
-            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 dark:text-slate-300 transition">📌 Thử thách cá nhân</button>
+            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-sm font-semibold rounded-xl text-slate-600 dark:text-slate-300 transition">Thử thách cá nhân</button>
         </div>
 
         <!-- TAB NHÓM -->
         <div id="tab-dashboard" class="space-y-6">
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-indigo-200 dark:border-indigo-900/50 overflow-hidden">
                 <button onclick="toggleSharedCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-indigo-800 dark:text-indigo-300 bg-indigo-50/50 dark:bg-indigo-950/30 flex justify-between items-center hover:bg-indigo-50 transition">
-                    <span id="t-create-shared-toggle" class="flex items-center gap-2">➕ Tạo thử thách nhóm</span>
+                    <span id="t-create-shared-toggle" class="flex items-center gap-2">Tạo thử thách nhóm</span>
                     <span id="shared-create-arrow" class="text-xs text-indigo-600 dark:text-indigo-400">▼</span>
                 </button>
                 <div id="shared-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-indigo-100 dark:border-indigo-900/30">
@@ -372,7 +373,7 @@
                         <div class="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">
                             <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600 dark:text-rose-400">
                                 <input type="checkbox" id="shared-bigplay-checkbox" onchange="toggleBigPlayInputs('shared')" class="w-4 h-4 text-rose-600 rounded focus:ring-rose-500">
-                                <span id="t-bigplay-label">🔥 Chơi lớn (Thưởng & Phạt tùy chỉnh)</span>
+                                <span id="t-bigplay-label">Chơi lớn (Thưởng & Phạt tùy chỉnh)</span>
                             </label>
                             <div id="shared-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2.5 bg-rose-50/70 dark:bg-rose-950/30 rounded-2xl border border-rose-100 dark:border-rose-900/40">
                                 <div>
@@ -391,7 +392,7 @@
             </div>
 
             <div class="flex items-center justify-between gap-2 text-xs bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                <span id="t-filter-label" class="font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1">👁️ Hiển thị:</span>
+                <span id="t-filter-label" class="font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1">Hiển thị:</span>
                 <select id="filter-shared-select" onchange="setSharedFilter(this.value)" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer">
                     <option value="all" id="opt-all">Hiển thị tất cả</option>
                     <option value="my" id="opt-my">Thử thách của tôi</option>
@@ -406,7 +407,7 @@
         <div id="tab-update" class="space-y-6 hidden">
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/50 overflow-hidden">
                 <button onclick="togglePersonalCreatePanel()" class="w-full p-4 text-left font-semibold text-sm text-emerald-800 dark:text-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/30 flex justify-between items-center hover:bg-emerald-50 transition">
-                    <span id="t-create-personal-toggle" class="flex items-center gap-2">➕ Thêm thử thách cá nhân</span>
+                    <span id="t-create-personal-toggle" class="flex items-center gap-2">Thêm thử thách cá nhân</span>
                     <span id="personal-create-arrow" class="text-xs text-emerald-600 dark:text-emerald-400">▼</span>
                 </button>
                 <div id="personal-create-panel" class="p-6 pt-0 space-y-4 hidden border-t border-emerald-100 dark:border-emerald-900/30">
@@ -429,16 +430,16 @@
                         </div>
                         <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                             <button type="button" onclick="toggleIfThenPanel()" class="w-full flex justify-between items-center text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-200 hover:bg-emerald-100 transition">
-                                <span id="t-ifthen-title" class="flex items-center gap-1.5">⚡ Quy tắc "Nếu... thì..." (Tự thưởng & Phạt)</span>
+                                <span id="t-ifthen-title" class="flex items-center gap-1.5">Quy tắc "Nếu... thì..." (Tự thưởng & Phạt)</span>
                                 <span id="if-then-arrow" class="text-[10px]">▲</span>
                             </button>
                             <div id="if-then-inputs" class="space-y-2 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
                                 <div>
-                                    <label id="t-self-reward-label" class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">🎁 Tự thưởng *:</label>
+                                    <label id="t-self-reward-label" class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">Tự thưởng *:</label>
                                     <input type="text" id="personal-reward-text-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700" required>
                                 </div>
                                 <div>
-                                    <label id="t-self-penalty-label" class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">💸 Phạt *:</label>
+                                    <label id="t-self-penalty-label" class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">Phạt *:</label>
                                     <input type="text" id="personal-penalty-text-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700" required>
                                 </div>
                             </div>
@@ -453,18 +454,17 @@
 
     <!-- MAIN SCRIPT -->
     <script>
-        // MỞ RỘNG BỘ DỊCH THUẬT (i18n)
         const translations = {
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
-                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Thử thách nhóm',
-                tabUpdate: "📌 Thử thách cá nhân",
+                tabDashboard: 'Thử thách nhóm',
+                tabUpdate: "Thử thách cá nhân",
                 reportBtnText: "Kết quả",
-                reportModalTitle: "📋 Kết quả thử thách",
+                reportModalTitle: "Kết quả thử thách",
                 copySuccess: "Đã tự động sao chép!",
                 copyNotice: "Nội dung đã được sao chép vào bộ nhớ tạm.",
-                createSharedToggle: "➕ Tạo thử thách nhóm",
-                createPersonalToggle: "➕ Thêm thử thách cá nhân",
+                createSharedToggle: "Tạo thử thách nhóm",
+                createPersonalToggle: "Thêm thử thách cá nhân",
                 challengePh: "Tên thử thách (VD: Dậy sớm đón bình minh)...",
                 descSharedPh: "Mô tả / Quy tắc thử thách (không bắt buộc)...",
                 startDate: "Ngày bắt đầu:",
@@ -476,21 +476,21 @@
                 addHabitBtn: "Thêm thử thách cá nhân",
                 noHabits: "Chưa có thử thách cá nhân nào.",
                 noChallenges: "Chưa có thử thách nhóm nào.",
-                joinChallenge: "🚀 Tham gia ngay",
+                joinChallenge: "Tham gia ngay",
                 notJoined: "Bạn chưa tham gia thử thách này.",
-                leaveChallenge: "🚫 Bỏ cuộc",
-                pauseChallenge: "⏸️ Tạm dừng",
-                pausedStatus: "⏸️ Tạm dừng",
-                giveUpChallenge: "🏳️ Bỏ cuộc",
-                givenUpStatus: "🏳️ Bỏ cuộc",
+                leaveChallenge: "Bỏ cuộc",
+                pauseChallenge: "Tạm dừng",
+                pausedStatus: "Tạm dừng",
+                giveUpChallenge: "Bỏ cuộc",
+                givenUpStatus: "Bỏ cuộc",
                 resumeChallenge: "Tiếp tục tham gia",
                 resumeHabit: "Tiếp tục",
                 leaderboard: "Bảng xếp hạng",
                 progress: "Tiến độ",
                 todayBadge: "Hôm nay",
-                completed: "✅ Hoàn thành",
-                incomplete: "⏳ Chưa làm",
-                edit: "✏️ Chỉnh sửa",
+                completed: "Hoàn thành",
+                incomplete: "Chưa làm",
+                edit: "Chỉnh sửa",
                 cancel: "Hủy",
                 saveUpdate: "Lưu cập nhật",
                 teamProgress: "Tiến độ nhóm",
@@ -499,10 +499,10 @@
                 notePh: "Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?...",
                 uploadImgLabel: "Tải ảnh lên:",
                 removeImg: "Xóa ảnh này",
-                welcome: "👋 Chào mừng đến với BVGP",
+                welcome: "Chào mừng đến với BVGP",
                 selectName: "Chọn đúng tên của bạn để tiếp tục.",
                 continueBtn: "Tiếp tục",
-                enterPin: "🔒 Nhập mã PIN bảo mật",
+                enterPin: "Nhập mã PIN bảo mật",
                 pinPh: "Nhập mã PIN 4 số...",
                 backBtn: "Quay lại",
                 confirmBtn: "Xác nhận",
@@ -512,65 +512,64 @@
                 completedThisDay: "Hoàn thành",
                 createdBy: "Tạo bởi",
                 alertFuture: "⏳ Chưa tới ngày này! Bạn không thể xem hoặc cập nhật kết quả cho tương lai.",
-                settingsTitle: "⚙️ Cài đặt tài khoản",
-                uploadAvatarTitle: "🖼️ Tải lên Avatar",
+                settingsTitle: "Cài đặt tài khoản",
+                uploadAvatarTitle: "Tải lên Avatar",
                 saveAvatarBtn: "Lưu Avatar",
-                changePinTitle: "🔒 Đổi mã PIN",
+                changePinTitle: "Đổi mã PIN",
                 oldPinPh: "Mã PIN hiện tại",
                 newPinPh: "Mã PIN mới",
                 updatePinBtn: "Cập nhật mã PIN",
-                chooseFileBtn: "📁 Chọn tệp...",
+                chooseFileBtn: "Chọn tệp...",
                 noFileSelected: "Chưa chọn tệp",
                 noDescription: "Chưa có mô tả cho thử thách này.",
                 closeBtn: "Đóng",
                 
-                // MỞ RỘNG (Phần trước hardcode)
                 hintBtn: "Gợi ý",
                 hintTitle: "Gợi ý ý tưởng",
-                hintRefresh: "🔄 Đổi gợi ý",
-                groupHint: "🎯 Thử thách Nhóm:",
-                personalHint: "📌 Thử thách Cá nhân:",
+                hintRefresh: "Đổi gợi ý",
+                groupHint: "Thử thách Nhóm:",
+                personalHint: "Thử thách Cá nhân:",
                 useTemplate: "Dùng mẫu",
-                bigPlayLabel: "🔥 Chơi lớn (Thưởng & Phạt tùy chỉnh)",
+                bigPlayLabel: "Chơi lớn (Thưởng & Phạt tùy chỉnh)",
                 rewardLabel: "Mức thưởng (k) *:",
                 penaltyLabel: "Mức phạt (k) *:",
-                filterLabel: "👁️ Hiển thị:",
+                filterLabel: "Hiển thị:",
                 optAll: "Hiển thị tất cả",
                 optMy: "Thử thách của tôi",
                 optNew: "Thử thách mới",
                 optNone: "Ẩn tất cả",
-                ifThenTitle: "⚡ Quy tắc \"Nếu... thì...\" (Tự thưởng & Phạt)",
-                selfRewardLabel: "🎁 Tự thưởng *:",
+                ifThenTitle: "Quy tắc \"Nếu... thì...\" (Tự thưởng & Phạt)",
+                selfRewardLabel: "Tự thưởng *:",
                 selfRewardPh: "VD: Mua 1 cuốn sách, đi ăn...",
-                selfPenaltyLabel: "💸 Phạt *:",
+                selfPenaltyLabel: "Phạt *:",
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
-                reportActive: "📊 Hoạt động",
-                reportArchived: "📦 Lưu trữ",
-                reportRewards: "💰 Thưởng/Phạt",
+                reportActive: "Hoạt động",
+                reportArchived: "Lưu trữ",
+                reportRewards: "Thưởng/Phạt",
                 rewardRuleTxt: "<strong class='block font-bold'>📜 Quy tắc Kỷ Luật Team BVGP:</strong><p>• <strong>Thử thách Nhóm thường:</strong> -100k nếu bỏ cuộc, +1 Sách nếu đạt mục tiêu.</p><p>• <strong>Thử thách Nhóm 🔥 Chơi lớn:</strong> Áp dụng mức Thưởng/Phạt tùy chỉnh.</p><p>• <strong>Thử thách Cá nhân:</strong> Tự thưởng & Phạt.</p>",
                 noRewardRecord: "Chưa có thưởng/phạt ghi nhận.",
                 book: "Sách",
                 groupLabel: "Thử thách nhóm",
                 personalLabel: "Thử thách cá nhân",
                 actionMenu: "Tùy chọn",
-                archive: "📦 Lưu trữ",
-                deletePerm: "🗑️ Xóa vĩnh viễn",
+                archive: "Lưu trữ",
+                deletePerm: "Xóa vĩnh viễn",
                 notifTitle: "Thông báo của bạn",
                 markRead: "Đánh dấu đã đọc",
                 noNotif: "Bạn chưa có thông báo nào.",
                 taggedYou: "đã nhắc đến bạn",
                 repliedYou: "đã trả lời bình luận của bạn",
-                fontTitle: "🔠 Cỡ chữ hiển thị",
+                fontTitle: "Cỡ chữ hiển thị",
                 fontSmall: "Nhỏ",
                 fontNormal: "Vừa",
                 fontLarge: "Lớn ✦",
-                historyTitle: "📜 Lịch sử thao tác",
+                historyTitle: "Lịch sử thao tác",
                 noHistory: "Chưa có lịch sử",
-                adminToolTitle: "🛠️ Công cụ Admin",
+                adminToolTitle: "Công cụ Admin",
                 adminToolDesc: "Xóa dữ liệu rác, avatar, comment khi test. Giữ nguyên cấu hình.",
-                adminResetBtn: "🧹 Reset toàn bộ dữ liệu Test",
+                adminResetBtn: "Reset toàn bộ dữ liệu Test",
                 
-                commentCount: "💬 Bình luận & Thảo luận",
+                commentCount: "Bình luận & Thảo luận",
                 noComments: "Chưa có bình luận nào. Hãy mở đầu cuộc trò chuyện!",
                 writeComment: "Viết bình luận, cổ vũ hoặc nhắn gửi (@tên)...",
                 replyingTo: "Đang trả lời",
@@ -580,10 +579,9 @@
                 delete: "Xóa",
                 image: "Ảnh",
                 updatedAt: "Cập nhật lúc",
-                readOnlyMode: "🔒 Chỉ xem",
-                restoredReadOnly: "🔒 Thử thách đã khôi phục (Chế độ Chỉ xem)",
+                readOnlyMode: "Chỉ xem",
+                restoredReadOnly: "Thử thách đã khôi phục (Chế độ Chỉ xem)",
                 
-                // Prompts & Alerts
                 requireReason: "Vui lòng nhập lý do (bắt buộc):",
                 reasonRequiredAlert: "Lý do là bắt buộc!",
                 confirmDelete: "Bạn có chắc muốn xóa vĩnh viễn thử thách này không?",
@@ -611,14 +609,14 @@
             },
             en: {
                 appTitle: "BVGP Discipline Challenge",
-                tabDashboard: '<img src="https://i.postimg.cc/52kcwzjC/Logo-BVGP.png" class="w-4 h-4 rounded-sm object-cover inline-block mr-1.5 align-middle">Group Challenges',
-                tabUpdate: "📌 Personal Challenges",
+                tabDashboard: 'Group Challenges',
+                tabUpdate: "Personal Challenges",
                 reportBtnText: "Results",
-                reportModalTitle: "📋 Challenge Results",
+                reportModalTitle: "Challenge Results",
                 copySuccess: "Copied!",
                 copyNotice: "Content copied to clipboard.",
-                createSharedToggle: "➕ Create Group Challenge",
-                createPersonalToggle: "➕ Add Personal Challenge",
+                createSharedToggle: "Create Group Challenge",
+                createPersonalToggle: "Add Personal Challenge",
                 challengePh: "Challenge name (e.g., Early Rise)...",
                 descSharedPh: "Description / Rules (optional)...",
                 startDate: "Start date:",
@@ -630,21 +628,21 @@
                 addHabitBtn: "Add Challenge",
                 noHabits: "No personal challenges yet.",
                 noChallenges: "No group challenges yet.",
-                joinChallenge: "🚀 Join Now",
+                joinChallenge: "Join Now",
                 notJoined: "You haven't joined this challenge.",
-                leaveChallenge: "🚫 Give Up",
-                pauseChallenge: "⏸️ Pause",
-                pausedStatus: "⏸️ Paused",
-                giveUpChallenge: "🏳️ Give Up",
-                givenUpStatus: "🏳️ Given up",
+                leaveChallenge: "Give Up",
+                pauseChallenge: "Pause",
+                pausedStatus: "Paused",
+                giveUpChallenge: "Give Up",
+                givenUpStatus: "Given up",
                 resumeChallenge: "Resume",
                 resumeHabit: "Resume",
                 leaderboard: "Leaderboard",
                 progress: "Progress",
                 todayBadge: "Today",
-                completed: "✅ Completed",
-                incomplete: "⏳ Incomplete",
-                edit: "✏️ Edit",
+                completed: "Completed",
+                incomplete: "Incomplete",
+                edit: "Edit",
                 cancel: "Cancel",
                 saveUpdate: "Save",
                 teamProgress: "Team Progress",
@@ -653,10 +651,10 @@
                 notePh: "How did it go today?...",
                 uploadImgLabel: "Upload image:",
                 removeImg: "Remove",
-                welcome: "👋 Welcome to BVGP",
+                welcome: "Welcome to BVGP",
                 selectName: "Select your name.",
                 continueBtn: "Continue",
-                enterPin: "🔒 Enter PIN",
+                enterPin: "Enter PIN",
                 pinPh: "4-digit PIN...",
                 backBtn: "Back",
                 confirmBtn: "Confirm",
@@ -666,64 +664,64 @@
                 completedThisDay: "Completed",
                 createdBy: "Created by",
                 alertFuture: "⏳ Future date! Cannot update yet.",
-                settingsTitle: "⚙️ Settings",
-                uploadAvatarTitle: "🖼️ Upload Avatar",
+                settingsTitle: "Settings",
+                uploadAvatarTitle: "Upload Avatar",
                 saveAvatarBtn: "Save Avatar",
-                changePinTitle: "🔒 Change PIN",
+                changePinTitle: "Change PIN",
                 oldPinPh: "Current PIN",
                 newPinPh: "New PIN",
                 updatePinBtn: "Update PIN",
-                chooseFileBtn: "📁 Choose...",
+                chooseFileBtn: "Choose...",
                 noFileSelected: "No file",
                 noDescription: "No description.",
                 closeBtn: "Close",
                 
                 hintBtn: "Hints",
                 hintTitle: "Ideas",
-                hintRefresh: "🔄 Refresh",
-                groupHint: "🎯 Group:",
-                personalHint: "📌 Personal:",
+                hintRefresh: "Refresh",
+                groupHint: "Group:",
+                personalHint: "Personal:",
                 useTemplate: "Use",
-                bigPlayLabel: "🔥 Big Play (Custom Reward/Penalty)",
+                bigPlayLabel: "Big Play (Custom Reward/Penalty)",
                 rewardLabel: "Reward (k) *:",
                 penaltyLabel: "Penalty (k) *:",
-                filterLabel: "👁️ Show:",
+                filterLabel: "Show:",
                 optAll: "All",
                 optMy: "My Challenges",
                 optNew: "New",
                 optNone: "Hide all",
-                ifThenTitle: "⚡ \"If... Then...\" Rules",
-                selfRewardLabel: "🎁 Self-Reward *:",
+                ifThenTitle: "\"If... Then...\" Rules",
+                selfRewardLabel: "Self-Reward *:",
                 selfRewardPh: "E.g., Buy a book...",
-                selfPenaltyLabel: "💸 Penalty *:",
+                selfPenaltyLabel: "Penalty *:",
                 selfPenaltyPh: "E.g., 100 pushups...",
-                reportActive: "📊 Active",
-                reportArchived: "📦 Archived",
-                reportRewards: "💰 Rewards",
+                reportActive: "Active",
+                reportArchived: "Archived",
+                reportRewards: "Rewards",
                 rewardRuleTxt: "<strong class='block font-bold'>📜 BVGP Rules:</strong><p>• <strong>Normal Group:</strong> -100k give up, +1 Book finish.</p><p>• <strong>🔥 Big Play:</strong> Custom amounts.</p><p>• <strong>Personal:</strong> Self-commitments.</p>",
                 noRewardRecord: "No records yet.",
                 book: "Book(s)",
                 groupLabel: "Group Challenge",
                 personalLabel: "Personal Challenge",
                 actionMenu: "Options",
-                archive: "📦 Archive",
-                deletePerm: "🗑️ Delete",
+                archive: "Archive",
+                deletePerm: "Delete",
                 notifTitle: "Notifications",
                 markRead: "Mark read",
                 noNotif: "No notifications.",
                 taggedYou: "tagged you",
                 repliedYou: "replied to you",
-                fontTitle: "🔠 Font Size",
+                fontTitle: "Font Size",
                 fontSmall: "Small",
                 fontNormal: "Normal",
                 fontLarge: "Large ✦",
-                historyTitle: "📜 History",
+                historyTitle: "History",
                 noHistory: "No history",
-                adminToolTitle: "🛠️ Admin Tools",
+                adminToolTitle: "Admin Tools",
                 adminToolDesc: "Clear test data, avatars, comments. Keep config.",
-                adminResetBtn: "🧹 Reset Test Data",
+                adminResetBtn: "Reset Test Data",
                 
-                commentCount: "💬 Comments",
+                commentCount: "Comments",
                 noComments: "No comments yet. Start the conversation!",
                 writeComment: "Write a message (@name)...",
                 replyingTo: "Replying to",
@@ -733,8 +731,8 @@
                 delete: "Del",
                 image: "Image",
                 updatedAt: "Updated at",
-                readOnlyMode: "🔒 Read Only",
-                restoredReadOnly: "🔒 Restored (Read Only)",
+                readOnlyMode: "Read Only",
+                restoredReadOnly: "Restored (Read Only)",
                 
                 requireReason: "Reason required:",
                 reasonRequiredAlert: "Reason cannot be empty!",
@@ -776,27 +774,42 @@
             ]
         };
 
+        // BỔ SUNG NỘI DUNG GỢI Ý THỬ THÁCH ĐA DẠNG HƠN
         const challengeHintsPool = {
             vi: {
                 group: [
-                    { title: "Dậy sớm", desc: "Trước 6:00 AM" },
-                    { title: "Đọc sách 30p", desc: "Đọc sách hàng ngày" },
-                    { title: "Vận động 30p", desc: "Chạy bộ hoặc gym" }
+                    { title: "Dậy sớm đón bình minh", desc: "Thức dậy trước 6:00 AM mỗi sáng để nạp năng lượng tích cực." },
+                    { title: "Đọc sách 30 phút mỗi ngày", desc: "Cùng nhau phát triển tri thức với tối thiểu 30 phút đọc sách." },
+                    { title: "Chạy bộ / Vận động 30 phút", desc: "Rèn luyện sức khỏe thể chất, hoàn thành bài tập vận động cùng team." },
+                    { title: "Học ngoại ngữ 21 ngày", desc: "Luyện từ vựng, giao tiếp tiếng Anh hoặc ngoại ngữ khác hàng ngày." },
+                    { title: "Không thức khuya sau 23h", desc: "Kỷ luật giấc ngủ ngon, rời xa điện thoại trước khi đi ngủ." },
+                    { title: "Uống đủ 2L nước mỗi ngày", desc: "Duy trì thanh lọc cơ thể và cung cấp đủ nước đều đặn." },
+                    { title: "Plank 2 phút mỗi ngày", desc: "Săn chắc cơ bụng, nâng cao thể lực cốt lõi toàn thân." },
+                    { title: "Thử thách ăn sạch (Clean Eating)", desc: "Cắt giảm đồ ngọt, đồ chiên rán, tăng cường rau xanh." }
                 ],
                 personal: [
-                    { title: "Biết ơn", desc: "Viết 3 điều biết ơn" },
-                    { title: "Thiền 10p", desc: "Tĩnh tâm mỗi ngày" }
+                    { title: "Thực tập lòng biết ơn", desc: "Viết ra 3 điều biết ơn mỗi ngày để nuôi dưỡng tâm trí an yên." },
+                    { title: "Thiền định 10 phút", desc: "Dành 10 phút tĩnh tâm, quan sát hơi thở và giải tỏa căng thẳng." },
+                    { title: "Viết nhật ký cuối ngày", desc: "Ghi chép lại bài học, cảm xúc đáng nhớ và rà soát công việc." },
+                    { title: "Dọn dẹp góc làm việc 5 phút", desc: "Giữ cho không gian học tập và làm việc luôn ngăn nắp, sạch sẽ." },
+                    { title: "Từ bỏ 1 thói quen xấu", desc: "Xác định và cắt đứt hoàn toàn một thói quen gây lãng phí thời gian." },
+                    { title: "Tập hít thở sâu / Mindfulness", desc: "Thực hiện các bài tập thở giúp tĩnh tâm giữa giờ làm việc." },
+                    { title: "Đọc 10 trang sách triết học/tâm lý", desc: "Nuôi dưỡng chiều sâu nội tâm và tư duy phản biện cá nhân." },
+                    { title: "Đi ngủ không thiết bị điện tử", desc: "Tắt hoàn toàn điện thoại, laptop 30 phút trước khi lên giường." }
                 ]
             },
             en: {
                 group: [
-                    { title: "Early Rise", desc: "Before 6:00 AM" },
-                    { title: "Read 30m", desc: "Daily reading" },
-                    { title: "Workout 30m", desc: "Run or gym" }
+                    { title: "Early Rise & Sunrise", desc: "Wake up before 6:00 AM every morning." },
+                    { title: "30 Mins Daily Reading", desc: "Expand knowledge together with daily reading." },
+                    { title: "Workout 30 Mins", desc: "Cardio, running or gym session with team." },
+                    { title: "No Late Nights After 11 PM", desc: "Consistent sleep schedule discipline." }
                 ],
                 personal: [
-                    { title: "Gratitude", desc: "Write 3 things" },
-                    { title: "Meditate 10m", desc: "Daily meditation" }
+                    { title: "Daily Gratitude Practice", desc: "Write down 3 things you are grateful for." },
+                    { title: "10 Mins Meditation", desc: "Mindfulness and breathwork daily." },
+                    { title: "Desk Organization", desc: "Clean up workspace for 5 minutes daily." },
+                    { title: "Digital Detox Before Bed", desc: "No screens 30 minutes before sleep." }
                 ]
             }
         };
@@ -872,14 +885,14 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = t('tabDashboard');
+            document.getElementById('btn-dashboard').innerText = t('tabDashboard');
             document.getElementById('btn-update').innerText = t('tabUpdate');
             document.getElementById('btn-report-text').innerText = t('reportBtnText');
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('copy-success-badge').innerText = t('copySuccess');
             document.getElementById('copy-notice-text').innerText = t('copyNotice');
-            document.getElementById('t-create-shared-toggle').innerHTML = `➕ ${t('createSharedToggle')}`;
-            document.getElementById('t-create-personal-toggle').innerHTML = `➕ ${t('createPersonalToggle')}`;
+            document.getElementById('t-create-shared-toggle').innerText = t('createSharedToggle');
+            document.getElementById('t-create-personal-toggle').innerText = t('createPersonalToggle');
             document.getElementById('shared-title-input').placeholder = t('challengePh');
             document.getElementById('shared-desc-input').placeholder = t('descSharedPh');
             document.getElementById('t-start-date').innerText = t('startDate');
@@ -902,7 +915,7 @@
             document.getElementById('personal-penalty-text-input').placeholder = t('selfPenaltyPh');
             document.getElementById('t-add-habit-btn').innerText = t('addHabitBtn');
 
-            document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
+            document.getElementById('t-filter-label').innerText = t('filterLabel');
             document.getElementById('opt-all').innerText = t('optAll');
             document.getElementById('opt-my').innerText = t('optMy');
             document.getElementById('opt-new').innerText = t('optNew');
@@ -926,9 +939,9 @@
             document.getElementById('notif-read-btn').innerText = t('markRead');
             document.getElementById('notif-close-btn').innerText = t('closeBtn');
 
-            document.getElementById('desc-modal-title-text').innerText = t('dayDetails').split(' ')[0]; // Approx
-            document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descSharedPh').split('(')[0]}`;
-            document.getElementById('desc-progress-title').innerHTML = `👥 ${t('teamProgress')}:`;
+            document.getElementById('desc-modal-title-text').innerText = t('dayDetails').split(' ')[0];
+            document.getElementById('desc-rule-title').innerText = t('descSharedPh').split('(')[0];
+            document.getElementById('desc-progress-title').innerText = t('teamProgress');
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
 
             document.getElementById('modal-day-title').innerText = t('dayDetails');
@@ -944,7 +957,7 @@
             document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
 
             document.getElementById('s-modal-title').innerText = t('settingsTitle');
-            document.getElementById('s-font-title').innerHTML = `🔠 ${t('fontTitle')}`;
+            document.getElementById('s-font-title').innerText = t('fontTitle');
             document.getElementById('font-btn-small').innerText = t('fontSmall');
             document.getElementById('font-btn-normal').innerText = t('fontNormal');
             document.getElementById('font-btn-large').innerText = t('fontLarge');
@@ -956,9 +969,9 @@
             document.getElementById('s-update-pin-btn').innerText = t('updatePinBtn');
             document.getElementById('s-history-title').innerText = t('historyTitle');
 
-            document.getElementById('admin-tool-title').innerHTML = t('adminToolTitle');
+            document.getElementById('admin-tool-title').innerText = t('adminToolTitle');
             document.getElementById('admin-tool-desc').innerText = t('adminToolDesc');
-            document.getElementById('admin-reset-btn').innerHTML = `🧹 ${t('adminResetBtn')}`;
+            document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
 
             document.getElementById('avatar-file-label').innerText = t('chooseFileBtn');
             if (!document.getElementById('avatar-file-input').files[0]) document.getElementById('avatar-file-name').innerText = t('noFileSelected');
@@ -971,9 +984,10 @@
             document.getElementById('reward-rule-box').innerHTML = t('rewardRuleTxt');
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
-            document.getElementById('action-btn-giveup').innerHTML = `🏳️ ${t('giveUpChallenge')}`;
-            document.getElementById('action-btn-archive').innerHTML = t('archive');
-            document.getElementById('action-btn-delete').innerHTML = t('deletePerm');
+            document.getElementById('action-btn-pause').innerText = t('pauseChallenge');
+            document.getElementById('action-btn-giveup').innerText = t('giveUpChallenge');
+            document.getElementById('action-btn-archive').innerText = t('archive');
+            document.getElementById('action-btn-delete').innerText = t('deletePerm');
             
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
             
@@ -1100,8 +1114,8 @@
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
         function renderHintList() {
             const pool = challengeHintsPool[currentLang] || challengeHintsPool.vi;
-            document.getElementById('group-hints-list').innerHTML = [...pool.group].sort(()=>0.5-Math.random()).slice(0,3).map(i => `<div class="p-3 bg-indigo-50/70 dark:bg-slate-700/60 rounded-2xl border border-indigo-100 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">🎯 ${i.title}</strong><p class="text-[11px] text-slate-500 dark:text-slate-300">${i.desc}</p></div><button onclick="applyHint('${i.title}', '${i.desc}', false)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold">${t('useTemplate')}</button></div>`).join('');
-            document.getElementById('personal-hints-list').innerHTML = [...pool.personal].sort(()=>0.5-Math.random()).slice(0,3).map(i => `<div class="p-3 bg-emerald-50/70 dark:bg-slate-700/60 rounded-2xl border border-emerald-100 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">📌 ${i.title}</strong><p class="text-[11px] text-slate-500 dark:text-slate-300">${i.desc}</p></div><button onclick="applyHint('${i.title}', '${i.desc}', true)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold">${t('useTemplate')}</button></div>`).join('');
+            document.getElementById('group-hints-list').innerHTML = [...pool.group].sort(()=>0.5-Math.random()).slice(0,3).map(i => `<div class="p-3 bg-indigo-50/70 dark:bg-slate-700/60 rounded-2xl border border-indigo-100 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${i.title}</strong><p class="text-[11px] text-slate-500 dark:text-slate-300">${i.desc}</p></div><button onclick="applyHint('${i.title}', '${i.desc}', false)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold">${t('useTemplate')}</button></div>`).join('');
+            document.getElementById('personal-hints-list').innerHTML = [...pool.personal].sort(()=>0.5-Math.random()).slice(0,3).map(i => `<div class="p-3 bg-emerald-50/70 dark:bg-slate-700/60 rounded-2xl border border-emerald-100 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${i.title}</strong><p class="text-[11px] text-slate-500 dark:text-slate-300">${i.desc}</p></div><button onclick="applyHint('${i.title}', '${i.desc}', true)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc, isPersonal) {
             closeHintModal(); switchTab(isPersonal ? 'update' : 'dashboard');
@@ -1153,8 +1167,8 @@
             document.getElementById('login-step-1').classList.add('hidden'); document.getElementById('login-step-2').classList.remove('hidden');
             const pt = document.getElementById('login-pin-title'), pb = document.getElementById('login-pin-btn');
             document.getElementById('login-pin-input').value = '';
-            if (!m.pin) { pt.innerText = currentLang === 'vi' ? `🔒 Tạo mã PIN cho ${m.name}` : `🔒 Create PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Tạo PIN & Vào':'Create & Enter'; isCreatingPin = true; } 
-            else { pt.innerText = currentLang === 'vi' ? `🔑 Nhập mã PIN của ${m.name}` : `🔑 Enter PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Đăng nhập':'Login'; isCreatingPin = false; }
+            if (!m.pin) { pt.innerText = currentLang === 'vi' ? `Tạo mã PIN cho ${m.name}` : `Create PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Tạo PIN & Vào':'Create & Enter'; isCreatingPin = true; } 
+            else { pt.innerText = currentLang === 'vi' ? `Nhập mã PIN của ${m.name}` : `Enter PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Đăng nhập':'Login'; isCreatingPin = false; }
         }
         function handleLoginBack() { document.getElementById('login-step-2').classList.add('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); }
         function addPinHistoryLog(idx, note) {
@@ -1189,7 +1203,7 @@
             document.getElementById('preview-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0);
             tempAvatarBase64 = m.avatar || '';
             const hl = document.getElementById('pin-history-list');
-            hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-0.5 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center">${t('noHistory')}</p>`;
+            hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-0.5 border-b border-slate-200/50"><span>${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center">${t('noHistory')}</p>`;
             document.getElementById('tester-reset-wrapper').classList.toggle('hidden', loggedInUserId !== 'member_7');
             setFontSize(currentFontSize); document.getElementById('settings-modal').classList.remove('hidden');
         }
@@ -1235,10 +1249,10 @@
         function renderArchivedChallengesList() {
             const c = document.getElementById('archived-challenges-list'); c.innerHTML = ''; let count = 0;
             (appData.sharedChallenges||[]).filter(x=>x.archived).forEach(x => { count++;
-                c.innerHTML += `<div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border flex justify-between items-center text-xs"><div><strong>🎯 ${x.title}</strong><span class="block text-[10px] text-slate-400">${t('createdBy')}: ${x.creatorName||'Team'}</span></div><button onclick="unarchiveChallenge(${x.id}, false)" class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-xl font-bold">Khôi phục (Chỉ xem)</button></div>`;
+                c.innerHTML += `<div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border flex justify-between items-center text-xs"><div><strong>${x.title}</strong><span class="block text-[10px] text-slate-400">${t('createdBy')}: ${x.creatorName||'Team'}</span></div><button onclick="unarchiveChallenge(${x.id}, false)" class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-xl font-bold">Khôi phục (Chỉ xem)</button></div>`;
             });
             (appData.personalHabits[loggedInUserId]||[]).filter(x=>x.archived).forEach(x => { count++;
-                c.innerHTML += `<div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border flex justify-between items-center text-xs"><div><strong>📌 ${x.text}</strong><span class="block text-[10px] text-slate-400">${t('personalLabel')}</span></div><button onclick="unarchiveChallenge(${x.id}, true)" class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-xl font-bold">Khôi phục (Chỉ xem)</button></div>`;
+                c.innerHTML += `<div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border flex justify-between items-center text-xs"><div><strong>${x.text}</strong><span class="block text-[10px] text-slate-400">${t('personalLabel')}</span></div><button onclick="unarchiveChallenge(${x.id}, true)" class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-xl font-bold">Khôi phục (Chỉ xem)</button></div>`;
             });
             if(!count) c.innerHTML = `<p class="text-center italic py-6">${t('noRewardRecord').replace('thưởng/phạt', 'lưu trữ')}</p>`;
         }
@@ -1251,11 +1265,11 @@
                     const tgt = c.targetDays||21, dur = `[${formatDateString(c.startDate)}]`, stat = c.participants ? c.participants[m.id] : null;
                     if(stat==='given_up'){
                         const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                        logs.push(`${c.isBigPlay?'🔥 ':''}${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} (-${p}k)`);
+                        logs.push(`${c.isBigPlay?'':''}${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} (-${p}k)`);
                     } else if(stat===true) {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
                         if(done>=tgt){
-                            if(c.isBigPlay){ rew += (c.customReward||0); logs.push(`🔥 ${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('completed')} ➔ +${c.customReward||0}k`); }
+                            if(c.isBigPlay){ rew += (c.customReward||0); logs.push(`${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('completed')} ➔ +${c.customReward||0}k`); }
                             else { book++; logs.push(`${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('completed')} ➔ +1 ${t('book')}`); }
                         }
                     }
@@ -1303,11 +1317,11 @@
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
                 if(h){ tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||21; tot=h.totalDays||25; cr=t('personal'); sR=h.selfReward||''; sP=h.selfPenalty||'';
                     const count = (h.days||[]).filter(i=>i&&i.completed).length;
-                    mems = `<div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900/40 rounded-xl"><span>📌 ${t('progress')}</span><span class="font-bold text-emerald-600">${count}/${tgt} (${Math.round(count/tgt*100)}%) ${count>=tgt?'✅':''}</span></div>`;
+                    mems = `<div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900/40 rounded-xl"><span>${t('progress')}</span><span class="font-bold text-emerald-600">${count}/${tgt} (${Math.round(count/tgt*100)}%) ${count>=tgt?'✅':''}</span></div>`;
                 }
             }
             document.getElementById('desc-modal-title-text').innerText = tT;
-            document.getElementById('desc-modal-info').innerHTML = `<div><strong>📅 Start:</strong> ${formatDateString(s)}</div><div><strong>🎯 Target:</strong> ${tgt} / ${tot}</div><div><strong>👤 ${t('createdBy')}:</strong> ${cr}</div>${!isPersonal ? (isB ? `<div class="text-rose-600 font-bold">🔥 +${cR}k / -${cP}k</div>` : `<div class="text-indigo-600 font-bold">🎁 +1 ${t('book')} / -100k</div>`) : `<div class="text-emerald-600 font-bold">🎁: ${sR}</div><div class="text-rose-600 font-bold">💸: ${sP}</div>`}`;
+            document.getElementById('desc-modal-info').innerHTML = `<div><strong>📅 Start:</strong> ${formatDateString(s)}</div><div><strong>🎯 Target:</strong> ${tgt} / ${tot}</div><div><strong>👤 ${t('createdBy')}:</strong> ${cr}</div>${!isPersonal ? (isB ? `<div class="text-rose-600 font-bold">+${cR}k / -${cP}k</div>` : `<div class="text-indigo-600 font-bold">+1 ${t('book')} / -100k</div>`) : `<div class="text-emerald-600 font-bold">🎁: ${sR}</div><div class="text-rose-600 font-bold">💸: ${sP}</div>`}`;
             document.getElementById('desc-modal-content').innerText = d||t('noDescription');
             document.getElementById('desc-modal-members-list').innerHTML = mems;
             document.getElementById('description-modal').classList.remove('hidden');
@@ -1316,22 +1330,37 @@
 
         function openActionMenuModal(id, isPersonal) {
             selectedMenuChallenge = { id, isPersonal };
-            let isC = false, isP = false;
+            let isC = false, isP = false, isPaused = false;
             if(!isPersonal){
                 const c = appData.sharedChallenges.find(x=>x.id===id);
                 if(c){ const st = c.participants?c.participants[loggedInUserId]:null; isP=(st===true||st==='given_up'); isC=((c.progress&&c.progress[loggedInUserId])?c.progress[loggedInUserId].filter(i=>i&&i.completed).length:0) >= (c.targetDays||21); }
             } else {
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
-                if(h){ isP=true; isC=((h.days||[]).filter(i=>i&&i.completed).length)>=(h.targetDays||21); }
+                if(h){ isP=true; isPaused=(h.status==='paused'); isC=((h.days||[]).filter(i=>i&&i.completed).length)>=(h.targetDays||21); }
             }
             if(!isP) return alert(t('notParticipant'));
+            
+            // Ẩn hiện nút Tạm dừng tùy theo loại thử thách (Nhóm không có Tạm dừng, Cá nhân có)
+            const pauseBtn = document.getElementById('action-btn-pause');
+            if (isPersonal) {
+                pauseBtn.classList.remove('hidden');
+                pauseBtn.innerText = isPaused ? t('resumeHabit') : t('pauseChallenge');
+            } else {
+                pauseBtn.classList.add('hidden');
+            }
+
             document.getElementById('action-btn-giveup').classList.toggle('hidden', isC);
             document.getElementById('action-menu-modal').classList.remove('hidden');
         }
         function closeActionMenuModal() { document.getElementById('action-menu-modal').classList.add('hidden'); selectedMenuChallenge = null; }
         function triggerMenuAction(act) {
             if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
-            if(act==='giveup') giveUpChallenge(id, isPersonal, id);
+            if(act==='pause') {
+                const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
+                if(h && h.status==='paused') resumeChallenge(null, true, id);
+                else pauseChallenge(id);
+            }
+            else if(act==='giveup') giveUpChallenge(id, isPersonal, id);
             else if(act==='archive') archiveChallenge(id, isPersonal);
             else if(act==='delete') isPersonal ? deletePersonalHabit(id) : deleteSharedChallenge(id);
         }
@@ -1402,9 +1431,9 @@
                 <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border text-xs space-y-1.5">
                     <div class="flex justify-between">
                         <div class="flex items-center gap-1.5 font-bold">${c.memberAvatar?`<img src="${c.memberAvatar}" class="w-5 h-5 rounded-full object-cover">`:`<div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px]">${c.memberName.charAt(0)}</div>`}<span>${c.memberName}</span><span class="text-[10px] text-slate-400 font-normal">(${c.timestamp})</span></div>
-                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold">↩️ ${t('reply')}</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-semibold">🗑️ ${t('delete')}</button>`:''}</div>
+                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold">${t('reply')}</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-semibold">${t('delete')}</button>`:''}</div>
                     </div>
-                    ${c.replyTo?`<div class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-lg w-fit">↩️ ${t('replyingTo')} @${c.replyTo.authorName}</div>`:''}
+                    ${c.replyTo?`<div class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-lg w-fit">${t('replyingTo')} @${c.replyTo.authorName}</div>`:''}
                     ${c.text?`<p class="text-slate-700 whitespace-pre-wrap">${highlightTags(c.text)}</p>`:''}
                     ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border object-cover mt-1">`:''}
                 </div>`).join('') : `<p class="text-slate-400 italic text-[11px] text-center py-2">${t('noComments')}</p>`;
@@ -1415,11 +1444,11 @@
                     <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-100/50 p-3 rounded-2xl border">
                         <div class="space-y-2 max-h-52 overflow-y-auto pr-1">${lst}</div>
                         <div class="space-y-2 pt-2 border-t">
-                            <div id="reply-banner-${cId}" class="hidden flex justify-between bg-indigo-100 px-2.5 py-1 rounded-xl text-xs text-indigo-700 font-bold"><span>↩️ ${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm">✕</button></div>
+                            <div id="reply-banner-${cId}" class="hidden flex justify-between bg-indigo-100 px-2.5 py-1 rounded-xl text-xs text-indigo-700 font-bold"><span>${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm">✕</button></div>
                             ${tags}
                             <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             <div class="flex justify-between gap-2">
-                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 px-2.5 py-1 rounded-xl text-[11px] font-bold">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[10px] truncate max-w-[120px]"></span></div>
+                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 px-2.5 py-1 rounded-xl text-[11px] font-bold">${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[10px] truncate max-w-[120px]"></span></div>
                                 <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 text-white font-bold text-xs px-4 py-1.5 rounded-xl">${t('send')}</button>
                             </div>
                         </div>
@@ -1507,17 +1536,21 @@
                         if(ic) s="bg-indigo-600 text-white border-indigo-600"; else if(it) s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; else if(ifu) s="bg-slate-100 text-slate-400 opacity-40"; else if(ip) s="bg-rose-50 text-rose-700 border-2 border-rose-300";
                         return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
-                    content = `<div class="space-y-3"><div class="flex justify-between items-center text-xs flex-wrap gap-2"><span class="flex items-center gap-1.5 text-slate-500">${t('progress')}: <strong class="text-indigo-600">${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)</strong><button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 border border-indigo-200 rounded-lg font-bold text-indigo-700">🏆</button>${cnt>=tgt?`<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold text-[10px]">✅ ${t('completed')}</span>`:''}</span>${gu?`<span class="text-red-600 font-bold bg-red-50 px-2.5 py-0.5 rounded-full">${t('givenUpStatus')}</span>`:''}</div>${gu?'':grid}</div>`;
+                    content = `<div class="space-y-3"><div class="flex justify-between items-center text-xs flex-wrap gap-2"><span class="flex items-center gap-1.5 text-slate-500">${t('progress')}: <strong class="text-indigo-600">${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)</strong><button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 border border-indigo-200 rounded-lg font-bold text-indigo-700">🏆</button>${cnt>=tgt?`<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold text-[10px]">${t('completed')}</span>`:''}</span>${gu?`<span class="text-red-600 font-bold bg-red-50 px-2.5 py-0.5 rounded-full">${t('givenUpStatus')}</span>`:''}</div>${gu?'':grid}</div>`;
                 }
+
+                // Sửa hiển thị số tiền thưởng chơi lớn có khoảng trắng: +300 k
+                const rewardDisplayText = c.isBigPlay ? `+${c.customReward || 0} k` : `+1 ${t('book')}`;
+                const penaltyDisplayText = c.isBigPlay ? `-${c.customPenalty || 0} k` : `-100 k`;
 
                 container.innerHTML += `
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-indigo-100 space-y-4">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-bold text-base cursor-pointer hover:text-indigo-600 transition">🎯 <span>${c.title}</span><sup class="text-xs text-indigo-600 ml-0.5">${i+1}</sup> ${c.isBigPlay?`<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full">🔥</span>`:''}</h4>
+                                <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-bold text-base cursor-pointer hover:text-indigo-600 transition"><span>${c.title}</span><sup class="text-xs text-indigo-600 ml-0.5">${i+1}</sup> ${c.isBigPlay?`<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full">🔥</span>`:''}</h4>
                                 ${avs}
                                 <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full mt-0.5 inline-block">${t('createdBy')}: ${c.creatorName||'Team'} (${formatDateString(c.startDate)})</span>
-                                <span class="text-[10px] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full font-bold ml-1 inline-flex gap-1"><span class="text-emerald-600">🎁 +${c.isBigPlay?(c.customReward||0):1} ${c.isBigPlay?'k':t('book')}</span> / <span class="text-rose-600">💸 -${c.isBigPlay?(c.customPenalty||0):100}k</span></span>
+                                <span class="text-[10px] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full font-bold ml-1 inline-flex gap-1"><span class="text-emerald-600">${rewardDisplayText}</span> / <span class="text-rose-600">${penaltyDisplayText}</span></span>
                                 ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold ml-1">${t('readOnlyMode')}</span>`:''}
                             </div>
                             <button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 p-1 font-bold">⋮</button>
@@ -1544,29 +1577,28 @@
                     return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                 }).join('') + `</div>`;
 
-                let actHtml = `<button onclick="pauseChallenge(${h.id})" class="text-amber-600 hover:underline font-semibold">${t('pauseChallenge')}</button>`;
-                if(st==='given_up') actHtml = `<div class="flex justify-between w-full"><span class="text-red-600 bg-red-50 px-3 py-1 rounded-full text-xs font-bold">${t('givenUpStatus')}</span><button onclick="resumeChallenge(null, true, ${h.id})" class="text-indigo-600 underline font-semibold">${t('resumeHabit')}</button></div>`;
-                else if(st==='paused') actHtml = `<div class="flex justify-between w-full"><span class="text-amber-600 bg-amber-50 px-3 py-1 rounded-full text-xs font-bold">${t('pausedStatus')}</span><button onclick="resumeChallenge(null, true, ${h.id})" class="text-indigo-600 underline font-semibold">${t('resumeHabit')}</button></div>`;
+                let statusBadgeHtml = '';
+                if(st==='given_up') statusBadgeHtml = `<span class="text-red-600 bg-red-50 px-3 py-1 rounded-full text-xs font-bold">${t('givenUpStatus')}</span>`;
+                else if(st==='paused') statusBadgeHtml = `<span class="text-amber-600 bg-amber-50 px-3 py-1 rounded-full text-xs font-bold">${t('pausedStatus')}</span>`;
 
                 container.innerHTML += `
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-200 space-y-4">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-bold text-base cursor-pointer hover:text-emerald-600 transition">📌 <span>${h.text}</span><sup class="text-xs text-emerald-600 ml-0.5">${i+1}</sup></h4>
+                                <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-bold text-base cursor-pointer hover:text-emerald-600 transition"><span>${h.text}</span><sup class="text-xs text-emerald-600 ml-0.5">${i+1}</sup></h4>
                                 <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full mt-1 inline-block">${t('createdBy')}: ${t('personal')} (${formatDateString(h.startDate)})</span>
                                 ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold ml-1">${t('readOnlyMode')}</span>`:''}
-                                <div class="text-[11px] bg-emerald-50/80 p-2.5 rounded-2xl border border-emerald-200 mt-2"><div class="text-emerald-700"><strong>🎁 ${t('selfRewardLabel').replace('*','')}</strong> ${h.selfReward||'---'}</div><div class="text-rose-600"><strong>💸 ${t('selfPenaltyLabel').replace('*','')}</strong> ${h.selfPenalty||'---'}</div></div>
+                                <div class="text-[11px] bg-emerald-50/80 p-2.5 rounded-2xl border border-emerald-200 mt-2"><div class="text-emerald-700"><strong>${t('selfRewardLabel')}</strong> ${h.selfReward||'---'}</div><div class="text-rose-600"><strong>${t('selfPenaltyLabel')}</strong> ${h.selfPenalty||'---'}</div></div>
                             </div>
                             <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 p-1 font-bold">⋮</button>
                         </div>
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                <span class="flex gap-1.5 text-slate-500">${t('progress')}: <strong class="text-emerald-600">${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)</strong>${cnt>=tgt?`<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold text-[10px]">✅ ${t('completed')}</span>`:''}</span>
-                                ${(st==='active')?actHtml:''}
+                                <span class="flex gap-1.5 text-slate-500">${t('progress')}: <strong class="text-emerald-600">${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)</strong>${cnt>=tgt?`<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold text-[10px]">${t('completed')}</span>`:''}</span>
+                                ${statusBadgeHtml}
                             </div>
-                            ${(st==='active')?grid:actHtml}
+                            ${(st==='active')?grid:''}
                         </div>
-                        ${renderCommentSectionHTML(h.id, h.comments||[], true)}
                     </div>`;
             });
         }
@@ -1590,7 +1622,7 @@
             if(!sR || !sP) return alert(t('selfRuleRequire'));
             if(tIn) {
                 appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId]||[];
-                appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:document.getElementById('personal-desc-input').value, startDate:document.getElementById('personal-date-input').value, targetDays:parseInt(document.getElementById('personal-target-input').value)||21, totalDays:parseInt(document.getElementById('personal-days-input').value)||25, selfReward:sR, selfPenalty:sP, status:'active', archived:false, restoredReadOnly:false, comments:[], days:Array(25).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
+                appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:document.getElementById('personal-desc-input').value, startDate:document.getElementById('personal-date-input').value, targetDays:parseInt(document.getElementById('personal-target-input').value)||21, totalDays:parseInt(document.getElementById('personal-days-input').value)||25, selfReward:sR, selfPenalty:sP, status:'active', archived:false, restoredReadOnly:false, days:Array(25).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
                 dbRef.set(appData); togglePersonalCreatePanel(); e.target.reset(); document.getElementById('personal-date-input').value = new Date().toISOString().split('T')[0];
             }
         };
@@ -1611,7 +1643,7 @@
                 document.getElementById('completed-ratio-text').innerText = `${j.filter(m=>c.progress[m]&&c.progress[m][dIdx]&&c.progress[m][dIdx].completed).length}/${j.length}`;
                 document.getElementById('group-members-status-list').innerHTML = j.map(mId => {
                     const u=appData.members.find(x=>x.id===mId), p=c.progress[mId]&&c.progress[mId][dIdx], id=(p&&p.completed), n=(p&&p.note)?p.note:'', i=(p&&p.image)?p.image:'', tm=(p&&p.timestamp)?p.timestamp:'';
-                    return `<div class="p-2.5 bg-white rounded-xl border text-xs space-y-2"><div class="flex justify-between font-semibold"><span class="text-slate-700">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400">(${tm})</span>`:''}</span><span class="${id?'text-emerald-600 bg-emerald-50 px-2 rounded-md':''}">${id?`✅ ${t('completed')}`:`⏳ ${t('incomplete')}`}</span></div>${n?`<p class="italic bg-slate-50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<img src="${i}" class="rounded-xl max-h-36 object-cover border w-full">`:''}</div>`;
+                    return `<div class="p-2.5 bg-white rounded-xl border text-xs space-y-2"><div class="flex justify-between font-semibold"><span class="text-slate-700">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400">(${tm})</span>`:''}</span><span class="${id?'text-emerald-600 bg-emerald-50 px-2 rounded-md':''}">${id?t('completed'):t('incomplete')}</span></div>${n?`<p class="italic bg-slate-50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<img src="${i}" class="rounded-xl max-h-36 object-cover border w-full">`:''}</div>`;
                 }).join('');
             } else { gsc.classList.add('hidden'); item = (c.days&&c.days[dIdx]) || {completed:false,note:''}; }
 
