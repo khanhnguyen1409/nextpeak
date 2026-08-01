@@ -13,6 +13,8 @@
     </script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- HEIC to JPEG Converter (Hỗ trợ ảnh iPhone) -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -75,12 +77,15 @@
         </div>
     </div>
 
-    <!-- MODAL GỢI Ý THỬ THÁCH (HINT IDEAS) -->
+    <!-- MODAL GỢI Ý THỬ THÁCH VỚI NÚT LÀM MỚI (REFRESH HINT MODAL) -->
     <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">💡 <span id="hint-modal-title">Gợi ý ý tưởng thử thách</span></h3>
-                <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold">✕</button>
+                <div class="flex items-center gap-2">
+                    <button onclick="renderHintList()" class="text-xs bg-amber-100 dark:bg-amber-900/50 hover:bg-amber-200 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1">🔄 Đổi gợi ý khác</button>
+                    <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
+                </div>
             </div>
 
             <div class="space-y-4 text-xs">
@@ -158,7 +163,7 @@
                             <div class="flex items-center gap-2">
                                 <label for="avatar-file-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">📁 Chọn tệp...</label>
                                 <span id="avatar-file-name" class="text-[11px] text-slate-400 truncate max-w-[110px]">Chưa chọn tệp</span>
-                                <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewAvatarImage(event)" class="hidden">
+                                <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/heic, image/heif, .heic, .heif" onchange="previewAvatarImage(event)" class="hidden">
                             </div>
                             <button onclick="saveAvatarImage()" id="s-save-avatar-btn" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition">Lưu Avatar</button>
                         </div>
@@ -222,18 +227,19 @@
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
                 <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 space-y-1">
                     <strong class="block font-bold">📜 Quy tắc Kỷ Luật Team BVGP:</strong>
-                    <p>• 🔴 <strong>Phạt 100.000đ / thử thách:</strong> Khi Bỏ cuộc hoặc không hoàn thành mục tiêu.</p>
-                    <p>• 🟢 <strong>Thưởng 1 cuốn sách (&lt; 200.000đ):</strong> Khi hoàn thành đạt mục tiêu ngày.</p>
+                    <p>• 🔴 <strong>- 100.000đ / thử thách:</strong> Khi Bỏ cuộc hoặc không hoàn thành mục tiêu.</p>
+                    <p>• 🟢 <strong>Thưởng 📚 +1 cuốn sách (&lt; 200.000đ):</strong> Khi hoàn thành đạt mục tiêu ngày.</p>
                 </div>
                 <div id="rewards-summary-list" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL ACTION 3 DẤU CHẤM (BỎ CUỘC, LƯU TRỮ, XÓA VĨNH VIỄN) -->
+    <!-- MODAL ACTION 3 DẤU CHẤM (BỎ CUỘC, LƯU TRỮ, XÓA VĨNH VIỄN, ẨN/HIỆN THỬ THÁCH) -->
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center">Tùy chọn thử thách</h4>
+            <button id="action-btn-toggle-hide" onclick="triggerMenuAction('toggle_hide')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition flex items-center gap-2">🙈 Ẩn thử thách này</button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-600 rounded-xl transition flex items-center gap-2">📦 Lưu trữ</button>
             <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ Xóa vĩnh viễn</button>
@@ -279,11 +285,11 @@
                         </div>
 
                         <div class="space-y-1">
-                            <label id="m-upload-label" class="text-xs font-semibold text-slate-500 dark:text-slate-400 block">Tải ảnh minh họa lên (PNG, JPG, WEBP):</label>
+                            <label id="m-upload-label" class="text-xs font-semibold text-slate-500 dark:text-slate-400 block">Tải ảnh minh họa lên (PNG, JPG, WEBP, HEIC):</label>
                             <div class="flex items-center gap-2">
                                 <label for="modal-image-file" id="day-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition">📁 Chọn tệp...</label>
                                 <span id="day-file-name" class="text-[11px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
-                                <input type="file" id="modal-image-file" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewDayImage(event)" class="hidden">
+                                <input type="file" id="modal-image-file" accept="image/png, image/jpeg, image/jpg, image/webp, image/heic, image/heif, .heic, .heif" onchange="previewDayImage(event)" class="hidden">
                             </div>
                             <div id="modal-image-preview-container" class="mt-2 hidden">
                                 <img id="modal-image-preview" class="rounded-xl max-h-36 object-cover border border-slate-200 dark:border-slate-700 w-full">
@@ -345,12 +351,9 @@
             </div>
         </header>
 
-        <!-- BANNER TEAM KỶ NIỆM BÃI BIỂN -->
+        <!-- BANNER TEAM KỶ NIỆM BÃI BIỂN (BỎ HẾT TEXT CHỮ VÀ ICON LỚP PHỦ) -->
         <div class="w-full h-44 sm:h-56 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 relative group">
             <img src="https://i.postimg.cc/fTGqZvtD/file-0000000043547206bb4b4d66521af0ab.png" alt="BVGP Friends Team" class="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-4">
-                <span class="text-white text-xs font-bold bg-slate-900/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 tracking-wider">🌊 BVGP - F R I E N D S</span>
-            </div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -398,7 +401,7 @@
 
             <!-- Nút bật/tắt xem thử thách bị ẩn -->
             <div class="flex justify-end">
-                <button onclick="toggleShowHiddenShared()" id="btn-toggle-hidden-shared" class="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 font-semibold underline">👁️ Xem thử thách đã ẩn</button>
+                <button onclick="toggleShowHiddenShared()" id="btn-toggle-hidden-shared" class="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 font-semibold underline">🙈 Xem thử thách đã ẩn</button>
             </div>
 
             <div class="space-y-6" id="shared-challenges-container">
@@ -465,21 +468,27 @@
             ]
         };
 
-        const challengeHints = {
+        /* KHO Ý TƯỞNG GỢI Ý ĐA DẠNG MỖI LẦN BẤM LÀM MỚI (REFRESH) */
+        const challengeHintsPool = {
             vi: {
                 group: [
                     { title: "Dậy sớm đón bình minh", desc: "Thức dậy trước 6:00 AM mỗi sáng để đón ngày mới tràn đầy năng lượng tích cực." },
-                    { title: "Đọc sách 30 phút mỗi ngày", desc: "Cùng nhau phát triển tri thức với tối thiểu 30 phút đọc sách mỗi ngày." },
-                    { title: "Chạy bộ / Tập thể dục 30 phút", desc: "Rèn luyện sức khỏe thể chất, hoàn thành bài tập vận động cùng team." },
+                    { title: "Đọc sách 30 phút mỗi ngày", desc: "Cùng nhau phát triển tri thức với tối thiểu 30 phút đọc sách phát triển bản thân." },
+                    { title: "Chạy bộ / Vận động 30 phút", desc: "Rèn luyện sức khỏe thể chất, hoàn thành bài tập vận động cùng team." },
                     { title: "Học ngoại ngữ 20 phút", desc: "Luyện từ vựng, giao tiếp Tiếng Anh/Nhật/Trung đều đặn hàng ngày." },
-                    { title: "Không thức khuya sau 23h", desc: "Kỷ luật giấc ngủ ngon, rời xa điện thoại trước khi đi ngủ." }
+                    { title: "Không thức khuya sau 23h", desc: "Kỷ luật giấc ngủ ngon, rời xa điện thoại trước khi đi ngủ 30 phút." },
+                    { title: "Uống 2L nước mỗi ngày", desc: "Duy trì bổ sung đủ nước cho cơ thể khỏe mạnh cả ngày." },
+                    { title: "Hạn chế đồ ăn nhanh & trà sữa", desc: "Ăn uống lành mạnh, cắt giảm đồ ngọt và thức ăn nhanh trong tuần." },
+                    { title: "Học kỹ năng mới 15 phút", desc: "Dành 15 phút học lập trình, thiết kế, hoặc kỹ năng mềm mỗi ngày." }
                 ],
                 personal: [
                     { title: "Thực tập lòng biết ơn", desc: "Viết ra 3 điều biết ơn mỗi ngày để nuôi dưỡng tâm trí an yên, tích cực." },
-                    { title: "Uống đủ 2L nước mỗi ngày", desc: "Duy trì thói quen bổ sung đủ nước cho cơ thể khỏe mạnh." },
-                    { title: "Thiền định 10 phút", desc: "Dành 10 phút tĩnh tâm, quan sát hơi thở và giải tỏa mọi căng thẳng." },
+                    { title: "Thiền định 10 phút", desc: "Dành 10 phút tĩnh tâm, quan sát hơi thở và giải tỏa căng thẳng." },
                     { title: "Viết nhật ký cuối ngày", desc: "Ghi chép lại bài học, cảm xúc đáng nhớ và rà soát công việc trong ngày." },
-                    { title: "Không ăn đồ ngọt / Fast food", desc: "Kỷ luật ăn uống lành mạnh, cắt giảm đường và chất béo có hại." }
+                    { title: "Dọn dẹp góc làm việc 5 phút", desc: "Giữ cho không gian học tập và làm việc luôn ngăn nắp, sạch sẽ." },
+                    { title: "Tắt thông báo điện thoại khi làm việc", desc: "Tập trung sâu (Deep Work) ít nhất 1-2 tiếng mỗi ngày không xao nhãng." },
+                    { title: "Tập hít thở sâu 5 phút", desc: "Thực hành hít thở bụng vào buổi sáng và trước khi đi ngủ." },
+                    { title: "Đi bộ 5.000 bước mỗi ngày", desc: "Theo dõi số bước chân để duy trì sự vận động liên tục." }
                 ]
             },
             en: {
@@ -492,10 +501,8 @@
                 ],
                 personal: [
                     { title: "Daily Gratitude Practice", desc: "Write down 3 things you are grateful for to nurture a positive mind." },
-                    { title: "Drink 2 Liters of Water", desc: "Maintain a healthy hydration habit throughout the day." },
                     { title: "10 Mins Daily Meditation", desc: "Take 10 minutes to quiet your mind, breathe, and release stress." },
-                    { title: "End-of-Day Journaling", desc: "Reflect on daily lessons, emotions, and review your tasks." },
-                    { title: "No Sweets / Fast Food", desc: "Practice healthy eating by cutting down harmful sugar and junk food." }
+                    { title: "End-of-Day Journaling", desc: "Reflect on daily lessons, emotions, and review your tasks." }
                 ]
             }
         };
@@ -544,7 +551,7 @@
                 completedText: "hoàn thành",
                 noteLabel: "Ghi chú / Nhật ký & Cảm xúc:",
                 notePh: "Hôm nay bạn đã làm gì? Cảm xúc của bạn ra sao?...",
-                uploadImgLabel: "Tải ảnh minh họa lên (PNG, JPG, WEBP):",
+                uploadImgLabel: "Tải ảnh minh họa lên (PNG, JPG, WEBP, HEIC):",
                 removeImg: "Xóa ảnh này",
                 welcome: "👋 Chào mừng đến với BVGP",
                 selectName: "Chọn đúng tên của bạn để tiếp tục.",
@@ -614,7 +621,7 @@
                 completedText: "completed",
                 noteLabel: "Notes / Journal & Emotions:",
                 notePh: "What did you do today? How did you feel?...",
-                uploadImgLabel: "Upload illustration image (PNG, JPG, WEBP):",
+                uploadImgLabel: "Upload illustration image (PNG, JPG, WEBP, HEIC):",
                 removeImg: "Remove image",
                 welcome: "👋 Welcome to BVGP",
                 selectName: "Select your name to continue.",
@@ -880,7 +887,7 @@
             }
         });
 
-        /* --- XỬ LÝ QUẢN LÝ GỢI Ý (HINT IDEAS MODAL) --- */
+        /* --- XỬ LÝ GỢI Ý ĐA DẠNG & LÀM MỚI (REFRESH) --- */
         function openHintModal() {
             renderHintList();
             document.getElementById('hint-modal').classList.remove('hidden');
@@ -890,13 +897,21 @@
             document.getElementById('hint-modal').classList.add('hidden');
         }
 
+        function getRandomSample(array, size) {
+            const shuffled = [...array].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, size);
+        }
+
         function renderHintList() {
-            const listObj = challengeHints[currentLang] || challengeHints.vi;
+            const poolObj = challengeHintsPool[currentLang] || challengeHintsPool.vi;
             const groupContainer = document.getElementById('group-hints-list');
             const personalContainer = document.getElementById('personal-hints-list');
 
+            const selectedGroup = getRandomSample(poolObj.group, 3);
+            const selectedPersonal = getRandomSample(poolObj.personal, 3);
+
             groupContainer.innerHTML = '';
-            listObj.group.forEach(item => {
+            selectedGroup.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "p-3 bg-indigo-50/70 dark:bg-slate-700/60 rounded-2xl border border-indigo-100 dark:border-slate-600 flex justify-between items-center gap-2";
                 div.innerHTML = `
@@ -910,7 +925,7 @@
             });
 
             personalContainer.innerHTML = '';
-            listObj.personal.forEach(item => {
+            selectedPersonal.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "p-3 bg-emerald-50/70 dark:bg-slate-700/60 rounded-2xl border border-emerald-100 dark:border-slate-600 flex justify-between items-center gap-2";
                 div.innerHTML = `
@@ -943,7 +958,22 @@
             }
         }
 
-        function compressImage(file, callback) {
+        /* NÉN VÀ XỬ LÝ ẢNH (HỖ TRỢ ĐỊNH DẠNG HEIC / HEIF CỦA IPHONE) */
+        async function compressImage(file, callback) {
+            let processFile = file;
+            const ext = file.name.split('.').pop().toLowerCase();
+
+            if (ext === 'heic' || ext === 'heif' || file.type === 'image/heic' || file.type === 'image/heif') {
+                try {
+                    const convertedBlob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.8 });
+                    processFile = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                } catch (err) {
+                    console.error("Lỗi đọc file HEIC:", err);
+                    alert(currentLang === 'vi' ? "Không thể chuyển đổi file HEIC này. Vui lòng thử lại hoặc chọn tệp JPEG/PNG!" : "Could not convert HEIC file. Please try JPEG/PNG.");
+                    return;
+                }
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -965,7 +995,7 @@
                 };
                 img.src = e.target.result;
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(processFile);
         }
 
         function previewAvatarImage(event) {
@@ -1242,6 +1272,7 @@
             }
         }
 
+        /* BẢNG THƯỞNG / PHẠT ĐÃ ĐƯỢC CẬP NHẬT DẤU -, THỜI GIAN VÀ DẤU + */
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list');
             container.innerHTML = '';
@@ -1254,16 +1285,19 @@
                 if (appData.sharedChallenges) {
                     appData.sharedChallenges.forEach(c => {
                         const targetD = c.targetDays || 21;
+                        const totalD = c.totalDays || 25;
+                        const startDateStr = formatDateString(c.startDate || c.createdAt);
+                        const durationInfo = `[${startDateStr} (${totalD} ngày)]`;
                         const pStatus = c.participants ? c.participants[m.id] : null;
 
                         if (pStatus === 'given_up') {
                             penaltyCount++;
-                            detailsLog.push(`🔴 Thử thách nhóm "${c.title}": Bỏ cuộc (-100k)`);
+                            detailsLog.push(`🔴 Thử thách nhóm "${c.title}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Bỏ cuộc (-100k)`);
                         } else if (pStatus === true) {
                             const completedCount = (c.progress && c.progress[m.id]) ? c.progress[m.id].filter(i => i && i.completed).length : 0;
                             if (completedCount >= targetD) {
                                 rewardsBookCount++;
-                                detailsLog.push(`🟢 Thử thách nhóm "${c.title}": Hoàn thành (${completedCount}/${targetD} ngày) ➔ 📚 Tặng 1 cuốn sách`);
+                                detailsLog.push(`🟢 Thử thách nhóm "${c.title}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Hoàn thành (${completedCount}/${targetD} ngày) ➔ 📚 +1 Sách`);
                             }
                         }
                     });
@@ -1272,14 +1306,17 @@
                 const memberHabits = (appData.personalHabits && appData.personalHabits[m.id]) || [];
                 memberHabits.forEach(h => {
                     const targetD = h.targetDays || 21;
+                    const totalD = h.totalDays || 25;
+                    const startDateStr = formatDateString(h.startDate || h.createdAt);
+                    const durationInfo = `[${startDateStr} (${totalD} ngày)]`;
                     const completedCount = (h.days || []).filter(i => i && i.completed).length;
 
                     if (h.status === 'given_up') {
                         penaltyCount++;
-                        detailsLog.push(`🔴 Thử thách cá nhân "${h.text}": Bỏ cuộc (-100k)`);
+                        detailsLog.push(`🔴 Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Bỏ cuộc (-100k)`);
                     } else if (completedCount >= targetD) {
                         rewardsBookCount++;
-                        detailsLog.push(`🟢 Thử thách cá nhân "${h.text}": Hoàn thành (${completedCount}/${targetD} ngày) ➔ 📚 Tặng 1 cuốn sách`);
+                        detailsLog.push(`🟢 Thử thách cá nhân "${h.text}" <span class="text-[10px] text-slate-400">${durationInfo}</span>: Hoàn thành (${completedCount}/${targetD} ngày) ➔ 📚 +1 Sách`);
                     }
                 });
 
@@ -1293,8 +1330,8 @@
                             ${m.avatar ? `<img src="${m.avatar}" class="w-5 h-5 rounded-full object-cover">` : `👤`} ${m.name}
                         </span>
                         <div class="flex gap-2">
-                            <span class="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">📚 ${rewardsBookCount} Sách</span>
-                            <span class="text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full">💸 Phạt ${totalMoneyPenalty}k</span>
+                            <span class="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">📚 +${rewardsBookCount} Sách</span>
+                            <span class="text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full">💸 -${totalMoneyPenalty}k</span>
                         </div>
                     </div>
                     ${detailsLog.length > 0 ? `<div class="text-[11px] text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 p-2 rounded-xl border border-slate-100 dark:border-slate-700 space-y-1">${detailsLog.map(d => `<div>${d}</div>`).join('')}</div>` : `<p class="text-[11px] text-slate-400 italic">Chưa có thưởng/phạt ghi nhận.</p>`}
@@ -1390,22 +1427,29 @@
             document.getElementById('description-modal').classList.add('hidden');
         }
 
+        /* ACTION MENU MODAL ĐÃ ĐƯỢC THÊM TÙY CHỌN ẨN / HIỆN THỬ THÁCH NĂM TRONG DẤU 3 CHẤM */
         function openActionMenuModal(id, isPersonal) {
             selectedMenuChallenge = { id, isPersonal };
             const giveUpBtn = document.getElementById('action-btn-giveup');
+            const toggleHideBtn = document.getElementById('action-btn-toggle-hide');
             
             let isCompleted = false;
             let isParticipant = false;
 
             if (!isPersonal) {
+                toggleHideBtn.classList.remove('hidden');
                 const c = appData.sharedChallenges.find(x => x.id === id);
                 if (c) {
                     const pStatus = c.participants ? c.participants[loggedInUserId] : null;
                     isParticipant = (pStatus === true || pStatus === 'given_up');
                     const myCount = (c.progress && c.progress[loggedInUserId]) ? c.progress[loggedInUserId].filter(i => i && i.completed).length : 0;
                     isCompleted = myCount >= (c.targetDays || 21);
+                    
+                    const isHidden = c.hiddenForUsers && c.hiddenForUsers[loggedInUserId];
+                    toggleHideBtn.innerText = isHidden ? "👁️ Hiện thử thách này" : "🙈 Ẩn thử thách này";
                 }
             } else {
+                toggleHideBtn.classList.add('hidden');
                 const habits = appData.personalHabits[loggedInUserId] || [];
                 const h = habits.find(x => x.id === id);
                 if (h) {
@@ -1439,7 +1483,9 @@
             const { id, isPersonal } = selectedMenuChallenge;
             closeActionMenuModal();
 
-            if (action === 'giveup') {
+            if (action === 'toggle_hide') {
+                toggleHideSharedChallenge(id);
+            } else if (action === 'giveup') {
                 giveUpChallenge(id, isPersonal, id);
             } else if (action === 'archive') {
                 archiveChallenge(id, isPersonal);
@@ -1481,7 +1527,7 @@
         function toggleShowHiddenShared() {
             showHiddenShared = !showHiddenShared;
             const btn = document.getElementById('btn-toggle-hidden-shared');
-            btn.innerText = showHiddenShared ? "👁️ Ẩn các thử thách đã giấu" : "👁️ Xem thử thách đã ẩn";
+            btn.innerText = showHiddenShared ? "🙈 Ẩn các thử thách đã giấu" : "🙈 Xem thử thách đã ẩn";
             renderDashboard();
         }
 
@@ -1710,14 +1756,14 @@
                 if (!challenge.participantReasons) challenge.participantReasons = {};
                 challenge.participants[loggedInUserId] = 'given_up';
                 challenge.participantReasons[loggedInUserId] = reason;
-                if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách nhóm "${challenge.title}" (Phạt 100k)`);
+                if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách nhóm "${challenge.title}" (-100k)`);
             } else {
                 const habits = appData.personalHabits[loggedInUserId] || [];
                 const habit = habits.find(h => h.id === habitId);
                 if (habit) {
                     habit.status = 'given_up';
                     habit.reason = reason;
-                    if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách cá nhân "${habit.text}" (Phạt 100k)`);
+                    if (mIndex !== -1) addPinHistoryLog(mIndex, `Bỏ cuộc thử thách cá nhân "${habit.text}" (-100k)`);
                 }
             }
             dbRef.set(appData);
@@ -1854,10 +1900,7 @@
                             <span class="text-[11px] bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 px-2.5 py-0.5 rounded-full font-medium inline-block mt-0.5">${t('createdBy')}: ${creatorName} (${createdDateStr})</span>
                             ${isReadOnly ? `<span class="text-[10px] bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 px-2 py-0.5 rounded-full font-bold ml-1">🔒 Chỉ xem</span>` : ''}
                         </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="toggleHideSharedChallenge(${challenge.id})" class="text-xs text-slate-400 hover:text-indigo-600 p-1" title="${isHiddenByMe ? 'Hiện lại' : 'Ẩn khỏi màn hình cá nhân'}">${isHiddenByMe ? '👁️‍🗨️' : '👁️'}</button>
-                            <button onclick="openActionMenuModal(${challenge.id}, false)" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 text-lg font-bold">⋮</button>
-                        </div>
+                        <button onclick="openActionMenuModal(${challenge.id}, false)" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 text-lg font-bold">⋮</button>
                     </div>
                     ${contentHtml}
                 `;
