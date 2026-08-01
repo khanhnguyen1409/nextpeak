@@ -23,16 +23,16 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Font size scaling */
-        body.font-small { font-size: 13px; }
-        body.font-normal { font-size: 15px; }
+        body.font-small { font-size: 14.5px; }
+        body.font-normal { font-size: 16.5px; }
         
         /* Font Large */
-        body.font-large { font-size: 19px; line-height: 1.6; }
-        body.font-large .text-xs { font-size: 14px !important; }
-        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 13px !important; }
-        body.font-large .text-sm { font-size: 17px !important; }
-        body.font-large .text-base { font-size: 20px !important; }
-        body.font-large .text-2xl { font-size: 28px !important; }
+        body.font-large { font-size: 21px; line-height: 1.65; }
+        body.font-large .text-xs { font-size: 15.5px !important; }
+        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 14.5px !important; }
+        body.font-large .text-sm { font-size: 18.5px !important; }
+        body.font-large .text-base { font-size: 22px !important; }
+        body.font-large .text-2xl { font-size: 30px !important; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
@@ -93,6 +93,24 @@
             <div id="notification-list" class="space-y-2 overflow-y-auto flex-1 text-xs pr-1"></div>
 
             <button onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold transition">Đóng</button>
+        </div>
+    </div>
+
+    <!-- MODAL BẢNG XẾP HẠNG (MỞ TỪ MENU 3 DẤU CHẤM) -->
+    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
+                    🏆 <span id="leaderboard-modal-title">Bảng xếp hạng thử thách</span>
+                </h3>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
+            </div>
+            
+            <div class="relative h-64 w-full py-2">
+                <canvas id="modal-chart-canvas"></canvas>
+            </div>
+
+            <button onclick="closeLeaderboardModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-semibold transition">Đóng</button>
         </div>
     </div>
 
@@ -249,6 +267,7 @@
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center">Tùy chọn thử thách</h4>
+            <button id="action-btn-leaderboard" onclick="triggerMenuAction('leaderboard')" class="w-full text-left py-2.5 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl transition flex items-center gap-2">🏆 Bảng xếp hạng</button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-600 rounded-xl transition flex items-center gap-2">📦 Lưu trữ</button>
             <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ Xóa vĩnh viễn</button>
@@ -901,7 +920,7 @@
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
-        let activeCharts = {};
+        let activeModalChart = null;
         let currentEditingDay = null;
         let isEditMode = false;
         let tempAvatarBase64 = '';
@@ -959,7 +978,7 @@
             }
         }
 
-        function sendNotification(targetUserId, type, senderName, challengeTitle, textPreview) {
+        function sendNotification(targetUserId, type, senderName, challengeTitle, textPreview, challengeId, isPersonal) {
             if (!targetUserId || targetUserId === loggedInUserId) return;
             if (!appData.notifications) appData.notifications = {};
             if (!appData.notifications[targetUserId]) appData.notifications[targetUserId] = [];
@@ -974,7 +993,9 @@
                 challengeTitle: challengeTitle,
                 text: textPreview,
                 timestamp: timeStr,
-                read: false
+                read: false,
+                challengeId: challengeId,
+                isPersonal: !!isPersonal
             });
         }
 
@@ -1000,10 +1021,12 @@
 
             userNotifs.forEach(n => {
                 const item = document.createElement('div');
-                item.className = `p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 dark:border-indigo-800 font-medium'}`;
+                item.className = `p-3 rounded-2xl border transition cursor-pointer hover:border-indigo-400 ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 dark:border-indigo-800 font-medium'}`;
                 
                 const icon = n.type === 'tag' ? '🏷️' : '↩️';
                 const actionText = n.type === 'tag' ? 'đã nhắc đến bạn' : 'đã trả lời bình luận của bạn';
+
+                item.onclick = () => handleNotificationClick(n.id, n.challengeId, n.isPersonal);
 
                 item.innerHTML = `
                     <div class="flex items-start justify-between gap-2">
@@ -1021,12 +1044,161 @@
             });
         }
 
+        /* BẤM VÀO THÔNG BÁO -> MỞ THỬ THÁCH TƯƠNG ỨNG */
+        function handleNotificationClick(notifId, challengeId, isPersonal) {
+            if (loggedInUserId && appData.notifications && appData.notifications[loggedInUserId]) {
+                const notif = appData.notifications[loggedInUserId].find(n => n.id === notifId);
+                if (notif) notif.read = true;
+                dbRef.set(appData);
+            }
+            closeNotificationModal();
+            
+            if (isPersonal) {
+                switchTab('update');
+            } else {
+                switchTab('dashboard');
+            }
+
+            if (challengeId) {
+                setTimeout(() => {
+                    showDescriptionModalById(challengeId, isPersonal);
+                }, 150);
+            }
+        }
+
         function markAllNotificationsRead() {
             if (!loggedInUserId || !appData.notifications || !appData.notifications[loggedInUserId]) return;
             appData.notifications[loggedInUserId].forEach(n => n.read = true);
             dbRef.set(appData);
             renderNotificationList();
             updateNotificationBadge();
+        }
+
+        /* MODAL BẢNG XẾP HẠNG VẼ BIỂU ĐỒ */
+        function showLeaderboardModal(challengeId) {
+            const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
+            if (!challenge) return;
+
+            document.getElementById('leaderboard-modal-title').innerText = challenge.title;
+            document.getElementById('leaderboard-modal').classList.remove('hidden');
+
+            if (activeModalChart) {
+                activeModalChart.destroy();
+                activeModalChart = null;
+            }
+
+            setTimeout(() => {
+                const canvasEl = document.getElementById('modal-chart-canvas');
+                if (!canvasEl) return;
+
+                const totalD = challenge.totalDays || 25;
+                const participantsMap = challenge.participants || {};
+                const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true || participantsMap[mId] === 'given_up');
+                
+                const sortedMembers = activeMembers.map(mId => {
+                    const mObj = appData.members.find(m => m.id === mId);
+                    let total = (challenge.progress && challenge.progress[mId]) ? challenge.progress[mId].filter(item => item && item.completed).length : 0;
+                    return { id: mId, name: mObj ? mObj.name : mId, avatar: mObj ? mObj.avatar : '', count: total };
+                }).sort((a, b) => b.count - a.count);
+
+                const labels = sortedMembers.map(m => m.name);
+                const dataCounts = sortedMembers.map(m => m.count);
+
+                const ctx = canvasEl.getContext('2d');
+                const isDark = currentTheme === 'dark';
+                const textColor = isDark ? '#cbd5e1' : '#475569';
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+                const avatarPlugin = {
+                    id: 'avatarPluginModal',
+                    afterDraw(chart) {
+                        const { ctx, scales: { x } } = chart;
+                        ctx.save();
+                        sortedMembers.forEach((m, index) => {
+                            const xPos = x.getPixelForValue(index);
+                            const yPos = chart.chartArea.bottom + 10;
+                            
+                            ctx.beginPath();
+                            ctx.arc(xPos, yPos + 10, 11, 0, 2 * Math.PI);
+                            ctx.fillStyle = isDark ? '#334155' : '#e2e8f0';
+                            ctx.fill();
+                            ctx.lineWidth = 1.5;
+                            ctx.strokeStyle = isDark ? '#475569' : '#cbd5e1';
+                            ctx.stroke();
+                            ctx.closePath();
+                            ctx.clip();
+
+                            if (m.avatar) {
+                                const img = new Image();
+                                img.src = m.avatar;
+                                if (img.complete) {
+                                    ctx.drawImage(img, xPos - 11, yPos - 1, 22, 22);
+                                } else {
+                                    img.onload = () => chart.draw();
+                                }
+                            } else {
+                                ctx.fillStyle = textColor;
+                                ctx.font = 'bold 9px sans-serif';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText(m.name.charAt(0), xPos, yPos + 10);
+                            }
+                            ctx.restore();
+                        });
+                    }
+                };
+
+                const barValuePlugin = {
+                    id: 'barValuePluginModal',
+                    afterDatasetsDraw(chart) {
+                        const { ctx } = chart;
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+                            meta.data.forEach((bar, index) => {
+                                const dataValue = dataset.data[index];
+                                ctx.fillStyle = textColor;
+                                ctx.font = 'bold 11px sans-serif';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+                                ctx.fillText(dataValue, bar.x, bar.y - 5);
+                            });
+                        });
+                    }
+                };
+
+                activeModalChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: currentLang === 'vi' ? 'Số ngày hoàn thành' : 'Completed days',
+                            data: dataCounts,
+                            backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                            borderColor: 'rgb(99, 102, 241)',
+                            borderWidth: 1,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { ticks: { color: textColor, padding: 30 }, grid: { display: false } },
+                            y: { beginAtZero: true, max: totalD, ticks: { color: textColor, stepSize: 5 }, grid: { color: gridColor } }
+                        },
+                        plugins: { legend: { display: false } }
+                    },
+                    plugins: [avatarPlugin, barValuePlugin]
+                });
+            }, 50);
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboard-modal').classList.add('hidden');
+            if (activeModalChart) {
+                activeModalChart.destroy();
+                activeModalChart = null;
+            }
         }
 
         function openHintModal() {
@@ -1570,7 +1742,7 @@
                 <div><strong>📅 Ngày bắt đầu:</strong> ${formatDateString(startDate)}</div>
                 <div><strong>🎯 Mục tiêu:</strong> ${targetD} ngày (Tổng thời gian: ${totalD} ngày)</div>
                 <div><strong>👤 Tạo bởi:</strong> ${creator}</div>
-                ${!isPersonal ? (isBigPlay ? `<div class="text-rose-600 dark:text-rose-400 font-bold"><strong>🔥 CHƠI LỚN:</strong> Thưởng +${customReward}k / Phạt -${customPenalty}k</div>` : `<div class="text-indigo-600 dark:text-indigo-400 font-bold"><strong>🎁 THƯỞNG PHẠT:</strong> +1 Sách / -100k</div>`) : `<div class="text-emerald-600 dark:text-emerald-400 font-bold"><strong>🎁 Tự thưởng:</strong> ${selfReward}</div><div class="text-rose-600 dark:text-rose-400 font-bold"><strong>💸 Phạt:</strong> ${selfPenalty}</div>`}
+                ${!isPersonal ? (isBigPlay ? `<div class="text-rose-600 dark:text-rose-400 font-bold"><strong>🔥 CHƠI LỚN:</strong> Thưởng +${customReward}k / Phạt -${customPenalty}k</div>` : `<div class="text-rose-600 dark:text-rose-400 font-bold"><strong>🎁 THƯỞNG PHẠT:</strong> +1 Sách / -100k</div>`) : `<div class="text-emerald-600 dark:text-emerald-400 font-bold"><strong>🎁 Tự thưởng:</strong> ${selfReward}</div><div class="text-rose-600 dark:text-rose-400 font-bold"><strong>💸 Phạt:</strong> ${selfPenalty}</div>`}
             `;
             document.getElementById('desc-modal-content').innerText = (desc && desc.trim() !== '') ? desc : t('noDescription');
             document.getElementById('desc-modal-members-list').innerHTML = membersListHtml;
@@ -1583,12 +1755,14 @@
 
         function openActionMenuModal(id, isPersonal) {
             selectedMenuChallenge = { id, isPersonal };
+            const leaderboardBtn = document.getElementById('action-btn-leaderboard');
             const giveUpBtn = document.getElementById('action-btn-giveup');
             
             let isCompleted = false;
             let isParticipant = false;
 
             if (!isPersonal) {
+                leaderboardBtn.classList.remove('hidden');
                 const c = appData.sharedChallenges.find(x => x.id === id);
                 if (c) {
                     const pStatus = c.participants ? c.participants[loggedInUserId] : null;
@@ -1597,6 +1771,7 @@
                     isCompleted = myCount >= (c.targetDays || 21);
                 }
             } else {
+                leaderboardBtn.classList.add('hidden');
                 const habits = appData.personalHabits[loggedInUserId] || [];
                 const h = habits.find(x => x.id === id);
                 if (h) {
@@ -1630,7 +1805,9 @@
             const { id, isPersonal } = selectedMenuChallenge;
             closeActionMenuModal();
 
-            if (action === 'giveup') {
+            if (action === 'leaderboard') {
+                showLeaderboardModal(id);
+            } else if (action === 'giveup') {
                 giveUpChallenge(id, isPersonal, id);
             } else if (action === 'archive') {
                 archiveChallenge(id, isPersonal);
@@ -1851,13 +2028,13 @@
 
                 // KÍCH HOẠT THÔNG BÁO CHO NGƯỜI ĐƯỢC REPLY HOẶC TAG
                 if (replyObj && replyObj.authorId) {
-                    sendNotification(replyObj.authorId, 'reply', authorName, titleOfChallenge, text);
+                    sendNotification(replyObj.authorId, 'reply', authorName, titleOfChallenge, text, challengeId, isPersonal);
                 }
 
                 // QUÉT THẺ TAG @NAME VÀ GỬI THÔNG BÁO
                 appData.members.forEach(m => {
                     if (text.includes(`@${m.name}`) && (!replyObj || replyObj.authorId !== m.id)) {
-                        sendNotification(m.id, 'tag', authorName, titleOfChallenge, text);
+                        sendNotification(m.id, 'tag', authorName, titleOfChallenge, text, challengeId, isPersonal);
                     }
                 });
 
@@ -2136,9 +2313,6 @@
             const container = document.getElementById('shared-challenges-list');
             container.innerHTML = '';
 
-            Object.values(activeCharts).forEach(chart => chart.destroy());
-            activeCharts = {};
-
             const activeShared = (appData.sharedChallenges || []).filter(c => {
                 if (c.archived) return false;
                 
@@ -2172,9 +2346,11 @@
                 const isReadOnly = challenge.restoredReadOnly === true;
 
                 const bigPlayBadge = challenge.isBigPlay ? `<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm ml-1.5 inline-flex items-center gap-0.5">🔥 CHƠI LỚN</span>` : '';
+                
+                // ĐỒNG NHẤT VIỀN VÀ MÀU NỀN THƯỞNG PHẠT THƯỜNG VỚI CHƠI LỚN
                 const rewardPenaltyDetail = challenge.isBigPlay 
-                    ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900">🎁 +${challenge.customReward || 0}k / 💸 -${challenge.customPenalty || 0}k</span>` 
-                    : `<span class="text-[10px] bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-bold ml-1 border border-indigo-200 dark:border-indigo-900">🎁 +1 Sách / 💸 -100k</span>`;
+                    ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2.5 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900 shadow-2xs">🎁 +${challenge.customReward || 0}k / 💸 -${challenge.customPenalty || 0}k</span>` 
+                    : `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 px-2.5 py-0.5 rounded-full font-bold ml-1 border border-rose-200 dark:border-rose-900 shadow-2xs">🎁 +1 Sách / 💸 -100k</span>`;
 
                 const activeMemberIds = Object.keys(challenge.participants).filter(mId => challenge.participants[mId] === true || challenge.participants[mId] === 'given_up');
                 let avatarsHtml = `<div class="flex -space-x-1.5 overflow-hidden my-1">`;
@@ -2254,13 +2430,6 @@
                                 ${isGivenUp ? `<span class="text-red-600 dark:text-red-400 font-bold bg-red-50 dark:bg-red-950/40 px-2.5 py-0.5 rounded-full text-[11px]">${t('givenUpStatus')}</span>` : ''}
                             </div>
                             ${isGivenUp ? '' : gridHtml}
-                            
-                            <div class="pt-4 border-t border-slate-100 dark:border-slate-700">
-                                <h5 class="text-xs font-bold text-slate-600 dark:text-slate-400 mb-2 uppercase tracking-wider">${t('leaderboard')}</h5>
-                                <div class="relative h-56 w-full">
-                                    <canvas id="chart-challenge-${challenge.id}"></canvas>
-                                </div>
-                            </div>
                         </div>
                     `;
                 }
@@ -2280,111 +2449,6 @@
                     ${commentsHtml}
                 `;
                 container.appendChild(card);
-
-                if (isJoined && !isGivenUp) {
-                    setTimeout(() => {
-                        const canvasEl = document.getElementById(`chart-challenge-${challenge.id}`);
-                        if (canvasEl) {
-                            const participantsMap = challenge.participants || {};
-                            const activeMembers = Object.keys(participantsMap).filter(mId => participantsMap[mId] === true);
-                            const sortedMembers = activeMembers.map(mId => {
-                                const mObj = appData.members.find(m => m.id === mId);
-                                let total = (challenge.progress && challenge.progress[mId]) ? challenge.progress[mId].filter(item => item && item.completed).length : 0;
-                                return { id: mId, name: mObj ? mObj.name : mId, avatar: mObj ? mObj.avatar : '', count: total };
-                            }).sort((a, b) => b.count - a.count);
-
-                            const labels = sortedMembers.map(m => m.name);
-                            const dataCounts = sortedMembers.map(m => m.count);
-
-                            const ctx = canvasEl.getContext('2d');
-                            const isDark = currentTheme === 'dark';
-                            const textColor = isDark ? '#cbd5e1' : '#475569';
-                            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
-
-                            const avatarPlugin = {
-                                id: 'avatarPlugin',
-                                afterDraw(chart) {
-                                    const { ctx, scales: { x } } = chart;
-                                    ctx.save();
-                                    sortedMembers.forEach((m, index) => {
-                                        const xPos = x.getPixelForValue(index);
-                                        const yPos = chart.chartArea.bottom + 10;
-                                        
-                                        ctx.beginPath();
-                                        ctx.arc(xPos, yPos + 10, 11, 0, 2 * Math.PI);
-                                        ctx.fillStyle = isDark ? '#334155' : '#e2e8f0';
-                                        ctx.fill();
-                                        ctx.lineWidth = 1.5;
-                                        ctx.strokeStyle = isDark ? '#475569' : '#cbd5e1';
-                                        ctx.stroke();
-                                        ctx.closePath();
-                                        ctx.clip();
-
-                                        if (m.avatar) {
-                                            const img = new Image();
-                                            img.src = m.avatar;
-                                            if (img.complete) {
-                                                ctx.drawImage(img, xPos - 11, yPos - 1, 22, 22);
-                                            } else {
-                                                img.onload = () => chart.draw();
-                                            }
-                                        } else {
-                                            ctx.fillStyle = textColor;
-                                            ctx.font = 'bold 9px sans-serif';
-                                            ctx.textAlign = 'center';
-                                            ctx.textBaseline = 'middle';
-                                            ctx.fillText(m.name.charAt(0), xPos, yPos + 10);
-                                        }
-                                        ctx.restore();
-                                    });
-                                }
-                            };
-
-                            const barValuePlugin = {
-                                id: 'barValuePlugin',
-                                afterDatasetsDraw(chart) {
-                                    const { ctx } = chart;
-                                    chart.data.datasets.forEach((dataset, datasetIndex) => {
-                                        const meta = chart.getDatasetMeta(datasetIndex);
-                                        meta.data.forEach((bar, index) => {
-                                            const dataValue = dataset.data[index];
-                                            ctx.fillStyle = textColor;
-                                            ctx.font = 'bold 11px sans-serif';
-                                            ctx.textAlign = 'center';
-                                            ctx.textBaseline = 'bottom';
-                                            ctx.fillText(dataValue, bar.x, bar.y - 5);
-                                        });
-                                    });
-                                }
-                            };
-
-                            activeCharts[challenge.id] = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: currentLang === 'vi' ? 'Số ngày hoàn thành' : 'Completed days',
-                                        data: dataCounts,
-                                        backgroundColor: 'rgba(99, 102, 241, 0.8)',
-                                        borderColor: 'rgb(99, 102, 241)',
-                                        borderWidth: 1,
-                                        borderRadius: 8
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        x: { ticks: { color: textColor, padding: 30 }, grid: { display: false } },
-                                        y: { beginAtZero: true, max: totalD, ticks: { color: textColor, stepSize: 5 }, grid: { color: gridColor } }
-                                    },
-                                    plugins: { legend: { display: false } }
-                                },
-                                plugins: [avatarPlugin, barValuePlugin]
-                            });
-                        }
-                    }, 50);
-                }
             });
         }
 
