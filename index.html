@@ -77,6 +77,24 @@
         </div>
     </div>
 
+    <!-- MODAL BẢNG XẾP HẠNG (POPUP) -->
+    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">
+                    🏆 <span id="leaderboard-modal-title">Bảng Xếp Hạng</span>
+                </h3>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg">✕</button>
+            </div>
+
+            <div class="relative h-64 sm:h-80 w-full py-2 flex-1">
+                <canvas id="modal-leaderboard-chart"></canvas>
+            </div>
+
+            <button onclick="closeLeaderboardModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-semibold transition">Đóng</button>
+        </div>
+    </div>
+
     <!-- MODAL CHUÔNG THÔNG BÁO -->
     <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
@@ -787,8 +805,8 @@
             document.getElementById('personal-input').placeholder = t('habitPh');
             document.getElementById('personal-desc-input').placeholder = t('descPersonalPh');
             document.getElementById('t-start-date-2').innerText = t('startDate');
-            document.getElementById('t-target-days-2').innerText = t('targetDays-2') || t('targetDays');
-            document.getElementById('t-total-days-2').innerText = t('totalDays-2') || t('totalDays');
+            document.getElementById('t-target-days-2').innerText = t('targetDays');
+            document.getElementById('t-total-days-2').innerText = t('totalDays');
             document.getElementById('t-add-habit-btn').innerText = t('addHabitBtn');
 
             document.getElementById('l-welcome').innerText = t('welcome');
@@ -901,7 +919,7 @@
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
-        let activeCharts = {};
+        let modalChart = null; // Biến lưu instance chart trong Modal
         let currentEditingDay = null;
         let isEditMode = false;
         let tempAvatarBase64 = '';
@@ -2132,30 +2150,34 @@
             dbRef.set(appData);
         }
 
-        /* BẬT / TẮT BẢNG XẾP HẠNG THEO YÊU CẦU */
-        function toggleLeaderboardChart(challengeId) {
-            const container = document.getElementById(`leaderboard-container-${challengeId}`);
-            if (!container) return;
-            const isHidden = container.classList.contains('hidden');
-            if (isHidden) {
-                container.classList.remove('hidden');
-                renderSingleChallengeChart(challengeId);
-            } else {
-                container.classList.add('hidden');
-            }
-        }
-
-        /* HÀM VẼ BIỂU ĐỒ BẢNG XẾP HẠNG KHI ĐƯỢC MỞ */
-        function renderSingleChallengeChart(challengeId) {
+        /* XỬ LÝ MỞ POPUP BẢNG XẾP HẠNG */
+        function openLeaderboardModal(challengeId) {
             const challenge = appData.sharedChallenges.find(c => c.id === challengeId);
             if (!challenge) return;
 
-            const canvasEl = document.getElementById(`chart-challenge-${challengeId}`);
+            document.getElementById('leaderboard-modal-title').innerText = `Bảng Xếp Hạng - ${challenge.title}`;
+            document.getElementById('leaderboard-modal').classList.remove('hidden');
+
+            setTimeout(() => {
+                renderModalChart(challenge);
+            }, 50);
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboard-modal').classList.add('hidden');
+            if (modalChart) {
+                modalChart.destroy();
+                modalChart = null;
+            }
+        }
+
+        function renderModalChart(challenge) {
+            const canvasEl = document.getElementById('modal-leaderboard-chart');
             if (!canvasEl) return;
 
-            if (activeCharts[challengeId]) {
-                activeCharts[challengeId].destroy();
-                delete activeCharts[challengeId];
+            if (modalChart) {
+                modalChart.destroy();
+                modalChart = null;
             }
 
             const totalD = challenge.totalDays || 25;
@@ -2176,7 +2198,7 @@
             const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
 
             const avatarPlugin = {
-                id: 'avatarPlugin',
+                id: 'avatarPluginModal',
                 afterDraw(chart) {
                     const { ctx, scales: { x } } = chart;
                     ctx.save();
@@ -2215,7 +2237,7 @@
             };
 
             const barValuePlugin = {
-                id: 'barValuePlugin',
+                id: 'barValuePluginModal',
                 afterDatasetsDraw(chart) {
                     const { ctx } = chart;
                     chart.data.datasets.forEach((dataset, datasetIndex) => {
@@ -2232,7 +2254,7 @@
                 }
             };
 
-            activeCharts[challengeId] = new Chart(ctx, {
+            modalChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -2261,9 +2283,6 @@
         function renderDashboard() {
             const container = document.getElementById('shared-challenges-list');
             container.innerHTML = '';
-
-            Object.values(activeCharts).forEach(chart => chart.destroy());
-            activeCharts = {};
 
             const activeShared = (appData.sharedChallenges || []).filter(c => {
                 if (c.archived) return false;
@@ -2299,7 +2318,6 @@
 
                 const bigPlayBadge = challenge.isBigPlay ? `<span class="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm ml-1.5 inline-flex items-center gap-0.5">🔥 CHƠI LỚN</span>` : '';
                 
-                // ĐỒNG NHẤT VIỀN NỀN VÀ PHÂN ĐỊNH MÀU TEXT XANH (THƯỞNG) / ĐỎ (PHẠT)
                 const rewardPenaltyDetail = challenge.isBigPlay 
                     ? `<span class="text-[10px] bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 px-2 py-0.5 rounded-full font-bold ml-1 inline-flex items-center gap-1">
                         <span class="text-emerald-600 dark:text-emerald-400">🎁 +${challenge.customReward || 0}k</span>
@@ -2386,8 +2404,8 @@
                                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                                     ${t('progress')}: <strong class="text-indigo-600 dark:text-indigo-400">${myCompletedCount}/${targetD} ngày (${progressPercent}%)</strong>
                                     
-                                    <!-- ICON CHIẾC CÚP BÊN PHẢI TIẾN ĐỘ ĐỂ BẤM XEM BẢNG XẾP HẠNG -->
-                                    <button onclick="toggleLeaderboardChart(${challenge.id})" class="p-1 text-sm bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 border border-indigo-200 dark:border-indigo-800 rounded-lg transition shrink-0 flex items-center gap-0.5 font-bold text-indigo-700 dark:text-indigo-300" title="Bấm để xem Bảng Xếp Hạng">
+                                    <!-- NÚT ICON CHIẾC CÚP BẤM MỞ POPUP BẢNG XẾP HẠNG -->
+                                    <button onclick="openLeaderboardModal(${challenge.id})" class="p-1 text-sm bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 border border-indigo-200 dark:border-indigo-800 rounded-lg transition shrink-0 flex items-center gap-0.5 font-bold text-indigo-700 dark:text-indigo-300 shadow-xs" title="Bấm để mở Bảng Xếp Hạng">
                                         🏆 <span class="text-[10px] hidden sm:inline">${t('leaderboard')}</span>
                                     </button>
 
@@ -2396,17 +2414,6 @@
                                 ${isGivenUp ? `<span class="text-red-600 dark:text-red-400 font-bold bg-red-50 dark:bg-red-950/40 px-2.5 py-0.5 rounded-full text-[11px]">${t('givenUpStatus')}</span>` : ''}
                             </div>
                             ${isGivenUp ? '' : gridHtml}
-
-                            <!-- KHUNG BẢNG XẾP HẠNG BẢN ĐỒ DẠNG EXPANDABLE (MẶC ĐỊNH ẨN, CHỈ MỞ KHI BẤM NÚT CÚP) -->
-                            <div id="leaderboard-container-${challenge.id}" class="hidden pt-3 border-t border-slate-100 dark:border-slate-700 space-y-2">
-                                <div class="flex justify-between items-center">
-                                    <h5 class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1">🏆 ${t('leaderboard')}</h5>
-                                    <button onclick="toggleLeaderboardChart(${challenge.id})" class="text-[10px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold">Ẩn ✕</button>
-                                </div>
-                                <div class="relative h-56 w-full">
-                                    <canvas id="chart-challenge-${challenge.id}"></canvas>
-                                </div>
-                            </div>
                         </div>
                     `;
                 }
