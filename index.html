@@ -20,6 +20,13 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
         body.font-small { font-size: 13px; }
         body.font-small .text-xs { font-size: 11px !important; }
         body.font-small .text-sm { font-size: 13px !important; }
@@ -294,7 +301,7 @@
             </div>
             
             <div id="modal-read-only-notice" class="hidden p-2 bg-amber-100 text-amber-800 text-[11px] rounded-lg font-bold text-center"></div>
-            <div id="modal-lock-notice" class="hidden p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center">⚠️ Quá thời hạn check-in. Đã khóa quyền.</div>
+            <div id="modal-lock-notice" class="hidden p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center"></div>
 
             <div class="space-y-4">
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
@@ -375,7 +382,7 @@
             <!-- CHỮ NỔI BẬT ĐƯỢC TẠO SHADOW -->
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Thử Thách Kỷ Luật BVGP</h1>
-                <p id="slogan-text" class="text-xs text-slate-100 font-semibold italic px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"></p>
+                <p id="slogan-text" class="text-[11px] sm:text-xs text-slate-100 font-semibold italic px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-snug line-clamp-2"></p>
             </div>
         </header>
 
@@ -422,11 +429,11 @@
                     </div>
                     <div class="col-span-1">
                         <label id="t-target-days" class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu:</label>
-                        <input type="number" id="create-target-input" value="21" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center" required>
+                        <input type="number" id="create-target-input" value="14" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center" required>
                     </div>
                     <div class="col-span-1">
                         <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng ngày:</label>
-                        <input type="number" id="create-days-input" value="25" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center" required>
+                        <input type="number" id="create-days-input" value="16" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center" required>
                     </div>
                 </div>
 
@@ -435,13 +442,13 @@
                         <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
                         <span id="t-bigplay-label">🔥 Chơi lớn</span>
                     </label>
-                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-rose-50 rounded-xl border border-rose-100">
+                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 rounded-xl border border-indigo-200">
                         <div>
-                            <label id="t-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1">Thưởng (k):</label>
+                            <label id="t-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
                             <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs">
                         </div>
                         <div>
-                            <label id="t-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1">Phạt (k):</label>
+                            <label id="t-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
                             <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs">
                         </div>
                     </div>
@@ -451,11 +458,11 @@
                     <p id="t-ifthen-title" class="text-[11px] font-bold text-emerald-600"></p>
                     <div class="grid grid-cols-2 gap-2 p-2 bg-emerald-50 rounded-xl border border-emerald-100">
                         <div>
-                            <label id="t-self-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1"></label>
+                            <label id="t-self-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">🎁 Thưởng:</label>
                             <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border rounded-xl text-xs">
                         </div>
                         <div>
-                            <label id="t-self-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1"></label>
+                            <label id="t-self-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">💸 Phạt:</label>
                             <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border rounded-xl text-xs">
                         </div>
                     </div>
@@ -479,14 +486,14 @@
                 reportModalTitle: "📋 Kết quả thử thách",
                 createSharedTitle: "Tạo thử thách nhóm",
                 createPersonalTitle: "Thêm thử thách cá nhân",
-                challengePh: "Tên thử thách nhóm (VD: Dậy sớm kịp đón bình minh)...",
-                descSharedPh: "Mô tả/ Quy tắc thử thách (VD: Trước 5:30)...",
+                challengePh: "Tên thử thách...",
+                descSharedPh: "Mô tả/ Quy tắc thử thách...",
                 startDate: "Ngày bắt đầu:",
                 targetDays: "Mục tiêu:",
                 totalDays: "Tổng ngày:",
                 createBtn: "Tạo thử thách",
-                habitPh: "Tên thử thách cá nhân (VD: Thực tập lòng biết ơn)...",
-                descPersonalPh: "Mô tả/ Quy tắc thử thách (VD: Viết ra 3 điều)...",
+                habitPh: "Tên thử thách...",
+                descPersonalPh: "Mô tả/ Quy tắc thử thách...",
                 addHabitBtn: "Thêm thử thách",
                 noHabits: "Chưa có thử thách cá nhân nào.",
                 noChallenges: "Chưa có thử thách nhóm nào.",
@@ -542,8 +549,8 @@
                 hintRefresh: "Đổi",
                 useTemplate: "Dùng",
                 bigPlayLabel: "🔥 Chơi lớn",
-                rewardLabel: "Thưởng (k):",
-                penaltyLabel: "Phạt (k):",
+                rewardLabel: "🎁 Thưởng (k):",
+                penaltyLabel: "💸 Phạt (k):",
                 filterLabel: "Hiển thị:",
                 optMy: "Thử thách của tôi",
                 optNew: "Thử thách mới",
@@ -551,7 +558,7 @@
                 optArchived: "Đã lưu trữ",
                 ifThenTitle: "⚡ Tự cam kết \"Nếu... thì...\"",
                 selfRewardLabel: "🎁 Thưởng:",
-                selfRewardPh: "VD: Mua sách...",
+                selfRewardPh: "VD: Một chuyến đi du lịch đâu đó...",
                 selfPenaltyLabel: "💸 Phạt:",
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
                 reportActive: "Hoạt động",
@@ -617,7 +624,9 @@
                 changePin: "Đổi mã PIN",
                 history: "Lịch sử hoạt động",
                 copyReportContent: "📄 Chép nội dung",
-                shareAchievement: "Chia sẻ thành tích"
+                shareAchievement: "Chia sẻ thành tích",
+                lockNotice: "⚠️ Quá thời hạn check-in (tối đa 48h). Đã khóa quyền.",
+                endedNotice: "✅ Thử thách đã kết thúc."
             },
             en: {
                 appTitle: "BVGP Discipline",
@@ -627,14 +636,14 @@
                 reportModalTitle: "📋 Results",
                 createSharedTitle: "Create Group Challenge",
                 createPersonalTitle: "Add Personal Challenge",
-                challengePh: "Name (e.g., Early Rise)...",
-                descSharedPh: "Description (e.g., Before 5:30 AM)...",
+                challengePh: "Challenge name...",
+                descSharedPh: "Description / Rules...",
                 startDate: "Start:",
                 targetDays: "Target:",
                 totalDays: "Total:",
                 createBtn: "Create",
-                habitPh: "Name (e.g., Gratitude)...",
-                descPersonalPh: "Goal (e.g., Write 3 things)...",
+                habitPh: "Challenge name...",
+                descPersonalPh: "Description / Rules...",
                 addHabitBtn: "Add",
                 noHabits: "No personal challenges.",
                 noChallenges: "No group challenges.",
@@ -690,8 +699,8 @@
                 hintRefresh: "Refresh",
                 useTemplate: "Use",
                 bigPlayLabel: "🔥 Big Play",
-                rewardLabel: "Reward (k):",
-                penaltyLabel: "Penalty (k):",
+                rewardLabel: "🎁 Reward (k):",
+                penaltyLabel: "💸 Penalty (k):",
                 filterLabel: "Show:",
                 optMy: "My Challenges",
                 optNew: "New",
@@ -699,7 +708,7 @@
                 optArchived: "Archived",
                 ifThenTitle: "⚡ \"If... Then...\"",
                 selfRewardLabel: "🎁 Reward:",
-                selfRewardPh: "E.g., Buy a book...",
+                selfRewardPh: "E.g., A trip to somewhere...",
                 selfPenaltyLabel: "💸 Penalty:",
                 selfPenaltyPh: "E.g., 100 pushups...",
                 reportActive: "Active",
@@ -765,13 +774,117 @@
                 changePIN: "Change PIN",
                 history: "History",
                 copyReportContent: "📄 Copy Report",
-                shareAchievement: "Share achievement"
+                shareAchievement: "Share achievement",
+                lockNotice: "⚠️ Check-in expired (max 48h). Locked.",
+                endedNotice: "✅ Challenge ended."
             }
         };
 
         const slogans = {
-            vi: ["Kỷ luật là cầu nối giữa mục tiêu và thành tựu.", "Hành trình vạn dặm khởi đầu từ một bước chân nhỏ.", "Động lực giúp bắt đầu, kỷ luật giúp đến đích."],
-            en: ["Discipline is the bridge to accomplishment.", "A thousand miles begins with a single step.", "Motivation starts, discipline finishes."]
+            vi: [
+                "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
+                "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
+                "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun",
+                "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện. - Khuyết danh",
+                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle",
+                "Kỷ luật bản thân là chìa khóa mở ra cánh cửa tự do. - Stephen Covey",
+                "Sự khác biệt giữa không thể và có thể nằm ở sự quyết tâm. - Tommy Lasorda",
+                "Một ounce thực hành đáng giá hơn một tấn lý thuyết. - Swami Vivekananda",
+                "Không có con đường tắt nào dẫn đến bất kỳ nơi nào đáng giá. - Beverly Sills",
+                "Đừng chờ đợi cơ hội, hãy tạo ra nó. - George Bernard Shaw",
+                "Bí mật của tương lai bạn được cất giấu trong thói quen hằng ngày. - Mike Murdock",
+                "Chiến thắng lớn nhất là chiến thắng chính mình. - Plato",
+                "Cách tốt nhất để dự đoán tương lai là tạo ra nó. - Peter Drucker",
+                "Hãy sống mỗi ngày như thể đó là kiệt tác của bạn. - John Wooden",
+                "Những điều tuyệt vời không bao giờ đến từ vùng an toàn. - Khuyết danh",
+                "Thất bại là gia vị làm cho thành công thêm hương vị. - Truman Capote",
+                "Mọi thành tựu lớn đều đòi hỏi thời gian. - Maya Angelou",
+                "Không có gì là không thể với một trái tim sẵn sàng. - Khuyết danh",
+                "Đầu tư vào bản thân là khoản đầu tư sinh lời nhất. - Warren Buffett",
+                "Bạn không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm. - Jimmy Dean",
+                "Người duy nhất bạn nên cố gắng để tốt hơn chính là bạn của ngày hôm qua. - Khuyết danh",
+                "Hãy hướng về phía mặt trời, bóng tối sẽ khuất sau lưng bạn. - Walt Whitman",
+                "Thành công là đi từ thất bại này đến thất bại khác mà không mất đi nhiệt huyết. - Winston Churchill",
+                "Một người lạc quan luôn nhìn thấy cơ hội trong mọi khó khăn. - Winston Churchill",
+                "Đừng để ngày hôm qua chiếm quá nhiều thời gian của ngày hôm nay. - Will Rogers",
+                "Mỗi sáng thức dậy, bạn có hai lựa chọn: Ngủ tiếp với ước mơ, hay thức dậy và theo đuổi nó. - Khuyết danh",
+                "Kỷ luật là việc chọn giữa những gì bạn muốn bây giờ và những gì bạn muốn nhất. - Abraham Lincoln",
+                "Đừng bao giờ từ bỏ một ước mơ chỉ vì tốn thời gian. Thời gian đằng nào cũng trôi qua. - Earl Nightingale",
+                "Không bao giờ là quá muộn để trở thành người mà bạn muốn trở thành. - George Eliot",
+                "Hãy làm những gì bạn có thể, với những gì bạn có, ở nơi bạn đang đứng. - Theodore Roosevelt",
+                "Sức mạnh không đến từ thể chất, nó đến từ ý chí bất khuất. - Mahatma Gandhi",
+                "Kỷ luật sớm còn hơn hối hận muộn. - Khuyết danh",
+                "Hãy kiên nhẫn. Tất cả mọi thứ đều khó khăn trước khi trở nên dễ dàng. - Saadi",
+                "Bạn sẽ không bao giờ thay đổi cuộc đời mình cho đến khi bạn thay đổi điều mình làm mỗi ngày. - John C. Maxwell",
+                "Tôi đã thất bại đi thất bại lại, và đó là lý do tôi thành công. - Michael Jordan",
+                "Giới hạn duy nhất của bạn là do chính bạn tạo ra. - Khuyết danh",
+                "Một tâm trí tích cực sẽ mang lại một cuộc sống tích cực. - Khuyết danh",
+                "Khó khăn không phải để cản bước, mà là để tôi luyện bạn. - Khuyết danh",
+                "Thói quen tốt khó hình thành nhưng dễ sống cùng. - Khuyết danh",
+                "Trì hoãn là kẻ cắp của thời gian. - Edward Young",
+                "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn xây ước mơ của họ. - Tony Gaskins",
+                "Chỉ cần bạn không dừng lại, việc tiến chậm không là vấn đề. - Khổng Tử",
+                "Sự lặp lại là mẹ của mọi kỹ năng. - Tony Robbins",
+                "Tôi thà hối hận vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
+                "Đau đớn do kỷ luật nặng vài ounce, đau đớn do hối tiếc nặng hàng tấn. - Jim Rohn",
+                "Hãy gieo một hành động, gặt một thói quen. - Khuyết danh",
+                "Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ. - Eleanor Roosevelt",
+                "Không có gì thay thế được sự chăm chỉ. - Thomas Edison",
+                "Bạn vĩ đại hơn những gì bạn nghĩ. - Khuyết danh",
+                "Hạnh phúc không phải là điểm đến, mà là hành trình. - Buddha"
+            ],
+            en: [
+                "Discipline is the bridge between goals and accomplishment. - Jim Rohn",
+                "A journey of a thousand miles begins with a single step. - Lao Tzu",
+                "Motivation is what gets you started. Habit is what keeps you going. - Jim Ryun",
+                "Success is not a miracle, it's a result of training. - Unknown",
+                "We are what we repeatedly do. - Aristotle",
+                "Self-discipline is the key to personal freedom. - Stephen Covey",
+                "The difference between the impossible and the possible lies in a man's determination. - Tommy Lasorda",
+                "An ounce of practice is worth more than tons of preaching. - Gandhi",
+                "There are no shortcuts to any place worth going. - Beverly Sills",
+                "Don't wait for opportunity. Create it. - George Bernard Shaw",
+                "The secret of your future is hidden in your daily routine. - Mike Murdock",
+                "The first and greatest victory is to conquer yourself. - Plato",
+                "The best way to predict the future is to create it. - Peter Drucker",
+                "Make each day your masterpiece. - John Wooden",
+                "Great things never came from comfort zones. - Unknown",
+                "Failure is the condiment that gives success its flavor. - Truman Capote",
+                "All great achievements require time. - Maya Angelou",
+                "Nothing is impossible to a willing heart. - Unknown",
+                "An investment in knowledge pays the best interest. - Benjamin Franklin",
+                "I can't change the direction of the wind, but I can adjust my sails. - Jimmy Dean",
+                "The only person you should try to be better than is who you were yesterday. - Unknown",
+                "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
+                "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+                "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty. - Winston Churchill",
+                "Don't let yesterday take up too much of today. - Will Rogers",
+                "You have two choices: sleep with your dreams, or wake up and chase them. - Unknown",
+                "Discipline is choosing between what you want now and what you want most. - Abraham Lincoln",
+                "Never give up on a dream just because of the time it will take. The time will pass anyway. - Earl Nightingale",
+                "It is never too late to be what you might have been. - George Eliot",
+                "Do what you can, with what you have, where you are. - Theodore Roosevelt",
+                "Strength does not come from physical capacity. It comes from an indomitable will. - Mahatma Gandhi",
+                "Suffer the pain of discipline or suffer the pain of regret. - Jim Rohn",
+                "Have patience. All things are difficult before they become easy. - Saadi",
+                "You will never change your life until you change something you do daily. - John C. Maxwell",
+                "I have failed over and over, and that is why I succeed. - Michael Jordan",
+                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+                "A positive mindset brings positive things. - Unknown",
+                "Obstacles don't have to stop you. - Michael Jordan",
+                "Good habits are hard to form but easy to live with. - Unknown",
+                "Procrastination is the thief of time. - Edward Young",
+                "If you don't build your dream, someone else will hire you to build theirs. - Tony Gaskins",
+                "It does not matter how slowly you go as long as you do not stop. - Confucius",
+                "Repetition is the mother of skill. - Tony Robbins",
+                "I regret the things I didn't do more than the things I did. - Mark Twain",
+                "Discipline weighs ounces, regret weighs tons. - Jim Rohn",
+                "Sow an act, reap a habit. - George Dana Boardman",
+                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+                "There is no substitute for hard work. - Thomas Edison",
+                "You are braver than you believe. - A.A. Milne",
+                "Happiness is a journey, not a destination. - Buddha"
+            ]
         };
 
         // 50 Ý TƯỞNG THỬ THÁCH
@@ -841,20 +954,14 @@
                 Hoàn thành
             </span>`;
 
-        function getDayLockStatus(startDateStr, dIdx, isCompleted) {
-            if (isCompleted) return { isLocked: false, isFailed: false };
+        function isChallengeLocked(startStr, total) {
             const now = new Date();
-            const d = new Date(startDateStr + "T00:00:00");
-            d.setDate(d.getDate() + dIdx);
-            
-            const lockDeadline = new Date(d);
-            lockDeadline.setDate(lockDeadline.getDate() + 2);
-            lockDeadline.setHours(0, 0, 0, 0);
-
-            if (now >= lockDeadline) {
-                return { isLocked: true, isFailed: true };
-            }
-            return { isLocked: false, isFailed: false };
+            const end = new Date(startStr + "T00:00:00");
+            end.setDate(end.getDate() + total - 1); 
+            const lockTime = new Date(end);
+            lockTime.setDate(lockTime.getDate() + 2); 
+            lockTime.setHours(0,0,0,0);
+            return now >= lockTime;
         }
 
         function setFontSize(size) {
@@ -929,12 +1036,12 @@
             document.getElementById('t-target-days').innerText = t('targetDays');
             document.getElementById('t-total-days').innerText = t('totalDays');
             document.getElementById('t-bigplay-label').innerText = t('bigPlayLabel');
-            document.getElementById('t-reward-label').innerText = t('rewardLabel');
-            document.getElementById('t-penalty-label').innerText = t('penaltyLabel');
+            document.getElementById('t-reward-label').innerHTML = t('rewardLabel');
+            document.getElementById('t-penalty-label').innerHTML = t('penaltyLabel');
             
             document.getElementById('t-ifthen-title').innerText = t('ifThenTitle');
-            document.getElementById('t-self-reward-label').innerText = t('selfRewardLabel');
-            document.getElementById('t-self-penalty-label').innerText = t('selfPenaltyLabel');
+            document.getElementById('t-self-reward-label').innerHTML = t('selfRewardLabel');
+            document.getElementById('t-self-penalty-label').innerHTML = t('selfPenaltyLabel');
             document.getElementById('create-self-reward-input').placeholder = t('selfRewardPh');
             document.getElementById('create-self-penalty-input').placeholder = t('selfPenaltyPh');
 
@@ -1131,14 +1238,15 @@
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
                 
                 list.forEach((c, idx) => {
-                    const tot=c.totalDays||25, tgt=c.targetDays||21, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
+                    const tot=c.totalDays||16, tgt=c.targetDays||14, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
                     let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
                     
                     const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
                     const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const isFailed = gu || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
+                    const cLock = isChallengeLocked(c.startDate, tot);
+                    const isFailed = gu || (!isCompleted && cLock);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1167,14 +1275,12 @@
                     else if (j) {
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
-                            const lock = getDayLockStatus(c.startDate, dIdx, ic);
-                            
                             let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
                             let lockBadge = "";
 
                             if(ic) {
                                 s="bg-indigo-600 text-white border-indigo-600"; 
-                            } else if(lock.isFailed) {
+                            } else if(cLock && !ic) {
                                 s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                                 lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                             } else if(it) {
@@ -1230,11 +1336,12 @@
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
                 
                 list.forEach((h, idx) => {
-                    const tot=h.totalDays||25, tgt=h.targetDays||21, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
+                    const tot=h.totalDays||16, tgt=h.targetDays||14, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
+                    const cLock = isChallengeLocked(h.startDate, tot);
+                    const isFailed = (st === 'given_up') || (!isCompleted && cLock);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1265,14 +1372,12 @@
 
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
-                        const lock = getDayLockStatus(h.startDate, dIdx, ic);
-                        
                         let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
                         let lockBadge = "";
 
                         if(ic) {
                             s="bg-emerald-600 text-white border-emerald-600"; 
-                        } else if(lock.isFailed) {
+                        } else if(cLock && !ic) {
                             s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                             lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                         } else if(it) {
@@ -1321,7 +1426,8 @@
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
         function renderHintList() {
             const pool = challengeHintsPool[currentLang].filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
-            document.getElementById('hints-list-container').innerHTML = [...pool].sort(()=>0.5-Math.random()).map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
+            const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
+            document.getElementById('hints-list-container').innerHTML = [...pool].sort(()=>0.5-Math.random()).map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc) {
             closeHintModal();
@@ -1402,8 +1508,8 @@
             if (mp === "0000") {
                 if (!confirm(t('adminConfirmWarn'))) return;
                 appData.members.forEach(m => { m.avatar = ''; m.pinHistory = []; }); appData.notifications = {};
-                (appData.sharedChallenges||[]).forEach(c => { c.comments = []; c.archived = false; if(c.progress) Object.keys(c.progress).forEach(mId => c.progress[mId] = Array(c.totalDays||25).fill(null).map(()=>({completed:false}))); c.participantReasons = {}; if(c.participants) Object.keys(c.participants).forEach(mId => { if(c.participants[mId]==='given_up') c.participants[mId]=true; }); });
-                if(appData.personalHabits) Object.keys(appData.personalHabits).forEach(mId => { appData.personalHabits[mId].forEach(h => { h.comments=[]; h.archived=false; h.status='active'; h.reason=''; h.days = Array(h.totalDays||25).fill(null).map(()=>({completed:false})); }); });
+                (appData.sharedChallenges||[]).forEach(c => { c.comments = []; c.archived = false; if(c.progress) Object.keys(c.progress).forEach(mId => c.progress[mId] = Array(c.totalDays||16).fill(null).map(()=>({completed:false}))); c.participantReasons = {}; if(c.participants) Object.keys(c.participants).forEach(mId => { if(c.participants[mId]==='given_up') c.participants[mId]=true; }); });
+                if(appData.personalHabits) Object.keys(appData.personalHabits).forEach(mId => { appData.personalHabits[mId].forEach(h => { h.comments=[]; h.archived=false; h.status='active'; h.reason=''; h.days = Array(h.totalDays||16).fill(null).map(()=>({completed:false})); }); });
                 dbRef.set(appData); alert(t('adminSuccess')); closeUserMenu();
             } else if (mp !== null) alert(t('wrongMasterPin'));
         }
@@ -1631,7 +1737,7 @@
             c.participants=c.participants||{}; 
             c.participants[loggedInUserId]=true; 
             c.progress=c.progress||{}; 
-            if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||25).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
+            if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||16).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
             notifyAllChallengeMembers(c, 'join', 'đã tham gia thử thách!');
             dbRef.set(appData); 
             alert(t('joinedSuccess')); 
@@ -1649,9 +1755,16 @@
                 item = (c.days&&c.days[dIdx]) || {completed:false,note:''}; 
             }
 
-            const lock = getDayLockStatus(c.startDate, dIdx, item.completed);
+            const tot = c.totalDays || 16;
+            const tgt = c.targetDays || 14;
+            const arrProg = !isP ? (c.progress&&c.progress[loggedInUserId]||[]) : (c.days||[]);
+            const cnt = arrProg.filter(x=>x&&x.completed).length;
+
+            const isGlobalLocked = isChallengeLocked(c.startDate, tot);
+            const isFinished = (cnt >= tgt) || (c.participants && c.participants[loggedInUserId] === 'given_up') || (isP && c.status === 'given_up');
+
             const isParticipant = isP || (c.participants && c.participants[loggedInUserId] === true);
-            const isReadOnlyMode = c.archived === true || !isParticipant || lock.isLocked;
+            const isReadOnlyMode = c.archived || !isParticipant || isGlobalLocked || isFinished;
             
             currentEditingDay = { id, dayIndex:dIdx, isPersonal:isP, isReadOnly: isReadOnlyMode };
             tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected');
@@ -1661,7 +1774,18 @@
             const ln = document.getElementById('modal-lock-notice');
             
             rn.classList.toggle('hidden', !c.archived);
-            ln.classList.toggle('hidden', !lock.isLocked || c.archived);
+            
+            if (isFinished && !c.archived) {
+                ln.innerText = t('endedNotice');
+                ln.className = "p-2 bg-emerald-100 text-emerald-800 text-[11px] rounded-lg font-bold text-center";
+                ln.classList.remove('hidden');
+            } else if (isGlobalLocked && !c.archived && !isFinished) {
+                ln.innerText = t('lockNotice');
+                ln.className = "p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center";
+                ln.classList.remove('hidden');
+            } else {
+                ln.classList.add('hidden');
+            }
             
             const iconSpan = document.getElementById('modal-title-icon');
             if(!isP) iconSpan.innerHTML = c.isBigPlay ? '🔥' : '🎯';
@@ -1683,13 +1807,12 @@
                 
                 document.getElementById('group-members-status-list').innerHTML = otherMembers.length ? otherMembers.map(mId => {
                     const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
-                    const lockM = getDayLockStatus(c.startDate, dIdx, id);
                     const avHTML = getMemberAvatarHTML(mId, "h-6 w-6");
                     
                     let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">⏳ ${t('incomplete')}</span>`;
                     if (id) {
                         statusLabel = UNIFORM_COMPLETED_BADGE_HTML;
-                    } else if (lockM.isFailed) {
+                    } else if (isGlobalLocked && !id) {
                         statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ Không hoàn thành</span>`;
                     }
 
@@ -1712,7 +1835,7 @@
                 document.getElementById('modal-image-preview-container').classList.add('hidden');
             }
             
-            updateModalView(item, lock);
+            updateModalView(item, { isFailed: isGlobalLocked && !item.completed });
             
             if (isReadOnlyMode) {
                 setModalMode(false);
@@ -1773,7 +1896,7 @@
                     if(updated.completed) {
                         const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
                         const dateStr = getDateString(c.startDate, dayIndex);
-                        if(cnt >= (c.targetDays||21)) {
+                        if(cnt >= (c.targetDays||14)) {
                             notifyAllChallengeMembers(c, 'complete', `đã hoàn thành mục tiêu thử thách "${c.title}"! 🎉`);
                         } else {
                             notifyAllChallengeMembers(c, 'checkin', `đã Check-in ngày ${dateStr} - ${c.title}`);
@@ -1798,7 +1921,7 @@
 
         document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
-            const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||21, tot = parseInt(document.getElementById('create-days-input').value)||25;
+            const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||14, tot = parseInt(document.getElementById('create-days-input').value)||16;
             if(!tIn) return;
 
             if(tot < tgt) {
@@ -1816,7 +1939,10 @@
                 appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId]||[];
                 appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:dIn, startDate:start, targetDays:tgt, totalDays:tot, selfReward:sR, selfPenalty:sP, status:'active', archived:false, comments:[], days:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
             }
-            dbRef.set(appData); toggleCreatePanel(); e.target.reset(); document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0]; document.getElementById('create-target-input').value = '21'; document.getElementById('create-days-input').value = '25';
+            dbRef.set(appData); toggleCreatePanel(); e.target.reset(); 
+            document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0]; 
+            document.getElementById('create-target-input').value = '14'; 
+            document.getElementById('create-days-input').value = '16';
         };
 
         // COMMENTS
@@ -1876,12 +2002,12 @@
         }
 
         function showDescriptionModalById(id, isP) {
-            let tT="", d="", s="", tgt=21, tot=25, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
+            let tT="", d="", s="", tgt=14, tot=16, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
             
             if (!isP) {
                 const c = appData.sharedChallenges.find(x=>x.id===id);
                 if(c){ 
-                    tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||21; tot=c.totalDays||25; 
+                    tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||14; tot=c.totalDays||16; 
                     isB=c.isBigPlay; cR=c.customReward||0; cP=c.customPenalty||0;
                     
                     const creatorMember = appData.members.find(m => m.id === c.creatorId) || appData.members.find(m => m.name === c.creatorName);
@@ -1894,7 +2020,7 @@
             } else {
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
                 if(h){ 
-                    tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||21; tot=h.totalDays||25; 
+                    tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||14; tot=h.totalDays||16; 
                     sR=h.selfReward||'---'; sP=h.selfPenalty||'---';
                     
                     const curMember = appData.members.find(m => m.id === loggedInUserId);
@@ -2020,11 +2146,11 @@
                         const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
                         return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
                     }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                        const tgt = c.targetDays || 21;
-                        const tot = c.totalDays || 25;
-                        const tIdx = getTodayIndex(c.startDate);
+                        const tgt = c.targetDays || 14;
+                        const tot = c.totalDays || 16;
                         const isD = m.cnt >= tgt;
-                        const isF = m.st==='given_up' || (tIdx >= tot && m.cnt < tgt) || ((tot - tIdx) < (tgt - m.cnt) && m.cnt < tgt);
+                        const cLock = isChallengeLocked(c.startDate, tot);
+                        const isF = m.st==='given_up' || (!isD && cLock);
                         const pct = Math.round((m.cnt / tgt) * 100);
                         
                         let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
@@ -2063,12 +2189,12 @@
 
             if(myH.length){
                 myH.forEach((h,i) => {
-                    const tgt = h.targetDays || 21;
-                    const tot = h.totalDays || 25;
-                    const tIdx = getTodayIndex(h.startDate);
+                    const tgt = h.targetDays || 14;
+                    const tot = h.totalDays || 16;
                     const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
                     const isD = cnt >= tgt;
-                    const isF = h.status==='given_up' || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
+                    const cLock = isChallengeLocked(h.startDate, tot);
+                    const isF = h.status==='given_up' || (!isD && cLock);
                     const pct = Math.round((cnt / tgt) * 100);
                     
                     let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
@@ -2116,13 +2242,13 @@
 
                 const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
                 sortedGroup.forEach(c => {
-                    const tgt = c.targetDays||21, tot = c.totalDays||25, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
+                    const tgt = c.targetDays||14, tot = c.totalDays||16, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
-                    const tIdx = getTodayIndex(c.startDate);
+                    const cLock = isChallengeLocked(c.startDate, tot);
                     
                     if(stat === true || stat === 'given_up') {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        const isFailed = (stat === 'given_up') || (tIdx >= tot && done < tgt) || ((tot - tIdx) < (tgt - done) && done < tgt);
+                        const isFailed = (stat === 'given_up') || (!done >= tgt && cLock);
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
@@ -2144,9 +2270,9 @@
                     const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
                     const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
                     sortedPersonal.forEach(h => {
-                        const tgt = h.targetDays||21, tot = h.totalDays||25, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        const tIdx = getTodayIndex(h.startDate);
-                        const isFailed = (h.status === 'given_up') || (tIdx >= tot && done < tgt) || ((tot - tIdx) < (tgt - done) && done < tgt);
+                        const tgt = h.targetDays||14, tot = h.totalDays||16, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
+                        const cLock = isChallengeLocked(h.startDate, tot);
+                        const isFailed = (h.status === 'given_up') || (!done >= tgt && cLock);
 
                         if(isFailed) {
                             personalLogs.push(`
@@ -2225,7 +2351,7 @@
         function renderLeaderboardList(c) {
             const container = document.getElementById('leaderboard-list-container');
             if(!container) return;
-            const tgt = c.targetDays || 21;
+            const tgt = c.targetDays || 14;
             
             const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
                 const u = appData.members.find(x => x.id === mId);
