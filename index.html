@@ -212,7 +212,8 @@
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">💡 <span id="hint-modal-title">Kho ý tưởng</span></h3>
                 <div class="flex items-center gap-2">
-                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded-lg font-bold">🔄 Đổi</button>
+                    <!-- Đã thay đổi nút Đổi thành Icon -->
+                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">🔄</button>
                     <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
                 </div>
             </div>
@@ -454,8 +455,8 @@
                     </div>
                 </div>
 
+                <!-- Đã xóa bỏ phần p có chữ "Tự cam kết" -->
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
-                    <p id="t-ifthen-title" class="text-[11px] font-bold text-emerald-600"></p>
                     <div class="grid grid-cols-2 gap-2 p-2 bg-emerald-50 rounded-xl border border-emerald-100">
                         <div>
                             <label id="t-self-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">🎁 Thưởng:</label>
@@ -546,7 +547,7 @@
                 closeBtn: "Đóng",
                 hintBtn: "Gợi ý",
                 hintTitle: "Kho ý tưởng",
-                hintRefresh: "Đổi",
+                hintRefresh: "🔄",
                 useTemplate: "Dùng",
                 bigPlayLabel: "🔥 Chơi lớn",
                 rewardLabel: "🎁 Thưởng (k):",
@@ -556,7 +557,6 @@
                 optNew: "Thử thách mới",
                 optActive: "Đang diễn ra",
                 optArchived: "Đã lưu trữ",
-                ifThenTitle: "⚡ Tự cam kết \"Nếu... thì...\"",
                 selfRewardLabel: "🎁 Thưởng:",
                 selfRewardPh: "VD: Một chuyến đi du lịch đâu đó...",
                 selfPenaltyLabel: "💸 Phạt:",
@@ -625,7 +625,7 @@
                 history: "Lịch sử hoạt động",
                 copyReportContent: "📄 Chép nội dung",
                 shareAchievement: "Chia sẻ thành tích",
-                lockNotice: "⚠️ Quá thời hạn check-in (tối đa 48h). Đã khóa quyền.",
+                lockNotice: "Rất tiếc. Đã quá thời hạn check-in.",
                 endedNotice: "✅ Thử thách đã kết thúc."
             },
             en: {
@@ -696,7 +696,7 @@
                 closeBtn: "Close",
                 hintBtn: "Hints",
                 hintTitle: "Ideas",
-                hintRefresh: "Refresh",
+                hintRefresh: "🔄",
                 useTemplate: "Use",
                 bigPlayLabel: "🔥 Big Play",
                 rewardLabel: "🎁 Reward (k):",
@@ -706,7 +706,6 @@
                 optNew: "New",
                 optActive: "Active",
                 optArchived: "Archived",
-                ifThenTitle: "⚡ \"If... Then...\"",
                 selfRewardLabel: "🎁 Reward:",
                 selfRewardPh: "E.g., A trip to somewhere...",
                 selfPenaltyLabel: "💸 Penalty:",
@@ -775,7 +774,7 @@
                 history: "History",
                 copyReportContent: "📄 Copy Report",
                 shareAchievement: "Share achievement",
-                lockNotice: "⚠️ Check-in expired (max 48h). Locked.",
+                lockNotice: "Sorry. Check-in time has expired.",
                 endedNotice: "✅ Challenge ended."
             }
         };
@@ -825,7 +824,7 @@
                 "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn xây ước mơ của họ. - Tony Gaskins",
                 "Chỉ cần bạn không dừng lại, việc tiến chậm không là vấn đề. - Khổng Tử",
                 "Sự lặp lại là mẹ của mọi kỹ năng. - Tony Robbins",
-                "Tôi thà hối hận vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
+                "Tôi thà hối quyết vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
                 "Đau đớn do kỷ luật nặng vài ounce, đau đớn do hối tiếc nặng hàng tấn. - Jim Rohn",
                 "Hãy gieo một hành động, gặt một thói quen. - Khuyết danh",
                 "Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ. - Eleanor Roosevelt",
@@ -887,7 +886,6 @@
             ]
         };
 
-        // 50 Ý TƯỞNG THỬ THÁCH
         const challengeHintsPool = {
             vi: [
                 // Group (25)
@@ -954,14 +952,19 @@
                 Hoàn thành
             </span>`;
 
-        function isChallengeLocked(startStr, total) {
-            const now = new Date();
-            const end = new Date(startStr + "T00:00:00");
-            end.setDate(end.getDate() + total - 1); 
-            const lockTime = new Date(end);
-            lockTime.setDate(lockTime.getDate() + 2); 
-            lockTime.setHours(0,0,0,0);
-            return now >= lockTime;
+        // 1. Luật khóa một ngày cụ thể (có 24h ân hạn)
+        function isDayLocked(startStr, dIdx) {
+            const todayIdx = getTodayIndex(startStr);
+            // Nếu ngày hiện tại vượt quá (chỉ mục ngày + 1 ngày ân hạn), thì sẽ bị khóa
+            return todayIdx > dIdx + 1;
+        }
+
+        // 2. Luật kết thúc hoàn toàn một thử thách
+        function isChallengeFinished(startStr, total) {
+            const todayIdx = getTodayIndex(startStr);
+            // Nếu tổng số ngày là 16 (chỉ mục cuối là 15, ngày ân hạn cuối là 16). 
+            // Nếu hôm nay là 17 trở đi thì thử thách đã chính thức kết thúc
+            return todayIdx > total;
         }
 
         function setFontSize(size) {
@@ -1039,7 +1042,6 @@
             document.getElementById('t-reward-label').innerHTML = t('rewardLabel');
             document.getElementById('t-penalty-label').innerHTML = t('penaltyLabel');
             
-            document.getElementById('t-ifthen-title').innerText = t('ifThenTitle');
             document.getElementById('t-self-reward-label').innerHTML = t('selfRewardLabel');
             document.getElementById('t-self-penalty-label').innerHTML = t('selfPenaltyLabel');
             document.getElementById('create-self-reward-input').placeholder = t('selfRewardPh');
@@ -1063,7 +1065,6 @@
             document.getElementById('m-admin-reset').innerText = t('adminResetBtn');
 
             document.getElementById('hint-modal-title').innerText = t('hintTitle');
-            document.getElementById('hint-refresh-btn').innerHTML = t('hintRefresh');
             document.getElementById('notif-title').innerText = t('notifTitle');
             document.getElementById('notif-read-btn').innerText = t('markRead');
             document.getElementById('desc-rule-title').innerHTML = `📝 Mô tả/ Quy tắc`;
@@ -1245,8 +1246,8 @@
                     const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const cLock = isChallengeLocked(c.startDate, tot);
-                    const isFailed = gu || (!isCompleted && cLock);
+                    const cFinished = isChallengeFinished(c.startDate, tot);
+                    const isFailed = gu || (!isCompleted && cFinished);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1278,9 +1279,11 @@
                             let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
                             let lockBadge = "";
 
+                            const dayLocked = isDayLocked(c.startDate, dIdx);
+
                             if(ic) {
                                 s="bg-indigo-600 text-white border-indigo-600"; 
-                            } else if(cLock && !ic) {
+                            } else if(dayLocked && !ic) {
                                 s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                                 lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                             } else if(it) {
@@ -1340,8 +1343,8 @@
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const cLock = isChallengeLocked(h.startDate, tot);
-                    const isFailed = (st === 'given_up') || (!isCompleted && cLock);
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1375,9 +1378,11 @@
                         let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
                         let lockBadge = "";
 
+                        const dayLocked = isDayLocked(h.startDate, dIdx);
+
                         if(ic) {
                             s="bg-emerald-600 text-white border-emerald-600"; 
-                        } else if(cLock && !ic) {
+                        } else if(dayLocked && !ic) {
                             s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                             lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                         } else if(it) {
@@ -1427,7 +1432,8 @@
         function renderHintList() {
             const pool = challengeHintsPool[currentLang].filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
-            document.getElementById('hints-list-container').innerHTML = [...pool].sort(()=>0.5-Math.random()).map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
+            const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); // Hiển thị tối đa 5 items
+            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc) {
             closeHintModal();
@@ -1718,7 +1724,7 @@
                     c.participants[loggedInUserId]='given_up'; 
                     c.participantReasons=c.participantReasons||{}; 
                     c.participantReasons[loggedInUserId]=r; 
-                    notifyAllChallengeMembers(c, 'giveup', 'đã bỏ cuộc thử thách.');
+                    notifyAllChallengeMembers(c, 'giveup', 'đã bỏ cuộc thử thách "' + c.title + '".');
                 } 
             }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
@@ -1738,7 +1744,7 @@
             c.participants[loggedInUserId]=true; 
             c.progress=c.progress||{}; 
             if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||16).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
-            notifyAllChallengeMembers(c, 'join', 'đã tham gia thử thách!');
+            notifyAllChallengeMembers(c, 'join', 'đã tham gia thử thách "' + c.title + '"!');
             dbRef.set(appData); 
             alert(t('joinedSuccess')); 
         }
@@ -1760,11 +1766,12 @@
             const arrProg = !isP ? (c.progress&&c.progress[loggedInUserId]||[]) : (c.days||[]);
             const cnt = arrProg.filter(x=>x&&x.completed).length;
 
-            const isGlobalLocked = isChallengeLocked(c.startDate, tot);
-            const isFinished = (cnt >= tgt) || (c.participants && c.participants[loggedInUserId] === 'given_up') || (isP && c.status === 'given_up');
+            const cFinished = isChallengeFinished(c.startDate, tot);
+            const isFinished = (cnt >= tgt) || (c.participants && c.participants[loggedInUserId] === 'given_up') || (isP && c.status === 'given_up') || cFinished;
+            const dayLocked = isDayLocked(c.startDate, dIdx);
 
             const isParticipant = isP || (c.participants && c.participants[loggedInUserId] === true);
-            const isReadOnlyMode = c.archived || !isParticipant || isGlobalLocked || isFinished;
+            const isReadOnlyMode = c.archived || !isParticipant || isFinished || dayLocked;
             
             currentEditingDay = { id, dayIndex:dIdx, isPersonal:isP, isReadOnly: isReadOnlyMode };
             tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected');
@@ -1777,9 +1784,9 @@
             
             if (isFinished && !c.archived) {
                 ln.innerText = t('endedNotice');
-                ln.className = "p-2 bg-emerald-100 text-emerald-800 text-[11px] rounded-lg font-bold text-center";
+                ln.className = "p-2 bg-slate-100 text-slate-800 text-[11px] rounded-lg font-bold text-center";
                 ln.classList.remove('hidden');
-            } else if (isGlobalLocked && !c.archived && !isFinished) {
+            } else if (dayLocked && !c.archived && !isFinished) {
                 ln.innerText = t('lockNotice');
                 ln.className = "p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center";
                 ln.classList.remove('hidden');
@@ -1812,7 +1819,7 @@
                     let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">⏳ ${t('incomplete')}</span>`;
                     if (id) {
                         statusLabel = UNIFORM_COMPLETED_BADGE_HTML;
-                    } else if (isGlobalLocked && !id) {
+                    } else if (dayLocked && !id) {
                         statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ Không hoàn thành</span>`;
                     }
 
@@ -1835,7 +1842,7 @@
                 document.getElementById('modal-image-preview-container').classList.add('hidden');
             }
             
-            updateModalView(item, { isFailed: isGlobalLocked && !item.completed });
+            updateModalView(item, { isFailed: dayLocked && !item.completed });
             
             if (isReadOnlyMode) {
                 setModalMode(false);
@@ -2068,8 +2075,8 @@
                 </div>
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎯</span>
-                    <span class="text-slate-500">Target:</span>
-                    <strong class="text-slate-700 dark:text-slate-200">${cnt}/${tgt}</strong>
+                    <span class="text-slate-500">Mục tiêu/ Tổng ngày:</span>
+                    <strong class="text-slate-700 dark:text-slate-200">${tgt}/${tot}</strong>
                 </div>
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0">${creatorAvatarHTML}</span>
@@ -2149,8 +2156,8 @@
                         const tgt = c.targetDays || 14;
                         const tot = c.totalDays || 16;
                         const isD = m.cnt >= tgt;
-                        const cLock = isChallengeLocked(c.startDate, tot);
-                        const isF = m.st==='given_up' || (!isD && cLock);
+                        const cFinished = isChallengeFinished(c.startDate, tot);
+                        const isF = m.st==='given_up' || (!isD && cFinished);
                         const pct = Math.round((m.cnt / tgt) * 100);
                         
                         let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
@@ -2193,8 +2200,8 @@
                     const tot = h.totalDays || 16;
                     const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
                     const isD = cnt >= tgt;
-                    const cLock = isChallengeLocked(h.startDate, tot);
-                    const isF = h.status==='given_up' || (!isD && cLock);
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const isF = h.status==='given_up' || (!isD && cFinished);
                     const pct = Math.round((cnt / tgt) * 100);
                     
                     let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
@@ -2244,11 +2251,11 @@
                 sortedGroup.forEach(c => {
                     const tgt = c.targetDays||14, tot = c.totalDays||16, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
-                    const cLock = isChallengeLocked(c.startDate, tot);
+                    const cFinished = isChallengeFinished(c.startDate, tot);
                     
                     if(stat === true || stat === 'given_up') {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        const isFailed = (stat === 'given_up') || (!done >= tgt && cLock);
+                        const isFailed = (stat === 'given_up') || (done < tgt && cFinished);
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
@@ -2271,8 +2278,8 @@
                     const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
                     sortedPersonal.forEach(h => {
                         const tgt = h.targetDays||14, tot = h.totalDays||16, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        const cLock = isChallengeLocked(h.startDate, tot);
-                        const isFailed = (h.status === 'given_up') || (!done >= tgt && cLock);
+                        const cFinished = isChallengeFinished(h.startDate, tot);
+                        const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
 
                         if(isFailed) {
                             personalLogs.push(`
