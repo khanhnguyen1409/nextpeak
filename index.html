@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- HEIC to JPEG Converter -->
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <!-- HTML2Canvas (Chụp ảnh thẻ thử thách) -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -252,9 +254,12 @@
         </div>
     </div>
 
+    <!-- MODAL TÙY CHỌN 3 CHẤM (THÊM CHỦC NĂNG CHỤP ẢNH CHIA SẺ) -->
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center uppercase tracking-wider text-[10px]">Tùy chọn</h4>
+            <!-- NÚT CHỤP ẢNH THÀNH TÍCH MỚI -->
+            <button id="action-btn-share" onclick="triggerMenuAction('share')" class="w-full text-left py-2.5 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/35 text-indigo-600 dark:text-indigo-400 rounded-xl transition flex items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-900/35 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ Tạm dừng</button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/35 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ Tiếp tục</button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-900/35 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
@@ -265,7 +270,7 @@
         </div>
     </div>
 
-    <!-- MODAL CHI TIẾT NGÀY (SỬA LỖI THEO YÊU CẦU 1 & 2) -->
+    <!-- MODAL CHI TIẾT NGÀY / CHECK-IN -->
     <div id="day-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -291,7 +296,7 @@
                     <!-- HEADER CHẾ ĐỘ XEM: BADGE VÀ ICON CÂY BÚT EDIT -->
                     <div id="modal-view-header" class="flex justify-between items-center">
                         <div id="view-status"></div>
-                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm" title="Chỉnh sửa">✏️</button>
+                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm hidden" title="Chỉnh sửa">✏️</button>
                     </div>
 
                     <!-- NỘI DUNG CHẾ ĐỘ XEM -->
@@ -303,7 +308,6 @@
 
                     <!-- NỘI DUNG CHẾ ĐỘ CHỈNH SỬA / CHECK-IN MỚI -->
                     <div id="modal-edit-section" class="space-y-3 hidden">
-                        <!-- YÊU CẦU 1: Ô TÍCH CHỌN HOÀN THÀNH XANH LÁ CÂY CHỈ HIỆN KHI SỬA/CHECK-IN -->
                         <div id="status-selection-box" class="flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700">
                             <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600 dark:text-emerald-400">
                                 <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-emerald-600 rounded accent-emerald-600 focus:ring-emerald-500">
@@ -618,7 +622,8 @@
                 changeAvatar: "Đổi Avatar",
                 changePin: "Đổi mã PIN",
                 history: "Lịch sử",
-                copyReportContent: "📄 Chép nội dung Báo cáo"
+                copyReportContent: "📄 Chép nội dung Báo cáo",
+                shareAchievement: "Chia sẻ thành tích"
             },
             en: {
                 appTitle: "BVGP Discipline",
@@ -765,7 +770,8 @@
                 changeAvatar: "Change Avatar",
                 changePIN: "Change PIN",
                 history: "History",
-                copyReportContent: "📄 Copy Report"
+                copyReportContent: "📄 Copy Report",
+                shareAchievement: "Share achievement"
             }
         };
 
@@ -798,6 +804,13 @@
         let currentFilter = 'my';
 
         function t(key) { return translations[currentLang][key] || key; }
+
+        // YÊU CẦU 2: ĐỒNG BỘ NGUYÊN BẢN BADGE HOÀN THÀNH DÙNG CHUNG
+        const UNIFORM_COMPLETED_BADGE_HTML = `
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs">
+                <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
+                Hoàn thành
+            </span>`;
 
         function getDayLockStatus(startDateStr, dIdx, isCompleted) {
             if (isCompleted) return { isLocked: false, isFailed: false };
@@ -923,6 +936,7 @@
             document.getElementById('reward-rule-box').innerHTML = t('rewardRuleTxt');
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
+            document.getElementById('m-share-text').innerText = t('shareAchievement');
             document.getElementById('action-btn-giveup').innerHTML = `🏳️ ${t('giveUpChallenge')}`;
             document.getElementById('action-btn-archive').innerHTML = `📦 ${t('archive')}`;
             document.getElementById('action-btn-restore').innerHTML = `♻️ ${t('restore')}`;
@@ -1053,7 +1067,7 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
-        // RENDER LIST (CẬP NHẬT HIỂN THỊ YÊU CẦU 3)
+        // RENDER LIST
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
@@ -1080,7 +1094,6 @@
                     const isCompleted = cnt >= tgt;
                     const isFailed = gu || (tIdx >= tot && cnt < tgt);
 
-                    // YÊU CẦU 3: HIỂN THỊ CÁC NHÃN TRẠNG THÁI VÀ BÔI ĐẬM CỠ CHỮ THƯỞNG PHẠT BÊN NGOÀI
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
@@ -1141,8 +1154,9 @@
                             </div>`;
                     }
 
+                    // YÊU CẦU 3: GẮN ID card THÁCH ĐỂ CHỤP ẢNH
                     container.innerHTML += `
-                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
+                        <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5">
                                     <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1.5">
@@ -1226,8 +1240,9 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
+                    // YÊU CẦU 3: GẮN ID card THÁCH ĐỂ CHỤP ẢNH
                     container.innerHTML += `
-                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
+                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
                                     <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1.5">
@@ -1397,15 +1412,39 @@
             m.classList.remove('hidden');
         }
         function closeActionMenuModal() { document.getElementById('action-menu-modal').classList.add('hidden'); selectedMenuChallenge = null; }
+        
         function triggerMenuAction(act) {
             if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
-            if(act==='giveup') giveUpChallenge(id, isPersonal);
+            if(act==='share') captureChallengeCard(id);
+            else if(act==='giveup') giveUpChallenge(id, isPersonal);
             else if(act==='archive') archiveChallenge(id, isPersonal, true);
             else if(act==='restore') archiveChallenge(id, isPersonal, false);
             else if(act==='pause') pauseChallenge(id);
             else if(act==='resume') resumeChallenge(id, true);
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
+
+        // YÊU CẦU 3: CHỤP ẢNH TOÀN BỘ KHUNG THỬ THÁCH VÀ TẢI VỀ
+        function captureChallengeCard(id) {
+            const cardEl = document.getElementById(`challenge-card-${id}`);
+            if(!cardEl) return;
+            
+            html2canvas(cardEl, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `BVGP-Thuthach-${id}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error("Lỗi chụp ảnh:", err);
+                alert("Không thể tạo hình ảnh chia sẻ. Vui lòng thử lại!");
+            });
+        }
+
         function giveUpChallenge(id, isP) {
             const r=promptReason(); if(r===null)return;
             if(!isP){ 
@@ -1439,7 +1478,7 @@
             alert(t('joinedSuccess')); 
         }
 
-        // DAY MODAL (SỬA LỖI YÊU CẦU 1 VÀ 2)
+        // DAY MODAL
         function openDayModal(id, dIdx, isP) {
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
             if(dIdx > getTodayIndex(c.startDate)) return alert(t('alertFuture'));
@@ -1464,7 +1503,6 @@
             
             rn.classList.toggle('hidden', !c.archived);
             ln.classList.toggle('hidden', !lock.isLocked || c.archived);
-            document.getElementById('modal-edit-btn').classList.toggle('hidden', isReadOnlyMode);
             
             const iconSpan = document.getElementById('modal-title-icon');
             if(!isP) iconSpan.innerHTML = c.isBigPlay ? '🔥' : '🎯';
@@ -1484,16 +1522,17 @@
                 const completedCount = otherMembers.filter(m=>c.progress[m]&&c.progress[m][dIdx]&&c.progress[m][dIdx].completed).length;
                 document.getElementById('completed-ratio-text').innerText = `${completedCount}/${otherMembers.length}`;
                 
+                // YÊU CẦU 2: ĐỒNG BỘ NGUYÊN BẢN BADGE HOÀN THÀNH CHO THÀNH VIÊN KHÁC
                 document.getElementById('group-members-status-list').innerHTML = otherMembers.length ? otherMembers.map(mId => {
                     const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
                     const lockM = getDayLockStatus(c.startDate, dIdx, id);
                     const avHTML = getMemberAvatarHTML(mId, "h-6 w-6");
                     
-                    let statusLabel = `<span class="text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md text-xs font-semibold">⏳ ${t('incomplete')}</span>`;
+                    let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold">⏳ ${t('incomplete')}</span>`;
                     if (id) {
-                        statusLabel = `<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md text-xs font-semibold">✅ ${t('completed')}</span>`;
+                        statusLabel = UNIFORM_COMPLETED_BADGE_HTML;
                     } else if (lockM.isFailed) {
-                        statusLabel = `<span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md text-xs font-semibold">❌ Không hoàn thành</span>`;
+                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 py-0.5 rounded-md text-xs font-semibold">❌ Không hoàn thành</span>`;
                     }
 
                     return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1"></div>`:''}</div>`;
@@ -1525,14 +1564,11 @@
             document.getElementById('day-modal').classList.remove('hidden');
         }
 
-        // YÊU CẦU 1 VÀ 2: DÙNG MẪU NHỎ, ẨN CÁC PHẦN DƯ THỪA KHI XEM
+        // YÊU CẦU 2: ĐỒNG BỘ CẢ BADGE CỦA BẠN KHI XEM BÁO CÁO
         function updateModalView(item, lock = { isFailed: false }) {
             let statusBadge = "";
             if (item.completed) {
-                statusBadge = `<span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-lg text-xs font-bold inline-flex items-center gap-1.5">
-                    <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black">✓</span>
-                    ${t('completed')}
-                </span>`;
+                statusBadge = UNIFORM_COMPLETED_BADGE_HTML;
             } else if (lock.isFailed) {
                 statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-1 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5">❌ Không hoàn thành</span>`;
             } else {
@@ -1548,11 +1584,15 @@
             document.getElementById('view-image').classList.toggle('hidden', !item.image);
         }
 
+        // YÊU CẦU 1: ẨN HOÀN TOÀN ICON CÂY BÚT KHI ĐANG MỞ FORM CHECK-IN
         function setModalMode(ed) { 
             isEditMode = ed; 
             document.getElementById('modal-edit-section').classList.toggle('hidden', !ed); 
             document.getElementById('modal-view-section').classList.toggle('hidden', ed); 
             document.getElementById('view-status').classList.toggle('hidden', ed);
+            
+            // Nếu ở chế độ Edit (ed===true) HOẶC là ReadOnly -> ẨN BÚT. Chỉ Hiện Bút khi ở Chế độ View lại kết quả!
+            document.getElementById('modal-edit-btn').classList.toggle('hidden', ed || currentEditingDay?.isReadOnly);
         }
 
         function toggleModalEdit() { 
@@ -1601,14 +1641,14 @@
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // TẠO THỬ THÁCH
+        // YÊU CẦU 4: SỬA ĐIỀU KIỆN TỔNG SỐ NGÀY PHẢI BẰNG HOẶC LỚN HƠN (>=) MỤC TIÊU
         document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
             const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||21, tot = parseInt(document.getElementById('create-days-input').value)||25;
             if(!tIn) return;
 
-            if(tot <= tgt) {
-                alert("⚠️ Tổng số ngày phải lớn hơn Mục tiêu!");
+            if(tot < tgt) {
+                alert("⚠️ Tổng số ngày phải lớn hơn hoặc bằng Mục tiêu!");
                 return;
             }
             
