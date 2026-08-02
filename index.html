@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- HEIC to JPEG Converter -->
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-    <!-- HTML2Canvas (Chụp ảnh thẻ thử thách) -->
+    <!-- HTML2Canvas (Chụp ảnh) -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -50,7 +50,7 @@
     <audio id="bg-music" loop src="https://files.catbox.moe/bfdutu.mp3"></audio>
 
     <!-- LOGO BVGP CHUẨN DÙNG CHUNG -->
-    <span id="bvgp-logo-svg" class="hidden"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-indigo-300 shadow-xs inline-block"></span>
+    <span id="bvgp-logo-svg" class="hidden"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-indigo-300 shadow-sm inline-block"></span>
 
     <!-- MODAL ĐĂNG NHẬP -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
@@ -150,7 +150,7 @@
         </div>
     </div>
 
-    <!-- MODAL AVATAR / PIN / HISTORY / LEADERBOARD / NOTIFICATION / HINT / REPORT -->
+    <!-- MODAL AVATAR / PIN / HISTORY / LEADERBOARD / NOTIFICATION / HINT -->
     <div id="avatar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700">
             <h3 id="s-avatar-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-4">🖼️ Tải lên Avatar</h3>
@@ -195,9 +195,7 @@
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">---</span></h3>
                 <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">✕</button>
             </div>
-            
             <div id="leaderboard-list-container" class="space-y-3 overflow-y-auto flex-1 py-1 pr-1"></div>
-            
             <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm">Đóng</button>
         </div>
     </div>
@@ -233,10 +231,8 @@
     <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả</h3>
-                </div>
-                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả</h3>
+                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
             </div>
             
             <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
@@ -244,45 +240,58 @@
                 <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng / Phạt</button>
             </div>
 
+            <!-- TAB HOẠT ĐỘNG -->
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
-                <div id="report-html-preview" class="flex-1 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-y-auto text-xs text-slate-700 dark:text-slate-300 space-y-4 font-sans leading-relaxed"></div>
-                <p class="text-center text-[11px] text-slate-400 italic">Nội dung báo cáo kết quả đã được tự động sao chép vào bộ nhớ tạm.</p>
+                <div class="flex justify-end">
+                    <!-- NÚT CHỤP ẢNH TAB HOẠT ĐỘNG -->
+                    <button onclick="captureReportActive()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷 Chụp ảnh</button>
+                </div>
+                <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                    <div id="report-html-preview" class="text-xs text-slate-700 dark:text-slate-300 space-y-4 font-sans leading-relaxed"></div>
+                </div>
             </div>
 
-            <!-- YÊU CẦU 3: CẢI TIẾN TAB THƯỞNG PHẠT -->
+            <!-- TAB THƯỞNG PHẠT -->
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
-                <!-- KHUNG QUY TẮC DẠNG ACCORDION THU GỌN -->
-                <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
-                    <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-                        <span class="flex items-center gap-1.5">📜 Quy tắc Kỷ Luật Team BVGP</span>
-                        <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
-                    </button>
-                    <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 dark:border-slate-700 hidden">
-                        <div class="flex items-start gap-2">
-                            <span class="text-base shrink-0">🎯</span>
-                            <div>
-                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Tiêu chuẩn:</strong>
-                                <p class="text-[11px] text-slate-600 dark:text-slate-300">💸 <span class="text-rose-600 font-bold">-100k</span> nếu bỏ cuộc | 🎁 <span class="text-emerald-600 font-bold">+1 Sách</span> nếu đạt mục tiêu.</p>
+                <div class="flex justify-end">
+                    <!-- NÚT CHỤP ẢNH TAB THƯỞNG PHẠT -->
+                    <button onclick="captureReportRewards()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷 Chụp ảnh</button>
+                </div>
+                
+                <div id="rewards-capture-wrapper" class="space-y-3">
+                    <!-- KHUNG QUY TẮC DẠNG ACCORDION THU GỌN -->
+                    <div id="reward-rules-accordion" class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
+                        <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                            <span class="flex items-center gap-1.5">📜 Quy tắc thử thách</span>
+                            <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
+                        </button>
+                        <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 dark:border-slate-700 hidden">
+                            <div class="flex items-start gap-2">
+                                <span class="text-base shrink-0">🎯</span>
+                                <div>
+                                    <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Tiêu chuẩn:</strong>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300">💸 <span class="text-rose-600 font-bold">-100k</span> nếu bỏ cuộc | 🎁 <span class="text-emerald-600 font-bold">+1 Sách</span> nếu đạt mục tiêu.</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <span class="text-base shrink-0">🔥</span>
-                            <div>
-                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Chơi Lớn:</strong>
-                                <p class="text-[11px] text-slate-600 dark:text-slate-300">🎁 Thưởng tiền / 💸 Phạt tiền tùy chỉnh không giới hạn theo từng thử thách.</p>
+                            <div class="flex items-start gap-2">
+                                <span class="text-base shrink-0">🔥</span>
+                                <div>
+                                    <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Chơi Lớn:</strong>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300">🎁 Thưởng tiền / 💸 Phạt tiền tùy chỉnh không giới hạn theo từng thử thách.</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <span class="text-base shrink-0">📌</span>
-                            <div>
-                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Cá Nhân:</strong>
-                                <p class="text-[11px] text-slate-600 dark:text-slate-300">⚡ Tự cam kết Thưởng 🎁 / Phạt 💸 theo thỏa thuận cá nhân.</p>
+                            <div class="flex items-start gap-2">
+                                <span class="text-base shrink-0">📌</span>
+                                <div>
+                                    <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Cá Nhân:</strong>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300">⚡ Tự cam kết Thưởng 🎁 / Phạt 💸 theo thỏa thuận cá nhân.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="rewards-summary-list" class="space-y-2"></div>
+                    <div id="rewards-summary-list" class="space-y-2"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -349,7 +358,7 @@
                             <div class="relative border rounded-2xl bg-white dark:bg-slate-800 dark:border-slate-700 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
                                 <textarea id="modal-note" rows="3" class="w-full p-3 text-xs border-0 outline-none resize-none bg-transparent dark:text-slate-100" placeholder="Hôm nay bạn đã làm gì?..."></textarea>
                                 <div class="flex justify-between items-center px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-700">
-                                    <label for="modal-image-file" class="cursor-pointer inline-flex items-center gap-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600 dark:text-slate-200 hover:bg-slate-100 transition shadow-2xs">
+                                    <label for="modal-image-file" class="cursor-pointer inline-flex items-center gap-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600 dark:text-slate-200 hover:bg-slate-100 transition shadow-sm">
                                         📷 <span>Tải ảnh</span>
                                     </label>
                                     <span id="day-file-name" class="text-[10px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
@@ -412,7 +421,7 @@
         <!-- TABS THỬ THÁCH -->
         <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
-                <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs">
+                <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm">
                 <span>Thử thách nhóm</span>
             </button>
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center gap-2">
@@ -832,7 +841,7 @@
         function t(key) { return translations[currentLang][key] || key; }
 
         const UNIFORM_COMPLETED_BADGE_HTML = `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs shrink-0">
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shrink-0">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
                 Hoàn thành
             </span>`;
@@ -890,7 +899,7 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs"><span>${t('tabDashboard')}</span>`;
+            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`;
             
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
             document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
@@ -1088,7 +1097,7 @@
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
             const u = appData.members.find(x => x.id === mId);
             if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0">?</div>`;
-            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
+            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
         // RENDER LIST
@@ -1108,7 +1117,7 @@
 
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
                 
-                list.forEach((c) => {
+                list.forEach((c, idx) => {
                     const tot=c.totalDays||25, tgt=c.targetDays||21, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
                     let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
                     
@@ -1121,19 +1130,19 @@
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                            <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
                                 <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</span>
-                                <span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Hoàn thành</span>
+                                <span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Hoàn thành</span>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
                                 <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</span>
-                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Không hoàn thành</span>
+                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Không hoàn thành</span>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="text-[11px] font-normal inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-2xs">
+                            <div class="text-[11px] font-normal inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-sm">
                                 <span class="text-emerald-600 font-semibold">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</span>
                                 <span class="text-slate-300">|</span>
                                 <span class="text-rose-600 font-semibold">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</span>
@@ -1143,7 +1152,7 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        // YÊU CẦU 1: CĂN GIỮA TUYỆT ĐỐI CHỮ "HÔM NAY" BẰNG TW-CLASSES
+                        // YÊU CẦU 1: CĂN GIỮA CHỮ "HÔM NAY" TUYỆT ĐỐI VÀ CHO PHÉP TRÀO RA NGOÀI (overflow-visible)
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             const lock = getDayLockStatus(c.startDate, dIdx, ic);
@@ -1164,7 +1173,7 @@
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-2xs whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
@@ -1179,12 +1188,13 @@
                             </div>`;
                     }
 
+                    // YÊU CẦU 5: THÊM SỐ THỨ TỰ SUPERSCRIPT BÊN NGOÀI
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5">
-                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1.5">
-                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}
+                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
+                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
                                     </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(c.startDate)}</span>
@@ -1207,7 +1217,7 @@
 
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
                 
-                list.forEach((h) => {
+                list.forEach((h, idx) => {
                     const tot=h.totalDays||25, tgt=h.targetDays||21, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     
@@ -1217,15 +1227,15 @@
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                            <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
                                 <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 ${h.selfReward||'---'}</span>
-                                <span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Hoàn thành</span>
+                                <span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Hoàn thành</span>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
                                 <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 ${h.selfPenalty||'---'}</span>
-                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Không hoàn thành</span>
+                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Không hoàn thành</span>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
@@ -1261,15 +1271,16 @@
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-2xs whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
+                    // YÊU CẦU 5: THÊM SỐ THỨ TỰ SUPERSCRIPT BÊN NGOÀI CÁ NHÂN
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
-                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1.5">
-                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}
+                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
+                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
                                     </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(h.startDate)}</span>
@@ -1447,12 +1458,12 @@
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
-        // YÊU CẦU 1: CHỤP ẢNH TÍNH NĂNG CHIA SẺ - BỎ KHUNG BÌNH LUẬN + XUẤT ẢNH JPG SẮC NÉT
+        // YÊU CẦU 1: CHỤP ẢNH THÀNH TÍCH THỬ THÁCH (BỎ BÌNH LUẬN + GIỮ LẠI ĐẦY ĐỦ LABEL + JPG CHI TIẾT)
         async function captureChallengeCard(id) {
             const cardEl = document.getElementById(`challenge-card-${id}`);
             if(!cardEl) return;
             
-            // Ẩn tạm thời phần bình luận và nút 3 chấm khi chụp ảnh
+            // Ẩn tạm thời phần bình luận và nút 3 chấm khi chụp
             const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
             const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
             
@@ -1461,23 +1472,74 @@
 
             try {
                 const canvas = await html2canvas(cardEl, {
-                    scale: 2.5, // Tăng độ phân giải cho ảnh siêu nét
+                    scale: 3, // Siêu nét
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
                 });
 
                 const link = document.createElement('a');
-                link.download = `BVGP-Thuthach-${id}.jpg`; // Xuất dạng JPG
+                link.download = `BVGP-Thuthach-${id}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
                 link.click();
             } catch(err) {
                 console.error("Lỗi chụp ảnh:", err);
                 alert("Không thể tạo hình ảnh chia sẻ. Vui lòng thử lại!");
             } finally {
-                // Phục hồi lại hiển thị bình luận và nút 3 chấm
                 if(commentsContainer) commentsContainer.style.display = '';
                 if(actionBtn) actionBtn.style.display = '';
+            }
+        }
+
+        // YÊU CẦU 6: CHỤP ẢNH TAB HOẠT ĐỘNG
+        async function captureReportActive() {
+            const activeEl = document.getElementById('report-active-container');
+            if(!activeEl) return;
+            try {
+                const canvas = await html2canvas(activeEl, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#f8fafc'
+                });
+                const link = document.createElement('a');
+                link.download = `BVGP-TienDoHoanThanh-${Date.now()}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            } catch(e) {
+                alert("Lỗi chụp ảnh Hoạt động!");
+            }
+        }
+
+        // YÊU CẦU 6: CHỤP ẢNH TAB THƯỞNG PHẠT (ẨN QUY TẮC VÀ ẨN CÁ NHÂN KHI CHỤP)
+        async function captureReportRewards() {
+            const wrapperEl = document.getElementById('rewards-capture-wrapper');
+            const rulesAccordion = document.getElementById('reward-rules-accordion');
+            const personalLines = wrapperEl.querySelectorAll('.personal-reward-line');
+            
+            if(!wrapperEl) return;
+            
+            // Ẩn quy tắc & ẩn phần thưởng phạt cá nhân khi chụp ảnh
+            if(rulesAccordion) rulesAccordion.style.display = 'none';
+            personalLines.forEach(el => el.style.display = 'none');
+
+            try {
+                const canvas = await html2canvas(wrapperEl, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+                });
+                const link = document.createElement('a');
+                link.download = `BVGP-ThuongPhat-${Date.now()}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            } catch(e) {
+                alert("Lỗi chụp ảnh Thưởng phạt!");
+            } finally {
+                // Khôi phục lại hiển thị
+                if(rulesAccordion) rulesAccordion.style.display = '';
+                personalLines.forEach(el => el.style.display = '');
             }
         }
 
@@ -1837,10 +1899,6 @@
         function openReportModal() { 
             switchReportTab('active'); 
             document.getElementById('report-modal').classList.remove('hidden'); 
-            setTimeout(() => {
-                const txt = document.getElementById('report-html-preview').getAttribute('data-raw');
-                if(txt) navigator.clipboard.writeText(txt).catch(()=>{});
-            }, 100);
         }
         function closeReportModal() { document.getElementById('report-modal').classList.add('hidden'); }
         
@@ -1861,28 +1919,25 @@
         
         function toSuperscript(num) { const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}; return String(num).split('').map(c => supers[c] || c).join(''); }
         
-        // YÊU CẦU 2: HIỂN THỊ TOÀN BỘ KẾT QUẢ HOẠT ĐỘNG DƯỚI DẠNG THANH TIẾN ĐỘ
+        // YÊU CẦU 2 & 4: CẬP NHẬT TAB HOẠT ĐỘNG (THANH TIẾN ĐỘ ĐỒNG NHẤT MÀU NHẠT + CẬP NHẬT TIÊU ĐỀ + XẮP XẾP TỪ MỚI ĐẾN CŨ)
         function renderReportPreview() {
-            let rawTxt = currentLang==='vi'?"🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n":"🏆 BVGP TEAM REPORT 🏆\n\n";
-            let htmlTxt = `<h2 class="text-center font-bold text-base text-indigo-700 dark:text-indigo-400 mb-2">🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆</h2>`;
+            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-3">🏆 TIẾN ĐỘ HOÀN THÀNH</h2>`;
             
             if(appData.sharedChallenges?.length){
-                const grps = appData.sharedChallenges.filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+                // Sắp xếp từ mới đến cũ
+                const grps = appData.sharedChallenges.filter(c=>!c.archived).sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
                 if(grps.length){
-                    rawTxt += `--- ${t('groupLabel').toUpperCase()} ---\n`;
-                    htmlTxt += `<div class="font-bold text-indigo-600 uppercase text-xs mt-3 mb-2">--- ${t('groupLabel')} ---</div><div class="space-y-3">`;
+                    htmlTxt += `<div class="font-bold text-indigo-600 text-xs uppercase mb-2">NHÓM:</div><div class="space-y-3">`;
                     grps.forEach((c,i) => {
-                        rawTxt += `🎯 ${c.title}${toSuperscript(i+1)}${c.isBigPlay?" 🔥":""} (${formatDateString(c.startDate)})\n`;
-                        
                         htmlTxt += `
-                            <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-2xs">
+                            <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-sm">
                                 <div class="flex justify-between items-center">
-                                    <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
+                                    <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs">
                                         ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500">${i+1}</sup>
                                     </strong>
-                                    <span class="text-[10px] text-slate-400">(${formatDateString(c.startDate)})</span>
+                                    <span class="text-[10px] text-slate-400 font-medium">(${formatDateString(c.startDate)})</span>
                                 </div>
-                                <div class="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">`;
+                                <div class="space-y-2 pt-1.5 border-t border-slate-100 dark:border-slate-700">`;
                         
                         const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
                         acts.map(mId => { 
@@ -1893,11 +1948,9 @@
                             const isD = m.cnt >= tgt;
                             const pct = Math.round((m.cnt / tgt) * 100);
                             
-                            let barColor = m.st === 'given_up' ? 'bg-rose-500' : (isD ? 'bg-indigo-600' : 'bg-indigo-400');
-                            let statusBadge = m.st === 'given_up' ? `<span class="text-rose-500 font-bold">🏳️ ${t('givenUpStatus')}</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ ${t('completed')}</span>` : '');
-                            
-                            const lineStr = m.st==='given_up' ? `- ${m.n}: ${t('givenUpStatus')} (${m.cnt}/${tgt} - ${pct}%${m.rsn?` - Rsn: ${m.rsn}`:''})` : `- ${m.n}: ${m.cnt}/${tgt} (${pct}%)${isD?` - ${t('completed')}`:''}`;
-                            rawTxt += `   ${lineStr}\n`;
+                            // Màu thanh tiến độ ĐỒNG NHẤT là màu nhạt mượt mà
+                            let barColor = m.st === 'given_up' ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
+                            let statusBadge = m.st === 'given_up' ? `<span class="text-rose-500 font-bold">🏳️ Bỏ cuộc</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : '');
                             
                             htmlTxt += `
                                 <div class="space-y-1 text-[11px]">
@@ -1905,13 +1958,12 @@
                                         <span class="font-semibold text-slate-700 dark:text-slate-200">${m.n}</span>
                                         <span class="font-bold text-slate-600 dark:text-slate-300">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                                     </div>
-                                    <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
                                         <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
                                     </div>
                                     ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">Lý do: ${m.rsn}</p>` : ''}
                                 </div>`;
                         });
-                        rawTxt += '\n'; 
                         htmlTxt += `</div></div>`;
                     });
                     htmlTxt += `</div>`;
@@ -1920,31 +1972,31 @@
             
             const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived);
             if(myH.length){
-                rawTxt += `--- ${t('personalLabel').toUpperCase()} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---\n`;
-                htmlTxt += `<div class="font-bold text-emerald-600 uppercase text-xs mt-4 mb-2">--- ${t('personalLabel')} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---</div><div class="space-y-2">`;
+                const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
+                const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
                 
-                myH.sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id)).forEach((h,i) => {
+                htmlTxt += `<div class="font-bold text-emerald-600 text-xs uppercase mt-4 mb-2">${currentMemberName.toUpperCase()}:</div><div class="space-y-2">`;
+                
+                // Sắp xếp mới đến cũ
+                myH.sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id)).forEach((h,i) => {
                     const tgt = h.targetDays || 21;
                     const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
                     const isD = cnt >= tgt;
                     const pct = Math.round((cnt / tgt) * 100);
                     
-                    let line = `📌 ${h.text}${toSuperscript(i+1)}: `;
-                    if(h.status==='given_up') line += `${t('givenUpStatus')} (${cnt}/${tgt} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else if(h.status==='paused') line += `${t('pausedStatus')} (${cnt}/${tgt} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else line += `${cnt}/${tgt} (${pct}%)${isD?` - ${t('completed')}`:''}`;
-                    rawTxt += `${line}\n`;
-
-                    let barColor = h.status==='given_up' ? 'bg-rose-500' : (h.status==='paused' ? 'bg-amber-500' : (isD ? 'bg-emerald-600' : 'bg-emerald-400'));
+                    // Màu thanh tiến độ đồng nhất nhạt
+                    let barColor = h.status==='given_up' ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
                     let statusBadge = h.status==='given_up' ? `<span class="text-rose-500 font-bold">🏳️ Bỏ cuộc</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold">⏸️ Tạm dừng</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : ''));
 
                     htmlTxt += `
-                        <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5 shadow-2xs">
+                        <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5 shadow-sm">
                             <div class="flex justify-between items-center text-xs">
-                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">📌 ${h.text}<sup class="text-emerald-500">${i+1}</sup></strong>
+                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
+                                    ${userAv} ${h.text}<sup class="text-emerald-500">${i+1}</sup>
+                                </strong>
                                 <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px]">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                             </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                            <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
                                 <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
                             </div>
                             ${h.reason ? `<p class="text-[10px] text-slate-400 italic">Lý do: ${h.reason}</p>` : ''}
@@ -1954,7 +2006,6 @@
             }
             
             document.getElementById('report-html-preview').innerHTML = htmlTxt;
-            document.getElementById('report-html-preview').setAttribute('data-raw', rawTxt);
         }
 
         function toggleRewardRulesAccordion() {
@@ -1966,40 +2017,47 @@
             }
         }
 
-        // YÊU CẦU 3: BỎ CHỮ NHÓM / CÁ NHÂN VÌ ĐÃ CÓ ICON TIÊU ĐỀ THỂ HIỆN
+        // YÊU CẦU 3: HIỂN THỊ THỬ THÁCH NHÓM TRƯỚC (SẮP XẾP MỚI -> CŨ) -> ĐƯỜNG KẺ -> THỬ THÁCH CÁ NHÂN (AVATAR, MỚI -> CŨ)
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
             appData.members.forEach(m => {
-                let book = 0, rew = 0, pen = 0, logs = [];
-                (appData.sharedChallenges||[]).forEach(c => {
+                let book = 0, rew = 0, pen = 0;
+                let groupLogs = [], personalLogs = [];
+
+                // 1. LẤY VÀ SẮP XẾP THỬ THÁCH NHÓM TỪ MỚI ĐẾN CŨ
+                const sortedGroup = [...(appData.sharedChallenges||[])].sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
+                sortedGroup.forEach(c => {
                     const tgt = c.targetDays||21, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
                     
                     if(stat==='given_up'){
                         const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                        logs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ -${p}k</span></div>`);
+                        groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ -${p}k</span></div>`);
                     } else if(stat===true) {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
                         if(done>=tgt){
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                logs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">✅ ➔ +${c.customReward||0}k</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">✅ ➔ +${c.customReward||0}k</span></div>`); 
                             }
                             else { 
                                 book++; 
-                                logs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ +1 Sách</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ +1 Sách</span></div>`); 
                             }
                         }
                     }
                 });
                 
-                if(m.id===loggedInUserId){
-                    (appData.personalHabits[m.id]||[]).forEach(h => {
+                // 2. LẤY VÀ SẮP XẾP THỬ THÁCH CÁ NHÂN TỪ MỚI ĐẾN CŨ (THÊM ĐÁNH DẤU LỚP LỚP ĐỂ DỄ CHỤP ẢNH)
+                if(m.id === loggedInUserId) {
+                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
+                    const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
+                    sortedPersonal.forEach(h => {
                         const tgt = h.targetDays||21, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
                         if(h.status==='given_up') {
-                            logs.push(`<div class="flex items-center justify-between gap-1"><span>📌 "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ 💸 ${h.selfPenalty||''}</span></div>`);
+                            personalLogs.push(`<div class="flex items-center justify-between gap-1 personal-reward-line"><span>${userAv} "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ 💸 ${h.selfPenalty||''}</span></div>`);
                         } else if(done>=tgt) {
-                            logs.push(`<div class="flex items-center justify-between gap-1"><span>📌 "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ 🎁 ${h.selfReward||''}</span></div>`);
+                            personalLogs.push(`<div class="flex items-center justify-between gap-1 personal-reward-line"><span>${userAv} "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ 🎁 ${h.selfReward||''}</span></div>`);
                         }
                     });
                 }
@@ -2009,8 +2067,21 @@
                 if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 rounded-full font-bold">+${rew}k</span>`);
                 if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full font-bold">0 ${t('book')}</span>`);
                 
+                let detailsHTML = "";
+                if (groupLogs.length || personalLogs.length) {
+                    detailsHTML = `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
+                    if (groupLogs.length) detailsHTML += groupLogs.join('');
+                    if (groupLogs.length && personalLogs.length) {
+                        detailsHTML += `<hr class="border-slate-200 dark:border-slate-700/80 my-1.5 opacity-60 personal-reward-line">`;
+                    }
+                    if (personalLogs.length) detailsHTML += personalLogs.join('');
+                    detailsHTML += `</div>`;
+                } else {
+                    detailsHTML = `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
+                }
+
                 container.innerHTML += `
-                    <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+                    <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">
                                 ${m.avatar ? `<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">` : '👤'} ${m.name}
@@ -2020,7 +2091,7 @@
                                 <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-0.5 rounded-full font-bold">-${pen}k</span>
                             </div>
                         </div>
-                        ${logs.length ? `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">${logs.join('')}</div>` : `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`}
+                        ${detailsHTML}
                     </div>`;
             });
         }
@@ -2056,7 +2127,7 @@
                 const textColor = m.isGivenUp ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400';
                 
                 return `
-                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-2">
+                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-2">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm">
                                 ${avHTML}
