@@ -151,15 +151,19 @@
         </div>
     </div>
 
-    <!-- MODAL BẢNG XẾP HẠNG -->
+    <!-- MODAL TIẾN ĐỘ / BẢNG XẾP HẠNG (THIẾT KẾ CẢI TIẾN DẠNG THẺ PROGRESS BAR) -->
     <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">Bảng Xếp Hạng</span></h3>
-                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">---</span></h3>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">✕</button>
             </div>
-            <div class="relative h-64 sm:h-80 w-full py-2 flex-1"><canvas id="modal-leaderboard-chart"></canvas></div>
-            <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-semibold">Đóng</button>
+            
+            <div id="leaderboard-list-container" class="space-y-3 overflow-y-auto flex-1 py-1 pr-1">
+                <!-- Nạp danh sách thẻ thành viên kèm Progress Bar -->
+            </div>
+            
+            <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm">Đóng</button>
         </div>
     </div>
 
@@ -246,7 +250,7 @@
         </div>
     </div>
 
-    <!-- MODAL MENU 3 CHẤM (CÓ ĐẦY ĐỦ ICON) -->
+    <!-- MODAL MENU 3 CHẤM -->
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center uppercase tracking-wider text-[10px]">Tùy chọn</h4>
@@ -351,7 +355,7 @@
             </div>
         </header>
 
-        <!-- TABS (CÓ ICON BVGP CHO TAB NHÓM) -->
+        <!-- TABS -->
         <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
                 <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs">
@@ -370,7 +374,6 @@
                     <option value="archived" id="opt-archived">Đã lưu trữ</option>
                 </select>
             </div>
-            <!-- NÚT DẤU CỘNG ĐỒNG BỘ MÀU THEO TAB -->
             <button onclick="toggleCreatePanel()" id="btn-create-toggle" class="bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg leading-none shrink-0">+</button>
         </div>
 
@@ -944,7 +947,6 @@
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
-        let modalChart = null;
         let currentEditingDay = null;
         let isEditMode = false;
         let tempAvatarBase64 = '';
@@ -1009,7 +1011,7 @@
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
             const u = appData.members.find(x => x.id === mId);
             if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0">?</div>`;
-            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 flex items-center justify-center text-[10px] font-bold text-indigo-600 border border-indigo-200 shrink-0">${u.name.charAt(0)}</div>`;
+            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
         // RENDER LIST
@@ -1475,7 +1477,6 @@
                     });
                     progressSummaryText = `${completedUsersCount}/${joinedMemberIds.length} hoàn thành`;
                     
-                    // Thứ tự: Avatar + Tạo bởi: [Tên]
                     var creatorDisplayHTML = `<span class="inline-flex items-center gap-1.5 font-bold">${creatorAvatarHTML} Tạo bởi: <span>${creatorNameDisplay}</span></span>`;
                 }
             } else {
@@ -1491,7 +1492,6 @@
                     const cnt = prog.filter(x=>x&&x.completed).length;
                     progressSummaryText = `${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)`;
                     
-                    // Tiến độ cá nhân cố định 1 dòng, không xổ ra
                     mems = `<div class="flex justify-between items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-xs rounded-xl font-bold"><span class="text-slate-700 dark:text-slate-200">Đã hoàn thành</span><span class="text-emerald-600">${cnt}/${tgt} (${Math.round(cnt/tgt*100)}%)</span></div>`;
                     
                     var creatorDisplayHTML = `<span class="inline-flex items-center gap-1.5 font-bold">${creatorAvatarHTML} Tạo bởi: <span>${creatorNameDisplay}</span></span>`;
@@ -1540,7 +1540,7 @@
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // BÁO CÁO (REPORT) - TỰ ĐỘNG COPY VÀ ẨN NÚT
+        // BÁO CÁO (REPORT)
         function openReportModal() { 
             switchReportTab('active'); 
             document.getElementById('report-modal').classList.remove('hidden'); 
@@ -1641,24 +1641,52 @@
             });
         }
 
-        // LEADERBOARD MODAL
+        // BẢNG XẾP HẠNG (CẬP NHẬT GIAO DIỆN DẠNG THẺ THÀNH VIÊN + PROGRESS BAR)
         function openLeaderboardModal(id) {
             const c = appData.sharedChallenges.find(x=>x.id===id); if(!c)return;
-            document.getElementById('leaderboard-modal-title').innerText = `${t('leaderboard')} - ${c.title}`; document.getElementById('leaderboard-modal').classList.remove('hidden');
-            setTimeout(()=>renderModalChart(c), 50);
+            document.getElementById('leaderboard-modal-title').innerText = c.title; 
+            renderLeaderboardList(c);
+            document.getElementById('leaderboard-modal').classList.remove('hidden');
         }
-        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); if(modalChart) { modalChart.destroy(); modalChart=null; } }
-        function renderModalChart(c) {
-            const cv = document.getElementById('modal-leaderboard-chart'); if(!cv)return; if(modalChart)modalChart.destroy();
-            const mems = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true).map(mId => { const u=appData.members.find(x=>x.id===mId), cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0); return {n:u?u.name:mId, a:u?u.avatar:'', c:cnt}; }).sort((a,b)=>b.c-a.c);
-            const ctx = cv.getContext('2d'), isD = currentTheme==='dark', txtC = isD?'#cbd5e1':'#475569';
-            modalChart = new Chart(ctx, {
-                type: 'bar', data: { labels: mems.map(x=>x.n), datasets: [{ data: mems.map(x=>x.c), backgroundColor: 'rgba(99, 102, 241, 0.8)', borderRadius: 8 }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks:{color:txtC, padding:30}, grid:{display:false} }, y: { beginAtZero:true, max:(c.totalDays||25), ticks:{color:txtC}, grid:{color:isD?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.05)'} } }, plugins: { legend: {display:false} } },
-                plugins: [{
-                    id:'av', afterDraw(ch){ const {ctx, scales:{x}}=ch; ctx.save(); mems.forEach((m,i)=>{ const xp=x.getPixelForValue(i), yp=ch.chartArea.bottom+10; ctx.beginPath(); ctx.arc(xp, yp+10, 11, 0, 2*Math.PI); ctx.fillStyle=isD?'#334155':'#e2e8f0'; ctx.fill(); ctx.stroke(); ctx.clip(); if(m.a){const img=new Image(); img.src=m.a; if(img.complete)ctx.drawImage(img,xp-11,yp-1,22,22); else img.onload=()=>ch.draw();} else{ctx.fillStyle=txtC; ctx.font='bold 9px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(m.n.charAt(0),xp,yp+10);} ctx.restore(); }); }
-                }, { id:'val', afterDatasetsDraw(ch){ ch.data.datasets.forEach((ds,di)=>{ const mt=ch.getDatasetMeta(di); mt.data.forEach((b,i)=>{ ch.ctx.fillStyle=txtC; ch.ctx.font='bold 11px sans-serif'; ch.ctx.textAlign='center'; ch.ctx.fillText(ds.data[i], b.x, b.y-5); }); }); } }]
-            });
+        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
+        
+        function renderLeaderboardList(c) {
+            const container = document.getElementById('leaderboard-list-container');
+            if(!container) return;
+            const tgt = c.targetDays || 21;
+            
+            const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
+                const u = appData.members.find(x => x.id === mId);
+                const cnt = (c.progress && c.progress[mId]) ? c.progress[mId].filter(x => x && x.completed).length : 0;
+                const pct = Math.round((cnt / tgt) * 100);
+                return { id: mId, name: u ? u.name : mId, cnt, pct, isGivenUp: c.participants[mId] === 'given_up' };
+            }).sort((a, b) => b.cnt - a.cnt);
+
+            if(!mems.length) {
+                container.innerHTML = `<p class="text-center text-slate-400 italic py-6 text-xs">${t('notJoined')}</p>`;
+                return;
+            }
+
+            container.innerHTML = mems.map(m => {
+                const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
+                const progressBg = m.isGivenUp ? 'bg-rose-500' : 'bg-indigo-600';
+                const textColor = m.isGivenUp ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400';
+                
+                return `
+                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-2">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm">
+                                ${avHTML}
+                                <span>${m.name}</span>
+                            </div>
+                            <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
+                            <div class="${progressBg} h-full rounded-full transition-all duration-500" style="width: ${Math.min(m.pct, 100)}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         checkLogin();
