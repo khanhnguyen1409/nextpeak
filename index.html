@@ -849,7 +849,6 @@
 
         function t(key) { return translations[currentLang][key] || key; }
 
-        // YÊU CẦU 1: HÀM SẮP XẾP THEO NGÀY BẮT ĐẦU (Cũ nhất -> Mới nhất)
         const sortByStartDate = (a, b) => {
             const dateA = new Date(a.startDate).getTime();
             const dateB = new Date(b.startDate).getTime();
@@ -858,7 +857,7 @@
         };
 
         const UNIFORM_COMPLETED_BADGE_HTML = `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shrink-0">
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
                 Hoàn thành
             </span>`;
@@ -1113,8 +1112,8 @@
 
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
             const u = appData.members.find(x => x.id === mId);
-            if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0">?</div>`;
-            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
+            if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 leading-none">?</div>`;
+            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
 
         function renderList() {
@@ -1143,19 +1142,18 @@
                     const isCompleted = cnt >= tgt;
                     const isFailed = gu || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
-                    // YÊU CẦU 3: SỬA LỖI HTML2CANVAS KHÔNG CHỤP ĐƯỢC TAG BẰNG CÁCH DÙNG `flex w-fit` VÀ `div`
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
+                            <div class="flex items-center justify-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
                                 <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</div>
-                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">Hoàn thành</div>
+                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Hoàn thành</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
+                            <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
                                 <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">Không hoàn thành</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Không hoàn thành</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
@@ -1180,7 +1178,7 @@
                                 s="bg-indigo-600 text-white border-indigo-600"; 
                             } else if(lock.isFailed) {
                                 s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px]">❌</span>';
+                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                             } else if(it) {
                                 s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; 
                             } else if(ifu) {
@@ -1189,13 +1187,13 @@
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition">🏆</button></span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -1213,11 +1211,11 @@
                                     </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(c.startDate)}</span>
-                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold shadow-sm not-italic">${t('readOnlyMode')}</span>`:''}
+                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
                                     </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2">⋮</button>` : ''}
+                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
                             </div>
                             ${j ? avs : ''}
                             ${content}
@@ -1239,30 +1237,29 @@
                     const isCompleted = cnt >= tgt;
                     const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
-                    // YÊU CẦU 3: SỬA LỖI HTML2CANVAS KHÔNG CHỤP ĐƯỢC TAG CÁ NHÂN BẰNG CÁCH DÙNG `flex w-fit` VÀ `div`
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
+                            <div class="flex items-center justify-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
                                 <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate max-w-[150px] sm:max-w-[200px]">🎁 ${h.selfReward||'---'}</div>
-                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0">Hoàn thành</div>
+                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Hoàn thành</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
+                            <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
                                 <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate max-w-[150px] sm:max-w-[200px]">💸 ${h.selfPenalty||'---'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0">Không hoàn thành</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Không hoàn thành</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
                             <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-fit max-w-full">
                                 <div class="flex items-center gap-1.5 text-emerald-600">
-                                    <div class="shrink-0">🎁</div>
-                                    <div class="break-words max-w-[250px] sm:max-w-[280px]">${h.selfReward||'---'}</div>
+                                    <div class="shrink-0 leading-none">🎁</div>
+                                    <div class="break-words max-w-[250px] sm:max-w-[280px] leading-snug">${h.selfReward||'---'}</div>
                                 </div>
                                 <div class="flex items-center gap-1.5 text-rose-600">
-                                    <div class="shrink-0">💸</div>
-                                    <div class="break-words max-w-[250px] sm:max-w-[280px]">${h.selfPenalty||'---'}</div>
+                                    <div class="shrink-0 leading-none">💸</div>
+                                    <div class="break-words max-w-[250px] sm:max-w-[280px] leading-snug">${h.selfPenalty||'---'}</div>
                                 </div>
                             </div>`;
                     }
@@ -1278,7 +1275,7 @@
                             s="bg-emerald-600 text-white border-emerald-600"; 
                         } else if(lock.isFailed) {
                             s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px]">❌</span>';
+                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                         } else if(it) {
                             s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; 
                         } else if(ifu) {
@@ -1287,7 +1284,7 @@
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
                     container.innerHTML += `
@@ -1299,16 +1296,16 @@
                                     </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(h.startDate)}</span>
-                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold shadow-sm not-italic">${t('readOnlyMode')}</span>`:''}
+                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
                                     </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2">⋮</button>
+                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span></span>
-                                    ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2.5 py-0.5 rounded-full text-[10px] shadow-sm">${t('pausedStatus')}</span>`:''}
+                                    ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2 rounded-full text-[10px] shadow-sm flex items-center justify-center h-4 leading-none">${t('pausedStatus')}</span>`:''}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -1515,13 +1512,11 @@
             }
         }
 
-        // TỰ ĐỘNG BẬT/TẮT DROPDOWN CHỤP ẢNH
         function toggleCaptureDropdown(tab) {
             const m = document.getElementById(`capture-menu-${tab}`);
             if(m) m.classList.toggle('hidden');
         }
 
-        // YÊU CẦU 2: THỰC THI CHỤP ẢNH KẾT QUẢ VỚI 3 LỰA CHỌN TRONG TAB HOẠT ĐỘNG
         async function executeCapture(tab, option) {
             document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
             const isDark = document.documentElement.classList.contains('dark');
@@ -1532,7 +1527,6 @@
                 const grpBox = document.getElementById('act-box-grp');
                 const perBox = document.getElementById('act-box-per');
                 
-                // Mở sẵn các accordion để chụp đầy đủ
                 const grpContent = document.getElementById('act-content-grp');
                 const perContent = document.getElementById('act-content-per');
                 const wasGrpHidden = grpContent?.classList.contains('hidden');
@@ -1571,7 +1565,6 @@
                 const rulesAccordion = document.getElementById('reward-rules-accordion');
                 const allUserCards = wrapperEl.querySelectorAll('[id^="rewards-user-card-"]');
                 
-                // Ẩn Quy tắc thử thách
                 if(rulesAccordion) rulesAccordion.style.display = 'none';
 
                 if(option === 'personal') {
@@ -1684,11 +1677,11 @@
                     const lockM = getDayLockStatus(c.startDate, dIdx, id);
                     const avHTML = getMemberAvatarHTML(mId, "h-6 w-6");
                     
-                    let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold">⏳ ${t('incomplete')}</span>`;
+                    let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">⏳ ${t('incomplete')}</span>`;
                     if (id) {
                         statusLabel = UNIFORM_COMPLETED_BADGE_HTML;
                     } else if (lockM.isFailed) {
-                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 py-0.5 rounded-md text-xs font-semibold">❌ Không hoàn thành</span>`;
+                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ Không hoàn thành</span>`;
                     }
 
                     return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1"></div>`:''}</div>`;
@@ -1725,9 +1718,9 @@
             if (item.completed) {
                 statusBadge = UNIFORM_COMPLETED_BADGE_HTML;
             } else if (lock.isFailed) {
-                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-1 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5">❌ Không hoàn thành</span>`;
+                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">❌ Không hoàn thành</span>`;
             } else {
-                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 py-1 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5">⏳ Chưa làm</span>`;
+                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">⏳ Chưa làm</span>`;
             }
 
             document.getElementById('view-status').innerHTML = statusBadge;
@@ -1911,7 +1904,7 @@
                 frameEl.className = "p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600";
                 frameEl.innerHTML = `
                     <div class="flex items-center gap-2 text-xs sm:text-sm font-normal">
-                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base">🎁</span>
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
                         <div class="flex items-center gap-1.5">
                             <span class="text-emerald-600">+${isB?cR:1}${isB?'k':` ${t('book')}`}</span>
                             <span class="text-slate-300">|</span>
@@ -1922,24 +1915,24 @@
                 frameEl.className = "p-3 bg-emerald-50/70 dark:bg-slate-700/50 rounded-2xl border border-emerald-100 dark:border-slate-600 space-y-2";
                 frameEl.innerHTML = `
                     <div class="flex items-center gap-2 font-normal">
-                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base">🎁</span>
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
                         <span class="text-emerald-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)]">${sR}</span>
                     </div>
                     <div class="flex items-center gap-2 font-normal">
-                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base">💸</span>
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">💸</span>
                         <span class="text-rose-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)]">${sP}</span>
                     </div>`;
             }
             
             document.getElementById('desc-modal-info').innerHTML = `
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
-                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base">📅</span>
+                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">📅</span>
                     <span class="text-slate-500">Start:</span>
                     <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
                     <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
-                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base">🎯</span>
+                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎯</span>
                     <span class="text-slate-500">Target:</span>
                     <strong class="text-slate-700 dark:text-slate-200">${cnt}/${tgt}</strong>
                 </div>
@@ -1994,24 +1987,23 @@
             htmlTxt += `
                 <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
                     <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
-                        <span class="flex items-center gap-1.5">🎯 NHÓM (${grps.length})</span>
+                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> NHÓM (${grps.length})</span>
                         <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
 
             if(grps.length){
                 grps.forEach((c,i) => {
-                    const avs = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "w-4 h-4")).join('');
-                    
                     htmlTxt += `
                         <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
-                            <div class="flex justify-between items-center">
-                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs">
-                                    ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px]">${i+1}</sup>
-                                </strong>
-                                <span class="text-[10px] text-slate-400 font-medium">[${getDateString(c.startDate, 0)}]</span>
+                            <div class="flex justify-between items-center w-full overflow-hidden gap-2">
+                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs min-w-0 shrink">
+                                    <span class="shrink-0">${c.isBigPlay ? '🔥' : '🎯'}</span>
+                                    <span class="truncate">${c.title}</span>
+                                    <sup class="text-indigo-500 font-bold text-[10px] shrink-0">${i+1}</sup>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium shrink-0">[${getDateString(c.startDate, 0)}]</span>
                             </div>
-                            <div class="flex -space-x-1.5 overflow-hidden py-0.5">${avs}</div>
                             <div class="space-y-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/80">`;
                     
                     const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
@@ -2027,13 +2019,13 @@
                         const pct = Math.round((m.cnt / tgt) * 100);
                         
                         let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                        let statusBadge = isF ? `<span class="text-rose-500 font-bold">❌ Không hoàn thành</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : '');
+                        let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="Không hoàn thành">❌</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="Hoàn thành">✅</span>` : '');
                         
                         htmlTxt += `
                             <div class="space-y-1 text-[11px]">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1">${getMemberAvatarHTML(m.mId, "w-4 h-4")} ${m.n}</span>
-                                    <span class="font-bold text-slate-600 dark:text-slate-300">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                <div class="flex justify-between items-center gap-2">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate">${getMemberAvatarHTML(m.mId, "w-4 h-4")} <span class="truncate">${m.n}</span></span>
+                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                                 </div>
                                 <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
                                     <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
@@ -2071,16 +2063,18 @@
                     const pct = Math.round((cnt / tgt) * 100);
                     
                     let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
-                    let statusBadge = isF ? `<span class="text-rose-500 font-bold">❌ Không hoàn thành</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold">⏸️ Tạm dừng</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : ''));
+                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="Không hoàn thành">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="Tạm dừng">⏸️</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="Hoàn thành">✅</span>` : ''));
 
                     htmlTxt += `
                         <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1.5">
-                            <div class="flex justify-between items-center text-xs">
-                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
-                                    ${userAv} ${h.text}<sup class="text-emerald-500 font-bold text-[10px]">${i+1}</sup>
-                                    <span class="text-[10px] text-slate-400 font-normal">[${getDateString(h.startDate, 0)}]</span>
-                                </strong>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px]">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                            <div class="flex justify-between items-center text-xs w-full overflow-hidden gap-2">
+                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 min-w-0 shrink">
+                                    <span class="shrink-0 leading-none">${userAv}</span>
+                                    <span class="truncate">${h.text}</span>
+                                    <sup class="text-emerald-500 font-bold text-[10px] shrink-0">${i+1}</sup>
+                                    <span class="text-[10px] text-slate-400 font-normal shrink-0">[${getDateString(h.startDate, 0)}]</span>
+                                </div>
+                                <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px] shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                             </div>
                             <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
                                 <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
@@ -2123,15 +2117,15 @@
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">➔ -${p}k ❌</span></div>`);
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">➔ +${c.customReward||0}k ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 book++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">➔ +1 Sách ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +1 Sách ✅</span></div>`); 
                             }
                         }
                     }
@@ -2147,32 +2141,40 @@
 
                         if(isFailed) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line">
-                                    <div class="flex items-center gap-1.5 min-w-0">
-                                        ${userAv}
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
+                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
+                                        <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span>:
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
-                                    <span class="font-bold text-rose-600 shrink-0">➔ 💸 ${h.selfPenalty||''} ❌</span>
+                                    <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
+                                        <span class="shrink-0">➔ 💸</span>
+                                        <span class="truncate">${h.selfPenalty||''}</span>
+                                        <span class="shrink-0">❌</span>
+                                    </div>
                                 </div>`);
                         } else if(done >= tgt) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line">
-                                    <div class="flex items-center gap-1.5 min-w-0">
-                                        ${userAv}
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
+                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
+                                        <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span>:
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
-                                    <span class="font-bold text-emerald-600 shrink-0">➔ 🎁 ${h.selfReward||''} ✅</span>
+                                    <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
+                                        <span class="shrink-0">➔ 🎁</span>
+                                        <span class="truncate">${h.selfReward||''}</span>
+                                        <span class="shrink-0">✅</span>
+                                    </div>
                                 </div>`);
                         }
                     });
                 }
                 
                 const badges = [];
-                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-full font-bold">+${book} ${t('book')}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 rounded-full font-bold">+${rew}k</span>`);
-                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full font-bold">0 ${t('book')}</span>`);
+                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${book} ${t('book')}</span>`);
+                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${rew}k</span>`);
+                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">0 ${t('book')}</span>`);
                 
                 let detailsHTML = "";
                 if (groupLogs.length || personalLogs.length) {
@@ -2189,13 +2191,13 @@
 
                 container.innerHTML += `
                     <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">
-                                ${m.avatar ? `<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">` : '👤'} ${m.name}
+                        <div class="flex justify-between items-center gap-2 w-full overflow-hidden">
+                            <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200 shrink min-w-0">
+                                ${getMemberAvatarHTML(m.id, "w-6 h-6")} <span class="truncate">${m.name}</span>
                             </span>
-                            <div class="flex gap-1.5 items-center">
+                            <div class="flex gap-1.5 items-center shrink-0 flex-wrap justify-end">
                                 ${badges.join('')} 
-                                <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-0.5 rounded-full font-bold">-${pen}k</span>
+                                <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">-${pen}k</span>
                             </div>
                         </div>
                         ${detailsHTML}
@@ -2235,12 +2237,12 @@
                 
                 return `
                     <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm">
+                        <div class="flex justify-between items-center w-full overflow-hidden gap-2">
+                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm min-w-0 shrink">
                                 ${avHTML}
-                                <span>${m.name}</span>
+                                <span class="truncate">${m.name}</span>
                             </div>
-                            <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
+                            <span class="text-xs font-bold ${textColor} shrink-0">${m.cnt}/${tgt} (${m.pct}%)</span>
                         </div>
                         <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
                             <div class="${progressBg} h-full rounded-full transition-all duration-300" style="width: ${Math.min(m.pct, 100)}%"></div>
