@@ -231,31 +231,39 @@
     <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center">
-                <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả</h3>
+                <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả thử thách</h3>
                 <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
             </div>
             
             <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
                 <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition">Hoạt động</button>
-                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng / Phạt</button>
+                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng/ Phạt</button>
             </div>
 
             <!-- TAB HOẠT ĐỘNG -->
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
-                <div class="flex justify-end">
-                    <!-- NÚT CHỤP ẢNH TAB HOẠT ĐỘNG -->
-                    <button onclick="captureReportActive()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷 Chụp ảnh</button>
+                <div class="flex justify-end relative">
+                    <!-- NÚT CHỤP ẢNH TAB HOẠT ĐỘNG 2 LỰA CHỌN -->
+                    <button onclick="toggleCaptureDropdown('active')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
+                    <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
+                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
+                        <button onclick="executeCapture('active', 'personal')" id="btn-cap-act-user" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-indigo-600 dark:text-indigo-400 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
+                    </div>
                 </div>
-                <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
-                    <div id="report-html-preview" class="text-xs text-slate-700 dark:text-slate-300 space-y-4 font-sans leading-relaxed"></div>
+                <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div id="report-html-preview" class="text-xs text-slate-700 dark:text-slate-300 space-y-3 font-sans leading-relaxed"></div>
                 </div>
             </div>
 
             <!-- TAB THƯỞNG PHẠT -->
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
-                <div class="flex justify-end">
-                    <!-- NÚT CHỤP ẢNH TAB THƯỞNG PHẠT -->
-                    <button onclick="captureReportRewards()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷 Chụp ảnh</button>
+                <div class="flex justify-end relative">
+                    <!-- NÚT CHỤP ẢNH TAB THƯỞNG PHẠT 2 LỰA CHỌN -->
+                    <button onclick="toggleCaptureDropdown('rewards')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
+                    <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
+                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
+                        <button onclick="executeCapture('rewards', 'personal')" id="btn-cap-rew-user" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-indigo-600 dark:text-indigo-400 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
+                    </div>
                 </div>
                 
                 <div id="rewards-capture-wrapper" class="space-y-3">
@@ -597,7 +605,7 @@
                 selfPenaltyLabel: "💸 Phạt:",
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
                 reportActive: "Hoạt động",
-                reportRewards: "Thưởng / Phạt",
+                reportRewards: "Thưởng/ Phạt",
                 noRewardRecord: "Chưa có thưởng/phạt.",
                 book: "Sách",
                 groupLabel: "Nhóm",
@@ -1100,12 +1108,13 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
-        // RENDER LIST
+        // YÊU CẦU 1: RENDER LIST CẢI TIẾN (SẮP XẾP TỪ CŨ ĐẾN MỚI, ĐÁNH SỐ ĐỒNG BỘ)
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
             
             if (activeTab === 'dashboard') {
+                // SẮP XẾP TỪ CŨ NHẤT ĐẾN MỚI NHẤT DỰA TRÊN CREATED AT / ID
                 list = (appData.sharedChallenges||[]).filter(c => {
                     const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
                     if (currentFilter === 'archived') return c.archived;
@@ -1125,7 +1134,7 @@
                     const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const isFailed = gu || (tIdx >= tot && cnt < tgt);
+                    const isFailed = gu || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1152,7 +1161,6 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        // YÊU CẦU 1: CĂN GIỮA CHỮ "HÔM NAY" TUYỆT ĐỐI VÀ CHO PHÉP TRÀO RA NGOÀI (overflow-visible)
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             const lock = getDayLockStatus(c.startDate, dIdx, ic);
@@ -1188,7 +1196,6 @@
                             </div>`;
                     }
 
-                    // YÊU CẦU 5: THÊM SỐ THỨ TỰ SUPERSCRIPT BÊN NGOÀI
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1210,6 +1217,7 @@
                         </div>`;
                 });
             } else {
+                // SẮP XẾP TỪ CŨ NHẤT ĐẾN MỚI NHẤT DỰA TRÊN CREATED AT / ID
                 list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
                     if (currentFilter === 'archived') return h.archived;
                     return !h.archived;
@@ -1222,7 +1230,7 @@
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     
                     const isCompleted = cnt >= tgt;
-                    const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt);
+                    const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1274,7 +1282,6 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
-                    // YÊU CẦU 5: THÊM SỐ THỨ TỰ SUPERSCRIPT BÊN NGOÀI CÁ NHÂN
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1365,7 +1372,17 @@
             if (n.length !== 4 || isNaN(n)) return alert(t('pinFormat'));
             appData.members[idx].pin = n; dbRef.set(appData); alert(t('pinChanged')); document.getElementById('pin-modal').classList.add('hidden');
         }
-        function updateUserLabel() { const m = appData.members.find(x => x.id === loggedInUserId); if (m) { document.getElementById('current-user-label').innerText = m.name; document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); } }
+        function updateUserLabel() { 
+            const m = appData.members.find(x => x.id === loggedInUserId); 
+            if (m) { 
+                document.getElementById('current-user-label').innerText = m.name; 
+                document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
+                const btnCapAct = document.getElementById('btn-cap-act-user');
+                const btnCapRew = document.getElementById('btn-cap-rew-user');
+                if(btnCapAct) btnCapAct.innerText = m.name;
+                if(btnCapRew) btnCapRew.innerText = m.name;
+            } 
+        }
         function handleResetTestData() {
             if (loggedInUserId !== 'member_7') return alert(t('notAdmin'));
             const mp = prompt(t('adminConfirmTitle'));
@@ -1458,12 +1475,11 @@
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
-        // YÊU CẦU 1: CHỤP ẢNH THÀNH TÍCH THỬ THÁCH (BỎ BÌNH LUẬN + GIỮ LẠI ĐẦY ĐỦ LABEL + JPG CHI TIẾT)
+        // YÊU CẦU 4: CHỤP ẢNH CHIA SẺ THÀNH TÍCH (SỬA TRIỆT ĐỂ LỖI BỊ TRỐNG NỘI DUNG)
         async function captureChallengeCard(id) {
             const cardEl = document.getElementById(`challenge-card-${id}`);
             if(!cardEl) return;
             
-            // Ẩn tạm thời phần bình luận và nút 3 chấm khi chụp
             const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
             const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
             
@@ -1472,9 +1488,10 @@
 
             try {
                 const canvas = await html2canvas(cardEl, {
-                    scale: 3, // Siêu nét
+                    scale: 3,
                     useCORS: true,
-                    allowTaint: true,
+                    allowTaint: false,
+                    logging: false,
                     backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
                 });
 
@@ -1491,55 +1508,87 @@
             }
         }
 
-        // YÊU CẦU 6: CHỤP ẢNH TAB HOẠT ĐỘNG
-        async function captureReportActive() {
-            const activeEl = document.getElementById('report-active-container');
-            if(!activeEl) return;
-            try {
-                const canvas = await html2canvas(activeEl, {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#f8fafc'
-                });
-                const link = document.createElement('a');
-                link.download = `BVGP-TienDoHoanThanh-${Date.now()}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            } catch(e) {
-                alert("Lỗi chụp ảnh Hoạt động!");
-            }
+        // TỰ ĐỘNG BẬT/TẮT DROPDOWN CHỤP ẢNH
+        function toggleCaptureDropdown(tab) {
+            const m = document.getElementById(`capture-menu-${tab}`);
+            if(m) m.classList.toggle('hidden');
         }
 
-        // YÊU CẦU 6: CHỤP ẢNH TAB THƯỞNG PHẠT (ẨN QUY TẮC VÀ ẨN CÁ NHÂN KHI CHỤP)
-        async function captureReportRewards() {
-            const wrapperEl = document.getElementById('rewards-capture-wrapper');
-            const rulesAccordion = document.getElementById('reward-rules-accordion');
-            const personalLines = wrapperEl.querySelectorAll('.personal-reward-line');
-            
-            if(!wrapperEl) return;
-            
-            // Ẩn quy tắc & ẩn phần thưởng phạt cá nhân khi chụp ảnh
-            if(rulesAccordion) rulesAccordion.style.display = 'none';
-            personalLines.forEach(el => el.style.display = 'none');
+        // YÊU CẦU 2 & 3: THỰC THI CHỤP ẢNH KẾT QUẢ VỚI 2 LỰA CHỌN (TẤT CẢ / CÁ NHÂN)
+        async function executeCapture(tab, option) {
+            document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
+            const isDark = document.documentElement.classList.contains('dark');
+            const bgColor = isDark ? '#0f172a' : '#ffffff';
 
-            try {
-                const canvas = await html2canvas(wrapperEl, {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-                });
-                const link = document.createElement('a');
-                link.download = `BVGP-ThuongPhat-${Date.now()}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            } catch(e) {
-                alert("Lỗi chụp ảnh Thưởng phạt!");
-            } finally {
-                // Khôi phục lại hiển thị
-                if(rulesAccordion) rulesAccordion.style.display = '';
-                personalLines.forEach(el => el.style.display = '');
+            if(tab === 'active') {
+                const container = document.getElementById('report-active-container');
+                const grpBox = document.getElementById('act-box-grp');
+                const perBox = document.getElementById('act-box-per');
+                
+                // Mở sẵn các accordion để chụp đầy đủ
+                const grpContent = document.getElementById('act-content-grp');
+                const perContent = document.getElementById('act-content-per');
+                const wasGrpHidden = grpContent?.classList.contains('hidden');
+                const wasPerHidden = perContent?.classList.contains('hidden');
+
+                if(grpContent) grpContent.classList.remove('hidden');
+                if(perContent) perContent.classList.remove('hidden');
+
+                if(option === 'personal') {
+                    if(grpBox) grpBox.style.display = 'none';
+                }
+
+                try {
+                    const canvas = await html2canvas(container, {
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: bgColor
+                    });
+                    const link = document.createElement('a');
+                    link.download = `BVGP-HoatDong-${option}-${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+                } catch(e) {
+                    alert("Lỗi chụp ảnh Hoạt động!");
+                } finally {
+                    if(grpBox) grpBox.style.display = '';
+                    if(wasGrpHidden && grpContent) grpContent.classList.add('hidden');
+                    if(wasPerHidden && perContent) perContent.classList.add('hidden');
+                }
+            } else if(tab === 'rewards') {
+                const wrapperEl = document.getElementById('rewards-capture-wrapper');
+                const rulesAccordion = document.getElementById('reward-rules-accordion');
+                const allUserCards = wrapperEl.querySelectorAll('[id^="rewards-user-card-"]');
+                
+                // Ẩn Quy tắc thử thách
+                if(rulesAccordion) rulesAccordion.style.display = 'none';
+
+                if(option === 'personal') {
+                    allUserCards.forEach(card => {
+                        if(card.id !== `rewards-user-card-${loggedInUserId}`) {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+
+                try {
+                    const canvas = await html2canvas(wrapperEl, {
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: bgColor
+                    });
+                    const link = document.createElement('a');
+                    link.download = `BVGP-ThuongPhat-${option}-${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+                } catch(e) {
+                    alert("Lỗi chụp ảnh Thưởng/ Phạt!");
+                } finally {
+                    if(rulesAccordion) rulesAccordion.style.display = '';
+                    allUserCards.forEach(card => card.style.display = '');
+                }
             }
         }
 
@@ -1916,94 +1965,124 @@
             if (tab === 'active') renderReportPreview();
             else if (tab === 'rewards') renderRewardsSummary();
         }
-        
-        function toSuperscript(num) { const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}; return String(num).split('').map(c => supers[c] || c).join(''); }
-        
-        // YÊU CẦU 2 & 4: CẬP NHẬT TAB HOẠT ĐỘNG (THANH TIẾN ĐỘ ĐỒNG NHẤT MÀU NHẠT + CẬP NHẬT TIÊU ĐỀ + XẮP XẾP TỪ MỚI ĐẾN CŨ)
-        function renderReportPreview() {
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-3">🏆 TIẾN ĐỘ HOÀN THÀNH</h2>`;
-            
-            if(appData.sharedChallenges?.length){
-                // Sắp xếp từ mới đến cũ
-                const grps = appData.sharedChallenges.filter(c=>!c.archived).sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
-                if(grps.length){
-                    htmlTxt += `<div class="font-bold text-indigo-600 text-xs uppercase mb-2">NHÓM:</div><div class="space-y-3">`;
-                    grps.forEach((c,i) => {
-                        htmlTxt += `
-                            <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-sm">
-                                <div class="flex justify-between items-center">
-                                    <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs">
-                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500">${i+1}</sup>
-                                    </strong>
-                                    <span class="text-[10px] text-slate-400 font-medium">(${formatDateString(c.startDate)})</span>
-                                </div>
-                                <div class="space-y-2 pt-1.5 border-t border-slate-100 dark:border-slate-700">`;
-                        
-                        const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                        acts.map(mId => { 
-                            const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
-                            return {n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
-                        }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                            const tgt = c.targetDays || 21;
-                            const isD = m.cnt >= tgt;
-                            const pct = Math.round((m.cnt / tgt) * 100);
-                            
-                            // Màu thanh tiến độ ĐỒNG NHẤT là màu nhạt mượt mà
-                            let barColor = m.st === 'given_up' ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                            let statusBadge = m.st === 'given_up' ? `<span class="text-rose-500 font-bold">🏳️ Bỏ cuộc</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : '');
-                            
-                            htmlTxt += `
-                                <div class="space-y-1 text-[11px]">
-                                    <div class="flex justify-between items-center">
-                                        <span class="font-semibold text-slate-700 dark:text-slate-200">${m.n}</span>
-                                        <span class="font-bold text-slate-600 dark:text-slate-300">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
-                                    </div>
-                                    <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
-                                        <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
-                                    </div>
-                                    ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">Lý do: ${m.rsn}</p>` : ''}
-                                </div>`;
-                        });
-                        htmlTxt += `</div></div>`;
-                    });
-                    htmlTxt += `</div>`;
-                }
+
+        function toggleActivityAccordion(type) {
+            const content = document.getElementById(`act-content-${type}`);
+            const arrow = document.getElementById(`act-arrow-${type}`);
+            if(content) {
+                content.classList.toggle('hidden');
+                if(arrow) arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
             }
-            
-            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived);
+        }
+
+        // YÊU CẦU 2: CẬP NHẬT TAB HOẠT ĐỘNG (2 MỤC NHÓM/CÁ NHÂN DẠNG ACCORDION, BỔ SUNG AVATAR, NGÀY THÁNG, SẮP XẾP CŨ -> MỚI)
+        function renderReportPreview() {
+            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 TIẾN ĐỘ HOÀN THÀNH</h2>`;
+            const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
+
+            // 1. MỤC NHÓM
+            const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+            htmlTxt += `
+                <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
+                    <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
+                        <span class="flex items-center gap-1.5">🎯 NHÓM (${grps.length})</span>
+                        <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
+
+            if(grps.length){
+                grps.forEach((c,i) => {
+                    const avs = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "w-4 h-4")).join('');
+                    
+                    htmlTxt += `
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs">
+                                    ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px]">${i+1}</sup>
+                                </strong>
+                                <span class="text-[10px] text-slate-400 font-medium">[${getDateString(c.startDate, 0)}]</span>
+                            </div>
+                            <div class="flex -space-x-1.5 overflow-hidden py-0.5">${avs}</div>
+                            <div class="space-y-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/80">`;
+                    
+                    const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
+                    acts.map(mId => { 
+                        const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
+                        return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
+                    }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
+                        const tgt = c.targetDays || 21;
+                        const tot = c.totalDays || 25;
+                        const tIdx = getTodayIndex(c.startDate);
+                        const isD = m.cnt >= tgt;
+                        const isF = m.st==='given_up' || (tIdx >= tot && m.cnt < tgt) || ((tot - tIdx) < (tgt - m.cnt) && m.cnt < tgt);
+                        const pct = Math.round((m.cnt / tgt) * 100);
+                        
+                        let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
+                        let statusBadge = isF ? `<span class="text-rose-500 font-bold">❌ Không hoàn thành</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : '');
+                        
+                        htmlTxt += `
+                            <div class="space-y-1 text-[11px]">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1">${getMemberAvatarHTML(m.mId, "w-4 h-4")} ${m.n}</span>
+                                    <span class="font-bold text-slate-600 dark:text-slate-300">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                </div>
+                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
+                                    <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">Lý do: ${m.rsn}</p>` : ''}
+                            </div>`;
+                    });
+                    htmlTxt += `</div></div>`;
+                });
+            } else {
+                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">Chưa có thử thách nhóm nào.</p>`;
+            }
+            htmlTxt += `</div></div>`;
+
+            // 2. MỤC CÁ NHÂN
+            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+            const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
+
+            htmlTxt += `
+                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2">
+                    <button onclick="toggleActivityAccordion('per')" class="w-full p-3 bg-emerald-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition">
+                        <span class="flex items-center gap-1.5">${userAv} ${currentMemberName.toUpperCase()} (${myH.length})</span>
+                        <span id="act-arrow-per" class="text-xs transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
+
             if(myH.length){
-                const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
-                const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
-                
-                htmlTxt += `<div class="font-bold text-emerald-600 text-xs uppercase mt-4 mb-2">${currentMemberName.toUpperCase()}:</div><div class="space-y-2">`;
-                
-                // Sắp xếp mới đến cũ
-                myH.sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id)).forEach((h,i) => {
+                myH.forEach((h,i) => {
                     const tgt = h.targetDays || 21;
+                    const tot = h.totalDays || 25;
+                    const tIdx = getTodayIndex(h.startDate);
                     const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
                     const isD = cnt >= tgt;
+                    const isF = h.status==='given_up' || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
                     const pct = Math.round((cnt / tgt) * 100);
                     
-                    // Màu thanh tiến độ đồng nhất nhạt
-                    let barColor = h.status==='given_up' ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
-                    let statusBadge = h.status==='given_up' ? `<span class="text-rose-500 font-bold">🏳️ Bỏ cuộc</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold">⏸️ Tạm dừng</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : ''));
+                    let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
+                    let statusBadge = isF ? `<span class="text-rose-500 font-bold">❌ Không hoàn thành</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold">⏸️ Tạm dừng</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : ''));
 
                     htmlTxt += `
-                        <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5 shadow-sm">
+                        <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1.5">
                             <div class="flex justify-between items-center text-xs">
                                 <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
-                                    ${userAv} ${h.text}<sup class="text-emerald-500">${i+1}</sup>
+                                    ${userAv} ${h.text}<sup class="text-emerald-500 font-bold text-[10px]">${i+1}</sup>
+                                    <span class="text-[10px] text-slate-400 font-normal">[${getDateString(h.startDate, 0)}]</span>
                                 </strong>
                                 <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px]">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                             </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
+                            <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
                                 <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
                             </div>
                             ${h.reason ? `<p class="text-[10px] text-slate-400 italic">Lý do: ${h.reason}</p>` : ''}
                         </div>`;
                 });
-                htmlTxt += `</div>`;
+            } else {
+                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">Chưa có thử thách cá nhân nào.</p>`;
             }
+            htmlTxt += `</div></div>`;
             
             document.getElementById('report-html-preview').innerHTML = htmlTxt;
         }
@@ -2017,47 +2096,69 @@
             }
         }
 
-        // YÊU CẦU 3: HIỂN THỊ THỬ THÁCH NHÓM TRƯỚC (SẮP XẾP MỚI -> CŨ) -> ĐƯỜNG KẺ -> THỬ THÁCH CÁ NHÂN (AVATAR, MỚI -> CŨ)
+        // YÊU CẦU 3: CẬP NHẬT TAB THƯỞNG/ PHẠT (CĂN CHỈNH AVATAR, BỎ NGOẶC KÉP, TÍCH ĐẶT Ở CUỐI, TÍNH ĐỦ THỬ THÁCH BỊ PHẠT)
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
             appData.members.forEach(m => {
                 let book = 0, rew = 0, pen = 0;
                 let groupLogs = [], personalLogs = [];
 
-                // 1. LẤY VÀ SẮP XẾP THỬ THÁCH NHÓM TỪ MỚI ĐẾN CŨ
-                const sortedGroup = [...(appData.sharedChallenges||[])].sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
+                // 1. SẮP XẾP THỬ THÁCH NHÓM TỪ CŨ ĐẾN MỚI
+                const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
                 sortedGroup.forEach(c => {
-                    const tgt = c.targetDays||21, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
+                    const tgt = c.targetDays||21, tot = c.totalDays||25, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
+                    const tIdx = getTodayIndex(c.startDate);
                     
-                    if(stat==='given_up'){
-                        const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                        groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ -${p}k</span></div>`);
-                    } else if(stat===true) {
+                    if(stat === true || stat === 'given_up') {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        if(done>=tgt){
+                        const isFailed = (stat === 'given_up') || (tIdx >= tot && done < tgt) || ((tot - tIdx) < (tgt - done) && done < tgt);
+
+                        if (isFailed) {
+                            const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">➔ -${p}k ❌</span></div>`);
+                        } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">✅ ➔ +${c.customReward||0}k</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 book++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ +1 Sách</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 ${c.title} <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">➔ +1 Sách ✅</span></div>`); 
                             }
                         }
                     }
                 });
                 
-                // 2. LẤY VÀ SẮP XẾP THỬ THÁCH CÁ NHÂN TỪ MỚI ĐẾN CŨ (THÊM ĐÁNH DẤU LỚP LỚP ĐỂ DỄ CHỤP ẢNH)
+                // 2. SẮP XẾP THỬ THÁCH CÁ NHÂN TỪ CŨ ĐẾN MỚI
                 if(m.id === loggedInUserId) {
-                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].sort((a,b)=>(b.createdAt||b.id)-(a.createdAt||a.id));
+                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
                     const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
                     sortedPersonal.forEach(h => {
-                        const tgt = h.targetDays||21, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        if(h.status==='given_up') {
-                            personalLogs.push(`<div class="flex items-center justify-between gap-1 personal-reward-line"><span>${userAv} "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ 💸 ${h.selfPenalty||''}</span></div>`);
-                        } else if(done>=tgt) {
-                            personalLogs.push(`<div class="flex items-center justify-between gap-1 personal-reward-line"><span>${userAv} "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ 🎁 ${h.selfReward||''}</span></div>`);
+                        const tgt = h.targetDays||21, tot = h.totalDays||25, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
+                        const tIdx = getTodayIndex(h.startDate);
+                        const isFailed = (h.status === 'given_up') || (tIdx >= tot && done < tgt) || ((tot - tIdx) < (tgt - done) && done < tgt);
+
+                        if(isFailed) {
+                            personalLogs.push(`
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line">
+                                    <div class="flex items-center gap-1.5 min-w-0">
+                                        ${userAv}
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span>:
+                                    </div>
+                                    <span class="font-bold text-rose-600 shrink-0">➔ 💸 ${h.selfPenalty||''} ❌</span>
+                                </div>`);
+                        } else if(done >= tgt) {
+                            personalLogs.push(`
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line">
+                                    <div class="flex items-center gap-1.5 min-w-0">
+                                        ${userAv}
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span>:
+                                    </div>
+                                    <span class="font-bold text-emerald-600 shrink-0">➔ 🎁 ${h.selfReward||''} ✅</span>
+                                </div>`);
                         }
                     });
                 }
@@ -2081,7 +2182,7 @@
                 }
 
                 container.innerHTML += `
-                    <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+                    <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">
                                 ${m.avatar ? `<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">` : '👤'} ${m.name}
@@ -2136,7 +2237,7 @@
                             <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
                         </div>
                         <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
-                            <div class="${progressBg} h-full rounded-full transition-all duration-500" style="width: ${Math.min(m.pct, 100)}%"></div>
+                            <div class="${progressBg} h-full rounded-full transition-all duration-300" style="width: ${Math.min(m.pct, 100)}%"></div>
                         </div>
                     </div>
                 `;
