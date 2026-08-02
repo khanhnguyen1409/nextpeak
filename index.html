@@ -265,7 +265,7 @@
         </div>
     </div>
 
-    <!-- MODAL CHI TIẾT NGÀY (CẬP NHẬT GIAO DIỆN CHECK-IN) -->
+    <!-- MODAL CHI TIẾT NGÀY (CẬP NHẬT THEO YÊU CẦU 1 VÀ 2) -->
     <div id="day-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -287,28 +287,31 @@
             <div class="space-y-4">
                 <!-- KHUNG BÁO CÁO CÁ NHÂN -->
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <!-- YÊU CẦU 4.1: Chỉ hiển thị ô Hoàn thành, không icon, không tích sẵn -->
-                        <div id="status-selection-box" class="flex items-center gap-3">
-                            <label class="flex items-center gap-2 cursor-pointer font-semibold text-xs text-slate-700 dark:text-slate-200">
-                                <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
-                                <span class="text-indigo-600 dark:text-indigo-400 font-bold">Hoàn thành</span>
-                            </label>
-                        </div>
-                        
-                        <!-- YÊU CẦU 4.2: Nút chỉnh sửa thay bằng icon cây bút ✏️ -->
+                    
+                    <!-- HEADER CHẾ ĐỘ XEM: HIỂN THỊ BADGE VÀ NÚT BÚT ✏️ -->
+                    <div id="modal-view-header" class="flex justify-between items-center">
+                        <div id="view-status"></div>
                         <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm" title="Chỉnh sửa">✏️</button>
                     </div>
 
+                    <!-- NỘI DUNG CHẾ ĐỘ XEM (CHỈ HIỂN THỊ THÔNG TIN KHI XEM) -->
                     <div id="modal-view-section" class="space-y-2">
-                        <div id="view-status"></div>
                         <div id="view-timestamp" class="text-[10px] text-slate-400 font-medium"></div>
                         <div id="view-note" class="hidden"></div>
                         <div id="view-image" class="hidden"></div>
                     </div>
 
+                    <!-- NỘI DUNG CHẾ ĐỘ CHỈNH SỬA / LẦN ĐẦU CHECK-IN -->
                     <div id="modal-edit-section" class="space-y-3 hidden">
-                        <!-- TÍCH HỢP TẢI ẢNH BÊN TRONG KHUNG GHI CHÚ -->
+                        <!-- YÊU CẦU 1: Ô TÍCH CHỌN HOÀN THÀNH XANH LÁ CÂY CHỈ XUẤT HIỆN KHI CHỈNH SỬA/CHECK-IN -->
+                        <div id="status-selection-box" class="flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600 dark:text-emerald-400">
+                                <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-emerald-600 rounded accent-emerald-600 focus:ring-emerald-500">
+                                <span>Hoàn thành</span>
+                            </label>
+                        </div>
+
+                        <!-- KHUNG GHI CHÚ VÀ TẢI ẢNH -->
                         <div class="space-y-1">
                             <label id="m-note-label" class="text-[11px] font-semibold text-slate-500">Ghi chú / Cảm xúc:</label>
                             <div class="relative border rounded-2xl bg-white dark:bg-slate-800 dark:border-slate-700 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
@@ -335,7 +338,7 @@
                     </div>
                 </div>
 
-                <!-- YÊU CẦU 5: SỬA KHOẢNG TRẮNG ThÀNH VIÊN KHÁC: 1/2 -->
+                <!-- THÀNH VIÊN KHÁC -->
                 <div id="group-day-status-container" class="space-y-2 hidden">
                     <div class="flex justify-between items-center cursor-pointer bg-slate-100 dark:bg-slate-700/60 p-2.5 rounded-xl font-bold text-xs" onclick="toggleDayModalProgressAccordion()">
                         <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300"><span id="m-team-progress">Thành viên khác</span>: <span id="completed-ratio-text" class="text-indigo-600 dark:text-indigo-400">0/0</span></span>
@@ -375,7 +378,7 @@
             </div>
         </header>
 
-        <!-- YÊU CẦU 1: TABS CÂN BẰNG KÍCH THƯỚC ICON TAB CÁ NHÂN BANG TAB NHÓM -->
+        <!-- TABS THỬ THÁCH -->
         <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
                 <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs">
@@ -799,19 +802,17 @@
 
         function t(key) { return translations[currentLang][key] || key; }
 
-        /**
-         * YÊU CẦU 6: Kiểm tra tự động khóa check-in sau 2 ngày (Sau 00:00 ngày thứ 2)
-         */
+        // KIỂM TRA MỐC 00:00 NGÀY THỨ 2 ĐỂ KHÓA CHECK-IN
         function getDayLockStatus(startDateStr, dIdx, isCompleted) {
             if (isCompleted) return { isLocked: false, isFailed: false };
             
             const now = new Date();
             const d = new Date(startDateStr + "T00:00:00");
-            d.setDate(d.getDate() + dIdx); // Ngày thử thách thứ dIdx
+            d.setDate(d.getDate() + dIdx);
             
             const lockDeadline = new Date(d);
-            lockDeadline.setDate(lockDeadline.getDate() + 2); // Cộng 2 ngày
-            lockDeadline.setHours(0, 0, 0, 0); // Đặt mốc 00:00:00 ngày tiếp theo (Ví dụ: 01/08 -> 00:00 03/08)
+            lockDeadline.setDate(lockDeadline.getDate() + 2); // 48 giờ
+            lockDeadline.setHours(0, 0, 0, 0);
 
             if (now >= lockDeadline) {
                 return { isLocked: true, isFailed: true };
@@ -857,7 +858,6 @@
             document.getElementById('t-app-title').innerText = t('appTitle');
             document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs"><span>${t('tabDashboard')}</span>`;
             
-            // YÊU CẦU 1: Đồng bộ kích thước Icon của Tab Cá nhân chuẩn bằng Tab Nhóm (w-5 h-5)
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
             document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
             document.getElementById('btn-update').querySelector('span:last-child').innerText = t('tabUpdate');
@@ -911,7 +911,6 @@
             document.getElementById('m-remove-img').innerText = t('removeImg');
             document.getElementById('m-save-btn').innerText = t('saveUpdate');
             
-            // YÊU CẦU 5: Chữ hiển thị Thành viên khác
             document.getElementById('m-team-progress').innerText = t('teamProgress');
             document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
 
@@ -1017,7 +1016,6 @@
             renderList();
         });
 
-        // TOGGLES
         function toggleUserMenu() { document.getElementById('user-menu-modal').classList.remove('hidden'); }
         function closeUserMenu() { document.getElementById('user-menu-modal').classList.add('hidden'); }
         function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
@@ -1047,7 +1045,6 @@
 
         function setFilter(val) { currentFilter = val; renderList(); }
 
-        // UTILS
         function getEndDate(start, total) { const d = new Date(start); d.setDate(d.getDate() + total - 1); return formatDateString(d); }
         function getDateString(start, idx) { const d = new Date(start||Date.now()); d.setDate(d.getDate()+idx); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`; }
         function formatDateString(date) { const d = new Date(date); return isNaN(d) ? date : `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
@@ -1060,7 +1057,7 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
-        // RENDER LIST (ĐÃ BỎ ICON 📅 Ở NGOÀI NGÀY THÁNG, TÍCH HỢP LOCK CHỜ KHÓA SẢN XUẤT)
+        // RENDER LIST (CẬP NHẬT HIỂN THỊ YÊU CẦU 3)
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
@@ -1081,12 +1078,38 @@
                     const tot=c.totalDays||25, tgt=c.targetDays||21, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
                     let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
                     
+                    const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
+                    const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
+                    
+                    const isCompleted = cnt >= tgt;
+                    const isFailed = gu || (tIdx >= tot && cnt < tgt);
+
+                    // YÊU CẦU 3: HIỂN THỊ THƯỞNG/PHẠT & LABEL KHI HOÀN THÀNH / KHÔNG HOÀN THÀNH BÊN NGOÀI
+                    let rewardPenaltyBoxHTML = "";
+                    if (isCompleted) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                                <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</span>
+                                <span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Hoàn thành</span>
+                            </div>`;
+                    } else if (isFailed) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                                <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</span>
+                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Không hoàn thành</span>
+                            </div>`;
+                    } else {
+                        rewardPenaltyBoxHTML = `
+                            <div class="text-[11px] font-normal inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-2xs">
+                                <span class="text-emerald-600 font-semibold">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</span>
+                                <span class="text-slate-300">|</span>
+                                <span class="text-rose-600 font-semibold">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</span>
+                            </div>`;
+                    }
+
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
-                        const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
-                        
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             const lock = getDayLockStatus(c.startDate, dIdx, ic);
@@ -1114,12 +1137,11 @@
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm">🏆</button></span>
-                                    ${gu?`<span class="text-rose-600 font-bold bg-rose-50 px-2.5 py-0.5 rounded-full">${t('givenUpStatus')}</span>`:''}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
-                                ${gu?'':grid}
+                                ${grid}
                             </div>`;
                     }
 
@@ -1130,17 +1152,12 @@
                                     <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1.5">
                                         ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}
                                     </h4>
-                                    <!-- YÊU CẦU 2: BỎ ICON LỊCH BÊN NGOÀI CARD -->
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(c.startDate)}</span>
                                         ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold shadow-sm not-italic">${t('readOnlyMode')}</span>`:''}
                                     </div>
-                                    <!-- KHUNG THƯỞNG PHẠT -->
-                                    <div class="text-[11px] font-normal inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-2xs">
-                                        <span class="text-emerald-600">🎁 +${c.isBigPlay?(c.customReward||0):1}${c.isBigPlay?'k':` ${t('book')}`}</span>
-                                        <span class="text-slate-300">|</span>
-                                        <span class="text-rose-600">💸 -${c.isBigPlay?(c.customPenalty||0):100}k</span>
-                                    </div>
+                                    <!-- HIỂN THỊ BỐ CỤC THƯỞNG PHẠT NGOÀI THẺ THỬ THÁCH -->
+                                    ${rewardPenaltyBoxHTML}
                                 </div>
                                 ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2">⋮</button>` : ''}
                             </div>
@@ -1161,6 +1178,37 @@
                     const tot=h.totalDays||25, tgt=h.targetDays||21, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     
+                    const isCompleted = cnt >= tgt;
+                    const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt);
+
+                    // YÊU CẦU 3: HIỂN THỊ CÁ NHÂN KHI HOÀN THÀNH HOẶC KHÔNG HOÀN THÀNH
+                    let rewardPenaltyBoxHTML = "";
+                    if (isCompleted) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                                <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 ${h.selfReward||'---'}</span>
+                                <span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Hoàn thành</span>
+                            </div>`;
+                    } else if (isFailed) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-2xs">
+                                <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 ${h.selfPenalty||'---'}</span>
+                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">Không hoàn thành</span>
+                            </div>`;
+                    } else {
+                        rewardPenaltyBoxHTML = `
+                            <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-fit max-w-full">
+                                <div class="flex items-center gap-1.5 text-emerald-600">
+                                    <span class="shrink-0">🎁</span>
+                                    <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfReward||'---'}</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-rose-600">
+                                    <span class="shrink-0">💸</span>
+                                    <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfPenalty||'---'}</span>
+                                </div>
+                            </div>`;
+                    }
+
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                         const lock = getDayLockStatus(h.startDate, dIdx, ic);
@@ -1184,10 +1232,6 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
-                    let stBadge = '';
-                    if(st==='given_up') stBadge = `<span class="text-rose-600 font-bold bg-rose-50 px-2.5 py-0.5 rounded-full text-[10px] shadow-sm">${t('givenUpStatus')}</span>`;
-                    else if(st==='paused') stBadge = `<span class="text-amber-600 font-bold bg-amber-50 px-2.5 py-0.5 rounded-full text-[10px] shadow-sm">${t('pausedStatus')}</span>`;
-
                     container.innerHTML += `
                         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1195,41 +1239,29 @@
                                     <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1.5">
                                         ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}
                                     </h4>
-                                    <!-- YÊU CẦU 2: BỎ ICON LỊCH BÊN NGOÀI CARD CÁ NHÂN -->
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(h.startDate)}</span>
                                         ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold shadow-sm not-italic">${t('readOnlyMode')}</span>`:''}
                                     </div>
-                                    <!-- KHUNG THƯỞNG PHẠT CÁ NHÂN -->
-                                    <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-fit max-w-full">
-                                        <div class="flex items-center gap-1.5 text-emerald-600">
-                                            <span class="shrink-0">🎁</span>
-                                            <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfReward||'---'}</span>
-                                        </div>
-                                        <div class="flex items-center gap-1.5 text-rose-600">
-                                            <span class="shrink-0">💸</span>
-                                            <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfPenalty||'---'}</span>
-                                        </div>
-                                    </div>
+                                    ${rewardPenaltyBoxHTML}
                                 </div>
                                 <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2">⋮</button>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span></span>
-                                    ${stBadge}
+                                    ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2.5 py-0.5 rounded-full text-[10px] shadow-sm">${t('pausedStatus')}</span>`:''}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
-                                ${(st==='active')?grid:''}
+                                ${grid}
                             </div>
                         </div>`;
                 });
             }
         }
 
-        // HINTS
         function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
         function renderHintList() {
@@ -1242,7 +1274,6 @@
             document.getElementById('create-desc-input').value = desc;
         }
 
-        // AVATAR & IMAGES
         async function compressImage(file, cb) {
             let f = file;
             if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
@@ -1258,7 +1289,6 @@
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
-        // LOGIN / PIN / ADMIN
         function checkLogin() {
             if (!loggedInUserId || !defaultMembers.some(m => m.id === loggedInUserId)) {
                 document.getElementById('login-modal').classList.remove('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); document.getElementById('login-step-2').classList.add('hidden');
@@ -1305,7 +1335,6 @@
             } else if (mp !== null) alert(t('wrongMasterPin'));
         }
 
-        // NOTIFICATIONS
         function updateNotificationBadge() {
             if (!loggedInUserId) return; const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; const b = document.getElementById('notif-badge');
             if (b) { unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); }
@@ -1347,7 +1376,6 @@
         }
         function markAllNotificationsRead() { if (appData.notifications[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); dbRef.set(appData); renderNotificationList(); updateNotificationBadge(); }
 
-        // ACTIONS & MENUS
         function openActionMenuModal(id, isP) {
             selectedMenuChallenge = { id, isPersonal: isP };
             const m = document.getElementById('action-menu-modal');
@@ -1417,7 +1445,7 @@
             alert(t('joinedSuccess')); 
         }
 
-        // DAY MODAL (CẬP NHẬT CHECK-IN VÀ KHÓA QUYỀN SAU 2 NGÀY)
+        // DAY MODAL (CẬP NHẬT THEO YÊU CẦU 1 VÀ 2)
         function openDayModal(id, dIdx, isP) {
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
             if(dIdx > getTodayIndex(c.startDate)) return alert(t('alertFuture'));
@@ -1444,7 +1472,6 @@
             ln.classList.toggle('hidden', !lock.isLocked || c.archived);
             document.getElementById('modal-edit-btn').classList.toggle('hidden', isReadOnlyMode);
             
-            // Icon trước tiêu đề modal
             const iconSpan = document.getElementById('modal-title-icon');
             if(!isP) iconSpan.innerHTML = c.isBigPlay ? '🔥' : '🎯';
             else iconSpan.innerHTML = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
@@ -1452,7 +1479,6 @@
             if(!isP){
                 gsc.classList.remove('hidden');
                 
-                // YÊU CẦU 5: LỌC BỎ CHÍNH MÌNH RA KHỎI "THÀNH VIÊN KHÁC"
                 const otherMembers = Object.keys(c.participants||{}).filter(m => m !== loggedInUserId && (c.participants[m]===true || c.participants[m]==='given_up'));
                 
                 otherMembers.sort((m1, m2) => {
@@ -1471,7 +1497,7 @@
                     
                     let statusLabel = `<span class="text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md text-xs font-semibold">⏳ ${t('incomplete')}</span>`;
                     if (id) {
-                        statusLabel = `<span class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md text-xs font-semibold">✅ ${t('completed')}</span>`;
+                        statusLabel = `<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md text-xs font-semibold">✅ ${t('completed')}</span>`;
                     } else if (lockM.isFailed) {
                         statusLabel = `<span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md text-xs font-semibold">❌ Không hoàn thành</span>`;
                     }
@@ -1484,7 +1510,6 @@
 
             document.getElementById('modal-day-title').innerText = `${c.title||c.text} (${getDateString(c.startDate, dIdx)})`;
             
-            // YÊU CẦU 4.1: Không tích chọn sẵn mặc định khi chưa làm
             document.getElementById('modal-chk-completed').checked = !!item.completed;
             document.getElementById('modal-note').value = item.note||'';
             
@@ -1497,19 +1522,27 @@
             }
             
             updateModalView(item, lock);
-            setModalMode(!isReadOnlyMode && !item.completed && !item.note && !item.image);
+            
+            if (isReadOnlyMode) {
+                setModalMode(false);
+            } else {
+                setModalMode(!item.completed && !item.note && !item.image);
+            }
             document.getElementById('day-modal').classList.remove('hidden');
         }
 
-        // YÊU CẦU 4.3: Hạ cỡ chữ badge Hoàn thành bằng cỡ chữ các thành viên khác
+        // YÊU CẦU 1 VÀ 2: CẬP NHẬT GIAO DIỆN CHẾ ĐỘ XEM TRẠNG THÁI (DÙNG MẪU NHỎ VÀ KHÓA KHI QUÁ HẠN)
         function updateModalView(item, lock = { isFailed: false }) {
             let statusBadge = "";
             if (item.completed) {
-                statusBadge = `<span class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md text-xs font-semibold">✅ ${t('completed')}</span>`;
+                statusBadge = `<span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-lg text-xs font-bold inline-flex items-center gap-1.5">
+                    <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black">✓</span>
+                    ${t('completed')}
+                </span>`;
             } else if (lock.isFailed) {
-                statusBadge = `<span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md text-xs font-semibold">❌ Không hoàn thành</span>`;
+                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-1 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5">❌ Không hoàn thành</span>`;
             } else {
-                statusBadge = `<span class="text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md text-xs font-semibold">⏳ Chưa làm</span>`;
+                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 py-1 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5">⏳ Chưa làm</span>`;
             }
 
             document.getElementById('view-status').innerHTML = statusBadge;
@@ -1525,6 +1558,7 @@
             isEditMode = ed; 
             document.getElementById('modal-edit-section').classList.toggle('hidden', !ed); 
             document.getElementById('modal-view-section').classList.toggle('hidden', ed); 
+            document.getElementById('view-status').classList.toggle('hidden', ed);
         }
 
         function toggleModalEdit() { 
@@ -1653,7 +1687,6 @@
                 </div>`;
         }
 
-        // SHOW MODAL CHI TIẾT
         function showDescriptionModalById(id, isP) {
             let tT="", d="", s="", tgt=21, tot=25, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
             
@@ -1736,7 +1769,6 @@
         }
         function closeDescriptionModal() { document.getElementById('description-modal').classList.add('hidden'); }
 
-        // BÁO CÁO (REPORT)
         function openReportModal() { 
             switchReportTab('active'); 
             document.getElementById('report-modal').classList.remove('hidden'); 
@@ -1747,145 +1779,4 @@
         }
         function closeReportModal() { document.getElementById('report-modal').classList.add('hidden'); }
         function switchReportTab(tab) {
-            ['active', 'rewards'].forEach(t => { document.getElementById(`btn-report-${t}`).className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 font-normal transition"; document.getElementById(`report-${t}-view`).classList.add('hidden'); });
-            document.getElementById(`btn-report-${tab}`).className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition"; document.getElementById(`report-${tab}-view`).classList.remove('hidden');
-            if (tab === 'active') renderReportPreview();
-            else if (tab === 'rewards') renderRewardsSummary();
-        }
-        
-        function toSuperscript(num) { const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}; return String(num).split('').map(c => supers[c] || c).join(''); }
-        
-        function renderReportPreview() {
-            let rawTxt = currentLang==='vi'?"🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n":"🏆 BVGP TEAM REPORT 🏆\n\n";
-            let htmlTxt = `<h2 class="text-center font-bold text-lg text-indigo-700 dark:text-indigo-400">🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆</h2>`;
-            
-            if(appData.sharedChallenges?.length){
-                const grps = appData.sharedChallenges.filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
-                if(grps.length){
-                    rawTxt += `--- ${t('groupLabel').toUpperCase()} ---\n`;
-                    htmlTxt += `<div class="font-bold text-indigo-600 uppercase mt-4 mb-2">--- ${t('groupLabel')} ---</div><div class="space-y-4">`;
-                    grps.forEach((c,i) => {
-                        rawTxt += `🎯 ${c.title}${toSuperscript(i+1)}${c.isBigPlay?" 🔥":""} (${formatDateString(c.startDate)})\n`;
-                        htmlTxt += `<div><p class="font-bold text-slate-800 dark:text-slate-100">🎯 ${c.title}<sup class="text-indigo-500">${i+1}</sup>${c.isBigPlay?" 🔥":""} <span class="text-[10px] text-slate-400 font-normal">(${formatDateString(c.startDate)})</span></p><div class="pl-4 mt-1 space-y-1">`;
-                        const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                        acts.map(mId => { const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; return {n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                            const isD = m.cnt>=(c.targetDays||21), pct = Math.round(m.cnt/(c.targetDays||21)*100), tag = isD?` - ${t('completed')}`:'';
-                            const lineStr = m.st==='given_up' ? `- ${m.n}: ${t('givenUpStatus')} (${m.cnt}/${c.targetDays||21} - ${pct}%${m.rsn?` - Rsn: ${m.rsn}`:''})` : `- ${m.n}: ${m.cnt}/${c.targetDays||21} (${pct}%)${tag}`;
-                            rawTxt += `   ${lineStr}\n`;
-                            htmlTxt += `<p class="${m.st==='given_up'?'text-rose-500':(isD?'text-indigo-600 font-bold':'text-slate-600 dark:text-slate-300')}">${lineStr}</p>`;
-                        });
-                        rawTxt += '\n'; htmlTxt += `</div></div>`;
-                    });
-                    htmlTxt += `</div>`;
-                }
-            }
-            
-            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived);
-            if(myH.length){
-                rawTxt += `--- ${t('personalLabel').toUpperCase()} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---\n`;
-                htmlTxt += `<div class="font-bold text-emerald-600 uppercase mt-6 mb-2">--- ${t('personalLabel')} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---</div><div class="space-y-2">`;
-                myH.sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id)).forEach((h,i) => {
-                    const cnt=(h.days||[]).filter(x=>x&&x.completed).length, isD=cnt>=(h.targetDays||21), pct=Math.round(cnt/(h.targetDays||21)*100);
-                    let line = `📌 ${h.text}${toSuperscript(i+1)}: `;
-                    if(h.status==='given_up') line += `${t('givenUpStatus')} (${cnt}/${h.targetDays||21} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else if(h.status==='paused') line += `${t('pausedStatus')} (${cnt}/${h.targetDays||21} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else line += `${cnt}/${h.targetDays||21} (${pct}%)${isD?` - ${t('completed')}`:''}`;
-                    rawTxt += `${line}\n`;
-                    htmlTxt += `<p class="${h.status==='given_up'?'text-rose-500':(isD?'text-emerald-600 font-bold':'text-slate-700 dark:text-slate-300')} pl-2 border-l-2 ${isD?'border-emerald-500':'border-slate-300'}">${line}</p>`;
-                });
-                htmlTxt += `</div>`;
-            }
-            
-            document.getElementById('report-html-preview').innerHTML = htmlTxt;
-            document.getElementById('report-html-preview').setAttribute('data-raw', rawTxt);
-        }
-
-        function renderRewardsSummary() {
-            const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
-            appData.members.forEach(m => {
-                let book = 0, rew = 0, pen = 0, logs = [];
-                (appData.sharedChallenges||[]).forEach(c => {
-                    const tgt = c.targetDays||21, dur = `[${formatDateString(c.startDate)}]`, stat = c.participants ? c.participants[m.id] : null;
-                    if(stat==='given_up'){
-                        const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                        logs.push(`${c.isBigPlay?'🔥 ':''}${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} (-${p}k)`);
-                    } else if(stat===true) {
-                        const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        if(done>=tgt){
-                            if(c.isBigPlay){ rew += (c.customReward||0); logs.push(`🔥 ${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ +${c.customReward||0}k`); }
-                            else { book++; logs.push(`${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ <span class="text-emerald-600 font-bold">+1 ${t('book')}</span>`); }
-                        }
-                    }
-                });
-                if(m.id===loggedInUserId){
-                    (appData.personalHabits[m.id]||[]).forEach(h => {
-                        const tgt = h.targetDays||21, dur = `[${formatDateString(h.startDate)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        if(h.status==='given_up') logs.push(`${t('personalLabel')} "${h.text}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} ➔ 💸 ${h.selfPenalty||''}`);
-                        else if(done>=tgt) logs.push(`${t('personalLabel')} "${h.text}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ 🎁 ${h.selfReward||''}`);
-                    });
-                }
-                const badges = [];
-                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold">+${book} ${t('book')}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full font-bold">+${rew}k</span>`);
-                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full font-bold">0 ${t('book')}</span>`);
-                
-                container.innerHTML += `
-                    <div class="p-3 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-                        <div class="flex justify-between items-center"><span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">${m.avatar?`<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">`:'👤'} ${m.name}</span><div class="flex gap-1.5 items-center">${badges.join('')} <span class="text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full font-bold">-${pen}k</span></div></div>
-                        ${logs.length ? `<div class="text-[11px] bg-slate-50 dark:bg-slate-800 p-2 rounded-xl border border-slate-100 dark:border-slate-600 space-y-1">${logs.map(d=>`<div>${d}</div>`).join('')}</div>` : `<p class="text-[10px] italic text-slate-400">${t('noRewardRecord')}</p>`}
-                    </div>`;
-            });
-        }
-
-        // BẢNG XẾP HẠNG
-        function openLeaderboardModal(id) {
-            const c = appData.sharedChallenges.find(x=>x.id===id); if(!c)return;
-            document.getElementById('leaderboard-modal-title').innerText = c.title; 
-            renderLeaderboardList(c);
-            document.getElementById('leaderboard-modal').classList.remove('hidden');
-        }
-        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
-        
-        function renderLeaderboardList(c) {
-            const container = document.getElementById('leaderboard-list-container');
-            if(!container) return;
-            const tgt = c.targetDays || 21;
-            
-            const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
-                const u = appData.members.find(x => x.id === mId);
-                const cnt = (c.progress && c.progress[mId]) ? c.progress[mId].filter(x => x && x.completed).length : 0;
-                const pct = Math.round((cnt / tgt) * 100);
-                return { id: mId, name: u ? u.name : mId, cnt, pct, isGivenUp: c.participants[mId] === 'given_up' };
-            }).sort((a, b) => b.cnt - a.cnt);
-
-            if(!mems.length) {
-                container.innerHTML = `<p class="text-center text-slate-400 italic py-6 text-xs">${t('notJoined')}</p>`;
-                return;
-            }
-
-            container.innerHTML = mems.map(m => {
-                const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
-                const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                const textColor = m.isGivenUp ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400';
-                
-                return `
-                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-2">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm">
-                                ${avHTML}
-                                <span>${m.name}</span>
-                            </div>
-                            <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
-                        </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
-                            <div class="${progressBg} h-full rounded-full transition-all duration-500" style="width: ${Math.min(m.pct, 100)}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        checkLogin();
-    </script>
-</body>
-</html>
+            ['active', 'rewards'].forEach(t => { document.getElementById(`btn-reportTôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
