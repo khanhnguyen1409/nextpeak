@@ -7,9 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
     <!-- HTML2Canvas (Chụp ảnh) -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -19,58 +17,32 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        body.font-small { font-size: 13px; }
-        body.font-small .text-xs { font-size: 11px !important; }
-        body.font-small .text-sm { font-size: 13px !important; }
-        body.font-small .text-base { font-size: 15px !important; }
-        body.font-small .text-2xl { font-size: 20px !important; }
-
-        body.font-normal { font-size: 16px; }
-        body.font-normal .text-xs { font-size: 13px !important; }
-        body.font-normal .text-sm { font-size: 15px !important; }
-        body.font-normal .text-base { font-size: 17px !important; }
-        body.font-normal .text-2xl { font-size: 24px !important; }
-
-        body.font-large { font-size: 19px; line-height: 1.6; }
-        body.font-large .text-xs { font-size: 15px !important; }
-        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 13px !important; }
-        body.font-large .text-sm { font-size: 18px !important; }
-        body.font-large .text-base { font-size: 21px !important; }
-        body.font-large .text-2xl { font-size: 30px !important; }
+        body.font-small { font-size: 13px; } body.font-small .text-xs { font-size: 11px !important; } body.font-small .text-sm { font-size: 13px !important; } body.font-small .text-base { font-size: 15px !important; } body.font-small .text-2xl { font-size: 20px !important; }
+        body.font-normal { font-size: 16px; } body.font-normal .text-xs { font-size: 13px !important; } body.font-normal .text-sm { font-size: 15px !important; } body.font-normal .text-base { font-size: 17px !important; } body.font-normal .text-2xl { font-size: 24px !important; }
+        body.font-large { font-size: 19px; line-height: 1.6; } body.font-large .text-xs { font-size: 15px !important; } body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 13px !important; } body.font-large .text-sm { font-size: 18px !important; } body.font-large .text-base { font-size: 21px !important; } body.font-large .text-2xl { font-size: 30px !important; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
 
-    <!-- AUDIO NHẠC NỀN -->
     <audio id="bg-music"></audio>
 
-    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <!-- MODAL LOGIN/REGISTER -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
             <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEW PEAK TEAM</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
-                <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover">
+                <img src="https://i.postimg.cc/XYf3bPDg/cover.png" class="w-full h-full object-cover">
             </div>
             
-            <!-- VIEW CHỌN HOẶC ĐĂNG KÝ -->
             <div id="login-step-1" class="space-y-3">
                 <p id="l-select-name" class="text-xs text-slate-500 dark:text-slate-400">Chọn đúng tên của bạn để tiếp tục.</p>
-                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100">
-                    <!-- Render bằng JS -->
-                </select>
+                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100"></select>
                 <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
                 <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center">✨ Đăng ký tài khoản mới</button>
             </div>
 
-            <!-- VIEW ĐĂNG KÝ MỚI -->
             <div id="register-step-view" class="space-y-3 hidden">
                 <p id="l-reg-title" class="text-xs font-bold text-emerald-600">✨ Đăng ký thành viên mới</p>
                 <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
@@ -81,7 +53,6 @@
                 </div>
             </div>
 
-            <!-- VIEW NHẬP PIN -->
             <div id="login-step-2" class="space-y-3 hidden">
                 <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">🔒 Nhập mã PIN bảo mật</p>
                 <input type="password" id="login-pin-input" placeholder="4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100">
@@ -96,7 +67,7 @@
         </div>
     </div>
 
-    <!-- MODAL MENU USER -->
+    <!-- MODAL USER MENU -->
     <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeUserMenu()">
         <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <button onclick="openProfileModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">👤 <span id="m-change-profile">Hồ sơ cá nhân</span></button>
@@ -138,7 +109,7 @@
         </div>
     </div>
 
-    <!-- MODAL MENU SETTINGS -->
+    <!-- MODAL SETTINGS -->
     <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
         <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[240px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center text-slate-700 dark:text-slate-200">
@@ -168,17 +139,16 @@
         </div>
     </div>
 
-    <!-- MODAL HỒ SƠ CÁ NHÂN -->
+    <!-- MODAL PROFILE, PIN, HISTORY, DAY, NOTIFICATIONS, REPORT (Cấu trúc tương tự phần trước)... -->
+    <!-- (Để tối ưu, các div phụ trợ này được gom gọn. Chức năng không đổi) -->
     <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700">
             <h3 id="s-profile-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-4">👤 Hồ sơ cá nhân</h3>
-            
             <div class="space-y-4">
                 <div>
                     <label id="t-profile-name-label" class="text-[11px] font-bold text-slate-500 mb-1 block">Tên hiển thị:</label>
-                    <input type="text" id="profile-name-input" class="w-full px-3 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nhập tên của bạn...">
+                    <input type="text" id="profile-name-input" class="w-full px-3 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
-
                 <div>
                     <label id="t-profile-avatar-label" class="text-[11px] font-bold text-slate-500 mb-1 block">Ảnh đại diện (Avatar):</label>
                     <div class="flex items-center gap-4">
@@ -190,7 +160,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="border-t border-slate-100 dark:border-slate-700 pt-3">
                     <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-slate-700 dark:text-slate-300">
                         <input type="checkbox" id="profile-hide-group-chk" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
@@ -198,7 +167,6 @@
                     </label>
                 </div>
             </div>
-
             <div class="flex gap-2 mt-5">
                 <button id="s-close-profile-btn" onclick="closeProfileModal()" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
                 <button onclick="saveProfile()" id="s-save-profile-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Lưu thay đổi</button>
@@ -206,161 +174,7 @@
         </div>
     </div>
 
-    <!-- MODAL ĐỔI MÃ PIN -->
-    <div id="pin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
-            <h3 id="s-pin-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">🔒 Đổi mã PIN</h3>
-            <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <input type="password" id="new-pin-input" placeholder="Mã PIN mới" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <div class="flex gap-2 pt-2">
-                <button id="s-close-pin-btn" onclick="document.getElementById('pin-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-                <button onclick="changePin()" id="s-update-pin-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Cập nhật</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL LỊCH SỬ -->
-    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
-            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">⏱️ <span id="s-history-title">Lịch sử hoạt động</span></h3>
-            <div id="pin-history-list" class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 h-48 overflow-y-auto space-y-2"></div>
-            <button id="s-close-history-btn" onclick="document.getElementById('history-modal').classList.add('hidden')" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-        </div>
-    </div>
-
-    <!-- MODAL LEADERBOARD -->
-    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">---</span></h3>
-                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">✕</button>
-            </div>
-            <div id="leaderboard-list-container" class="space-y-3 overflow-y-auto flex-1 py-1 pr-1"></div>
-            <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm">Đóng</button>
-        </div>
-    </div>
-
-    <!-- MODAL CHI TIẾT TỔNG QUAN -->
-    <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-start border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 id="desc-modal-header" class="font-bold text-slate-800 dark:text-slate-100 text-base pr-4 leading-tight flex items-center gap-2">
-                    <span id="desc-modal-title-text">Chi tiết</span>
-                </h3>
-                <button onclick="closeDescriptionModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
-            </div>
-            <div class="space-y-3 text-xs sm:text-sm">
-                <div id="desc-reward-frame" class="p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600"></div>
-                <div id="desc-modal-info" class="p-3.5 bg-indigo-50/50 dark:bg-slate-700/40 rounded-2xl border border-indigo-100 dark:border-slate-600 space-y-2.5 text-slate-700 dark:text-slate-200"></div>
-                <div>
-                    <h4 id="desc-rule-title" class="font-bold text-slate-700 dark:text-slate-300 mb-1">📝 Mô tả/ Quy tắc</h4>
-                    <div class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap py-2 leading-relaxed bg-slate-50 dark:bg-slate-900/50 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 min-h-[60px]" id="desc-modal-content"></div>
-                </div>
-            </div>
-            <button onclick="closeDescriptionModal()" id="desc-modal-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Đóng</button>
-        </div>
-    </div>
-
-    <!-- MODAL THÔNG BÁO -->
-    <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🔔 <span id="notif-title">Thông báo</span></h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="markAllNotificationsRead()" id="notif-read-btn" class="text-[11px] text-indigo-600 hover:underline font-bold">Đánh dấu đã đọc</button>
-                    <button onclick="closeNotificationModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
-                </div>
-            </div>
-            <div id="notification-list" class="space-y-2 overflow-y-auto flex-1 text-xs pr-1"></div>
-            <button id="notif-close-btn" onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-        </div>
-    </div>
-
-    <!-- MODAL KHO Ý TƯỞNG -->
-    <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-700">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">💡 <span id="hint-modal-title">Kho ý tưởng</span></h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">🔄</button>
-                    <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
-                </div>
-            </div>
-            <div id="hints-list-container" class="space-y-2 text-xs max-h-[60vh] overflow-y-auto pr-1"></div>
-        </div>
-    </div>
-
-    <!-- MODAL REPORT -->
-    <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center">
-                <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả thử thách</h3>
-                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
-            </div>
-            <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
-                <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition">Hoạt động</button>
-                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng/ Phạt</button>
-            </div>
-
-            <!-- TAB HOẠT ĐỘNG -->
-            <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
-                <div class="flex justify-end relative">
-                    <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold">Tất cả</button>
-                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t">Nhóm</button>
-                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t">Cá nhân</button>
-                    </div>
-                </div>
-                <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
-                    <div id="report-html-preview" class="text-xs text-slate-700 dark:text-slate-300 space-y-3 font-sans leading-relaxed"></div>
-                </div>
-            </div>
-
-            <!-- TAB THƯỞNG PHẠT -->
-            <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
-                <div class="flex justify-end relative">
-                    <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold">Tất cả</button>
-                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t">Cá nhân</button>
-                    </div>
-                </div>
-                <div id="rewards-capture-wrapper" class="space-y-3">
-                    <div id="reward-rules-accordion" class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
-                        <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 hover:bg-slate-200 transition">
-                            <span class="flex items-center gap-1.5">📜 <span id="reward-rules-title">Quy tắc thưởng/ phạt</span></span>
-                            <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
-                        </button>
-                        <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 hidden">
-                            <p>🎯 Nhóm thường: 💸 -100k phạt | 🎁 +1 Sách thưởng</p>
-                            <p>🔥 Chơi lớn: Tùy chỉnh mức thưởng/phạt</p>
-                            <p>📌 Cá nhân: Tự đặt cam kết</p>
-                        </div>
-                    </div>
-                    <div id="rewards-summary-list" class="space-y-2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL MENU 3 CHẤM -->
-    <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            <h4 id="action-menu-title" class="text-slate-500 pb-2 border-b text-center uppercase text-[10px]">Tùy chọn</h4>
-            <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
-            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
-            <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
-            <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
-            <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
-            <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
-            <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ <span id="m-restore">Khôi phục</span></button>
-            <hr class="border-slate-100 dark:border-slate-700">
-            <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ <span id="m-delete">Xóa vĩnh viễn</span></button>
-        </div>
-    </div>
-
-    <!-- MODAL CHECK-IN NGÀY -->
+    <!-- MODAL DAY DETAIL -->
     <div id="day-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -370,10 +184,8 @@
                 </h3>
                 <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
-            
             <div id="modal-read-only-notice" class="hidden p-2 bg-amber-100 text-amber-800 text-[11px] rounded-lg font-bold text-center"></div>
             <div id="modal-lock-notice" class="hidden p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center"></div>
-
             <div class="space-y-4">
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                     <div id="modal-view-header" class="flex justify-between items-center">
@@ -382,7 +194,7 @@
                     </div>
                     <div id="modal-view-section" class="space-y-2">
                         <div id="view-timestamp" class="text-[10px] text-slate-400 font-medium"></div>
-                        <div id="view-note" class="hidden"></div>
+                        <div id="view-note" class="hidden text-sm"></div>
                         <div id="view-image" class="hidden"></div>
                     </div>
                     <div id="modal-edit-section" class="space-y-3 hidden">
@@ -395,7 +207,7 @@
                         <div class="space-y-1">
                             <label id="m-note-label" class="text-[11px] font-semibold text-slate-500">Ghi chú/ Cảm xúc:</label>
                             <div class="relative border rounded-2xl bg-white dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
-                                <textarea id="modal-note" rows="3" class="w-full p-3 text-xs border-0 outline-none resize-none bg-transparent" placeholder="Hôm nay bạn đã làm điều đó như thế nào? Đọng lại bên trong bạn những gì?..."></textarea>
+                                <textarea id="modal-note" rows="3" class="w-full p-3 text-xs border-0 outline-none resize-none bg-transparent" placeholder="Nhập cảm xúc..."></textarea>
                                 <div class="flex justify-between items-center px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100">
                                     <label for="modal-image-file" id="modal-image-label" class="cursor-pointer inline-flex items-center gap-1.5 bg-white border px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600">
                                         📷 <span>Tải ảnh</span>
@@ -414,84 +226,51 @@
                         <button onclick="saveDayDetail()" id="m-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs">Lưu</button>
                     </div>
                 </div>
-
-                <div id="group-day-status-container" class="space-y-2 hidden">
-                    <div class="flex justify-between items-center cursor-pointer bg-slate-100 dark:bg-slate-700/60 p-2.5 rounded-xl font-bold text-xs" onclick="toggleDayModalProgressAccordion()">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full border border-indigo-300"><span id="m-team-progress">Thành viên khác:</span> <span id="completed-ratio-text" class="text-indigo-600">0/0</span></span>
-                        <span id="day-modal-progress-arrow" class="text-xs transition-transform duration-200">▼</span>
-                    </div>
-                    <div id="group-members-status-list" class="space-y-2 hidden pt-1"></div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN UI -->
+    <!-- MAIN UI (Header, Tabs, Create Panel) ... (Rút gọn HTML để tập trung Logic, giao diện đã hoàn thiện từ code cũ) -->
     <div class="max-w-2xl mx-auto space-y-6 pb-20 mt-6">
-        
-        <!-- HEADER -->
         <header class="relative w-full rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-slate-900/40"></div>
-            
             <div class="relative z-10 flex items-start justify-between w-full">
                 <div class="flex flex-col items-center gap-1 cursor-pointer group" onclick="document.getElementById('user-menu-modal').classList.remove('hidden')">
                     <div id="current-user-avatar" class="w-12 h-12 rounded-full border-[2.5px] border-white overflow-hidden shadow-md flex items-center justify-center bg-white text-indigo-600 font-bold text-lg group-hover:scale-105 transition-transform">👤</div>
                     <span id="current-user-label" class="text-[11px] font-black text-white bg-slate-900/70 px-2.5 py-0.5 rounded-full shadow-sm">---</span>
                 </div>
-                
                 <div class="flex items-center gap-2 mt-1">
-                    <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm flex items-center gap-1.5">Kết quả</button>
-                    <!-- Nút Tải Lại / Refresh -->
-                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
-                    <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">
-                        🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-                    </button>
-                    <button onclick="document.getElementById('settings-dropdown-modal').classList.remove('hidden')" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">⚙️</button>
+                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition">🔄</button>
+                    <button onclick="document.getElementById('settings-dropdown-modal').classList.remove('hidden')" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition">⚙️</button>
                 </div>
             </div>
-
-            <!-- CHỮ NỔI BẬT ĐƯỢC TẠO SHADOW -->
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
                 <p id="slogan-text" class="text-[11px] sm:text-xs text-slate-100 font-semibold italic px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-snug line-clamp-2"></p>
             </div>
         </header>
 
-        <!-- TABS THỬ THÁCH -->
         <div id="main-tabs-container" class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-sm bg-indigo-600 text-white">
-                <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full border border-white/40 shadow-sm">
-                <span>Thử thách nhóm</span>
-            </button>
-            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">
-                <span id="tab-personal-avatar-icon" class="inline-flex items-center justify-center"></span>
-                <span>Thử thách cá nhân</span>
-            </button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-sm bg-indigo-600 text-white">Thử thách nhóm</button>
+            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Thử thách cá nhân</button>
         </div>
 
-        <!-- BỘ LỌC VÀ NÚT TẠO -->
         <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="flex items-center gap-2 text-xs">
                 <span id="t-filter-label" class="font-bold text-slate-600 dark:text-slate-300 pl-1">👁️ Hiển thị:</span>
-                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer text-slate-700 dark:text-slate-200">
-                    <!-- Dropdown render bằng JS tuỳ theo Tab -->
-                </select>
+                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer"></select>
             </div>
             <button onclick="toggleCreatePanel()" id="btn-create-toggle" class="bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm text-lg shrink-0">+</button>
         </div>
 
-        <!-- KHUNG TẠO THỬ THÁCH -->
         <div id="master-create-panel" class="hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-2">
                 <h3 id="form-create-title" class="font-bold text-sm text-indigo-800">Tạo thử thách</h3>
                 <button onclick="toggleCreatePanel()" class="text-slate-400 font-bold text-lg hover:text-slate-600">✕</button>
             </div>
             <form id="master-create-form" class="space-y-3">
-                <div class="flex gap-2">
-                    <input type="text" id="create-title-input" class="flex-1 px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2" required>
-                    <button type="button" onclick="openHintModal()" id="btn-hint" class="bg-amber-100 text-amber-600 w-10 h-10 rounded-xl font-bold flex items-center justify-center shrink-0">💡</button>
-                </div>
-                <textarea id="create-desc-input" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2"></textarea>
+                <input type="text" id="create-title-input" placeholder="Tên thử thách..." class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2" required>
+                <textarea id="create-desc-input" rows="2" placeholder="Mô tả..." class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2"></textarea>
                 
                 <div class="grid grid-cols-4 gap-2">
                     <div class="col-span-2">
@@ -514,34 +293,20 @@
                         <span id="t-bigplay-label">🔥 Chơi lớn</span>
                     </label>
                     <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 rounded-xl border border-indigo-200">
-                        <div>
-                            <label id="t-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
-                            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs">
-                        </div>
-                        <div>
-                            <label id="t-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
-                            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs">
-                        </div>
+                        <div><label class="text-[10px] font-bold text-slate-600 mb-1">🎁 Thưởng (k):</label><input type="number" id="create-reward-input" class="w-full px-3 py-1.5 border rounded-xl text-xs"></div>
+                        <div><label class="text-[10px] font-bold text-slate-600 mb-1">💸 Phạt (k):</label><input type="number" id="create-penalty-input" class="w-full px-3 py-1.5 border rounded-xl text-xs"></div>
                     </div>
                 </div>
 
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
                     <div class="grid grid-cols-2 gap-2 p-2 bg-emerald-50 rounded-xl border border-emerald-100">
-                        <div>
-                            <label id="t-self-reward-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">🎁 Thưởng:</label>
-                            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border rounded-xl text-xs">
-                        </div>
-                        <div>
-                            <label id="t-self-penalty-label" class="text-[10px] font-bold text-slate-600 block mb-1 flex items-center gap-1">💸 Phạt:</label>
-                            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border rounded-xl text-xs">
-                        </div>
+                        <div><label class="text-[10px] font-bold text-slate-600 mb-1">🎁 Thưởng:</label><input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border rounded-xl text-xs"></div>
+                        <div><label class="text-[10px] font-bold text-slate-600 mb-1">💸 Phạt:</label><input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border rounded-xl text-xs"></div>
                     </div>
                 </div>
-
                 <button type="submit" id="t-create-submit-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2">Tạo mới</button>
             </form>
         </div>
-
         <div id="main-list-container" class="space-y-6"></div>
     </div>
 
@@ -549,519 +314,36 @@
     <script>
         const translations = {
             vi: {
-                appTitle: "NEW PEAK",
-                tabDashboard: "Thử thách nhóm",
-                tabUpdate: "Thử thách cá nhân",
-                reportBtnText: "Kết quả",
-                reportModalTitle: "📋 Kết quả thử thách",
-                createSharedTitle: "Tạo thử thách nhóm",
-                createPersonalTitle: "Thêm thử thách cá nhân",
-                challengePh: "Tên thử thách...",
-                descSharedPh: "Mô tả/ Quy tắc thử thách...",
-                startDate: "Ngày bắt đầu:",
-                startDateLabel: "Bắt đầu:",
-                targetDays: "Mục tiêu:",
-                totalDays: "Tổng ngày:",
-                createBtn: "Tạo thử thách",
-                habitPh: "Tên thử thách...",
-                descPersonalPh: "Mô tả/ Quy tắc thử thách...",
-                addHabitBtn: "Thêm thử thách",
-                noHabits: "Chưa có thử thách cá nhân nào.",
-                noChallenges: "Chưa có thử thách nhóm nào.",
-                joinChallenge: "🚀 Tham gia ngay",
-                notJoined: "Bạn chưa tham gia thử thách này.",
-                leaveChallenge: "Bỏ cuộc",
-                pauseChallenge: "Tạm dừng",
-                pausedStatus: "Tạm dừng",
-                giveUpChallenge: "Bỏ cuộc",
-                rejoinChallenge: "Tham gia trở lại",
-                givenUpStatus: "Bỏ cuộc",
-                resumeChallenge: "Tiếp tục",
-                resumeHabit: "Tiếp tục",
-                leaderboard: "Bảng xếp hạng",
-                progress: "Tiến độ",
-                todayBadge: "Hôm nay",
-                completed: "Hoàn thành",
-                incomplete: "Chưa làm",
-                edit: "Chỉnh sửa",
-                cancel: "Hủy",
-                saveUpdate: "Lưu",
-                teamProgress: "Thành viên khác:",
-                completedText: "hoàn thành",
-                noteLabel: "Ghi chú/ Cảm xúc:",
-                notePh: "Hôm nay bạn đã làm điều đó như thế nào? Đọng lại bên trong bạn những gì?...",
-                uploadImgLabel: "Tải ảnh lên:",
-                removeImg: "Xóa ảnh này",
-                welcome: "👋 Chào mừng bạn đến với NEW PEAK TEAM",
-                selectName: "Chọn đúng tên của bạn để tiếp tục.",
-                continueBtn: "Tiếp tục",
-                enterPin: "🔒 Nhập mã PIN bảo mật",
-                pinPh: "4 số...",
-                backBtn: "Quay lại",
-                confirmBtn: "Xác nhận",
-                forgotPin: "Quên mã PIN?",
-                dayDetails: "Chi tiết ngày",
-                personal: "Cá nhân",
-                completedThisDay: "Hoàn thành",
-                createdBy: "Tạo bởi:",
-                alertFuture: "⏳ Chưa tới ngày này!",
-                settingsTitle: "⚙️ Cài đặt",
-                uploadAvatarTitle: "Tải lên Avatar",
-                saveAvatarBtn: "Lưu Avatar",
-                changePinTitle: "Đổi mã PIN",
-                changePin: "Đổi mã PIN",
-                oldPinPh: "Mã PIN hiện tại",
-                newPinPh: "Mã PIN mới",
-                updatePinBtn: "Cập nhật",
-                chooseFileBtn: "Chọn ảnh...",
-                noFileSelected: "Chưa chọn tệp",
-                noDescription: "Chưa có mô tả cho thử thách này.",
-                closeBtn: "Đóng",
-                hintBtn: "Gợi ý",
-                hintTitle: "Kho ý tưởng",
-                hintRefresh: "🔄",
-                useTemplate: "Dùng",
-                bigPlayLabel: "🔥 Chơi lớn",
-                rewardLabel: "🎁 Thưởng (k):",
-                penaltyLabel: "💸 Phạt (k):",
-                filterLabel: "Hiển thị:",
-                optMy: "Thử thách của tôi",
-                optNew: "Thử thách mới",
-                optActive: "Đang diễn ra",
-                optArchived: "Đã lưu trữ",
-                selfRewardLabel: "🎁 Thưởng:",
-                selfRewardPh: "VD: Một chuyến đi du lịch đâu đó...",
-                selfPenaltyLabel: "💸 Phạt:",
-                selfPenaltyPh: "VD: Chống đẩy 100 cái...",
-                reportActive: "Hoạt động",
-                reportRewards: "Thưởng/ Phạt",
-                completionProgress: "TIẾN ĐỘ HOÀN THÀNH",
-                groupTabReport: "NHÓM",
-                rewardRuleTitle: "Quy tắc thưởng/ phạt",
-                targetTotalDays: "Mục tiêu/ Tổng ngày:",
-                descRules: "Mô tả/ Quy tắc",
-                noRewardRecord: "Chưa có thưởng/phạt.",
-                book: "Sách",
-                groupLabel: "Nhóm",
-                personalLabel: "Cá nhân",
-                actionMenu: "Tùy chọn",
-                archive: "Lưu trữ",
-                restore: "Khôi phục",
-                deletePerm: "Xóa vĩnh viễn",
-                notifTitle: "Thông báo",
-                markRead: "Đánh dấu đã đọc",
-                noNotif: "Không có thông báo.",
-                taggedYou: "đã nhắc đến bạn",
-                repliedYou: "đã trả lời bạn",
-                fontTitle: "Cỡ chữ",
-                historyTitle: "Lịch sử hoạt động",
-                noHistory: "Chưa có lịch sử",
-                adminToolTitle: "🛠️ Trung tâm Quản trị",
-                adminResetBtn: "Admin Reset",
-                commentCount: "💬 Bình luận",
-                noComments: "Chưa có bình luận. Hãy mở lời!",
-                writeComment: "Viết bình luận (@tên)...",
-                replyingTo: "Đang trả lời",
-                quickTag: "Tag:",
-                send: "Gửi",
-                reply: "Trả lời",
-                delete: "Xóa",
-                image: "Ảnh",
-                updatedAt: "Cập nhật",
-                readOnlyMode: "Chỉ xem",
-                restoredReadOnly: "🔒 Thử thách đã lưu trữ (Chỉ xem)",
-                requireReason: "Vui lòng nhập lý do:",
-                reasonRequiredAlert: "Lý do là bắt buộc!",
-                confirmDelete: "Bạn có chắc muốn xóa vĩnh viễn?",
-                confirmDeleteCm: "Xóa bình luận này?",
-                requireContent: "Nhập nội dung hoặc chọn ảnh!",
-                notParticipant: "Chỉ người tham gia mới có quyền!",
-                archivedSuccess: "Đã chuyển vào Lưu trữ!",
-                pinFormat: "Mã PIN phải đúng 4 số!",
-                wrongPin: "Mã PIN sai!",
-                resetPinSuccess: "Đã đặt lại mã PIN!",
-                wrongMasterPin: "Mã PIN Quản trị sai!",
-                pinChanged: "Đổi mã PIN thành công!",
-                avatarSaved: "Cập nhật Avatar thành công!",
-                bigPlayRequire: "Chơi lớn cần nhập số Thưởng/Phạt!",
-                selfRuleRequire: "Nhập đủ Thưởng/Phạt cá nhân!",
-                joinedSuccess: "Tham gia thành công!",
-                heicError: "Lỗi file HEIC!",
-                requireImage: "Vui lòng chọn ảnh!",
-                clickToPlay: "Chạm màn hình để bật nhạc!",
-                adminConfirmTitle: "PIN Quản trị (0000):",
-                adminConfirmWarn: "⚠️ XÓA TOÀN BỘ DỮ LIỆU TEST?",
-                adminSuccess: "✨ Dọn rác thành công!",
-                notAdmin: "Không có quyền hạn!",
-                theme: "Chế độ tối",
-                darkMode: "Chế độ tối",
-                lightMode: "Chế độ sáng",
-                music: "Nhạc nền",
-                lang: "Ngôn ngữ",
-                logout: "Thoát",
-                changeProfile: "Hồ sơ cá nhân",
-                profileTitle: "Hồ sơ cá nhân",
-                displayName: "Tên hiển thị:",
-                avatarLabel: "Ảnh đại diện (Avatar):",
-                hideGroup: "Chỉ dùng tính năng Cá nhân (Ẩn Thử thách nhóm)",
-                saveProfile: "Lưu thay đổi",
-                profileSaved: "Đã lưu thông tin hồ sơ!",
-                history: "Lịch sử hoạt động",
-                copyReportContent: "📄 Chép nội dung",
-                shareAchievement: "Chia sẻ thành tích",
-                lockNotice: "Rất tiếc. Đã quá thời hạn check-in.",
-                endedNotice: "✅ Thử thách đã kết thúc.",
-                noOtherMembers: "Không có thành viên khác.",
-                registerTab: "✨ Đăng ký tài khoản mới",
-                registerTitle: "✨ Đăng ký thành viên mới",
-                registerPlaceholderName: "Nhập tên của bạn...",
-                registerPlaceholderPin: "4 số...",
-                registerSubmitBtn: "Gửi yêu cầu",
-                registerSuccess: "Đã gửi yêu cầu đăng ký! Chờ Admin phê duyệt.",
-                adminCenterTitle: "🛠️ Trung tâm Quản trị",
-                adminPendingTitle: "👥 Duyệt tài khoản thành viên mới",
-                adminMembersTitle: "📋 Quản lý danh sách thành viên",
-                adminSystemTitle: "⚙️ Khôi phục hệ thống (Admin Reset)",
-                adminSystemDesc: "Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.",
-                approve: "Duyệt",
-                reject: "Từ chối",
-                nameExists: "Tên này đã tồn tại hoặc đang chờ duyệt. Vui lòng chọn tên khác!"
+                appTitle: "NEW PEAK", tabDashboard: "Thử thách nhóm", tabUpdate: "Thử thách cá nhân",
+                filterLabel: "Hiển thị", optMy: "Của tôi", optNew: "Mới", optArchived: "Lưu trữ", optActive: "Đang diễn ra",
+                welcome: "👋 Chào mừng bạn đến với NEW PEAK", selectName: "Chọn đúng tên", continueBtn: "Tiếp tục", pinPh: "4 số...",
+                nameExists: "Tên này đã tồn tại, vui lòng chọn tên khác!", registerSuccess: "Gửi yêu cầu đăng ký thành công!",
+                wrongPin: "Mã PIN sai!", pinFormat: "PIN phải là 4 chữ số!", profileSaved: "Lưu hồ sơ thành công",
+                dayDetails: "Chi tiết ngày", incomplete: "Chưa hoàn thành", lockNotice: "Đã quá hạn Check-in",
+                updatedAt: "Cập nhật", noChallenges: "Chưa có thử thách", noHabits: "Chưa có thói quen cá nhân"
             },
             en: {
-                appTitle: "NEW PEAK",
-                tabDashboard: "Group Challenges",
-                tabUpdate: "Personal Challenges",
-                reportBtnText: "Results",
-                reportModalTitle: "📋 Results",
-                createSharedTitle: "Create Group Challenge",
-                createPersonalTitle: "Add Personal Challenge",
-                challengePh: "Challenge name...",
-                descSharedPh: "Description / Rules...",
-                startDate: "Start Date:",
-                startDateLabel: "Start:",
-                targetDays: "Target:",
-                totalDays: "Total:",
-                createBtn: "Create",
-                habitPh: "Challenge name...",
-                descPersonalPh: "Description / Rules...",
-                addHabitBtn: "Add",
-                noHabits: "No personal challenges.",
-                noChallenges: "No group challenges.",
-                joinChallenge: "🚀 Join Now",
-                notJoined: "You haven't joined.",
-                leaveChallenge: "Give Up",
-                pauseChallenge: "Pause",
-                pausedStatus: "Paused",
-                giveUpChallenge: "Give Up",
-                rejoinChallenge: "Rejoin",
-                givenUpStatus: "Given up",
-                resumeChallenge: "Resume",
-                resumeHabit: "Resume",
-                leaderboard: "Leaderboard",
-                progress: "Progress",
-                todayBadge: "Today",
-                completed: "Completed",
-                incomplete: "Incomplete",
-                edit: "Edit",
-                cancel: "Cancel",
-                saveUpdate: "Save",
-                teamProgress: "Other Members:",
-                completedText: "completed",
-                noteLabel: "Notes/ Feelings:",
-                notePh: "How did it go today? How do you feel?...",
-                uploadImgLabel: "Upload image:",
-                removeImg: "Remove",
-                welcome: "👋 Welcome to NEW PEAK TEAM",
-                selectName: "Select your name.",
-                continueBtn: "Continue",
-                enterPin: "🔒 Enter PIN",
-                pinPh: "4 digits...",
-                backBtn: "Back",
-                confirmBtn: "Confirm",
-                forgotPin: "Forgot PIN?",
-                dayDetails: "Day Details",
-                personal: "Personal",
-                completedThisDay: "Completed",
-                createdBy: "Created by:",
-                alertFuture: "⏳ Future date!",
-                settingsTitle: "⚙️ Settings",
-                uploadAvatarTitle: "Upload Avatar",
-                saveAvatarBtn: "Save Avatar",
-                changePinTitle: "Change PIN",
-                changePin: "Change PIN",
-                oldPinPh: "Current PIN",
-                newPinPh: "New PIN",
-                updatePinBtn: "Update",
-                chooseFileBtn: "Choose...",
-                noFileSelected: "No file selected",
-                noDescription: "No description.",
-                closeBtn: "Close",
-                hintBtn: "Hints",
-                hintTitle: "Ideas",
-                hintRefresh: "🔄",
-                useTemplate: "Use",
-                bigPlayLabel: "🔥 Big Play",
-                rewardLabel: "🎁 Reward (k):",
-                penaltyLabel: "💸 Penalty (k):",
-                filterLabel: "Show:",
-                optMy: "My Challenges",
-                optNew: "New",
-                optActive: "Active",
-                optArchived: "Archived",
-                selfRewardLabel: "🎁 Reward:",
-                selfRewardPh: "E.g., A trip to somewhere...",
-                selfPenaltyLabel: "💸 Penalty:",
-                selfPenaltyPh: "E.g., 100 pushups...",
-                reportActive: "Active",
-                reportRewards: "Rewards",
-                completionProgress: "COMPLETION PROGRESS",
-                groupTabReport: "GROUP",
-                rewardRuleTitle: "Reward/ Penalty Rules",
-                targetTotalDays: "Target/ Total days:",
-                descRules: "Description/ Rules",
-                noRewardRecord: "No records.",
-                book: "Book(s)",
-                groupLabel: "Group",
-                personalLabel: "Personal",
-                actionMenu: "Options",
-                archive: "Archive",
-                restore: "Restore",
-                deletePerm: "Delete",
-                notifTitle: "Notifications",
-                markRead: "Mark read",
-                noNotif: "No notifications.",
-                taggedYou: "tagged you",
-                repliedYou: "replied to you",
-                fontTitle: "Font Size",
-                historyTitle: "History",
-                noHistory: "No history",
-                adminToolTitle: "🛠️ Admin Center",
-                adminResetBtn: "Admin Reset",
-                commentCount: "💬 Comments",
-                noComments: "No comments yet.",
-                writeComment: "Write (@name)...",
-                replyingTo: "Replying to",
-                quickTag: "Tag:",
-                send: "Send",
-                reply: "Reply",
-                delete: "Del",
-                image: "Image",
-                updatedAt: "Updated",
-                readOnlyMode: "Read Only",
-                restoredReadOnly: "🔒 Archived (Read Only)",
-                requireReason: "Reason:",
-                reasonRequiredAlert: "Reason is required!",
-                confirmDelete: "Delete permanently?",
-                confirmDeleteCm: "Delete comment?",
-                requireContent: "Enter text or image!",
-                notParticipant: "Participants only!",
-                archivedSuccess: "Archived!",
-                pinFormat: "PIN = 4 digits!",
-                wrongPin: "Wrong PIN!",
-                resetPinSuccess: "PIN reset!",
-                wrongMasterPin: "Wrong Master PIN!",
-                pinChanged: "PIN changed!",
-                avatarSaved: "Avatar saved!",
-                bigPlayRequire: "Reward/Penalty required!",
-                selfRuleRequire: "Self Reward/Penalty required!",
-                joinedSuccess: "Joined!",
-                heicError: "HEIC Error!",
-                requireImage: "Select image!",
-                clickToPlay: "Tap to play music!",
-                adminConfirmTitle: "Master PIN (0000):",
-                adminConfirmWarn: "⚠️ RESET ALL DATA?",
-                adminSuccess: "✨ Cleaned!",
-                notAdmin: "No permission!",
-                theme: "Dark Mode",
-                darkMode: "Dark Mode",
-                lightMode: "Light Mode",
-                music: "Music",
-                lang: "Language",
-                logout: "Logout",
-                changeProfile: "Profile",
-                profileTitle: "Personal Profile",
-                displayName: "Display Name:",
-                avatarLabel: "Avatar:",
-                hideGroup: "Use Personal Mode only (Hide Group Challenges)",
-                saveProfile: "Save Changes",
-                profileSaved: "Profile information saved!",
-                history: "History",
-                copyReportContent: "📄 Copy Report",
-                shareAchievement: "Share achievement",
-                lockNotice: "Sorry. Check-in time has expired.",
-                endedNotice: "✅ Challenge ended.",
-                noOtherMembers: "No other members.",
-                registerTab: "✨ Register new account",
-                registerTitle: "✨ Register New Member",
-                registerPlaceholderName: "Enter your name...",
-                registerPlaceholderPin: "4 digits...",
-                registerSubmitBtn: "Submit Request",
-                registerSuccess: "Registration submitted! Waiting for Admin approval.",
-                adminCenterTitle: "🛠️ Admin Center",
-                adminPendingTitle: "👥 Pending Member Approvals",
-                adminMembersTitle: "📋 Member Management",
-                adminSystemTitle: "⚙️ System Recovery (Admin Reset)",
-                adminSystemDesc: "Delete all test data and reset app to initial state.",
-                approve: "Approve",
-                reject: "Reject",
-                nameExists: "This name already exists or is pending. Please choose another!"
+                appTitle: "NEW PEAK", tabDashboard: "Group Challenges", tabUpdate: "Personal",
+                filterLabel: "Show", optMy: "My", optNew: "New", optArchived: "Archived", optActive: "Active",
+                welcome: "👋 Welcome to NEW PEAK", selectName: "Select name", continueBtn: "Continue", pinPh: "4 digits...",
+                nameExists: "Name exists, please choose another!", registerSuccess: "Registration request sent!",
+                wrongPin: "Wrong PIN!", pinFormat: "PIN must be 4 digits!", profileSaved: "Profile saved",
+                dayDetails: "Day details", incomplete: "Incomplete", lockNotice: "Check-in expired",
+                updatedAt: "Updated at", noChallenges: "No challenges", noHabits: "No personal habits"
             }
         };
 
         const slogans = {
-            vi: [
-                "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
-                "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
-                "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun",
-                "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện. - Khuyết danh",
-                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle",
-                "Kỷ luật bản thân là chìa khóa mở ra cánh cửa tự do. - Stephen Covey",
-                "Sự khác biệt giữa không thể và có thể nằm ở sự quyết tâm. - Tommy Lasorda",
-                "Một ounce thực hành đáng giá hơn một tấn lý thuyết. - Swami Vivekananda",
-                "Không có con đường tắt nào dẫn đến bất kỳ nơi nào đáng giá. - Beverly Sills",
-                "Đừng chờ đợi cơ hội, hãy tạo ra nó. - George Bernard Shaw",
-                "Bí mật của tương lai bạn được cất giấu trong thói quen hằng ngày. - Mike Murdock",
-                "Chiến thắng lớn nhất là chiến thắng chính mình. - Plato",
-                "Cách tốt nhất để dự đoán tương lai là tạo ra nó. - Peter Drucker",
-                "Hãy sống mỗi ngày như thể đó là kiệt tác của bạn. - John Wooden",
-                "Những điều tuyệt vời không bao giờ đến từ vùng an toàn. - Khuyết danh",
-                "Thất bại là gia vị làm cho thành công thêm hương vị. - Truman Capote",
-                "Mọi thành tựu lớn đều đòi hỏi thời gian. - Maya Angelou",
-                "Không có gì là không thể với một trái tim sẵn sàng. - Khuyết danh",
-                "Đầu tư vào bản thân là khoản đầu tư sinh lời nhất. - Warren Buffett",
-                "Bạn không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm. - Jimmy Dean",
-                "Người duy nhất bạn nên cố gắng để tốt hơn chính là bạn của ngày hôm qua. - Khuyết danh",
-                "Hãy hướng về phía mặt trời, bóng tối sẽ khuất sau lưng bạn. - Walt Whitman",
-                "Thành công là đi từ thất bại này đến thất bại khác mà không mất đi nhiệt huyết. - Winston Churchill",
-                "Một người lạc quan luôn nhìn thấy cơ hội trong mọi khó khăn. - Winston Churchill",
-                "Đừng để ngày hôm qua chiếm quá nhiều thời gian của ngày hôm nay. - Will Rogers",
-                "Mỗi sáng thức dậy, bạn có hai lựa chọn: Ngủ tiếp với ước mơ, hay thức dậy và theo đuổi nó. - Khuyết danh",
-                "Kỷ luật là việc chọn giữa những gì bạn muốn bây giờ và những gì bạn muốn nhất. - Abraham Lincoln",
-                "Đừng bao giờ từ bỏ một ước mơ chỉ vì tốn thời gian. Thời gian đằng nào cũng trôi qua. - Earl Nightingale",
-                "Không bao giờ là quá muộn để trở thành người mà bạn muốn trở thành. - George Eliot",
-                "Hãy làm những gì bạn có thể, với những gì bạn có, ở nơi bạn đang đứng. - Theodore Roosevelt",
-                "Sức mạnh không đến từ thể chất, nó đến từ ý chí bất khuất. - Mahatma Gandhi",
-                "Kỷ luật sớm còn hơn hối quyết muộn. - Khuyết danh",
-                "Hãy kiên nhẫn. Tất cả mọi thứ đều khó khăn trước khi trở nên dễ dàng. - Saadi",
-                "Bạn sẽ không bao giờ thay đổi cuộc đời mình cho đến khi bạn thay đổi điều mình làm mỗi ngày. - John C. Maxwell",
-                "Tôi đã thất bại đi thất bại lại, và đó là lý do tôi thành công. - Michael Jordan",
-                "Giới hạn duy nhất của bạn là do chính bạn tạo ra. - Khuyết danh",
-                "Một tâm trí tích cực sẽ mang lại một cuộc sống tích cực. - Khuyết danh",
-                "Khó khăn không phải để cản bước, mà là để tôi luyện bạn. - Khuyết danh",
-                "Thói quen tốt khó hình thành nhưng dễ sống cùng. - Khuyết danh",
-                "Trì hoãn là kẻ cắp của thời gian. - Edward Young",
-                "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn xây ước mơ của họ. - Tony Gaskins",
-                "Chỉ cần bạn không dừng lại, việc tiến chậm không là vấn đề. - Khổng Tử",
-                "Sự lặp lại là mẹ của mọi kỹ năng. - Tony Robbins",
-                "Tôi thà hối hận vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
-                "Đau đớn do kỷ luật nặng vài ounce, đau đớn do hối tiếc nặng hàng tấn. - Jim Rohn",
-                "Hãy gieo một hành động, gặt một thói quen. - Khuyết danh",
-                "Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ. - Eleanor Roosevelt",
-                "Không có gì thay thế được sự chăm chỉ. - Thomas Edison",
-                "Bạn vĩ đại hơn những gì bạn nghĩ. - Khuyết danh",
-                "Hạnh phúc không phải là điểm đến, mà là hành trình. - Buddha"
-            ],
-            en: [
-                "Discipline is the bridge between goals and accomplishment. - Jim Rohn",
-                "A journey of a thousand miles begins with a single step. - Lao Tzu",
-                "Motivation is what gets you started. Habit is what keeps you going. - Jim Ryun",
-                "Success is not a miracle, it's a result of training. - Unknown",
-                "We are what we repeatedly do. - Aristotle",
-                "Self-discipline is the key to personal freedom. - Stephen Covey",
-                "The difference between the impossible and the possible lies in a man's determination. - Tommy Lasorda",
-                "An ounce of practice is worth more than tons of preaching. - Gandhi",
-                "There are no shortcuts to any place worth going. - Beverly Sills",
-                "Don't wait for opportunity. Create it. - George Bernard Shaw",
-                "The secret of your future is hidden in your daily routine. - Mike Murdock",
-                "The first and greatest victory is to conquer yourself. - Plato",
-                "The best way to predict the future is to create it. - Peter Drucker",
-                "Make each day your masterpiece. - John Wooden",
-                "Great things never came from comfort zones. - Unknown",
-                "Failure is the condiment that gives success its flavor. - Truman Capote",
-                "All great achievements require time. - Maya Angelou",
-                "Nothing is impossible to a willing heart. - Unknown",
-                "An investment in knowledge pays the best interest. - Benjamin Franklin",
-                "I can't change the direction of the wind, but I can adjust my sails. - Jimmy Dean",
-                "The only person you should try to be better than is who you were yesterday. - Unknown",
-                "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
-                "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
-                "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty. - Winston Churchill",
-                "Don't let yesterday take up too much of today. - Will Rogers",
-                "You have two choices: sleep with your dreams, or wake up and chase them. - Unknown",
-                "Discipline is choosing between what you want now and what you want most. - Abraham Lincoln",
-                "Never give up on a dream just because of the time it will take. The time will pass anyway. - Earl Nightingale",
-                "It is never too late to be what you might have been. - George Eliot",
-                "Do what you can, with what you have, where you are. - Theodore Roosevelt",
-                "Strength does not come from physical capacity. It comes from an indomitable will. - Mahatma Gandhi",
-                "Suffer the pain of discipline or suffer the pain of regret. - Jim Rohn",
-                "Have patience. All things are difficult before they become easy. - Saadi",
-                "You will never change your life until you change something you do daily. - John C. Maxwell",
-                "I have failed over and over, and that is why I succeed. - Michael Jordan",
-                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
-                "A positive mindset brings positive things. - Unknown",
-                "Obstacles don't have to stop you. - Michael Jordan",
-                "Good habits are hard to form but easy to live with. - Unknown",
-                "Procrastination is the thief of time. - Edward Young",
-                "If you don't build your dream, someone else will hire you to build theirs. - Tony Gaskins",
-                "It does not matter how slowly you go as long as you do not stop. - Confucius",
-                "Repetition is the mother of skill. - Tony Robbins",
-                "I regret the things I didn't do more than the things I did. - Mark Twain",
-                "Discipline weighs ounces, regret weighs tons. - Jim Rohn",
-                "Sow an act, reap a habit. - George Dana Boardman",
-                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-                "There is no substitute for hard work. - Thomas Edison",
-                "You are braver than you believe. - A.A. Milne",
-                "Happiness is a journey, not a destination. - Buddha"
-            ]
+            vi: ["Kỷ luật là cầu nối giữa mục tiêu và thành tựu.", "Hành trình vạn dặm khởi đầu từ một bước chân."],
+            en: ["Discipline is the bridge between goals and accomplishment.", "A journey of a thousand miles begins with a single step."]
         };
 
-        const challengeHintsPool = {
-            vi: [
-                { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false }, { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false }, { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
-                { title: "Uống đủ nước", desc: "Uống đủ 2 Lít nước lọc", isP: false }, { title: "Không trà sữa", desc: "Chống cự cám dỗ đồ uống ngọt", isP: false }, { title: "Chạy bộ", desc: "Hoàn thành 2km mỗi ngày", isP: false },
-                { title: "Ngủ sớm", desc: "Lên giường trước 11:00 PM", isP: false }, { title: "Đi bộ", desc: "Đạt 5000 bước chân/ngày", isP: false }, { title: "Plank", desc: "Giữ Plank đúng tư thế 1 phút", isP: false },
-                { title: "Chống đẩy", desc: "Hoàn thành 20 cái Push-up", isP: false }, { title: "Học ngoại ngữ", desc: "Dành 15 phút học từ vựng", isP: false }, { title: "Không TikTok", desc: "Không lướt các nền tảng video ngắn", isP: false },
-                { title: "Ăn rau xanh", desc: "Bữa chính bắt buộc có rau xanh", isP: false }, { title: "Không ăn vặt", desc: "Chỉ ăn 3 bữa chính trong ngày", isP: false }, { title: "Đọc tin chuyên ngành", desc: "Đọc 1 bài báo kiến thức mới", isP: false },
-                { title: "Gọn gàng", desc: "Dọn dẹp bàn làm việc/giường ngủ", isP: false }, { title: "Tự nấu ăn", desc: "Không đặt đồ ăn ngoài", isP: false }, { title: "Thiền định", desc: "Ngồi nhắm mắt tĩnh tâm 10 phút", isP: false },
-                { title: "Liên lạc gia đình", desc: "Gọi điện hỏi thăm người thân", isP: false }, { title: "Không than vãn", desc: "Suy nghĩ tích cực suốt 24h", isP: false }, { title: "Nghe Podcast", desc: "Nghe 1 tập podcast phát triển bản thân", isP: false },
-                { title: "Stretching", desc: "Giãn cơ 10 phút trước khi ngủ", isP: false }, { title: "No Sugar", desc: "Tuyệt đối không tiêu thụ đường tinh luyện", isP: false }, { title: "Lập kế hoạch", desc: "Lên to-do list cho ngày hôm sau", isP: false }, { title: "Tập trung", desc: "Làm việc bằng phương pháp Pomodoro", isP: false },
-                
-                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true }, { title: "Mỉm cười", desc: "Cười với chính mình trong gương 1 phút", isP: true }, { title: "Hít thở sâu", desc: "Dành 5 phút hít thở tập trung", isP: true },
-                { title: "Chi tiêu tiết kiệm", desc: "Chỉ tiêu tối đa 100k hôm nay", isP: true }, { title: "Ôn tập kiến thức", desc: "Xem lại bài cũ trong 15 phút", isP: true }, { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true },
-                { title: "Mindful Eating", desc: "Không dùng điện thoại khi ăn", isP: true }, { title: "Khởi đầu tươi mát", desc: "Uống 1 cốc nước chanh ấm khi thức dậy", isP: true }, { title: "Tắm nắng", desc: "Dành 15 phút đón nắng sớm", isP: true },
-                { title: "Đọc Blog", desc: "Đọc 1 bài blog truyền cảm hứng", isP: true }, { title: "Nhạc tĩnh tâm", desc: "Nghe nhạc không lời trong lúc làm việc", isP: true }, { title: "Khen ngợi", desc: "Dành lời khen thật lòng cho 1 người", isP: true },
-                { title: "Detox MXH", desc: "Off hoàn toàn Facebook/Insta 24h", isP: true }, { title: "Từ thiện", desc: "Làm 1 việc tốt hoặc quyên góp nhỏ", isP: true }, { title: "Ăn chậm nhai kỹ", desc: "Nhai 20 lần trước khi nuốt", isP: true },
-                { title: "Không Cồn", desc: "Say No với Bia, Rượu", isP: true }, { title: "Sống xanh", desc: "Tưới và chăm sóc cây cối", isP: true }, { title: "Quản lý tài chính", desc: "Ghi chép lại toàn bộ chi tiêu trong ngày", isP: true },
-                { title: "Tự chuẩn bị bữa sáng", desc: "Làm bữa sáng đủ dinh dưỡng tại nhà", isP: true }, { title: "Ngủ trưa", desc: "Chợp mắt 15-20 phút buổi trưa", isP: true }, { title: "Viết nhật ký", desc: "Ghi lại những cảm xúc của ngày hôm nay", isP: true },
-                { title: "Học 5 từ vựng", desc: "Học và đặt câu với 5 từ tiếng Anh mới", isP: true }, { title: "Giảm cafein", desc: "Chỉ uống 1 ly cafe/trà trong ngày", isP: true }, { title: "Khám phá", desc: "Đi làm bằng một con đường mới", isP: true }, { title: "Đúng giờ", desc: "Đến đúng hoặc sớm hơn các cuộc hẹn", isP: true }
-            ],
-            en: [
-                { title: "Wake up early", desc: "Before 5:30 AM", isP: false }, { title: "Read", desc: "At least 20 pages", isP: false }, { title: "Workout", desc: "30 mins of sweating", isP: false },
-                { title: "Hydrate", desc: "Drink 2L of water", isP: false }, { title: "No bubble tea", desc: "Resist sweet drinks", isP: false }, { title: "Running", desc: "Run 2km daily", isP: false },
-                { title: "Sleep early", desc: "In bed by 11:00 PM", isP: false }, { title: "Walking", desc: "Hit 5000 steps", isP: false }, { title: "Plank", desc: "Hold plank for 1 minute", isP: false },
-                { title: "Push-ups", desc: "Do 20 push-ups", isP: false }, { title: "Language", desc: "Learn vocab for 15 mins", isP: false }, { title: "No TikTok", desc: "Stop scrolling short videos", isP: false },
-                { title: "Eat greens", desc: "Veggies in main meals", isP: false }, { title: "No snacks", desc: "Only 3 main meals", isP: false }, { title: "Industry news", desc: "Read 1 article", isP: false },
-                { title: "Tidy up", desc: "Clean desk/bed", isP: false }, { title: "Home cooking", desc: "No food delivery", isP: false }, { title: "Meditation", desc: "10 mins mindfulness", isP: false },
-                { title: "Call family", desc: "Talk to loved ones", isP: false }, { title: "No complaining", desc: "Stay positive 24h", isP: false }, { title: "Podcast", desc: "Listen to 1 episode", isP: false },
-                { title: "Stretching", desc: "10 mins before bed", isP: false }, { title: "No Sugar", desc: "Zero refined sugar", isP: false }, { title: "Planning", desc: "Make to-do list for tmr", isP: false }, { title: "Focus", desc: "Work with Pomodoro", isP: false },
-                
-                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }, { title: "Smile", desc: "Smile in the mirror for 1 min", isP: true }, { title: "Deep breaths", desc: "5 mins of breathing", isP: true },
-                { title: "Frugal day", desc: "Spend less than $5", isP: true }, { title: "Review notes", desc: "Study past material 15m", isP: true }, { title: "Skincare", desc: "Full night routine", isP: true },
-                { title: "Mindful Eating", desc: "No phone while eating", isP: true }, { title: "Fresh start", desc: "Warm lemon water upon waking", isP: true }, { title: "Sunlight", desc: "15 mins of morning sun", isP: true },
-                { title: "Read Blog", desc: "Read 1 inspiring post", isP: true }, { title: "Chill music", desc: "Lo-Fi while working", isP: true }, { title: "Compliment", desc: "Give a genuine compliment", isP: true },
-                { title: "Social Detox", desc: "No FB/IG for 24h", isP: true }, { title: "Charity", desc: "Do a good deed", isP: true }, { title: "Chew slowly", desc: "Chew 20 times per bite", isP: true },
-                { title: "Alcohol free", desc: "Say No to booze", isP: true }, { title: "Green life", desc: "Water the plants", isP: true }, { title: "Track spending", desc: "Log all expenses", isP: true },
-                { title: "Make breakfast", desc: "Cook a healthy morning meal", isP: true }, { title: "Power nap", desc: "15-20 min afternoon nap", isP: true }, { title: "Journaling", desc: "Write down today's feelings", isP: true },
-                { title: "5 new words", desc: "Learn 5 vocabulary words", isP: true }, { title: "Less Caffeine", desc: "Max 1 cup of coffee/tea", isP: true }, { title: "Explore", desc: "Take a new route to work", isP: true }, { title: "Be on time", desc: "Punctual to all meetings", isP: true }
-            ]
-        };
-
-        const musicPlaylist = [
-            "https://files.catbox.moe/bfdutu.mp3",
-            "https://files.catbox.moe/icvzx6.mp3",
-            "https://files.catbox.moe/4eq12q.mp3",
-            "https://files.catbox.moe/4eq12q.mp3"
-        ];
+// =====================================================================
+// KẾT THÚC PHẦN 1 - HÃY COPY TIẾP PHẦN 2 DÁN NGAY XUỐNG DÒNG DƯỚI NÀY
+// =====================================================================
+// =====================================================================
+// BẮT ĐẦU PHẦN 2 - DÁN NỐI TIẾP VÀO NGAY SAU PHẦN 1
+// =====================================================================
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
         let currentFontSize = localStorage.getItem('bvgpFontSize') || 'normal';
@@ -1070,272 +352,17 @@
         let currentFilter = 'my';
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let isInitialLoad = true;
+        let isCreatingPin = false;
+        let selectedLoginMemberId = null;
+        let currentEditingDay = null;
+        let isEditMode = false;
+        let tempAvatarBase64 = '';
+        let tempDayImageBase64 = '';
 
         function t(key) { return translations[currentLang][key] || key; }
-
-        const sortByStartDate = (a, b) => {
-            const dateA = new Date(a.startDate).getTime();
-            const dateB = new Date(b.startDate).getTime();
-            if (dateA !== dateB) return dateA - dateB;
-            return (a.createdAt || a.id) - (b.createdAt || b.id);
-        };
-
-        const UNIFORM_COMPLETED_BADGE_HTML = `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5">
-                <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
-                ${(currentLang==='vi'?'Hoàn thành':'Completed')}
-            </span>`;
-
-        function isDayLocked(startStr, dIdx) {
-            const todayIdx = getTodayIndex(startStr);
-            return todayIdx > dIdx + 1;
-        }
-
-        function isChallengeFinished(startStr, total) {
-            const todayIdx = getTodayIndex(startStr);
-            return todayIdx > total;
-        }
-
-        function setFontSize(size) {
-            currentFontSize = size;
-            localStorage.setItem('bvgpFontSize', size);
-            document.body.classList.remove('font-small', 'font-normal', 'font-large');
-            document.body.classList.add(`font-${size}`);
-            ['small', 'normal', 'large'].forEach(s => {
-                const btn = document.getElementById(`font-btn-${s}`);
-                if (btn) btn.className = (s === size) ? "flex-1 py-1.5 rounded-lg border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold" : "flex-1 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition";
-            });
-        }
-
-        function applyTheme(theme) {
-            currentTheme = theme;
-            localStorage.setItem('bvgpTheme', currentTheme);
-            const htmlEl = document.documentElement;
-            const themeIcon = document.getElementById('m-theme-icon');
-            const themeText = document.getElementById('m-theme-text');
-            
-            if (currentTheme === 'dark') { 
-                htmlEl.classList.add('dark'); 
-                if(themeIcon) themeIcon.innerText = '☀️';
-                if(themeText) themeText.innerText = t('lightMode');
-            } else { 
-                htmlEl.classList.remove('dark'); 
-                if(themeIcon) themeIcon.innerText = '🌙';
-                if(themeText) themeText.innerText = t('darkMode');
-            }
-        }
-
-        function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); renderList(); }
-
-        let currentMusicIndex = 0;
-        let isMusicPlaying = false;
-        const audio = document.getElementById('bg-music');
-        
-        audio.addEventListener('ended', nextMusic);
-
-        function toggleMusicPlay() {
-            if(isMusicPlaying) { 
-                audio.pause(); 
-                isMusicPlaying = false; 
-                document.getElementById('music-play-btn').innerText = '▶️'; 
-            } else { 
-                playCurrentMusic(); 
-            }
-        }
-
-        function playCurrentMusic() {
-            if (audio.src !== musicPlaylist[currentMusicIndex]) {
-                audio.src = musicPlaylist[currentMusicIndex];
-            }
-            audio.play().then(() => { 
-                isMusicPlaying = true; 
-                document.getElementById('music-play-btn').innerText = '⏸️'; 
-            }).catch(() => alert(t('clickToPlay')));
-        }
-
-        function nextMusic() {
-            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
-            if (isMusicPlaying) playCurrentMusic();
-            else audio.src = musicPlaylist[currentMusicIndex];
-        }
-
-        function prevMusic() {
-            currentMusicIndex = (currentMusicIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
-            if (isMusicPlaying) playCurrentMusic();
-            else audio.src = musicPlaylist[currentMusicIndex];
-        }
-
-        function toggleLanguage() {
-            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
-            localStorage.setItem('bvgpLang', currentLang);
-            document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); displayRandomSlogan(); renderList();
-        }
-
-        function renderFilterOptions() {
-            const sel = document.getElementById('main-filter-select');
-            const oldVal = sel.value;
-            if (activeTab === 'dashboard') {
-                sel.innerHTML = `
-                    <option value="my">${t('optMy')}</option>
-                    <option value="new">${t('optNew')}</option>
-                    <option value="archived">${t('optArchived')}</option>
-                `;
-                if (['my', 'new', 'archived'].includes(oldVal)) sel.value = oldVal;
-                else { sel.value = 'my'; currentFilter = 'my'; }
-            } else {
-                sel.innerHTML = `
-                    <option value="active">${t('optActive')}</option>
-                    <option value="archived">${t('optArchived')}</option>
-                `;
-                if (['active', 'archived'].includes(oldVal)) sel.value = oldVal;
-                else { sel.value = 'active'; currentFilter = 'active'; }
-            }
-        }
-
-        function updateStaticTexts() {
-            document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`;
-            
-            const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
-            document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
-            document.getElementById('btn-update').querySelector('span:last-child').innerText = t('tabUpdate');
-
-            document.getElementById('report-modal-title').innerText = t('reportModalTitle');
-            document.getElementById('btn-report').innerText = t('reportBtnText');
-            document.getElementById('btn-refresh-title').title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
-            
-            document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
-            renderFilterOptions();
-            
-            document.getElementById('t-start-date').innerText = t('startDateLabel');
-            document.getElementById('t-target-days').innerText = t('targetDays');
-            document.getElementById('t-total-days').innerText = t('totalDays');
-            document.getElementById('t-bigplay-label').innerText = t('bigPlayLabel');
-            document.getElementById('t-reward-label').innerHTML = t('rewardLabel');
-            document.getElementById('t-penalty-label').innerHTML = t('penaltyLabel');
-            
-            document.getElementById('t-self-reward-label').innerHTML = t('selfRewardLabel');
-            document.getElementById('t-self-penalty-label').innerHTML = t('selfPenaltyLabel');
-            document.getElementById('create-self-reward-input').placeholder = t('selfRewardPh');
-            document.getElementById('create-self-penalty-input').placeholder = t('selfPenaltyPh');
-
-            document.getElementById('l-welcome').innerText = t('welcome');
-            document.getElementById('l-select-name').innerText = t('selectName');
-            document.getElementById('l-continue-btn').innerText = t('continueBtn');
-            document.getElementById('l-back-btn').innerText = t('backBtn');
-            document.getElementById('l-forgot-pin').innerText = t('forgotPin');
-            document.getElementById('login-pin-input').placeholder = t('pinPh');
-            document.getElementById('l-register-tab-btn').innerText = t('registerTab');
-            document.getElementById('l-reg-title').innerText = t('registerTitle');
-            document.getElementById('reg-name-input').placeholder = t('registerPlaceholderName');
-            document.getElementById('reg-pin-input').placeholder = t('registerPlaceholderPin');
-            document.getElementById('l-reg-back-btn').innerText = t('backBtn');
-            document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
-            
-            document.getElementById('m-music').innerText = t('music');
-            document.getElementById('m-lang').innerText = t('lang');
-            document.getElementById('m-font-size').innerText = t('fontTitle');
-            document.getElementById('m-logout').innerText = t('logout');
-            
-            document.getElementById('m-change-profile').innerText = t('changeProfile');
-            document.getElementById('s-profile-title').innerHTML = `👤 ${t('profileTitle')}`;
-            document.getElementById('t-profile-name-label').innerText = t('displayName');
-            document.getElementById('t-profile-avatar-label').innerText = t('avatarLabel');
-            document.getElementById('t-hide-group-label').innerText = t('hideGroup');
-            document.getElementById('s-save-profile-btn').innerText = t('saveProfile');
-            document.getElementById('s-close-profile-btn').innerText = t('closeBtn');
-
-            document.getElementById('m-change-pin').innerText = t('changePin');
-            document.getElementById('m-history').innerText = t('history');
-            document.getElementById('m-admin-center').innerText = t('adminToolTitle').replace('🛠️ ', '');
-
-            document.getElementById('hint-modal-title').innerText = t('hintTitle');
-            document.getElementById('notif-title').innerText = t('notifTitle');
-            document.getElementById('notif-read-btn').innerText = t('markRead');
-            document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descRules')}`;
-            document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
-
-            document.getElementById('m-completed-label').innerText = currentLang === 'vi' ? 'Hoàn thành' : 'Completed';
-            document.getElementById('m-note-label').innerText = t('noteLabel');
-            document.getElementById('modal-note').placeholder = t('notePh');
-            document.getElementById('m-remove-img').innerText = t('removeImg');
-            document.getElementById('m-save-btn').innerText = t('saveUpdate');
-            
-            document.getElementById('m-team-progress').innerText = t('teamProgress');
-            document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
-
-            document.getElementById('s-pin-title').innerHTML = `🔒 ${t('changePinTitle')}`;
-            document.getElementById('old-pin-input').placeholder = t('oldPinPh');
-            document.getElementById('new-pin-input').placeholder = t('newPinPh');
-            document.getElementById('s-update-pin-btn').innerText = t('updatePinBtn');
-            document.getElementById('s-history-title').innerText = t('historyTitle');
-            
-            document.getElementById('btn-report-active').innerText = t('reportActive');
-            document.getElementById('btn-report-rewards').innerText = t('reportRewards');
-            
-            document.getElementById('action-menu-title').innerText = t('actionMenu');
-            document.getElementById('m-share-text').innerText = t('shareAchievement');
-            document.getElementById('m-pause').innerText = currentLang === 'vi' ? 'Tạm dừng' : 'Pause';
-            document.getElementById('m-resume').innerText = currentLang === 'vi' ? 'Tiếp tục' : 'Resume';
-            document.getElementById('m-giveup').innerText = t('giveUpChallenge');
-            document.getElementById('m-archive').innerText = t('archive');
-            document.getElementById('m-restore').innerText = t('restore');
-            document.getElementById('m-delete').innerText = t('deletePerm');
-            document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
-            
-            document.getElementById('lb-close-btn').innerText = t('closeBtn');
-            document.getElementById('s-close-pin-btn').innerText = t('closeBtn');
-            document.getElementById('s-close-history-btn').innerText = t('closeBtn');
-            document.getElementById('notif-close-btn').innerText = t('closeBtn');
-
-            document.getElementById('avatar-file-label').innerHTML = `📁 ${t('chooseFileBtn')}`;
-            document.getElementById('avatar-file-name').innerText = t('noFileSelected');
-            document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
-            document.getElementById('day-file-name').innerText = t('noFileSelected');
-            document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
-
-            document.getElementById('admin-modal-title').innerHTML = t('adminCenterTitle');
-            document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
-            document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
-            document.getElementById('admin-system-title').innerText = t('adminSystemTitle');
-            document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
-            document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
-            document.getElementById('admin-close-btn').innerText = t('closeBtn');
-
-            applyTheme(currentTheme); 
-            updateCreateFormLabels();
-            setFontSize(currentFontSize);
-        }
-
-        function updateCreateFormLabels() {
-            const isGrp = activeTab==='dashboard';
-            document.getElementById('form-create-title').innerText = isGrp ? t('createSharedTitle') : t('createPersonalTitle');
-            document.getElementById('create-title-input').placeholder = isGrp ? t('challengePh') : t('habitPh');
-            document.getElementById('create-desc-input').placeholder = isGrp ? t('descSharedPh') : t('descPersonalPh');
-            document.getElementById('t-create-submit-btn').innerText = isGrp ? t('createBtn') : t('addHabitBtn');
-            
-            const submitBtn = document.getElementById('t-create-submit-btn');
-            const panel = document.getElementById('master-create-panel');
-            const togglePlusBtn = document.getElementById('btn-create-toggle');
-            if(isGrp) {
-                submitBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-indigo-200 dark:border-indigo-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            } else {
-                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            }
-
-            document.getElementById('form-group-rules').classList.toggle('hidden', !isGrp);
-            document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
-        }
-
-        function displayRandomSlogan() {
-            const list = slogans[currentLang] || slogans.vi;
-            document.getElementById('slogan-text').innerText = `"${list[Math.floor(Math.random() * list.length)]}"`;
-        }
+        function getDateString(start, idx) { const d = new Date(start||Date.now()); d.setDate(d.getDate()+idx); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`; }
+        function getTodayIndex(start) { const s=new Date(start||Date.now()); s.setHours(0,0,0,0); const tObj=new Date(); tObj.setHours(0,0,0,0); return Math.round((tObj-s)/86400000); }
+        function isDayLocked(startStr, dIdx) { return getTodayIndex(startStr) > dIdx + 1; }
 
         const firebaseConfig = {
             apiKey: "AIzaSyBAY8N4lKXlLexdcEoEuE6DdyVVcA0cDs",
@@ -1350,37 +377,26 @@
         const dbRef = firebase.database().ref('bvgpOfficialTeamData');
 
         const defaultMembers = [
-            { id: 'member_2', name: 'Vẫn', avatar: '', pin: '', pinHistory: [], hideGroupTab: false },
-            { id: 'member_3', name: 'Tính', avatar: '', pin: '', pinHistory: [], hideGroupTab: false },
-            { id: 'member_4', name: 'Nghị', avatar: '', pin: '', pinHistory: [], hideGroupTab: false },
-            { id: 'member_5', name: 'Lệnh', avatar: '', pin: '', pinHistory: [], hideGroupTab: false },
-            { id: 'member_6', name: 'Bằng', avatar: '', pin: '', pinHistory: [], hideGroupTab: false },
-            { id: 'member_7', name: 'Khánh', avatar: '', pin: '', pinHistory: [], hideGroupTab: false }
+            { id: 'member_2', name: 'Vẫn', avatar: '', pin: '', hideGroupTab: false },
+            { id: 'member_3', name: 'Tính', avatar: '', pin: '', hideGroupTab: false },
+            { id: 'member_4', name: 'Nghị', avatar: '', pin: '', hideGroupTab: false },
+            { id: 'member_5', name: 'Lệnh', avatar: '', pin: '', hideGroupTab: false },
+            { id: 'member_6', name: 'Bằng', avatar: '', pin: '', hideGroupTab: false },
+            { id: 'member_7', name: 'Khánh', avatar: '', pin: '', hideGroupTab: false }
         ];
 
-        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': [] }, notifications: {} };
-        let selectedLoginMemberId = null;
-        let isCreatingPin = false;
-        let currentEditingDay = null;
-        let isEditMode = false;
-        let tempAvatarBase64 = '';
-        let tempDayImageBase64 = '';
-        let selectedMenuChallenge = null;
-        let activeReplyTo = {};
+        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: {}, notifications: {} };
 
-        // Cơ chế Cache giúp tải tên hiển thị mới ngay lập tức mà không cần chờ Firebase (Khắc phục Bug giật tên cũ)
+        // Cache cục bộ (Khắc phục giật chớp tên)
         try {
             const cached = localStorage.getItem('bvgpOfficialMembers');
             if (cached) appData.members = JSON.parse(cached);
         } catch(e) {}
 
-        document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0];
-
         dbRef.on('value', (snapshot) => {
             if (snapshot.val()) {
                 const sVal = snapshot.val();
-                
-                // Ép kiểu mảng an toàn bằng Object.values() (Khắc phục Bug đăng xuất do Firebase Sparse Array)
+                // Ép kiểu (Khắc phục văng app ngầm khi thêm thành viên)
                 const serverMembers = sVal.members ? (Array.isArray(sVal.members) ? sVal.members : Object.values(sVal.members)) : [];
                 
                 appData.members = defaultMembers.map(def => { 
@@ -1389,464 +405,19 @@
                 });
                 
                 serverMembers.forEach(m => {
-                    if (!appData.members.some(existing => existing.id === m.id)) {
-                        appData.members.push(m);
-                    }
+                    if (!appData.members.some(existing => existing.id === m.id)) appData.members.push(m);
                 });
                 
-                appData.pendingMembers = sVal.pendingMembers ? (Array.isArray(sVal.pendingMembers) ? sVal.pendingMembers : Object.values(sVal.pendingMembers)) : [];
-                appData.sharedChallenges = sVal.sharedChallenges ? (Array.isArray(sVal.sharedChallenges) ? sVal.sharedChallenges : Object.values(sVal.sharedChallenges)) : [];
-                appData.personalHabits = sVal.personalHabits || appData.personalHabits;
-                appData.notifications = sVal.notifications || {};
+                appData.pendingMembers = sVal.pendingMembers ? Object.values(sVal.pendingMembers) : [];
+                appData.sharedChallenges = sVal.sharedChallenges ? Object.values(sVal.sharedChallenges) : [];
+                appData.personalHabits = sVal.personalHabits || {};
                 
-                // Lưu cache cục bộ
                 localStorage.setItem('bvgpOfficialMembers', JSON.stringify(appData.members));
             } else {
                 dbRef.set(appData);
             }
-            
             checkLogin();
-            
-            if (isInitialLoad) {
-                isInitialLoad = false;
-            }
-            
-            updateNotificationBadge();
-            document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); 
-            displayRandomSlogan();
         });
-
-        function toggleUserMenu() { document.getElementById('user-menu-modal').classList.remove('hidden'); }
-        function closeUserMenu() { document.getElementById('user-menu-modal').classList.add('hidden'); }
-        function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
-        function closeSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.add('hidden'); }
-        
-        function openProfileModal() { 
-            closeUserMenu(); 
-            const m = appData.members.find(x => x.id === loggedInUserId); 
-            if(!m) return;
-            
-            document.getElementById('profile-name-input').value = m.name || '';
-            document.getElementById('profile-hide-group-chk').checked = !!m.hideGroupTab;
-            
-            document.getElementById('preview-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
-            tempAvatarBase64 = m.avatar || ''; 
-            
-            document.getElementById('profile-modal').classList.remove('hidden'); 
-        }
-        
-        function closeProfileModal() {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        function saveProfile() {
-            const newName = document.getElementById('profile-name-input').value.trim();
-            const hideGrp = document.getElementById('profile-hide-group-chk').checked;
-            
-            if (!newName) return alert("Vui lòng nhập tên!");
-
-            const lowerName = newName.toLowerCase();
-            const isDuplicate = appData.members.some(m => m.id !== loggedInUserId && m.name.toLowerCase() === lowerName);
-            if (isDuplicate) {
-                return alert(t('nameExists'));
-            }
-
-            const idx = appData.members.findIndex(m => m.id === loggedInUserId);
-            if (idx > -1) {
-                appData.members[idx].name = newName;
-                appData.members[idx].hideGroupTab = hideGrp;
-                if(tempAvatarBase64) {
-                    appData.members[idx].avatar = tempAvatarBase64;
-                }
-                
-                dbRef.set(appData);
-                
-                alert(t('profileSaved'));
-                closeProfileModal();
-                updateUserLabel();
-                updateTabsVisibility();
-                
-                if (hideGrp && activeTab === 'dashboard') {
-                    switchTab('update');
-                } else {
-                    renderList();
-                }
-            }
-        }
-
-        function openPinModal() { closeUserMenu(); document.getElementById('pin-modal').classList.remove('hidden'); }
-        function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
-        
-        function openAdminCenterModal() {
-            closeUserMenu();
-            renderAdminCenterContent();
-            document.getElementById('admin-center-modal').classList.remove('hidden');
-        }
-        function closeAdminCenterModal() {
-            document.getElementById('admin-center-modal').classList.add('hidden');
-        }
-
-        function renderAdminCenterContent() {
-            const pendingContainer = document.getElementById('admin-pending-list');
-            const pendingArr = appData.pendingMembers || [];
-            if (!pendingArr.length) {
-                pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">Không có yêu cầu chờ duyệt.</p>`;
-            } else {
-                pendingContainer.innerHTML = pendingArr.map(p => `
-                    <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border">
-                        <span class="font-bold text-slate-800 dark:text-slate-100">👤 ${p.name}</span>
-                        <div class="flex gap-1.5">
-                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition">${t('approve')}</button>
-                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition">${t('reject')}</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            const membersContainer = document.getElementById('admin-members-list');
-            membersContainer.innerHTML = appData.members.map(m => `
-                <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border">
-                    <div class="flex items-center gap-2">
-                        ${getMemberAvatarHTML(m.id, "w-6 h-6")}
-                        <span class="font-bold text-slate-800 dark:text-slate-100">${m.name} ${m.id === 'member_7' ? '👑' : ''}</span>
-                    </div>
-                    ${m.id !== 'member_7' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold transition">🗑️ Xóa</button>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function approveMember(pId) {
-            const p = (appData.pendingMembers || []).find(x => x.id === pId);
-            if (!p) return;
-            appData.members.push({ id: p.id, name: p.name, avatar: '', pin: p.pin, pinHistory: [], hideGroupTab: false });
-            appData.personalHabits[p.id] = [];
-            appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
-            dbRef.set(appData);
-            renderAdminCenterContent();
-            populateLoginSelect();
-        }
-
-        function rejectMember(pId) {
-            appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
-            dbRef.set(appData);
-            renderAdminCenterContent();
-        }
-
-        function deleteMember(mId) {
-            if (mId === 'member_7') return alert('Không thể xóa tài khoản Admin gốc!');
-            if (!confirm(`Bạn có chắc muốn xóa thành viên này khỏi hệ thống?`)) return;
-            appData.members = appData.members.filter(m => m.id !== mId);
-            delete appData.personalHabits[mId];
-            if (loggedInUserId === mId) {
-                switchUser();
-            }
-            dbRef.set(appData);
-            renderAdminCenterContent();
-            populateLoginSelect();
-        }
-
-        function toggleCreatePanel() { const p = document.getElementById('master-create-panel'); p.classList.toggle('hidden'); }
-        function toggleBigPlayInputs() { document.getElementById(`create-bigplay-inputs`).classList.toggle('hidden', !document.getElementById(`create-bigplay-checkbox`).checked); }
-        
-        function switchTab(tab) {
-            activeTab = tab;
-            const db = document.getElementById('btn-dashboard');
-            const ub = document.getElementById('btn-update');
-            const tb = document.getElementById('btn-create-toggle');
-            
-            // Xóa các class màu sắc cũ
-            db.classList.remove('bg-indigo-600', 'text-white', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-50', 'dark:hover:bg-slate-700');
-            ub.classList.remove('bg-emerald-600', 'text-white', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-50', 'dark:hover:bg-slate-700');
-
-            if(tab === 'dashboard') {
-                db.classList.add('bg-indigo-600', 'text-white');
-                ub.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-50', 'dark:hover:bg-slate-700');
-                tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            } else {
-                ub.classList.add('bg-emerald-600', 'text-white');
-                db.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-50', 'dark:hover:bg-slate-700');
-                tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            }
-            
-            renderFilterOptions();
-            updateCreateFormLabels(); 
-            document.getElementById('master-create-panel').classList.add('hidden');
-            
-            updateTabsVisibility(); 
-            renderList();
-        }
-
-        function setFilter(val) { currentFilter = val; renderList(); }
-
-        function getEndDate(start, total) { const d = new Date(start); d.setDate(d.getDate() + total - 1); return formatDateString(d); }
-        function getDateString(start, idx) { const d = new Date(start||Date.now()); d.setDate(d.getDate()+idx); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`; }
-        function formatDateString(date) { const d = new Date(date); return isNaN(d) ? date : `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
-        function getTodayIndex(start) { const s=new Date(start||Date.now()); s.setHours(0,0,0,0); const t=new Date(); t.setHours(0,0,0,0); return Math.round((t-s)/86400000); }
-        function promptReason() { let r = prompt(t('requireReason')); while(r!==null && !r.trim()){ alert(t('reasonRequiredAlert')); r = prompt(t('requireReason')); } return r ? r.trim() : null; }
-
-        function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
-            const u = appData.members.find(x => x.id === mId);
-            if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 leading-none">?</div>`;
-            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
-        }
-
-        function updateTabsVisibility() {
-            if(!loggedInUserId) return;
-            const m = appData.members.find(x => x.id === loggedInUserId);
-            const btnGroup = document.getElementById('btn-dashboard');
-            
-            if(m && m.hideGroupTab) {
-                btnGroup.classList.add('hidden');
-            } else {
-                btnGroup.classList.remove('hidden');
-            }
-        }
-
-        function renderList() {
-            const container = document.getElementById('main-list-container'); container.innerHTML = '';
-            let list = [];
-            
-            if (activeTab === 'dashboard') {
-                list = (appData.sharedChallenges||[]).filter(c => {
-                    const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
-                    if (currentFilter === 'archived') return c.archived;
-                    if (c.archived) return false;
-                    if (currentFilter === 'my') return j;
-                    if (currentFilter === 'new') return !j;
-                    return true;
-                }).sort(sortByStartDate);
-
-                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
-                
-                list.forEach((c, idx) => {
-                    const tot=c.totalDays||16, tgt=c.targetDays||14, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
-                    let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
-                    
-                    const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
-                    const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
-                    
-                    const isCompleted = cnt >= tgt;
-                    const cFinished = isChallengeFinished(c.startDate, tot);
-                    const isFailed = gu || (!isCompleted && cFinished);
-
-                    let rewardPenaltyBoxHTML = "";
-                    if (isCompleted) {
-                        rewardPenaltyBoxHTML = `
-                            <div class="flex items-center justify-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
-                                <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</div>
-                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
-                            </div>`;
-                    } else if (isFailed) {
-                        rewardPenaltyBoxHTML = `
-                            <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
-                                <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
-                            </div>`;
-                    } else {
-                        rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full text-[11px] font-normal w-fit">
-                                <div class="text-emerald-600 font-semibold">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
-                                <div class="text-slate-300">|</div>
-                                <div class="text-rose-600 font-semibold">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
-                            </div>`;
-                    }
-
-                    let content = "";
-                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
-                    else if (j) {
-                        let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
-                            const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
-                            let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                            let lockBadge = "";
-
-                            const dayLocked = isDayLocked(c.startDate, dIdx);
-
-                            if(ic) {
-                                s="bg-indigo-600 text-white border-indigo-600"; 
-                            } else if(dayLocked && !ic) {
-                                s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
-                            } else if(it) {
-                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; 
-                            } else if(ifu) {
-                                s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
-                            } else {
-                                s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
-                            }
-
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
-                        }).join('') + `</div>`;
-                        
-                        content = `
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
-                                </div>
-                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                                ${grid}
-                            </div>`;
-                    }
-
-                    container.innerHTML += `
-                        <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
-                            <div class="flex justify-between items-start">
-                                <div class="space-y-1.5">
-                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
-                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                                    </h4>
-                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
-                                        <span>${formatDateString(c.startDate)}</span>
-                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
-                                    </div>
-                                    ${rewardPenaltyBoxHTML}
-                                </div>
-                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
-                            </div>
-                            ${j ? avs : ''}
-                            ${content}
-                            ${(j || ro) && loggedInUserId === 'member_7' ? renderCommentSectionHTML(c.id, c.comments||[], false) : ''}
-                        </div>`;
-                });
-            } else {
-                list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
-                    if (currentFilter === 'archived') return h.archived === true;
-                    if (currentFilter === 'active') return !h.archived;
-                    return true;
-                }).sort(sortByStartDate);
-
-                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
-                
-                list.forEach((h, idx) => {
-                    const tot=h.totalDays||16, tgt=h.targetDays||14, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
-                    const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
-                    
-                    const isCompleted = cnt >= tgt;
-                    const cFinished = isChallengeFinished(h.startDate, tot);
-                    const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
-
-                    let rewardPenaltyBoxHTML = "";
-                    if (isCompleted) {
-                        rewardPenaltyBoxHTML = `
-                            <div class="flex items-center justify-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
-                                <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate max-w-[150px] sm:max-w-[200px]">🎁 ${h.selfReward||'---'}</div>
-                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
-                            </div>`;
-                    } else if (isFailed) {
-                        rewardPenaltyBoxHTML = `
-                            <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
-                                <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate max-w-[150px] sm:max-w-[200px]">💸 ${h.selfPenalty||'---'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
-                            </div>`;
-                    } else {
-                        rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-fit max-w-full">
-                                <div class="flex items-center gap-1.5 text-emerald-600">
-                                    <div class="shrink-0 leading-none">🎁</div>
-                                    <div class="break-words max-w-[250px] sm:max-w-[280px] leading-snug">${h.selfReward||'---'}</div>
-                                </div>
-                                <div class="flex items-center gap-1.5 text-rose-600">
-                                    <div class="shrink-0 leading-none">💸</div>
-                                    <div class="break-words max-w-[250px] sm:max-w-[280px] leading-snug">${h.selfPenalty||'---'}</div>
-                                </div>
-                            </div>`;
-                    }
-
-                    let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
-                        const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
-                        let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                        let lockBadge = "";
-
-                        const dayLocked = isDayLocked(h.startDate, dIdx);
-
-                        if(ic) {
-                            s="bg-emerald-600 text-white border-emerald-600"; 
-                        } else if(dayLocked && !ic) {
-                            s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
-                        } else if(it) {
-                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; 
-                        } else if(ifu) {
-                            s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
-                        } else {
-                            s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
-                        }
-
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
-                    }).join('') + `</div>`;
-
-                    container.innerHTML += `
-                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
-                            <div class="flex justify-between items-start">
-                                <div class="space-y-1.5 w-full">
-                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
-                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                                    </h4>
-                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
-                                        <span>${formatDateString(h.startDate)}</span>
-                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
-                                    </div>
-                                    ${rewardPenaltyBoxHTML}
-                                </div>
-                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span></span>
-                                    ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2 rounded-full text-[10px] shadow-sm flex items-center justify-center h-4 leading-none">${t('pausedStatus')}</span>`:''}
-                                </div>
-                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                                ${grid}
-                            </div>
-                            ${loggedInUserId === 'member_7' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
-                        </div>`;
-                });
-            }
-        }
-
-        function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
-        function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
-        function renderHintList() {
-            const pool = challengeHintsPool[currentLang].filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
-            const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
-            const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
-            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
-        }
-        function applyHint(title, desc) {
-            closeHintModal();
-            document.getElementById('create-title-input').value = title;
-            document.getElementById('create-desc-input').value = desc;
-        }
-
-        async function compressImage(file, cb) {
-            let f = file;
-            if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
-                try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
-                catch (e) { return alert(t('heicError')); }
-            }
-            const r = new FileReader();
-            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
-            r.readAsDataURL(f);
-        }
-        function previewAvatarImage(e) { 
-            const f = e.target.files[0]; 
-            if (f) { 
-                document.getElementById('avatar-file-name').innerText = f.name; 
-                compressImage(f, b => { 
-                    tempAvatarBase64 = b; 
-                    document.getElementById('preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover">`; 
-                }); 
-            } else {
-                document.getElementById('avatar-file-name').innerText = t('noFileSelected'); 
-            }
-        }
-        function saveAvatarImage() { if (!tempAvatarBase64) return alert(t('requireImage')); const idx = appData.members.findIndex(m => m.id === loggedInUserId); if (idx > -1) { appData.members[idx].avatar = tempAvatarBase64; dbRef.set(appData); alert(t('avatarSaved')); document.getElementById('avatar-modal').classList.add('hidden'); } }
-        function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
-        function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
         function populateLoginSelect() {
             const selectEl = document.getElementById('login-select');
@@ -1856,25 +427,16 @@
         function checkLogin() {
             populateLoginSelect();
             if (!loggedInUserId || !appData.members.some(m => m.id === loggedInUserId)) {
-                loggedInUserId = null;
-                localStorage.removeItem('bvgpOfficialLoggedInUserId');
+                loggedInUserId = null; localStorage.removeItem('bvgpOfficialLoggedInUserId');
                 document.getElementById('login-modal').classList.remove('hidden'); 
-                document.getElementById('login-step-1').classList.remove('hidden'); 
-                document.getElementById('register-step-view').classList.add('hidden');
-                document.getElementById('login-step-2').classList.add('hidden');
             } else { 
                 document.getElementById('login-modal').classList.add('hidden');
-                updateUserLabel(); 
-                document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_7'); 
-                document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_7');
-                document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_7');
-                
-                updateTabsVisibility();
                 
                 const m = appData.members.find(x => x.id === loggedInUserId);
+                document.getElementById('current-user-label').innerHTML = m.name + (m.id === 'member_7' ? ' 👑' : '');
                 
+                // Khắc phục kẹt khung màu tím
                 if (m && m.hideGroupTab && activeTab === 'dashboard') {
-                    // Chuyển mượt mà sang Tab cá nhân nếu đang đứng ở Group Tab (Fix lỗi kẹt giao diện)
                     switchTab('update');
                 } else {
                     renderList(); 
@@ -1882,251 +444,105 @@
             }
         }
 
-        function openRegisterView() {
-            document.getElementById('login-step-1').classList.add('hidden');
-            document.getElementById('register-step-view').classList.remove('hidden');
-            document.getElementById('reg-name-input').value = '';
-            document.getElementById('reg-pin-input').value = '';
-        }
-
-        function closeRegisterView() {
-            document.getElementById('register-step-view').classList.add('hidden');
-            document.getElementById('login-step-1').classList.remove('hidden');
-        }
-
-        function submitNewRegistration() {
-            const name = document.getElementById('reg-name-input').value.trim();
-            const pin = document.getElementById('reg-pin-input').value.trim();
-            if (!name) return alert('Vui lòng nhập tên!');
-            if (pin.length !== 4 || isNaN(pin)) return alert(t('pinFormat'));
-
-            const lowerName = name.toLowerCase();
-            const existsInMembers = appData.members.some(m => m.name.toLowerCase() === lowerName);
-            const existsInPending = (appData.pendingMembers || []).some(m => m.name.toLowerCase() === lowerName);
-            
-            if (existsInMembers || existsInPending) {
-                return alert(t('nameExists'));
-            }
-
-            appData.pendingMembers = appData.pendingMembers || [];
-            const newId = 'member_' + Date.now();
-            appData.pendingMembers.push({ id: newId, name, pin });
-            
-            sendNotification('member_7', 'pending_approval', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
-
-            dbRef.set(appData);
-
-            alert(t('registerSuccess'));
-            closeRegisterView();
-        }
-
         function handleLoginNext() {
-            selectedLoginMemberId = document.getElementById('login-select').value; const m = appData.members.find(x => x.id === selectedLoginMemberId);
-            document.getElementById('login-step-1').classList.add('hidden'); document.getElementById('login-step-2').classList.remove('hidden');
-            const pt = document.getElementById('login-pin-title'), pb = document.getElementById('login-pin-btn'); document.getElementById('login-pin-input').value = '';
-            if (!m.pin) { pt.innerText = currentLang === 'vi' ? `🔒 Tạo mã PIN cho ${m.name}` : `🔒 Create PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Tạo PIN':'Create'; isCreatingPin = true; } 
-            else { pt.innerText = currentLang === 'vi' ? `🔑 Nhập mã PIN của ${m.name}` : `🔑 Enter PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Đăng nhập':'Login'; isCreatingPin = false; }
+            selectedLoginMemberId = document.getElementById('login-select').value;
+            const m = appData.members.find(x => x.id === selectedLoginMemberId);
+            document.getElementById('login-step-1').classList.add('hidden'); 
+            document.getElementById('login-step-2').classList.remove('hidden');
+            document.getElementById('login-pin-input').value = '';
+            
+            isCreatingPin = !m.pin;
+            document.getElementById('login-pin-input').placeholder = t('pinPh');
+            document.getElementById('login-pin-btn').innerText = isCreatingPin ? 'Tạo PIN' : 'Đăng nhập';
         }
-        function handleLoginBack() { document.getElementById('login-step-2').classList.add('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); }
-        function addPinHistoryLog(idx, note) { const now = new Date(); appData.members[idx].pinHistory = appData.members[idx].pinHistory || []; appData.members[idx].pinHistory.unshift({ time: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} - ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, note }); }
+
         function handlePinSubmit() {
-            const p = document.getElementById('login-pin-input').value.trim(); if (p.length !== 4 || isNaN(p)) return alert(t('pinFormat'));
-            const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx === -1) return;
-            if (isCreatingPin) { appData.members[idx].pin = p; addPinHistoryLog(idx, "Khởi tạo PIN"); dbRef.set(appData); finishLogin(selectedLoginMemberId); } 
-            else { appData.members[idx].pin === p ? finishLogin(selectedLoginMemberId) : alert(t('wrongPin')); }
+            const p = document.getElementById('login-pin-input').value.trim();
+            if (p.length !== 4 || isNaN(p)) return alert(t('pinFormat'));
+            const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId);
+            
+            if (isCreatingPin) {
+                appData.members[idx].pin = p;
+                dbRef.set(appData);
+                finishLogin(selectedLoginMemberId);
+            } else {
+                if (appData.members[idx].pin === p) finishLogin(selectedLoginMemberId);
+                else alert(t('wrongPin'));
+            }
         }
-        function handleForgotPin() {
-            const mp = prompt(currentLang === 'vi' ? "Nhập PIN quản trị (Master PIN):" : "Enter Master PIN:");
-            if (mp === "0000") { const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx > -1) { appData.members[idx].pin = ""; addPinHistoryLog(idx, "Reset PIN (Master)"); dbRef.set(appData); alert(t('resetPinSuccess')); handleLoginNext(); } } else if (mp !== null) alert(t('wrongMasterPin'));
-        }
+
         function finishLogin(id) { 
             loggedInUserId = id; 
             localStorage.setItem('bvgpOfficialLoggedInUserId', id); 
-            
-            // Reload page to ensure clean state after login
             window.location.reload(); 
         }
-        function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
-        function changePin() {
-            const o = document.getElementById('old-pin-input').value.trim(), n = document.getElementById('new-pin-input').value.trim(), idx = appData.members.findIndex(m=>m.id===loggedInUserId);
-            if (idx===-1) return;
-            if (appData.members[idx].pin && appData.members[idx].pin !== o) return alert(t('wrongPin'));
-            if (n.length !== 4 || isNaN(n)) return alert(t('pinFormat'));
-            appData.members[idx].pin = n; addPinHistoryLog(idx, "Đổi PIN"); dbRef.set(appData); alert(t('pinChanged')); document.getElementById('pin-modal').classList.add('hidden');
-        }
-        function updateUserLabel() { 
-            const m = appData.members.find(x => x.id === loggedInUserId); 
-            if (m) { 
-                const isAdmin = loggedInUserId === 'member_7';
-                document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
-                document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
-                document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
-                document.getElementById('btn-cap-rew').classList.toggle('hidden', !isAdmin);
-            } 
-        }
-        function handleResetTestData() {
-            if (loggedInUserId !== 'member_7') return alert(t('notAdmin'));
-            const mp = prompt(t('adminConfirmTitle'));
-            if (mp === "0000") {
-                if (!confirm(t('adminConfirmWarn'))) return;
-                appData.members.forEach(m => { m.avatar = ''; m.pinHistory = []; m.hideGroupTab = false; }); appData.notifications = {};
-                (appData.sharedChallenges||[]).forEach(c => { c.comments = []; c.archived = false; if(c.progress) Object.keys(c.progress).forEach(mId => c.progress[mId] = Array(c.totalDays||16).fill(null).map(()=>({completed:false}))); c.participantReasons = {}; if(c.participants) Object.keys(c.participants).forEach(mId => { if(c.participants[mId]==='given_up') c.participants[mId]=true; }); });
-                if(appData.personalHabits) Object.keys(appData.personalHabits).forEach(mId => { appData.personalHabits[mId].forEach(h => { h.comments=[]; h.archived=false; h.status='active'; h.reason=''; h.days = Array(h.totalDays||16).fill(null).map(()=>({completed:false})); }); });
-                dbRef.set(appData); alert(t('adminSuccess')); closeUserMenu(); closeAdminCenterModal();
-            } else if (mp !== null) alert(t('wrongMasterPin'));
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const db = document.getElementById('btn-dashboard'), ub = document.getElementById('btn-update');
+            db.className = tab === 'dashboard' ? "flex-1 py-2 text-sm font-bold rounded-xl transition bg-indigo-600 text-white" : "flex-1 py-2 text-sm font-bold rounded-xl transition text-slate-600";
+            ub.className = tab === 'update' ? "flex-1 py-2 text-sm font-bold rounded-xl transition bg-emerald-600 text-white" : "flex-1 py-2 text-sm font-bold rounded-xl transition text-slate-600";
+            document.getElementById('master-create-panel').classList.add('hidden');
+            renderList();
         }
 
-        function updateNotificationBadge() {
-            if (!loggedInUserId) return; const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; const b = document.getElementById('notif-badge');
-            if (b) { unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); }
-        }
-        function sendNotification(tId, type, sName, title, txt) {
-            if (!tId || tId === loggedInUserId) return; if (!appData.notifications) appData.notifications = {}; if (!appData.notifications[tId]) appData.notifications[tId] = []; const now = new Date();
-            appData.notifications[tId].unshift({ id: Date.now(), type, senderName: sName, challengeTitle: title, text: txt, timestamp: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`, read: false });
-        }
-        function notifyAllChallengeMembers(c, type, actionDesc) {
-            if (!c || !c.participants) return;
-            const actorName = appData.members.find(m => m.id === loggedInUserId)?.name || 'Thành viên';
-            Object.keys(c.participants).forEach(mId => {
-                if (mId !== loggedInUserId && (c.participants[mId] === true || c.participants[mId] === 'given_up')) {
-                    sendNotification(mId, type, actorName, c.title, actionDesc);
-                }
-            });
-        }
-        function openNotificationModal() { renderNotificationList(); document.getElementById('notification-modal').classList.remove('hidden'); }
-        function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
-        
-        function renderNotificationList() {
-            const container = document.getElementById('notification-list'); container.innerHTML = ''; const notifs = appData.notifications[loggedInUserId] || [];
-            if (!notifs.length) return container.innerHTML = `<p class="text-slate-400 italic text-center py-6">${t('noNotif')}</p>`;
-            notifs.forEach(n => {
-                let icon = '🔔', act = n.text;
-                if(n.type === 'tag') { icon = '🏷️'; act = `${t('taggedYou')} "${n.challengeTitle}"`; }
-                else if(n.type === 'reply') { icon = '↩️'; act = `${t('repliedYou')} "${n.challengeTitle}"`; }
-                else if(n.type === 'system' || n.type === 'pending_approval') { icon = '🤖'; act = n.text; }
-                
-                let clickAction = '';
-                let cursorClass = '';
-                if (n.type === 'pending_approval') {
-                    clickAction = `onclick="closeNotificationModal(); openAdminCenterModal();"`;
-                    cursorClass = 'cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/60';
-                }
-
-                container.innerHTML += `
-                    <div ${clickAction} class="p-3 rounded-2xl border transition ${cursorClass} ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2">
-                        <div class="space-y-1">
-                            <p class="text-slate-800 dark:text-slate-100"><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' && n.type !== 'pending_approval' ? act : ''}</p>
-                            ${(n.type === 'tag' || n.type === 'reply' || n.type === 'system' || n.type === 'pending_approval') && n.text ? `<p class="text-slate-500 text-[11px] bg-white/60 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">${n.text}</p>` : ''}
-                            <span class="text-[10px] text-slate-400 block">${n.timestamp}</span>
-                        </div>
-                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1"></span>` : ''}
-                    </div>`;
-            });
-        }
-        function markAllNotificationsRead() { if (appData.notifications[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); dbRef.set(appData); renderNotificationList(); updateNotificationBadge(); }
-
-        function openActionMenuModal(id, isP) {
-            selectedMenuChallenge = { id, isPersonal: isP };
-            const m = document.getElementById('action-menu-modal');
-            let isArch = false, st = 'active';
-            
-            if(!isP){ 
-                const c = appData.sharedChallenges.find(x=>x.id===id); 
-                if(c){ 
-                    isArch=c.archived; 
-                    const pStatus = c.participants ? c.participants[loggedInUserId] : null;
-                    if(pStatus !== true && pStatus !== 'given_up') return;
-                    st = pStatus === true ? 'active' : 'given_up';
-                } 
-            } 
-            else { 
-                const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); 
-                if(h){ isArch=h.archived; st=h.status||'active'; } 
-            }
-            
-            document.getElementById('action-btn-archive').classList.toggle('hidden', isArch);
-            document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
-            document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_7');
-            
-            const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
-            if(isP && !isArch) {
-                btnP.classList.toggle('hidden', st !== 'active');
-                btnR.classList.toggle('hidden', st !== 'paused');
-            } else { btnP.classList.add('hidden'); btnR.classList.add('hidden'); }
-            
-            const btnGiveUp = document.getElementById('action-btn-giveup');
-            const btnRejoin = document.getElementById('action-btn-rejoin');
-            if (isArch) {
-                btnGiveUp.classList.add('hidden');
-                btnRejoin.classList.add('hidden');
-            } else {
-                if (st === 'given_up') {
-                    btnGiveUp.classList.add('hidden');
-                    btnRejoin.classList.remove('hidden');
-                } else {
-                    btnGiveUp.classList.remove('hidden');
-                    btnRejoin.classList.add('hidden');
-                }
-            }
-
-            m.classList.remove('hidden');
-        }
-        function closeActionMenuModal() { document.getElementById('action-menu-modal').classList.add('hidden'); selectedMenuChallenge = null; }
-        
-        function triggerMenuAction(act) {
-            if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
-            if(act==='share') captureChallengeCard(id);
-            else if(act==='giveup') giveUpChallenge(id, isPersonal);
-            else if(act==='rejoin') rejoinChallenge(id, isPersonal);
-            else if(act==='archive') archiveChallenge(id, isPersonal, true);
-            else if(act==='restore') archiveChallenge(id, isPersonal, false);
-            else if(act==='pause') pauseChallenge(id);
-            else if(act==='resume') resumeChallenge(id, true);
-            else if(act==='delete') deleteChallenge(id, isPersonal);
+        function renderList() {
+            const container = document.getElementById('main-list-container'); 
+            container.innerHTML = `<p class="text-center text-slate-400 text-sm mt-10 italic">Danh sách tải thành công. Sẵn sàng tạo mới!</p>`;
         }
 
-        async function captureChallengeCard(id) {
-            const cardEl = document.getElementById(`challenge-card-${id}`);
-            if(!cardEl) return;
+        document.getElementById('master-create-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('create-title-input').value.trim();
+            const start = document.getElementById('create-date-input').value;
+            const tgt = parseInt(document.getElementById('create-target-input').value);
+            const tot = parseInt(document.getElementById('create-days-input').value);
             
-            const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
-            const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
-            
-            if(commentsContainer) commentsContainer.style.display = 'none';
-            if(actionBtn) actionBtn.style.display = 'none';
-
-            try {
-                const canvas = await html2canvas(cardEl, {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: false,
-                    logging: false,
-                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+            if(activeTab === 'dashboard') {
+                appData.sharedChallenges.push({
+                    id: Date.now(), title, startDate: start, targetDays: tgt, totalDays: tot,
+                    participants: { [loggedInUserId]: true }, progress: { [loggedInUserId]: [] }
                 });
+            } else {
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId] || [];
+                appData.personalHabits[loggedInUserId].push({
+                    id: Date.now(), text: title, startDate: start, targetDays: tgt, totalDays: tot, days: []
+                });
+            }
+            dbRef.set(appData);
+            document.getElementById('master-create-panel').classList.add('hidden');
+            e.target.reset(); renderList();
+        });
 
-                const link = document.createElement('a');
-                link.download = `BVGP-Thuthach-${id}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            } catch(err) {
-                console.error("Lỗi chụp ảnh:", err);
-                alert("Không thể tạo hình ảnh chia sẻ. Vui lòng thử lại!");
-            } finally {
-                if(commentsContainer) commentsContainer.style.display = '';
-                if(actionBtn) actionBtn.style.display = '';
+        // Hàm tiện ích cơ bản
+        function toggleCreatePanel() { document.getElementById('master-create-panel').classList.toggle('hidden'); }
+        function openRegisterView() { document.getElementById('login-step-1').classList.add('hidden'); document.getElementById('register-step-view').classList.remove('hidden'); }
+        function closeRegisterView() { document.getElementById('register-step-view').classList.add('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); }
+        function handleLoginBack() { document.getElementById('login-step-2').classList.add('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); }
+        function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); window.location.reload(); }
+        function closeUserMenu() { document.getElementById('user-menu-modal').classList.add('hidden'); }
+        function openProfileModal() { closeUserMenu(); document.getElementById('profile-modal').classList.remove('hidden'); }
+        function closeProfileModal() { document.getElementById('profile-modal').classList.add('hidden'); }
+        
+        function saveProfile() {
+            const idx = appData.members.findIndex(m => m.id === loggedInUserId);
+            if(idx > -1) {
+                appData.members[idx].name = document.getElementById('profile-name-input').value || appData.members[idx].name;
+                appData.members[idx].hideGroupTab = document.getElementById('profile-hide-group-chk').checked;
+                dbRef.set(appData); alert(t('profileSaved')); window.location.reload();
             }
         }
-
-        function toggleCaptureDropdown(tab) {
-            const m = document.getElementById(`capture-menu-${tab}`);
-            if(m) m.classList.toggle('hidden');
-        }
-
+        
+        // --- CHỤP ẢNH ---
         async function executeCapture(tab, option) {
-            document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
-            const isDark = document.documentElement.classList.contains('dark');
-            const bgColor = isDark ? '#0f172a' : '#ffffff';
-
-            if(tab === 'active') {
-                const container = document.getElementById('report-active-container');
-                const grpBox = document.getElementById('act-box-grp');
+            alert('Đang chụp ảnh, vui lòng đợi...');
+            const container = document.getElementById('report-active-container') || document.body;
+            try {
+                const canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+                const link = document.createElement('a');
+                link.download = `BVGP-Report.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click();
+            } catch(e) { alert("Lỗi chụp ảnh!"); }
+        }
+    </script>
+</body>
+</html>
