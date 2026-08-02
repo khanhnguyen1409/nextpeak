@@ -50,27 +50,38 @@
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
 
     <!-- AUDIO NHẠC NỀN -->
-    <audio id="bg-music" loop src="https://files.catbox.moe/bfdutu.mp3"></audio>
+    <audio id="bg-music" loop></audio>
 
-    <!-- MODAL ĐĂNG NHẬP -->
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
             <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng đến với BVGP</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
                 <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover">
             </div>
-            <div id="login-step-1" class="space-y-4">
+            
+            <!-- VIEW CHỌN HOẶC ĐĂNG KÝ -->
+            <div id="login-step-1" class="space-y-3">
                 <p id="l-select-name" class="text-xs text-slate-500 dark:text-slate-400">Chọn đúng tên của bạn để tiếp tục.</p>
                 <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100">
-                    <option value="member_2">Vẫn</option>
-                    <option value="member_3">Tính</option>
-                    <option value="member_4">Nghị</option>
-                    <option value="member_5">Lệnh</option>
-                    <option value="member_6">Bằng</option>
-                    <option value="member_7">Khánh</option>
+                    <!-- Render bằng JS -->
                 </select>
                 <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
+                <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center">✨ Đăng ký tài khoản mới</button>
             </div>
+
+            <!-- VIEW ĐĂNG KÝ MỚI -->
+            <div id="register-step-view" class="space-y-3 hidden">
+                <p id="l-reg-title" class="text-xs font-bold text-emerald-600">✨ Đăng ký thành viên mới</p>
+                <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
+                <input type="password" id="reg-pin-input" placeholder="Tạo mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
+                <div class="flex gap-2">
+                    <button onclick="closeRegisterView()" id="l-reg-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-semibold text-xs">Quay lại</button>
+                    <button onclick="submitNewRegistration()" id="l-reg-submit-btn" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Gửi yêu cầu</button>
+                </div>
+            </div>
+
+            <!-- VIEW NHẬP PIN -->
             <div id="login-step-2" class="space-y-3 hidden">
                 <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">🔒 Nhập mã PIN bảo mật</p>
                 <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100">
@@ -87,13 +98,46 @@
 
     <!-- MODAL MENU USER -->
     <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeUserMenu()">
-        <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-48 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
+        <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <button onclick="openAvatarModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🖼️ <span id="m-change-avatar">Đổi Avatar</span></button>
             <button onclick="openPinModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🔒 <span id="m-change-pin">Đổi mã PIN</span></button>
             <button onclick="openHistoryModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">⏱️ <span id="m-history">Lịch sử hoạt động</span></button>
-            <button id="btn-admin-tool" onclick="handleResetTestData()" class="hidden w-full text-left py-2 px-3 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-rose-600 rounded-xl transition flex items-center gap-2">🛠️ <span id="m-admin-reset">Admin Reset</span></button>
+            <button id="btn-admin-tool" onclick="openAdminCenterModal()" class="hidden w-full text-left py-2 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 rounded-xl transition flex items-center gap-2">🛠️ <span id="m-admin-center">Trung tâm Quản trị</span></button>
             <hr class="border-slate-100 dark:border-slate-700 my-1">
             <button onclick="switchUser()" class="w-full text-left py-2 px-3 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded-xl transition flex items-center gap-2">🚪 <span id="m-logout">Thoát</span></button>
+        </div>
+    </div>
+
+    <!-- MODAL TRUNG TÂM QUẢN TRỊ (ADMIN CENTER) -->
+    <div id="admin-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 id="admin-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🛠️ Trung tâm Quản trị</h3>
+                <button onclick="closeAdminCenterModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            
+            <div class="space-y-4 text-xs">
+                <!-- Duyệt thành viên mới -->
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-2">
+                    <h4 id="admin-pending-title" class="font-bold text-indigo-600">👥 Duyệt tài khoản thành viên mới</h4>
+                    <div id="admin-pending-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Quản lý thành viên hiện tại -->
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-2">
+                    <h4 id="admin-members-title" class="font-bold text-slate-700 dark:text-slate-200">📋 Quản lý danh sách thành viên</h4>
+                    <div id="admin-members-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- Hệ thống / Admin Reset -->
+                <div class="p-4 bg-rose-50/50 dark:bg-rose-950/20 rounded-2xl border border-rose-100 dark:border-rose-900/50 space-y-2">
+                    <h4 id="admin-system-title" class="font-bold text-rose-600">⚙️ Khôi phục hệ thống (Admin Reset)</h4>
+                    <p id="admin-system-desc" class="text-[11px] text-slate-500">Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.</p>
+                    <button onclick="handleResetTestData()" id="admin-reset-btn" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-bold transition text-xs">Admin Reset</button>
+                </div>
+            </div>
+
+            <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold">Đóng</button>
         </div>
     </div>
 
@@ -279,8 +323,8 @@
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 pb-2 border-b text-center uppercase text-[10px]">Tùy chọn</h4>
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
-            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ Tạm dừng</button>
-            <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ Tiếp tục</button>
+            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
+            <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
             <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
@@ -319,7 +363,7 @@
                         <div id="status-selection-box" class="flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700">
                             <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600">
                                 <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
-                                <span>Hoàn thành</span>
+                                <span id="m-completed-label">Hoàn thành</span>
                             </label>
                         </div>
                         <div class="space-y-1">
@@ -372,7 +416,7 @@
                 <div class="flex items-center gap-2 mt-1">
                     <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm flex items-center gap-1.5">Kết quả</button>
                     <!-- Nút Tải Lại / Refresh -->
-                    <button onclick="window.location.reload()" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
+                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
                     <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">
                         🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </button>
@@ -586,8 +630,8 @@
                 fontTitle: "Cỡ chữ",
                 historyTitle: "Lịch sử hoạt động",
                 noHistory: "Chưa có lịch sử",
-                adminToolTitle: "🛠️ Khôi phục dữ liệu",
-                adminResetBtn: "Khôi phục dữ liệu",
+                adminToolTitle: "🛠️ Trung tâm Quản trị",
+                adminResetBtn: "Admin Reset",
                 commentCount: "💬 Bình luận",
                 noComments: "Chưa có bình luận. Hãy mở lời!",
                 writeComment: "Viết bình luận (@tên)...",
@@ -632,7 +676,21 @@
                 copyReportContent: "📄 Chép nội dung",
                 shareAchievement: "Chia sẻ thành tích",
                 lockNotice: "Rất tiếc. Đã quá thời hạn check-in.",
-                endedNotice: "✅ Thử thách đã kết thúc."
+                endedNotice: "✅ Thử thách đã kết thúc.",
+                noOtherMembers: "Không có thành viên khác.",
+                registerTab: "✨ Đăng ký tài khoản mới",
+                registerTitle: "✨ Đăng ký thành viên mới",
+                registerPlaceholderName: "Nhập tên của bạn...",
+                registerPlaceholderPin: "Tạo mã PIN 4 số...",
+                registerSubmitBtn: "Gửi yêu cầu",
+                registerSuccess: "Đã gửi yêu cầu đăng ký! Chờ Admin phê duyệt.",
+                adminCenterTitle: "🛠️ Trung tâm Quản trị",
+                adminPendingTitle: "👥 Duyệt tài khoản thành viên mới",
+                adminMembersTitle: "📋 Quản lý danh sách thành viên",
+                adminSystemTitle: "⚙️ Khôi phục hệ thống (Admin Reset)",
+                adminSystemDesc: "Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.",
+                approve: "Duyệt",
+                reject: "Từ chối"
             },
             en: {
                 appTitle: "NEW PEAK",
@@ -742,7 +800,7 @@
                 fontTitle: "Font Size",
                 historyTitle: "History",
                 noHistory: "No history",
-                adminToolTitle: "🛠️ Admin Reset",
+                adminToolTitle: "🛠️ Admin Center",
                 adminResetBtn: "Admin Reset",
                 commentCount: "💬 Comments",
                 noComments: "No comments yet.",
@@ -788,7 +846,21 @@
                 copyReportContent: "📄 Copy Report",
                 shareAchievement: "Share achievement",
                 lockNotice: "Sorry. Check-in time has expired.",
-                endedNotice: "✅ Challenge ended."
+                endedNotice: "✅ Challenge ended.",
+                noOtherMembers: "No other members.",
+                registerTab: "✨ Register new account",
+                registerTitle: "✨ Register New Member",
+                registerPlaceholderName: "Enter your name...",
+                registerPlaceholderPin: "Create 4-digit PIN...",
+                registerSubmitBtn: "Submit Request",
+                registerSuccess: "Registration submitted! Waiting for Admin approval.",
+                adminCenterTitle: "🛠️ Admin Center",
+                adminPendingTitle: "👥 Pending Member Approvals",
+                adminMembersTitle: "📋 Member Management",
+                adminSystemTitle: "⚙️ System Recovery (Admin Reset)",
+                adminSystemDesc: "Delete all test data and reset app to initial state.",
+                approve: "Approve",
+                reject: "Reject"
             }
         };
 
@@ -901,7 +973,6 @@
 
         const challengeHintsPool = {
             vi: [
-                // Group (25)
                 { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false }, { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false }, { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
                 { title: "Uống đủ nước", desc: "Uống đủ 2 Lít nước lọc", isP: false }, { title: "Không trà sữa", desc: "Chống cự cám dỗ đồ uống ngọt", isP: false }, { title: "Chạy bộ", desc: "Hoàn thành 2km mỗi ngày", isP: false },
                 { title: "Ngủ sớm", desc: "Lên giường trước 11:00 PM", isP: false }, { title: "Đi bộ", desc: "Đạt 5000 bước chân/ngày", isP: false }, { title: "Plank", desc: "Giữ Plank đúng tư thế 1 phút", isP: false },
@@ -911,7 +982,6 @@
                 { title: "Liên lạc gia đình", desc: "Gọi điện hỏi thăm người thân", isP: false }, { title: "Không than vãn", desc: "Suy nghĩ tích cực suốt 24h", isP: false }, { title: "Nghe Podcast", desc: "Nghe 1 tập podcast phát triển bản thân", isP: false },
                 { title: "Stretching", desc: "Giãn cơ 10 phút trước khi ngủ", isP: false }, { title: "No Sugar", desc: "Tuyệt đối không tiêu thụ đường tinh luyện", isP: false }, { title: "Lập kế hoạch", desc: "Lên to-do list cho ngày hôm sau", isP: false }, { title: "Tập trung", desc: "Làm việc bằng phương pháp Pomodoro", isP: false },
                 
-                // Personal (25)
                 { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true }, { title: "Mỉm cười", desc: "Cười với chính mình trong gương 1 phút", isP: true }, { title: "Hít thở sâu", desc: "Dành 5 phút hít thở tập trung", isP: true },
                 { title: "Chi tiêu tiết kiệm", desc: "Chỉ tiêu tối đa 100k hôm nay", isP: true }, { title: "Ôn tập kiến thức", desc: "Xem lại bài cũ trong 15 phút", isP: true }, { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true },
                 { title: "Mindful Eating", desc: "Không dùng điện thoại khi ăn", isP: true }, { title: "Khởi đầu tươi mát", desc: "Uống 1 cốc nước chanh ấm khi thức dậy", isP: true }, { title: "Tắm nắng", desc: "Dành 15 phút đón nắng sớm", isP: true },
@@ -922,7 +992,6 @@
                 { title: "Học 5 từ vựng", desc: "Học và đặt câu với 5 từ tiếng Anh mới", isP: true }, { title: "Giảm cafein", desc: "Chỉ uống 1 ly cafe/trà trong ngày", isP: true }, { title: "Khám phá", desc: "Đi làm bằng một con đường mới", isP: true }, { title: "Đúng giờ", desc: "Đến đúng hoặc sớm hơn các cuộc hẹn", isP: true }
             ],
             en: [
-                // Group (25)
                 { title: "Wake up early", desc: "Before 5:30 AM", isP: false }, { title: "Read", desc: "At least 20 pages", isP: false }, { title: "Workout", desc: "30 mins of sweating", isP: false },
                 { title: "Hydrate", desc: "Drink 2L of water", isP: false }, { title: "No bubble tea", desc: "Resist sweet drinks", isP: false }, { title: "Running", desc: "Run 2km daily", isP: false },
                 { title: "Sleep early", desc: "In bed by 11:00 PM", isP: false }, { title: "Walking", desc: "Hit 5000 steps", isP: false }, { title: "Plank", desc: "Hold plank for 1 minute", isP: false },
@@ -932,7 +1001,6 @@
                 { title: "Call family", desc: "Talk to loved ones", isP: false }, { title: "No complaining", desc: "Stay positive 24h", isP: false }, { title: "Podcast", desc: "Listen to 1 episode", isP: false },
                 { title: "Stretching", desc: "10 mins before bed", isP: false }, { title: "No Sugar", desc: "Zero refined sugar", isP: false }, { title: "Planning", desc: "Make to-do list for tmr", isP: false }, { title: "Focus", desc: "Work with Pomodoro", isP: false },
                 
-                // Personal (25)
                 { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }, { title: "Smile", desc: "Smile in the mirror for 1 min", isP: true }, { title: "Deep breaths", desc: "5 mins of breathing", isP: true },
                 { title: "Frugal day", desc: "Spend less than $5", isP: true }, { title: "Review notes", desc: "Study past material 15m", isP: true }, { title: "Skincare", desc: "Full night routine", isP: true },
                 { title: "Mindful Eating", desc: "No phone while eating", isP: true }, { title: "Fresh start", desc: "Warm lemon water upon waking", isP: true }, { title: "Sunlight", desc: "15 mins of morning sun", isP: true },
@@ -943,6 +1011,13 @@
                 { title: "5 new words", desc: "Learn 5 vocabulary words", isP: true }, { title: "Less Caffeine", desc: "Max 1 cup of coffee/tea", isP: true }, { title: "Explore", desc: "Take a new route to work", isP: true }, { title: "Be on time", desc: "Punctual to all meetings", isP: true }
             ]
         };
+
+        const musicPlaylist = [
+            "https://files.catbox.moe/bfdutu.mp3",
+            "https://files.catbox.moe/icvzx6.mp3",
+            "https://files.catbox.moe/4eq12q.mp3",
+            "https://files.catbox.moe/4eq12q.mp3"
+        ];
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
         let currentFontSize = localStorage.getItem('bvgpFontSize') || 'normal';
@@ -962,7 +1037,7 @@
         const UNIFORM_COMPLETED_BADGE_HTML = `
             <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
-                Hoàn thành
+                ${(currentLang==='vi'?'Hoàn thành':'Completed')}
             </span>`;
 
         function isDayLocked(startStr, dIdx) {
@@ -998,8 +1073,18 @@
         let isMusicPlaying = false;
         function toggleMusic() {
             const music = document.getElementById('bg-music');
-            if (isMusicPlaying) { music.pause(); isMusicPlaying = false; document.getElementById('music-status-icon').innerText = '⬜'; } 
-            else { music.play().then(() => { isMusicPlaying = true; document.getElementById('music-status-icon').innerText = '✅'; }).catch(() => alert(t('clickToPlay'))); }
+            if (isMusicPlaying) { 
+                music.pause(); 
+                isMusicPlaying = false; 
+                document.getElementById('music-status-icon').innerText = '⬜'; 
+            } else { 
+                const randomTrack = musicPlaylist[Math.floor(Math.random() * musicPlaylist.length)];
+                music.src = randomTrack;
+                music.play().then(() => { 
+                    isMusicPlaying = true; 
+                    document.getElementById('music-status-icon').innerText = '✅'; 
+                }).catch(() => alert(t('clickToPlay'))); 
+            }
         }
 
         function toggleLanguage() {
@@ -1040,6 +1125,7 @@
 
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('btn-report').innerText = t('reportBtnText');
+            document.getElementById('btn-refresh-title').title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
             
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
             renderFilterOptions();
@@ -1062,6 +1148,12 @@
             document.getElementById('l-back-btn').innerText = t('backBtn');
             document.getElementById('l-forgot-pin').innerText = t('forgotPin');
             document.getElementById('login-pin-input').placeholder = t('pinPh');
+            document.getElementById('l-register-tab-btn').innerText = t('registerTab');
+            document.getElementById('l-reg-title').innerText = t('registerTitle');
+            document.getElementById('reg-name-input').placeholder = t('registerPlaceholderName');
+            document.getElementById('reg-pin-input').placeholder = t('registerPlaceholderPin');
+            document.getElementById('l-reg-back-btn').innerText = t('backBtn');
+            document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
             
             document.getElementById('m-theme').innerText = t('theme');
             document.getElementById('m-music').innerText = t('music');
@@ -1071,7 +1163,7 @@
             document.getElementById('m-change-avatar').innerText = t('changeAvatar');
             document.getElementById('m-change-pin').innerText = t('changePin');
             document.getElementById('m-history').innerText = t('history');
-            document.getElementById('m-admin-reset').innerText = t('adminResetBtn');
+            document.getElementById('m-admin-center').innerText = t('adminToolTitle').replace('🛠️ ', '');
 
             document.getElementById('hint-modal-title').innerText = t('hintTitle');
             document.getElementById('notif-title').innerText = t('notifTitle');
@@ -1079,6 +1171,7 @@
             document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descRules')}`;
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
 
+            document.getElementById('m-completed-label').innerText = currentLang === 'vi' ? 'Hoàn thành' : 'Completed';
             document.getElementById('m-note-label').innerText = t('noteLabel');
             document.getElementById('modal-note').placeholder = t('notePh');
             document.getElementById('m-remove-img').innerText = t('removeImg');
@@ -1100,6 +1193,8 @@
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
             document.getElementById('m-share-text').innerText = t('shareAchievement');
+            document.getElementById('m-pause').innerText = currentLang === 'vi' ? 'Tạm dừng' : 'Pause';
+            document.getElementById('m-resume').innerText = currentLang === 'vi' ? 'Tiếp tục' : 'Resume';
             document.getElementById('m-giveup').innerText = t('giveUpChallenge');
             document.getElementById('m-archive').innerText = t('archive');
             document.getElementById('m-restore').innerText = t('restore');
@@ -1117,6 +1212,15 @@
             document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
+
+            // Admin center texts
+            document.getElementById('admin-modal-title').innerHTML = t('adminCenterTitle');
+            document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
+            document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
+            document.getElementById('admin-system-title').innerText = t('adminSystemTitle');
+            document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
+            document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
+            document.getElementById('admin-close-btn').innerText = t('closeBtn');
 
             updateCreateFormLabels();
             setFontSize(currentFontSize);
@@ -1173,7 +1277,7 @@
             { id: 'member_7', name: 'Khánh', avatar: '', pin: '', pinHistory: [] }
         ];
 
-        let appData = { members: defaultMembers, sharedChallenges: [], personalHabits: { 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': [] }, notifications: {} };
+        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': [] }, notifications: {} };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
@@ -1188,11 +1292,23 @@
 
         dbRef.on('value', (snapshot) => {
             if (snapshot.val()) {
-                appData.members = defaultMembers.map(def => { const found = (snapshot.val().members || []).find(m => m.id === def.id); return found ? { ...def, ...found } : def; });
-                appData.sharedChallenges = snapshot.val().sharedChallenges || [];
-                appData.personalHabits = snapshot.val().personalHabits || appData.personalHabits;
-                appData.notifications = snapshot.val().notifications || {};
-            } else dbRef.set(appData);
+                const sVal = snapshot.val();
+                appData.members = defaultMembers.map(def => { const found = (sVal.members || []).find(m => m.id === def.id); return found ? { ...def, ...found } : def; });
+                // Merge custom added members if any
+                if (sVal.members) {
+                    sVal.members.forEach(m => {
+                        if (!appData.members.some(existing => existing.id === m.id)) {
+                            appData.members.push(m);
+                        }
+                    });
+                }
+                appData.pendingMembers = sVal.pendingMembers || [];
+                appData.sharedChallenges = sVal.sharedChallenges || [];
+                appData.personalHabits = sVal.personalHabits || appData.personalHabits;
+                appData.notifications = sVal.notifications || {};
+            } else {
+                dbRef.set(appData);
+            }
             
             updateUserLabel();
             updateNotificationBadge();
@@ -1209,6 +1325,77 @@
         function openAvatarModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); document.getElementById('preview-avatar').innerHTML=m.avatar?`<img src="${m.avatar}" class="w-full h-full object-cover">`:m.name.charAt(0); tempAvatarBase64=m.avatar||''; document.getElementById('avatar-modal').classList.remove('hidden'); }
         function openPinModal() { closeUserMenu(); document.getElementById('pin-modal').classList.remove('hidden'); }
         function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
+        
+        function openAdminCenterModal() {
+            closeUserMenu();
+            renderAdminCenterContent();
+            document.getElementById('admin-center-modal').classList.remove('hidden');
+        }
+        function closeAdminCenterModal() {
+            document.getElementById('admin-center-modal').classList.add('hidden');
+        }
+
+        function renderAdminCenterContent() {
+            // Pending list
+            const pendingContainer = document.getElementById('admin-pending-list');
+            const pendingArr = appData.pendingMembers || [];
+            if (!pendingArr.length) {
+                pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">Không có yêu cầu chờ duyệt.</p>`;
+            } else {
+                pendingContainer.innerHTML = pendingArr.map(p => `
+                    <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border">
+                        <span class="font-bold">👤 ${p.name}</span>
+                        <div class="flex gap-1.5">
+                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">${t('approve')}</button>
+                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">${t('reject')}</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Members list (Can delete except member_7 admin)
+            const membersContainer = document.getElementById('admin-members-list');
+            membersContainer.innerHTML = appData.members.map(m => `
+                <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border">
+                    <div class="flex items-center gap-2">
+                        ${getMemberAvatarHTML(m.id, "w-6 h-6")}
+                        <span class="font-bold">${m.name} ${m.id === 'member_7' ? '👑' : ''}</span>
+                    </div>
+                    ${m.id !== 'member_7' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold transition">🗑️ Xóa</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function approveMember(pId) {
+            const p = (appData.pendingMembers || []).find(x => x.id === pId);
+            if (!p) return;
+            appData.members.push({ id: p.id, name: p.name, avatar: '', pin: p.pin, pinHistory: [] });
+            appData.personalHabits[p.id] = [];
+            appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
+            dbRef.set(appData);
+            renderAdminCenterContent();
+            populateLoginSelect();
+        }
+
+        function rejectMember(pId) {
+            appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
+            dbRef.set(appData);
+            renderAdminCenterContent();
+        }
+
+        function deleteMember(mId) {
+            if (mId === 'member_7') return alert('Không thể xóa tài khoản Admin gốc!');
+            if (!confirm(`Bạn có chắc muốn xóa thành viên này khỏi hệ thống?`)) return;
+            appData.members = appData.members.filter(m => m.id !== mId);
+            delete appData.personalHabits[mId];
+            if (loggedInUserId === mId) {
+                switchUser();
+            }
+            dbRef.set(appData);
+            renderAdminCenterContent();
+            populateLoginSelect();
+        }
+
         function toggleCreatePanel() { const p = document.getElementById('master-create-panel'); p.classList.toggle('hidden'); }
         function toggleBigPlayInputs() { document.getElementById(`create-bigplay-inputs`).classList.toggle('hidden', !document.getElementById(`create-bigplay-checkbox`).checked); }
         
@@ -1275,13 +1462,13 @@
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center justify-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
                                 <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</div>
-                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Hoàn thành</div>
+                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
                                 <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Không hoàn thành</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
@@ -1372,13 +1559,13 @@
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center justify-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
                                 <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate max-w-[150px] sm:max-w-[200px]">🎁 ${h.selfReward||'---'}</div>
-                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Hoàn thành</div>
+                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center justify-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
                                 <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate max-w-[150px] sm:max-w-[200px]">💸 ${h.selfPenalty||'---'}</div>
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">Không hoàn thành</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2 rounded-full inline-flex items-center justify-center h-4 shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
@@ -1477,11 +1664,51 @@
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
-        function checkLogin() {
-            if (!loggedInUserId || !defaultMembers.some(m => m.id === loggedInUserId)) {
-                document.getElementById('login-modal').classList.remove('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); document.getElementById('login-step-2').classList.add('hidden');
-            } else { updateUserLabel(); document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_7'); }
+        function populateLoginSelect() {
+            const selectEl = document.getElementById('login-select');
+            selectEl.innerHTML = appData.members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
         }
+
+        function checkLogin() {
+            populateLoginSelect();
+            if (!loggedInUserId || !appData.members.some(m => m.id === loggedInUserId)) {
+                document.getElementById('login-modal').classList.remove('hidden'); 
+                document.getElementById('login-step-1').classList.remove('hidden'); 
+                document.getElementById('register-step-view').classList.add('hidden');
+                document.getElementById('login-step-2').classList.add('hidden');
+            } else { 
+                updateUserLabel(); 
+                document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_7'); 
+            }
+        }
+
+        function openRegisterView() {
+            document.getElementById('login-step-1').classList.add('hidden');
+            document.getElementById('register-step-view').classList.remove('hidden');
+            document.getElementById('reg-name-input').value = '';
+            document.getElementById('reg-pin-input').value = '';
+        }
+
+        function closeRegisterView() {
+            document.getElementById('register-step-view').classList.add('hidden');
+            document.getElementById('login-step-1').classList.remove('hidden');
+        }
+
+        function submitNewRegistration() {
+            const name = document.getElementById('reg-name-input').value.trim();
+            const pin = document.getElementById('reg-pin-input').value.trim();
+            if (!name) return alert('Vui lòng nhập tên!');
+            if (pin.length !== 4 || isNaN(pin)) return alert(t('pinFormat'));
+
+            appData.pendingMembers = appData.pendingMembers || [];
+            const newId = 'member_' + Date.now();
+            appData.pendingMembers.push({ id: newId, name, pin });
+            dbRef.set(appData);
+
+            alert(t('registerSuccess'));
+            closeRegisterView();
+        }
+
         function handleLoginNext() {
             selectedLoginMemberId = document.getElementById('login-select').value; const m = appData.members.find(x => x.id === selectedLoginMemberId);
             document.getElementById('login-step-1').classList.add('hidden'); document.getElementById('login-step-2').classList.remove('hidden');
@@ -1537,7 +1764,7 @@
                 appData.members.forEach(m => { m.avatar = ''; m.pinHistory = []; }); appData.notifications = {};
                 (appData.sharedChallenges||[]).forEach(c => { c.comments = []; c.archived = false; if(c.progress) Object.keys(c.progress).forEach(mId => c.progress[mId] = Array(c.totalDays||16).fill(null).map(()=>({completed:false}))); c.participantReasons = {}; if(c.participants) Object.keys(c.participants).forEach(mId => { if(c.participants[mId]==='given_up') c.participants[mId]=true; }); });
                 if(appData.personalHabits) Object.keys(appData.personalHabits).forEach(mId => { appData.personalHabits[mId].forEach(h => { h.comments=[]; h.archived=false; h.status='active'; h.reason=''; h.days = Array(h.totalDays||16).fill(null).map(()=>({completed:false})); }); });
-                dbRef.set(appData); alert(t('adminSuccess')); closeUserMenu();
+                dbRef.set(appData); alert(t('adminSuccess')); closeUserMenu(); closeAdminCenterModal();
             } else if (mp !== null) alert(t('wrongMasterPin'));
         }
 
@@ -1871,11 +2098,11 @@
                     if (id) {
                         statusLabel = UNIFORM_COMPLETED_BADGE_HTML;
                     } else if (dayLocked && !id) {
-                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ Không hoàn thành</span>`;
+                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ ${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     }
 
                     return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1"></div>`:''}</div>`;
-                }).join('') : `<p class="text-[11px] text-slate-400 italic text-center py-2">Không có thành viên khác.</p>`;
+                }).join('') : `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noOtherMembers')}</p>`;
             } else { 
                 gsc.classList.add('hidden'); 
             }
@@ -1908,9 +2135,9 @@
             if (item.completed) {
                 statusBadge = UNIFORM_COMPLETED_BADGE_HTML;
             } else if (lock.isFailed) {
-                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">❌ Không hoàn thành</span>`;
+                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">❌ ${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
             } else {
-                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">⏳ Chưa làm</span>`;
+                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">⏳ ${t('incomplete')}</span>`;
             }
 
             document.getElementById('view-status').innerHTML = statusBadge;
