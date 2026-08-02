@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BVGP - Thử Thách Kỷ Luật</title>
+    <title>NEW PEAK</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="flex gap-2 mt-5">
-                <button onclick="document.getElementById('avatar-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+                <button id="s-close-avatar-btn" onclick="document.getElementById('avatar-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
                 <button onclick="saveAvatarImage()" id="s-save-avatar-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Lưu Avatar</button>
             </div>
         </div>
@@ -168,7 +168,7 @@
             <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <input type="password" id="new-pin-input" placeholder="Mã PIN mới" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <div class="flex gap-2 pt-2">
-                <button onclick="document.getElementById('pin-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+                <button id="s-close-pin-btn" onclick="document.getElementById('pin-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
                 <button onclick="changePin()" id="s-update-pin-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Cập nhật</button>
             </div>
         </div>
@@ -178,7 +178,7 @@
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
             <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">⏱️ <span id="s-history-title">Lịch sử hoạt động</span></h3>
             <div id="pin-history-list" class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 h-48 overflow-y-auto space-y-2"></div>
-            <button onclick="document.getElementById('history-modal').classList.add('hidden')" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+            <button id="s-close-history-btn" onclick="document.getElementById('history-modal').classList.add('hidden')" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
         </div>
     </div>
 
@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div id="notification-list" class="space-y-2 overflow-y-auto flex-1 text-xs pr-1"></div>
-            <button onclick="closeNotificationModal()" id="notif-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+            <button id="notif-close-btn" onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
         </div>
     </div>
 
@@ -212,7 +212,6 @@
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">💡 <span id="hint-modal-title">Kho ý tưởng</span></h3>
                 <div class="flex items-center gap-2">
-                    <!-- Đã thay đổi nút Đổi thành Icon -->
                     <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">🔄</button>
                     <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
                 </div>
@@ -260,7 +259,7 @@
                 <div id="rewards-capture-wrapper" class="space-y-3">
                     <div id="reward-rules-accordion" class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
                         <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 hover:bg-slate-200 transition">
-                            <span class="flex items-center gap-1.5">📜 Quy tắc thưởng/phạt</span>
+                            <span class="flex items-center gap-1.5">📜 <span id="reward-rules-title">Quy tắc thưởng/ phạt</span></span>
                             <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
                         </button>
                         <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 hidden">
@@ -282,11 +281,12 @@
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ Tạm dừng</button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ Tiếp tục</button>
-            <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
-            <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 Lưu trữ</button>
-            <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ Khôi phục</button>
+            <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
+            <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
+            <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
+            <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ <span id="m-restore">Khôi phục</span></button>
             <hr class="border-slate-100 dark:border-slate-700">
-            <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ Xóa vĩnh viễn</button>
+            <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ <span id="m-delete">Xóa vĩnh viễn</span></button>
         </div>
     </div>
 
@@ -327,7 +327,7 @@
                             <div class="relative border rounded-2xl bg-white dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
                                 <textarea id="modal-note" rows="3" class="w-full p-3 text-xs border-0 outline-none resize-none bg-transparent" placeholder="Hôm nay bạn đã làm điều đó như thế nào? Đọng lại bên trong bạn những gì?..."></textarea>
                                 <div class="flex justify-between items-center px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100">
-                                    <label for="modal-image-file" class="cursor-pointer inline-flex items-center gap-1.5 bg-white border px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600">
+                                    <label for="modal-image-file" id="modal-image-label" class="cursor-pointer inline-flex items-center gap-1.5 bg-white border px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600">
                                         📷 <span>Tải ảnh</span>
                                     </label>
                                     <span id="day-file-name" class="text-[10px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
@@ -382,7 +382,7 @@
 
             <!-- CHỮ NỔI BẬT ĐƯỢC TẠO SHADOW -->
             <div class="relative z-10 text-center space-y-1 mt-4">
-                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Thử Thách Kỷ Luật BVGP</h1>
+                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
                 <p id="slogan-text" class="text-[11px] sm:text-xs text-slate-100 font-semibold italic px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-snug line-clamp-2"></p>
             </div>
         </header>
@@ -455,7 +455,6 @@
                     </div>
                 </div>
 
-                <!-- Đã xóa bỏ phần p có chữ "Tự cam kết" -->
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
                     <div class="grid grid-cols-2 gap-2 p-2 bg-emerald-50 rounded-xl border border-emerald-100">
                         <div>
@@ -480,7 +479,7 @@
     <script>
         const translations = {
             vi: {
-                appTitle: "Thử Thách Kỷ Luật BVGP",
+                appTitle: "NEW PEAK",
                 tabDashboard: "Thử thách nhóm",
                 tabUpdate: "Thử thách cá nhân",
                 reportBtnText: "Kết quả",
@@ -490,6 +489,7 @@
                 challengePh: "Tên thử thách...",
                 descSharedPh: "Mô tả/ Quy tắc thử thách...",
                 startDate: "Ngày bắt đầu:",
+                startDateLabel: "Bắt đầu:",
                 targetDays: "Mục tiêu:",
                 totalDays: "Tổng ngày:",
                 createBtn: "Tạo thử thách",
@@ -504,6 +504,7 @@
                 pauseChallenge: "Tạm dừng",
                 pausedStatus: "Tạm dừng",
                 giveUpChallenge: "Bỏ cuộc",
+                rejoinChallenge: "Tham gia trở lại",
                 givenUpStatus: "Bỏ cuộc",
                 resumeChallenge: "Tiếp tục",
                 resumeHabit: "Tiếp tục",
@@ -535,13 +536,14 @@
                 createdBy: "Tạo bởi:",
                 alertFuture: "⏳ Chưa tới ngày này!",
                 settingsTitle: "⚙️ Cài đặt",
-                uploadAvatarTitle: "🖼️ Tải lên Avatar",
+                uploadAvatarTitle: "Tải lên Avatar",
                 saveAvatarBtn: "Lưu Avatar",
-                changePinTitle: "🔒 Đổi mã PIN",
+                changePinTitle: "Đổi mã PIN",
+                changePin: "Đổi mã PIN",
                 oldPinPh: "Mã PIN hiện tại",
                 newPinPh: "Mã PIN mới",
                 updatePinBtn: "Cập nhật",
-                chooseFileBtn: "📁 Chọn tệp...",
+                chooseFileBtn: "Chọn tệp...",
                 noFileSelected: "Chưa chọn tệp",
                 noDescription: "Chưa có mô tả cho thử thách này.",
                 closeBtn: "Đóng",
@@ -563,6 +565,11 @@
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
                 reportActive: "Hoạt động",
                 reportRewards: "Thưởng/ Phạt",
+                completionProgress: "TIẾN ĐỘ HOÀN THÀNH",
+                groupTabReport: "NHÓM",
+                rewardRuleTitle: "Quy tắc thưởng/ phạt",
+                targetTotalDays: "Mục tiêu/ Tổng ngày:",
+                descRules: "Mô tả/ Quy tắc",
                 noRewardRecord: "Chưa có thưởng/phạt.",
                 book: "Sách",
                 groupLabel: "Nhóm",
@@ -579,8 +586,8 @@
                 fontTitle: "Cỡ chữ",
                 historyTitle: "Lịch sử hoạt động",
                 noHistory: "Chưa có lịch sử",
-                adminToolTitle: "🛠️ Admin Reset",
-                adminResetBtn: "Admin Reset",
+                adminToolTitle: "🛠️ Khôi phục dữ liệu",
+                adminResetBtn: "Khôi phục dữ liệu",
                 commentCount: "💬 Bình luận",
                 noComments: "Chưa có bình luận. Hãy mở lời!",
                 writeComment: "Viết bình luận (@tên)...",
@@ -621,7 +628,6 @@
                 lang: "Ngôn ngữ",
                 logout: "Thoát",
                 changeAvatar: "Đổi Avatar",
-                changePin: "Đổi mã PIN",
                 history: "Lịch sử hoạt động",
                 copyReportContent: "📄 Chép nội dung",
                 shareAchievement: "Chia sẻ thành tích",
@@ -629,7 +635,7 @@
                 endedNotice: "✅ Thử thách đã kết thúc."
             },
             en: {
-                appTitle: "BVGP Discipline",
+                appTitle: "NEW PEAK",
                 tabDashboard: "Group Challenges",
                 tabUpdate: "Personal Challenges",
                 reportBtnText: "Results",
@@ -638,7 +644,8 @@
                 createPersonalTitle: "Add Personal Challenge",
                 challengePh: "Challenge name...",
                 descSharedPh: "Description / Rules...",
-                startDate: "Start:",
+                startDate: "Start Date:",
+                startDateLabel: "Start:",
                 targetDays: "Target:",
                 totalDays: "Total:",
                 createBtn: "Create",
@@ -653,6 +660,7 @@
                 pauseChallenge: "Pause",
                 pausedStatus: "Paused",
                 giveUpChallenge: "Give Up",
+                rejoinChallenge: "Rejoin",
                 givenUpStatus: "Given up",
                 resumeChallenge: "Resume",
                 resumeHabit: "Resume",
@@ -684,14 +692,15 @@
                 createdBy: "Created by:",
                 alertFuture: "⏳ Future date!",
                 settingsTitle: "⚙️ Settings",
-                uploadAvatarTitle: "🖼️ Avatar",
+                uploadAvatarTitle: "Upload Avatar",
                 saveAvatarBtn: "Save Avatar",
-                changePinTitle: "🔒 Change PIN",
+                changePinTitle: "Change PIN",
+                changePin: "Change PIN",
                 oldPinPh: "Current PIN",
                 newPinPh: "New PIN",
                 updatePinBtn: "Update",
-                chooseFileBtn: "📁 Choose...",
-                noFileSelected: "No file",
+                chooseFileBtn: "Choose file...",
+                noFileSelected: "No file selected",
                 noDescription: "No description.",
                 closeBtn: "Close",
                 hintBtn: "Hints",
@@ -712,6 +721,11 @@
                 selfPenaltyPh: "E.g., 100 pushups...",
                 reportActive: "Active",
                 reportRewards: "Rewards",
+                completionProgress: "COMPLETION PROGRESS",
+                groupTabReport: "GROUP",
+                rewardRuleTitle: "Reward/ Penalty Rules",
+                targetTotalDays: "Target/ Total days:",
+                descRules: "Description/ Rules",
                 noRewardRecord: "No records.",
                 book: "Book(s)",
                 groupLabel: "Group",
@@ -770,7 +784,6 @@
                 lang: "Language",
                 logout: "Logout",
                 changeAvatar: "Change Avatar",
-                changePIN: "Change PIN",
                 history: "History",
                 copyReportContent: "📄 Copy Report",
                 shareAchievement: "Share achievement",
@@ -952,18 +965,13 @@
                 Hoàn thành
             </span>`;
 
-        // 1. Luật khóa một ngày cụ thể (có 24h ân hạn)
         function isDayLocked(startStr, dIdx) {
             const todayIdx = getTodayIndex(startStr);
-            // Nếu ngày hiện tại vượt quá (chỉ mục ngày + 1 ngày ân hạn), thì sẽ bị khóa
             return todayIdx > dIdx + 1;
         }
 
-        // 2. Luật kết thúc hoàn toàn một thử thách
         function isChallengeFinished(startStr, total) {
             const todayIdx = getTodayIndex(startStr);
-            // Nếu tổng số ngày là 16 (chỉ mục cuối là 15, ngày ân hạn cuối là 16). 
-            // Nếu hôm nay là 17 trở đi thì thử thách đã chính thức kết thúc
             return todayIdx > total;
         }
 
@@ -1031,11 +1039,12 @@
             document.getElementById('btn-update').querySelector('span:last-child').innerText = t('tabUpdate');
 
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
+            document.getElementById('btn-report').innerText = t('reportBtnText');
             
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
             renderFilterOptions();
             
-            document.getElementById('t-start-date').innerText = t('startDate');
+            document.getElementById('t-start-date').innerText = t('startDateLabel');
             document.getElementById('t-target-days').innerText = t('targetDays');
             document.getElementById('t-total-days').innerText = t('totalDays');
             document.getElementById('t-bigplay-label').innerText = t('bigPlayLabel');
@@ -1067,7 +1076,7 @@
             document.getElementById('hint-modal-title').innerText = t('hintTitle');
             document.getElementById('notif-title').innerText = t('notifTitle');
             document.getElementById('notif-read-btn').innerText = t('markRead');
-            document.getElementById('desc-rule-title').innerHTML = `📝 Mô tả/ Quy tắc`;
+            document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descRules')}`;
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
 
             document.getElementById('m-note-label').innerText = t('noteLabel');
@@ -1078,9 +1087,9 @@
             document.getElementById('m-team-progress').innerText = t('teamProgress');
             document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
 
-            document.getElementById('s-avatar-title').innerText = `🖼️ ${t('uploadAvatarTitle')}`;
+            document.getElementById('s-avatar-title').innerHTML = `🖼️ ${t('uploadAvatarTitle')}`;
             document.getElementById('s-save-avatar-btn').innerText = t('saveAvatarBtn');
-            document.getElementById('s-pin-title').innerText = `🔒 ${t('changePinTitle')}`;
+            document.getElementById('s-pin-title').innerHTML = `🔒 ${t('changePinTitle')}`;
             document.getElementById('old-pin-input').placeholder = t('oldPinPh');
             document.getElementById('new-pin-input').placeholder = t('newPinPh');
             document.getElementById('s-update-pin-btn').innerText = t('updatePinBtn');
@@ -1091,11 +1100,23 @@
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
             document.getElementById('m-share-text').innerText = t('shareAchievement');
-            document.getElementById('action-btn-giveup').innerHTML = `🏳️ ${t('giveUpChallenge')}`;
-            document.getElementById('action-btn-archive').innerHTML = `📦 ${t('archive')}`;
-            document.getElementById('action-btn-restore').innerHTML = `♻️ ${t('restore')}`;
-            document.getElementById('action-btn-delete').innerHTML = `🗑️ ${t('deletePerm')}`;
+            document.getElementById('m-giveup').innerText = t('giveUpChallenge');
+            document.getElementById('m-archive').innerText = t('archive');
+            document.getElementById('m-restore').innerText = t('restore');
+            document.getElementById('m-delete').innerText = t('deletePerm');
+            document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
+            
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
+            document.getElementById('s-close-avatar-btn').innerText = t('closeBtn');
+            document.getElementById('s-close-pin-btn').innerText = t('closeBtn');
+            document.getElementById('s-close-history-btn').innerText = t('closeBtn');
+            document.getElementById('notif-close-btn').innerText = t('closeBtn');
+
+            document.getElementById('avatar-file-label').innerHTML = `📁 ${t('chooseFileBtn')}`;
+            document.getElementById('avatar-file-name').innerText = t('noFileSelected');
+            document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
+            document.getElementById('day-file-name').innerText = t('noFileSelected');
+            document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
 
             updateCreateFormLabels();
             setFontSize(currentFontSize);
@@ -1432,7 +1453,7 @@
         function renderHintList() {
             const pool = challengeHintsPool[currentLang].filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
-            const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); // Hiển thị tối đa 5 items
+            const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
             document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc) {
@@ -1570,11 +1591,15 @@
                 const c = appData.sharedChallenges.find(x=>x.id===id); 
                 if(c){ 
                     isArch=c.archived; 
-                    const isJoined = c.participants && c.participants[loggedInUserId] === true;
-                    if(!isJoined) return;
+                    const pStatus = c.participants ? c.participants[loggedInUserId] : null;
+                    if(pStatus !== true && pStatus !== 'given_up') return;
+                    st = pStatus === true ? 'active' : 'given_up';
                 } 
             } 
-            else { const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){ isArch=h.archived; st=h.status||'active'; } }
+            else { 
+                const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); 
+                if(h){ isArch=h.archived; st=h.status||'active'; } 
+            }
             
             document.getElementById('action-btn-archive').classList.toggle('hidden', isArch);
             document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
@@ -1586,6 +1611,21 @@
                 btnR.classList.toggle('hidden', st !== 'paused');
             } else { btnP.classList.add('hidden'); btnR.classList.add('hidden'); }
             
+            const btnGiveUp = document.getElementById('action-btn-giveup');
+            const btnRejoin = document.getElementById('action-btn-rejoin');
+            if (isArch) {
+                btnGiveUp.classList.add('hidden');
+                btnRejoin.classList.add('hidden');
+            } else {
+                if (st === 'given_up') {
+                    btnGiveUp.classList.add('hidden');
+                    btnRejoin.classList.remove('hidden');
+                } else {
+                    btnGiveUp.classList.remove('hidden');
+                    btnRejoin.classList.add('hidden');
+                }
+            }
+
             m.classList.remove('hidden');
         }
         function closeActionMenuModal() { document.getElementById('action-menu-modal').classList.add('hidden'); selectedMenuChallenge = null; }
@@ -1594,6 +1634,7 @@
             if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
             if(act==='share') captureChallengeCard(id);
             else if(act==='giveup') giveUpChallenge(id, isPersonal);
+            else if(act==='rejoin') rejoinChallenge(id, isPersonal);
             else if(act==='archive') archiveChallenge(id, isPersonal, true);
             else if(act==='restore') archiveChallenge(id, isPersonal, false);
             else if(act==='pause') pauseChallenge(id);
@@ -1724,10 +1765,20 @@
                     c.participants[loggedInUserId]='given_up'; 
                     c.participantReasons=c.participantReasons||{}; 
                     c.participantReasons[loggedInUserId]=r; 
-                    notifyAllChallengeMembers(c, 'giveup', 'đã bỏ cuộc thử thách "' + c.title + '".');
+                    notifyAllChallengeMembers(c, 'giveup', `đã bỏ cuộc thử thách "${c.title}".`);
                 } 
             }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
+        }
+        function rejoinChallenge(id, isP) {
+            if(!isP){ 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
+                if(c&&c.participants){ 
+                    c.participants[loggedInUserId]=true; 
+                    notifyAllChallengeMembers(c, 'rejoin', `đã tham gia trở lại thử thách "${c.title}".`);
+                } 
+            }
+            else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
         }
         function pauseChallenge(id) { const r=promptReason(); if(r===null)return; const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='paused'; h.reason=r;} dbRef.set(appData); }
         function resumeChallenge(id, isP) { if(isP){ const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active'; h.reason='';} dbRef.set(appData); } }
@@ -1744,7 +1795,7 @@
             c.participants[loggedInUserId]=true; 
             c.progress=c.progress||{}; 
             if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||16).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
-            notifyAllChallengeMembers(c, 'join', 'đã tham gia thử thách "' + c.title + '"!');
+            notifyAllChallengeMembers(c, 'join', `đã tham gia thử thách "${c.title}"!`);
             dbRef.set(appData); 
             alert(t('joinedSuccess')); 
         }
@@ -2069,18 +2120,18 @@
             document.getElementById('desc-modal-info').innerHTML = `
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">📅</span>
-                    <span class="text-slate-500">Start:</span>
+                    <span class="text-slate-500">${t('startDateLabel')}</span>
                     <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
                     <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎯</span>
-                    <span class="text-slate-500">Mục tiêu/ Tổng ngày:</span>
+                    <span class="text-slate-500">${t('targetTotalDays')}</span>
                     <strong class="text-slate-700 dark:text-slate-200">${tgt}/${tot}</strong>
                 </div>
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0">${creatorAvatarHTML}</span>
-                    <span class="text-slate-400 font-normal">Tạo bởi:</span>
+                    <span class="text-slate-400 font-normal">${t('createdBy')}</span>
                     <strong class="font-bold text-slate-700 dark:text-slate-200">${creatorNameDisplay}</strong>
                 </div>
             `;
@@ -2121,7 +2172,7 @@
         }
 
         function renderReportPreview() {
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 TIẾN ĐỘ HOÀN THÀNH</h2>`;
+            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 ${t('completionProgress')}</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             // 1. MỤC NHÓM
@@ -2129,7 +2180,7 @@
             htmlTxt += `
                 <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
                     <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> NHÓM (${grps.length})</span>
+                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> ${t('groupTabReport')} (${grps.length})</span>
                         <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
