@@ -11,8 +11,6 @@
             darkMode: 'class'
         }
     </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- HTML2Canvas (Chụp ảnh) -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Firebase SDK -->
@@ -47,38 +45,6 @@
         body.font-large .text-sm { font-size: 18px !important; }
         body.font-large .text-base { font-size: 21px !important; }
         body.font-large .text-2xl { font-size: 30px !important; }
-
-        /* CSS tùy chỉnh cho chuỗi Streak và đường gạch nối */
-        .streak-timeline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            margin-top: 8px;
-            padding: 0 5px;
-        }
-        .streak-timeline::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            right: 15px;
-            height: 2px;
-            background: #cbd5e1;
-            transform: translateY(-50%);
-            z-index: 1;
-        }
-        .dark .streak-timeline::before {
-            background: #475569;
-        }
-        .timeline-day {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
@@ -108,6 +74,7 @@
             <div id="register-step-view" class="space-y-3 hidden">
                 <p id="l-reg-title" class="text-xs font-bold text-emerald-600">✨ Đăng ký thành viên mới</p>
                 <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
+                <!-- SỬA LỖI Ô NHẬP PIN QUÁ TO Ở ĐÂY: XÓA text-lg, tracking-widest, text-center -->
                 <input type="password" id="reg-pin-input" placeholder="Tạo mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
                 <div class="flex gap-2">
                     <button onclick="closeRegisterView()" id="l-reg-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-semibold text-xs">Quay lại</button>
@@ -151,16 +118,19 @@
             </div>
             
             <div class="space-y-4 text-xs">
+                <!-- Duyệt thành viên mới -->
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-2">
                     <h4 id="admin-pending-title" class="font-bold text-indigo-600">👥 Duyệt tài khoản thành viên mới</h4>
                     <div id="admin-pending-list" class="space-y-2"></div>
                 </div>
 
+                <!-- Quản lý thành viên hiện tại -->
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-2">
                     <h4 id="admin-members-title" class="font-bold text-slate-700 dark:text-slate-200">📋 Quản lý danh sách thành viên</h4>
                     <div id="admin-members-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
                 </div>
 
+                <!-- Hệ thống / Admin Reset -->
                 <div class="p-4 bg-rose-50/50 dark:bg-rose-950/20 rounded-2xl border border-rose-100 dark:border-rose-900/50 space-y-2">
                     <h4 id="admin-system-title" class="font-bold text-rose-600">⚙️ Khôi phục hệ thống (Admin Reset)</h4>
                     <p id="admin-system-desc" class="text-[11px] text-slate-500">Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.</p>
@@ -174,23 +144,19 @@
 
     <!-- MODAL MENU SETTINGS -->
     <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
-        <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[220px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            
-            <!-- Chế độ tối: Thay thế checkbox bằng icon Ngày/Đêm -->
+        <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[210px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-moon" id="mode-icon-label"></i> <span id="m-theme">Chế độ tối</span></span>
-                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-sm transition">
-                    <i id="themeToggleIcon" class="fa-solid fa-moon"></i>
-                </div>
+                <span class="flex items-center gap-2">🌙 <span id="m-theme">Chế độ tối</span></span>
+                <span id="theme-status-icon">⬜</span>
             </button>
             
-            <!-- Nhạc nền: Đã tinh chỉnh khoảng cách để không bị dính chữ Tiếng Việt -->
+            <!-- THAY THẾ MUSIC BẰNG CỤM NÚT ĐIỀU KHIỂN -->
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
-                <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
-                <div class="flex items-center gap-2 shrink-0 ml-1">
-                    <button onclick="prevMusic()" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center hover:text-indigo-600 transition text-[11px]" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
-                    <button onclick="toggleMusicPlay()" id="music-play-btn" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center hover:text-indigo-600 transition text-[11px]" title="Phát/Tạm dừng"><i class="fa-solid fa-play"></i></button>
-                    <button onclick="nextMusic()" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center hover:text-indigo-600 transition text-[11px]" title="Bài tiếp"><i class="fa-solid fa-forward-step"></i></button>
+                <span class="flex items-center gap-2">🎵 <span id="m-music">Nhạc nền</span></span>
+                <div class="flex items-center gap-3">
+                    <button onclick="prevMusic()" class="hover:text-indigo-600 transition scale-110">⏮</button>
+                    <button onclick="toggleMusicPlay()" id="music-play-btn" class="hover:text-indigo-600 transition scale-125">▶️</button>
+                    <button onclick="nextMusic()" class="hover:text-indigo-600 transition scale-110">⏭</button>
                 </div>
             </div>
 
@@ -466,15 +432,10 @@
                 </div>
             </div>
 
-            <!-- CHỮ NỔI BẬT ĐƯỢC TẠO SHADOW & SỬA STYLE QUOTE TÁC GIẢ -->
+            <!-- CHỮ NỔI BẬT ĐƯỢC TẠO SHADOW -->
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
-                
-                <!-- Khung Quote cải tiến: Tác giả không bôi đậm, cỡ chữ nhỏ hơn quote -->
-                <div class="bg-slate-900/40 backdrop-blur-xs p-3 rounded-2xl border border-white/10 max-w-lg mx-auto mt-2">
-                    <p id="quote-text-display" class="text-xs sm:text-sm text-white font-medium italic leading-snug"></p>
-                    <p id="quote-author-display" class="text-[11px] text-slate-300 font-normal text-right mt-1"></p>
-                </div>
+                <p id="slogan-text" class="text-[11px] sm:text-xs text-slate-100 font-semibold italic px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-snug line-clamp-2"></p>
             </div>
         </header>
 
@@ -911,30 +872,158 @@
             }
         };
 
-        const quotesData = [
-            { text: "Hành trình vạn dặm khởi đầu từ một bước chân nhỏ bé.", author: "Lão Tử" },
-            { text: "Kỷ luật là cầu nối giữa mục tiêu và thành tựu.", author: "Jim Rohn" },
-            { text: "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục.", author: "Jim Ryun" },
-            { text: "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện.", author: "Khuyết danh" },
-            { text: "Chúng ta là những gì chúng ta thường xuyên làm.", author: "Aristotle" },
-            { text: "Kỷ luật bản thân là chìa khóa mở ra cánh cửa tự do.", author: "Stephen Covey" }
-        ];
+        const slogans = {
+            vi: [
+                "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
+                "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
+                "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun",
+                "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện. - Khuyết danh",
+                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle",
+                "Kỷ luật bản thân là chìa khóa mở ra cánh cửa tự do. - Stephen Covey",
+                "Sự khác biệt giữa không thể và có thể nằm ở sự quyết tâm. - Tommy Lasorda",
+                "Một ounce thực hành đáng giá hơn một tấn lý thuyết. - Swami Vivekananda",
+                "Không có con đường tắt nào dẫn đến bất kỳ nơi nào đáng giá. - Beverly Sills",
+                "Đừng chờ đợi cơ hội, hãy tạo ra nó. - George Bernard Shaw",
+                "Bí mật của tương lai bạn được cất giấu trong thói quen hằng ngày. - Mike Murdock",
+                "Chiến thắng lớn nhất là chiến thắng chính mình. - Plato",
+                "Cách tốt nhất để dự đoán tương lai là tạo ra nó. - Peter Drucker",
+                "Hãy sống mỗi ngày như thể đó là kiệt tác của bạn. - John Wooden",
+                "Những điều tuyệt vời không bao giờ đến từ vùng an toàn. - Khuyết danh",
+                "Thất bại là gia vị làm cho thành công thêm hương vị. - Truman Capote",
+                "Mọi thành tựu lớn đều đòi hỏi thời gian. - Maya Angelou",
+                "Không có gì là không thể với một trái tim sẵn sàng. - Khuyết danh",
+                "Đầu tư vào bản thân là khoản đầu tư sinh lời nhất. - Warren Buffett",
+                "Bạn không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm. - Jimmy Dean",
+                "Người duy nhất bạn nên cố gắng để tốt hơn chính là bạn của ngày hôm qua. - Khuyết danh",
+                "Hãy hướng về phía mặt trời, bóng tối sẽ khuất sau lưng bạn. - Walt Whitman",
+                "Thành công là đi từ thất bại này đến thất bại khác mà không mất đi nhiệt huyết. - Winston Churchill",
+                "Một người lạc quan luôn nhìn thấy cơ hội trong mọi khó khăn. - Winston Churchill",
+                "Đừng để ngày hôm qua chiếm quá nhiều thời gian của ngày hôm nay. - Will Rogers",
+                "Mỗi sáng thức dậy, bạn có hai lựa chọn: Ngủ tiếp với ước mơ, hay thức dậy và theo đuổi nó. - Khuyết danh",
+                "Kỷ luật là việc chọn giữa những gì bạn muốn bây giờ và những gì bạn muốn nhất. - Abraham Lincoln",
+                "Đừng bao giờ từ bỏ một ước mơ chỉ vì tốn thời gian. Thời gian đằng nào cũng trôi qua. - Earl Nightingale",
+                "Không bao giờ là quá muộn để trở thành người mà bạn muốn trở thành. - George Eliot",
+                "Hãy làm những gì bạn có thể, với những gì bạn có, ở nơi bạn đang đứng. - Theodore Roosevelt",
+                "Sức mạnh không đến từ thể chất, nó đến từ ý chí bất khuất. - Mahatma Gandhi",
+                "Kỷ luật sớm còn hơn hối hận muộn. - Khuyết danh",
+                "Hãy kiên nhẫn. Tất cả mọi thứ đều khó khăn trước khi trở nên dễ dàng. - Saadi",
+                "Bạn sẽ không bao giờ thay đổi cuộc đời mình cho đến khi bạn thay đổi điều mình làm mỗi ngày. - John C. Maxwell",
+                "Tôi đã thất bại đi thất bại lại, và đó là lý do tôi thành công. - Michael Jordan",
+                "Giới hạn duy nhất của bạn là do chính bạn tạo ra. - Khuyết danh",
+                "Một tâm trí tích cực sẽ mang lại một cuộc sống tích cực. - Khuyết danh",
+                "Khó khăn không phải để cản bước, mà là để tôi luyện bạn. - Khuyết danh",
+                "Thói quen tốt khó hình thành nhưng dễ sống cùng. - Khuyết danh",
+                "Trì hoãn là kẻ cắp của thời gian. - Edward Young",
+                "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn xây ước mơ của họ. - Tony Gaskins",
+                "Chỉ cần bạn không dừng lại, việc tiến chậm không là vấn đề. - Khổng Tử",
+                "Sự lặp lại là mẹ của mọi kỹ năng. - Tony Robbins",
+                "Tôi thà hối quyết vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
+                "Đau đớn do kỷ luật nặng vài ounce, đau đớn do hối tiếc nặng hàng tấn. - Jim Rohn",
+                "Hãy gieo một hành động, gặt một thói quen. - Khuyết danh",
+                "Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ. - Eleanor Roosevelt",
+                "Không có gì thay thế được sự chăm chỉ. - Thomas Edison",
+                "Bạn vĩ đại hơn những gì bạn nghĩ. - Khuyết danh",
+                "Hạnh phúc không phải là điểm đến, mà là hành trình. - Buddha"
+            ],
+            en: [
+                "Discipline is the bridge between goals and accomplishment. - Jim Rohn",
+                "A journey of a thousand miles begins with a single step. - Lao Tzu",
+                "Motivation is what gets you started. Habit is what keeps you going. - Jim Ryun",
+                "Success is not a miracle, it's a result of training. - Unknown",
+                "We are what we repeatedly do. - Aristotle",
+                "Self-discipline is the key to personal freedom. - Stephen Covey",
+                "The difference between the impossible and the possible lies in a man's determination. - Tommy Lasorda",
+                "An ounce of practice is worth more than tons of preaching. - Gandhi",
+                "There are no shortcuts to any place worth going. - Beverly Sills",
+                "Don't wait for opportunity. Create it. - George Bernard Shaw",
+                "The secret of your future is hidden in your daily routine. - Mike Murdock",
+                "The first and greatest victory is to conquer yourself. - Plato",
+                "The best way to predict the future is to create it. - Peter Drucker",
+                "Make each day your masterpiece. - John Wooden",
+                "Great things never came from comfort zones. - Unknown",
+                "Failure is the condiment that gives success its flavor. - Truman Capote",
+                "All great achievements require time. - Maya Angelou",
+                "Nothing is impossible to a willing heart. - Unknown",
+                "An investment in knowledge pays the best interest. - Benjamin Franklin",
+                "I can't change the direction of the wind, but I can adjust my sails. - Jimmy Dean",
+                "The only person you should try to be better than is who you were yesterday. - Unknown",
+                "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
+                "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+                "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty. - Winston Churchill",
+                "Don't let yesterday take up too much of today. - Will Rogers",
+                "You have two choices: sleep with your dreams, or wake up and chase them. - Unknown",
+                "Discipline is choosing between what you want now and what you want most. - Abraham Lincoln",
+                "Never give up on a dream just because of the time it will take. The time will pass anyway. - Earl Nightingale",
+                "It is never too late to be what you might have been. - George Eliot",
+                "Do what you can, with what you have, where you are. - Theodore Roosevelt",
+                "Strength does not come from physical capacity. It comes from an indomitable will. - Mahatma Gandhi",
+                "Suffer the pain of discipline or suffer the pain of regret. - Jim Rohn",
+                "Have patience. All things are difficult before they become easy. - Saadi",
+                "You will never change your life until you change something you do daily. - John C. Maxwell",
+                "I have failed over and over, and that is why I succeed. - Michael Jordan",
+                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+                "A positive mindset brings positive things. - Unknown",
+                "Obstacles don't have to stop you. - Michael Jordan",
+                "Good habits are hard to form but easy to live with. - Unknown",
+                "Procrastination is the thief of time. - Edward Young",
+                "If you don't build your dream, someone else will hire you to build theirs. - Tony Gaskins",
+                "It does not matter how slowly you go as long as you do not stop. - Confucius",
+                "Repetition is the mother of skill. - Tony Robbins",
+                "I regret the things I didn't do more than the things I did. - Mark Twain",
+                "Discipline weighs ounces, regret weighs tons. - Jim Rohn",
+                "Sow an act, reap a habit. - George Dana Boardman",
+                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+                "There is no substitute for hard work. - Thomas Edison",
+                "You are braver than you believe. - A.A. Milne",
+                "Happiness is a journey, not a destination. - Buddha"
+            ]
+        };
 
         const challengeHintsPool = {
             vi: [
                 { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false }, { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false }, { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
                 { title: "Uống đủ nước", desc: "Uống đủ 2 Lít nước lọc", isP: false }, { title: "Không trà sữa", desc: "Chống cự cám dỗ đồ uống ngọt", isP: false }, { title: "Chạy bộ", desc: "Hoàn thành 2km mỗi ngày", isP: false },
-                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true }, { title: "Mỉm cười", desc: "Cười với chính mình trong gương 1 phút", isP: true }, { title: "Hít thở sâu", desc: "Dành 5 phút hít thở tập trung", isP: true }
+                { title: "Ngủ sớm", desc: "Lên giường trước 11:00 PM", isP: false }, { title: "Đi bộ", desc: "Đạt 5000 bước chân/ngày", isP: false }, { title: "Plank", desc: "Giữ Plank đúng tư thế 1 phút", isP: false },
+                { title: "Chống đẩy", desc: "Hoàn thành 20 cái Push-up", isP: false }, { title: "Học ngoại ngữ", desc: "Dành 15 phút học từ vựng", isP: false }, { title: "Không TikTok", desc: "Không lướt các nền tảng video ngắn", isP: false },
+                { title: "Ăn rau xanh", desc: "Bữa chính bắt buộc có rau xanh", isP: false }, { title: "Không ăn vặt", desc: "Chỉ ăn 3 bữa chính trong ngày", isP: false }, { title: "Đọc tin chuyên ngành", desc: "Đọc 1 bài báo kiến thức mới", isP: false },
+                { title: "Gọn gàng", desc: "Dọn dẹp bàn làm việc/giường ngủ", isP: false }, { title: "Tự nấu ăn", desc: "Không đặt đồ ăn ngoài", isP: false }, { title: "Thiền định", desc: "Ngồi nhắm mắt tĩnh tâm 10 phút", isP: false },
+                { title: "Liên lạc gia đình", desc: "Gọi điện hỏi thăm người thân", isP: false }, { title: "Không than vãn", desc: "Suy nghĩ tích cực suốt 24h", isP: false }, { title: "Nghe Podcast", desc: "Nghe 1 tập podcast phát triển bản thân", isP: false },
+                { title: "Stretching", desc: "Giãn cơ 10 phút trước khi ngủ", isP: false }, { title: "No Sugar", desc: "Tuyệt đối không tiêu thụ đường tinh luyện", isP: false }, { title: "Lập kế hoạch", desc: "Lên to-do list cho ngày hôm sau", isP: false }, { title: "Tập trung", desc: "Làm việc bằng phương pháp Pomodoro", isP: false },
+                
+                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true }, { title: "Mỉm cười", desc: "Cười với chính mình trong gương 1 phút", isP: true }, { title: "Hít thở sâu", desc: "Dành 5 phút hít thở tập trung", isP: true },
+                { title: "Chi tiêu tiết kiệm", desc: "Chỉ tiêu tối đa 100k hôm nay", isP: true }, { title: "Ôn tập kiến thức", desc: "Xem lại bài cũ trong 15 phút", isP: true }, { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true },
+                { title: "Mindful Eating", desc: "Không dùng điện thoại khi ăn", isP: true }, { title: "Khởi đầu tươi mát", desc: "Uống 1 cốc nước chanh ấm khi thức dậy", isP: true }, { title: "Tắm nắng", desc: "Dành 15 phút đón nắng sớm", isP: true },
+                { title: "Đọc Blog", desc: "Đọc 1 bài blog truyền cảm hứng", isP: true }, { title: "Nhạc tĩnh tâm", desc: "Nghe nhạc không lời trong lúc làm việc", isP: true }, { title: "Khen ngợi", desc: "Dành lời khen thật lòng cho 1 người", isP: true },
+                { title: "Detox MXH", desc: "Off hoàn toàn Facebook/Insta 24h", isP: true }, { title: "Từ thiện", desc: "Làm 1 việc tốt hoặc quyên góp nhỏ", isP: true }, { title: "Ăn chậm nhai kỹ", desc: "Nhai 20 lần trước khi nuốt", isP: true },
+                { title: "Không Cồn", desc: "Say No với Bia, Rượu", isP: true }, { title: "Sống xanh", desc: "Tưới và chăm sóc cây cối", isP: true }, { title: "Quản lý tài chính", desc: "Ghi chép lại toàn bộ chi tiêu trong ngày", isP: true },
+                { title: "Tự chuẩn bị bữa sáng", desc: "Làm bữa sáng đủ dinh dưỡng tại nhà", isP: true }, { title: "Ngủ trưa", desc: "Chợp mắt 15-20 phút buổi trưa", isP: true }, { title: "Viết nhật ký", desc: "Ghi lại những cảm xúc của ngày hôm nay", isP: true },
+                { title: "Học 5 từ vựng", desc: "Học và đặt câu với 5 từ tiếng Anh mới", isP: true }, { title: "Giảm cafein", desc: "Chỉ uống 1 ly cafe/trà trong ngày", isP: true }, { title: "Khám phá", desc: "Đi làm bằng một con đường mới", isP: true }, { title: "Đúng giờ", desc: "Đến đúng hoặc sớm hơn các cuộc hẹn", isP: true }
             ],
             en: [
                 { title: "Wake up early", desc: "Before 5:30 AM", isP: false }, { title: "Read", desc: "At least 20 pages", isP: false }, { title: "Workout", desc: "30 mins of sweating", isP: false },
-                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }, { title: "Smile", desc: "Smile in the mirror for 1 min", isP: true }, { title: "Deep breaths", desc: "5 mins of breathing", isP: true }
+                { title: "Hydrate", desc: "Drink 2L of water", isP: false }, { title: "No bubble tea", desc: "Resist sweet drinks", isP: false }, { title: "Running", desc: "Run 2km daily", isP: false },
+                { title: "Sleep early", desc: "In bed by 11:00 PM", isP: false }, { title: "Walking", desc: "Hit 5000 steps", isP: false }, { title: "Plank", desc: "Hold plank for 1 minute", isP: false },
+                { title: "Push-ups", desc: "Do 20 push-ups", isP: false }, { title: "Language", desc: "Learn vocab for 15 mins", isP: false }, { title: "No TikTok", desc: "Stop scrolling short videos", isP: false },
+                { title: "Eat greens", desc: "Veggies in main meals", isP: false }, { title: "No snacks", desc: "Only 3 main meals", isP: false }, { title: "Industry news", desc: "Read 1 article", isP: false },
+                { title: "Tidy up", desc: "Clean desk/bed", isP: false }, { title: "Home cooking", desc: "No food delivery", isP: false }, { title: "Meditation", desc: "10 mins mindfulness", isP: false },
+                { title: "Call family", desc: "Talk to loved ones", isP: false }, { title: "No complaining", desc: "Stay positive 24h", isP: false }, { title: "Podcast", desc: "Listen to 1 episode", isP: false },
+                { title: "Stretching", desc: "10 mins before bed", isP: false }, { title: "No Sugar", desc: "Zero refined sugar", isP: false }, { title: "Planning", desc: "Make to-do list for tmr", isP: false }, { title: "Focus", desc: "Work with Pomodoro", isP: false },
+                
+                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }, { title: "Smile", desc: "Smile in the mirror for 1 min", isP: true }, { title: "Deep breaths", desc: "5 mins of breathing", isP: true },
+                { title: "Frugal day", desc: "Spend less than $5", isP: true }, { title: "Review notes", desc: "Study past material 15m", isP: true }, { title: "Skincare", desc: "Full night routine", isP: true },
+                { title: "Mindful Eating", desc: "No phone while eating", isP: true }, { title: "Fresh start", desc: "Warm lemon water upon waking", isP: true }, { title: "Sunlight", desc: "15 mins of morning sun", isP: true },
+                { title: "Read Blog", desc: "Read 1 inspiring post", isP: true }, { title: "Chill music", desc: "Lo-Fi while working", isP: true }, { title: "Compliment", desc: "Give a genuine compliment", isP: true },
+                { title: "Social Detox", desc: "No FB/IG for 24h", isP: true }, { title: "Charity", desc: "Do a good deed", isP: true }, { title: "Chew slowly", desc: "Chew 20 times per bite", isP: true },
+                { title: "Alcohol free", desc: "Say No to booze", isP: true }, { title: "Green life", desc: "Water the plants", isP: true }, { title: "Track spending", desc: "Log all expenses", isP: true },
+                { title: "Make breakfast", desc: "Cook a healthy morning meal", isP: true }, { title: "Power nap", desc: "15-20 min afternoon nap", isP: true }, { title: "Journaling", desc: "Write down today's feelings", isP: true },
+                { title: "5 new words", desc: "Learn 5 vocabulary words", isP: true }, { title: "Less Caffeine", desc: "Max 1 cup of coffee/tea", isP: true }, { title: "Explore", desc: "Take a new route to work", isP: true }, { title: "Be on time", desc: "Punctual to all meetings", isP: true }
             ]
         };
 
         const musicPlaylist = [
             "https://files.catbox.moe/bfdutu.mp3",
             "https://files.catbox.moe/icvzx6.mp3",
+            "https://files.catbox.moe/4eq12q.mp3",
             "https://files.catbox.moe/4eq12q.mp3"
         ];
 
@@ -969,22 +1058,6 @@
             return todayIdx > total;
         }
 
-        // Tính toán số chuỗi liên tiếp (Streak) hiện tại và hiển thị gợi ý Streak badge
-        function calculateStreak(progressArray) {
-            if (!progressArray || !progressArray.length) return 0;
-            let currentStreak = 0;
-            // Duyệt từ ngày mới nhất về cũ hoặc ngược lại tùy theo logic, ở đây đếm số ngày hoàn thành liên tiếp gần nhất
-            for (let i = progressArray.length - 1; i >= 0; i--) {
-                if (progressArray[i] && progressArray[i].completed) {
-                    currentStreak++;
-                } else {
-                    // Nếu gặp ngày chưa hoàn thành trong quá khứ gần, dừng chuỗi hiện tại
-                    break;
-                }
-            }
-            return currentStreak;
-        }
-
         function setFontSize(size) {
             currentFontSize = size;
             localStorage.setItem('bvgpFontSize', size);
@@ -1000,14 +1073,8 @@
             currentTheme = theme;
             localStorage.setItem('bvgpTheme', currentTheme);
             const htmlEl = document.documentElement;
-            const toggleIcon = document.getElementById('themeToggleIcon');
-            if (currentTheme === 'dark') { 
-                htmlEl.classList.add('dark'); 
-                if(toggleIcon) toggleIcon.className = "fa-solid fa-sun text-amber-400";
-            } else { 
-                htmlEl.classList.remove('dark'); 
-                if(toggleIcon) toggleIcon.className = "fa-solid fa-moon text-slate-700";
-            }
+            if (currentTheme === 'dark') { htmlEl.classList.add('dark'); document.getElementById('theme-status-icon').innerText = '✅'; } 
+            else { htmlEl.classList.remove('dark'); document.getElementById('theme-status-icon').innerText = '⬜'; }
         }
         function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); renderList(); }
 
@@ -1016,13 +1083,13 @@
         let isMusicPlaying = false;
         const audio = document.getElementById('bg-music');
         
-        audio.addEventListener('ended', nextMusic);
+        audio.addEventListener('ended', nextMusic); // Tự động phát bài tiếp theo khi hết
 
         function toggleMusicPlay() {
             if(isMusicPlaying) { 
                 audio.pause(); 
                 isMusicPlaying = false; 
-                document.getElementById('music-play-btn').innerHTML = '<i class="fa-solid fa-play"></i>'; 
+                document.getElementById('music-play-btn').innerText = '▶️'; 
             } else { 
                 playCurrentMusic(); 
             }
@@ -1034,14 +1101,14 @@
             }
             audio.play().then(() => { 
                 isMusicPlaying = true; 
-                document.getElementById('music-play-btn').innerHTML = '<i class="fa-solid fa-pause"></i>'; 
+                document.getElementById('music-play-btn').innerText = '⏸️'; 
             }).catch(() => alert(t('clickToPlay')));
         }
 
         function nextMusic() {
             currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
             if (isMusicPlaying) playCurrentMusic();
-            else audio.src = musicPlaylist[currentMusicIndex];
+            else audio.src = musicPlaylist[currentMusicIndex]; // Cập nhật source dù chưa play
         }
 
         function prevMusic() {
@@ -1054,7 +1121,7 @@
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             localStorage.setItem('bvgpLang', currentLang);
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); displayRandomQuote(); renderList();
+            updateStaticTexts(); displayRandomSlogan(); renderList();
         }
 
         function renderFilterOptions() {
@@ -1176,6 +1243,7 @@
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
 
+            // Admin center texts
             document.getElementById('admin-modal-title').innerHTML = t('adminCenterTitle');
             document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
             document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
@@ -1212,11 +1280,9 @@
             document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
         }
 
-        // Feature 3: Tên tác giả không bôi đậm, cỡ chữ nhỏ hơn quote
-        function displayRandomQuote() {
-            const q = quotesData[Math.floor(Math.random() * quotesData.length)];
-            document.getElementById('quote-text-display').innerText = `"${q.text}"`;
-            document.getElementById('quote-author-display').innerText = q.author;
+        function displayRandomSlogan() {
+            const list = slogans[currentLang] || slogans.vi;
+            document.getElementById('slogan-text').innerText = `"${list[Math.floor(Math.random() * list.length)]}"`;
         }
 
         // FIREBASE SETUP
@@ -1258,6 +1324,7 @@
             if (snapshot.val()) {
                 const sVal = snapshot.val();
                 appData.members = defaultMembers.map(def => { const found = (sVal.members || []).find(m => m.id === def.id); return found ? { ...def, ...found } : def; });
+                // Merge custom added members if any
                 if (sVal.members) {
                     sVal.members.forEach(m => {
                         if (!appData.members.some(existing => existing.id === m.id)) {
@@ -1276,7 +1343,7 @@
             updateUserLabel();
             updateNotificationBadge();
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); displayRandomQuote();
+            updateStaticTexts(); displayRandomSlogan();
             renderList();
         });
 
@@ -1299,6 +1366,7 @@
         }
 
         function renderAdminCenterContent() {
+            // Pending list
             const pendingContainer = document.getElementById('admin-pending-list');
             const pendingArr = appData.pendingMembers || [];
             if (!pendingArr.length) {
@@ -1315,6 +1383,7 @@
                 `).join('');
             }
 
+            // Members list (Can delete except member_7 admin)
             const membersContainer = document.getElementById('admin-members-list');
             membersContainer.innerHTML = appData.members.map(m => `
                 <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border">
@@ -1417,9 +1486,6 @@
                     const isCompleted = cnt >= tgt;
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     const isFailed = gu || (!isCompleted && cFinished);
-                    
-                    // Tính số streak liên tiếp
-                    const currentStreak = calculateStreak(prog);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1446,26 +1512,27 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        // Feature 4: Đường gạch nối các ngày check-in chuỗi (streak timeline chain)
-                        let grid = `<div class="streak-timeline mt-3 mb-2">` + prog.map((item, dIdx) => {
-                            const ic=item&&item.completed, it=(dIdx===tIdx);
-                            let dotStyle = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                            let iconInner = `<span>${dIdx + 1}</span>`;
+                        let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
+                            const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
+                            let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
+                            let lockBadge = "";
+
+                            const dayLocked = isDayLocked(c.startDate, dIdx);
 
                             if(ic) {
-                                dotStyle = "bg-emerald-600 text-white border-emerald-600";
-                                iconInner = `<i class="fa-solid fa-check text-[10px]"></i>`;
+                                s="bg-indigo-600 text-white border-indigo-600"; 
+                            } else if(dayLocked && !ic) {
+                                s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                             } else if(it) {
-                                dotStyle = "bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold";
+                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; 
+                            } else if(ifu) {
+                                s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                            } else {
+                                s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `
-                                <div class="timeline-day ${ic ? 'completed' : ''}">
-                                    <button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="day-dot w-7 h-7 rounded-full border-2 flex items-center justify-center text-[11px] font-bold transition shadow-2xs ${dotStyle}" title="Ngày ${dIdx+1}">
-                                        ${iconInner}
-                                    </button>
-                                    <span class="day-label text-[10px] text-slate-400 mt-1">${getDateString(c.startDate, dIdx)}</span>
-                                </div>`;
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
@@ -1480,22 +1547,13 @@
                             </div>`;
                     }
 
-                    // Gợi ý hiển thị Streak dạng Badge ngay cạnh tiêu đề
-                    const streakBadgeHTML = currentStreak > 0 ? `
-                        <div class="bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 shadow-2xs">
-                            <i class="fa-solid fa-fire text-amber-500"></i> ${currentStreak} Ngày liên tiếp
-                        </div>` : '';
-
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
-                            <div class="flex justify-between items-start gap-2">
-                                <div class="space-y-1.5 flex-1 min-w-0">
-                                    <div class="flex items-center justify-between gap-2 flex-wrap">
-                                        <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1 truncate">
-                                            ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                                        </h4>
-                                        ${j ? streakBadgeHTML : ''}
-                                    </div>
+                            <div class="flex justify-between items-start">
+                                <div class="space-y-1.5">
+                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
+                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                                    </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(c.startDate)}</span>
                                         ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
@@ -1525,7 +1583,6 @@
                     const isCompleted = cnt >= tgt;
                     const cFinished = isChallengeFinished(h.startDate, tot);
                     const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
-                    const currentStreak = calculateStreak(prog);
 
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
@@ -1554,43 +1611,36 @@
                             </div>`;
                     }
 
-                    // Gạch nối chuỗi Streak cá nhân
-                    let grid = `<div class="streak-timeline mt-3 mb-2">` + prog.map((item, dIdx) => {
-                        const ic=item&&item.completed, it=(dIdx===tIdx);
-                        let dotStyle = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                        let iconInner = `<span>${dIdx + 1}</span>`;
+                    let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
+                        const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
+                        let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
+                        let lockBadge = "";
+
+                        const dayLocked = isDayLocked(h.startDate, dIdx);
 
                         if(ic) {
-                            dotStyle = "bg-emerald-600 text-white border-emerald-600";
-                            iconInner = `<i class="fa-solid fa-check text-[10px]"></i>`;
+                            s="bg-emerald-600 text-white border-emerald-600"; 
+                        } else if(dayLocked && !ic) {
+                            s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                         } else if(it) {
-                            dotStyle = "bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold";
+                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; 
+                        } else if(ifu) {
+                            s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                        } else {
+                            s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `
-                            <div class="timeline-day ${ic ? 'completed' : ''}">
-                                <button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="day-dot w-7 h-7 rounded-full border-2 flex items-center justify-center text-[11px] font-bold transition shadow-2xs ${dotStyle}" title="Ngày ${dIdx+1}">
-                                    ${iconInner}
-                                </button>
-                                <span class="day-label text-[10px] text-slate-400 mt-1">${getDateString(h.startDate, dIdx)}</span>
-                            </div>`;
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
-
-                    const streakBadgeHTML = currentStreak > 0 ? `
-                        <div class="bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 shadow-2xs">
-                            <i class="fa-solid fa-fire text-amber-500"></i> ${currentStreak} Ngày liên tiếp
-                        </div>` : '';
 
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
-                                    <div class="flex items-center justify-between gap-2 flex-wrap">
-                                        <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
-                                            ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                                        </h4>
-                                        ${streakBadgeHTML}
-                                    </div>
+                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
+                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                                    </h4>
                                     <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                                         <span>${formatDateString(h.startDate)}</span>
                                         ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
@@ -1684,6 +1734,7 @@
             const newId = 'member_' + Date.now();
             appData.pendingMembers.push({ id: newId, name, pin });
             
+            // Gửi thông báo đến Admin
             sendNotification('member_7', 'system', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
 
             dbRef.set(appData);
@@ -1779,7 +1830,7 @@
                 let icon = '🔔', act = n.text;
                 if(n.type === 'tag') { icon = '🏷️'; act = `${t('taggedYou')} "${n.challengeTitle}"`; }
                 else if(n.type === 'reply') { icon = '↩️'; act = `${t('repliedYou')} "${n.challengeTitle}"`; }
-                else if(n.type === 'system') { icon = '🤖'; act = n.text; }
+                else if(n.type === 'system') { icon = '🤖'; act = n.text; } // Thêm xử lý icon thông báo hệ thống (như có ng đk)
                 
                 container.innerHTML += `
                     <div class="p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2">
@@ -2387,6 +2438,7 @@
             let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 ${t('completionProgress')}</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
+            // 1. MỤC NHÓM
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
             htmlTxt += `
                 <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
@@ -2444,6 +2496,7 @@
             }
             htmlTxt += `</div></div>`;
 
+            // 2. MỤC CÁ NHÂN
             const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
 
