@@ -141,16 +141,16 @@
         </div>
     </div>
 
-    <!-- MODAL MENU SETTINGS (Đã mở rộng w-[230px] và sửa giao diện nhạc nền) -->
+    <!-- MODAL MENU SETTINGS -->
     <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
         <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[230px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            <!-- YÊU CẦU 1: Chế độ tối đổi thành icon ngày/đêm -->
-            <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
-                <span class="flex items-center gap-2">🌙 <span id="m-theme">Chế độ tối</span></span>
-                <span id="theme-status-icon" class="text-base">☀️</span>
+            <!-- YÊU CẦU 1: Chế độ tối/sáng gộp 1 icon duy nhất chuyển đổi qua lại -->
+            <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                <span id="theme-status-icon" class="text-base">🌙</span>
+                <span id="m-theme">Chế độ tối</span>
             </button>
             
-            <!-- YÊU CẦU 2: Nhạc nền chống dính icon và khoảng cách tối ưu -->
+            <!-- Nhạc nền -->
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
                 <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
                 <div class="flex items-center gap-2 shrink-0">
@@ -432,7 +432,7 @@
                 </div>
             </div>
 
-            <!-- YÊU CẦU 3: Tên tác giả không bôi đậm, cỡ chữ nhỏ hơn quote -->
+            <!-- Tên tác giả không bôi đậm, cỡ chữ nhỏ hơn quote -->
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
                 <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
@@ -677,7 +677,8 @@
                 adminConfirmWarn: "⚠️ XÓA TOÀN BỘ DỮ LIỆU TEST?",
                 adminSuccess: "✨ Dọn rác thành công!",
                 notAdmin: "Không có quyền hạn!",
-                theme: "Chế độ tối",
+                themeDark: "Chế độ tối",
+                themeLight: "Chế độ sáng",
                 music: "Nhạc nền",
                 lang: "Ngôn ngữ",
                 logout: "Thoát",
@@ -847,7 +848,8 @@
                 adminConfirmWarn: "⚠️ RESET ALL DATA?",
                 adminSuccess: "✨ Cleaned!",
                 notAdmin: "No permission!",
-                theme: "Dark Mode",
+                themeDark: "Dark Mode",
+                themeLight: "Light Mode",
                 music: "Music",
                 lang: "Language",
                 logout: "Logout",
@@ -1071,18 +1073,21 @@
             });
         }
 
-        // YÊU CẦU 1: Cập nhật hàm đổi theme với icon ☀️ / 🌙
+        // YÊU CẦU 1: Áp dụng theme và cập nhật đồng bộ 1 icon duy nhất + tên trạng thái
         function applyTheme(theme) {
             currentTheme = theme;
             localStorage.setItem('bvgpTheme', currentTheme);
             const htmlEl = document.documentElement;
             const iconEl = document.getElementById('theme-status-icon');
+            const textEl = document.getElementById('m-theme');
             if (currentTheme === 'dark') {
                 htmlEl.classList.add('dark');
-                if (iconEl) iconEl.innerText = '🌙';
+                if (iconEl) iconEl.innerText = '☀️';
+                if (textEl) textEl.innerText = t('themeLight');
             } else {
                 htmlEl.classList.remove('dark');
-                if (iconEl) iconEl.innerText = '☀️';
+                if (iconEl) iconEl.innerText = '🌙';
+                if (textEl) textEl.innerText = t('themeDark');
             }
         }
         function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); renderList(); }
@@ -1194,7 +1199,7 @@
             document.getElementById('l-reg-back-btn').innerText = t('backBtn');
             document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
             
-            document.getElementById('m-theme').innerText = t('theme');
+            document.getElementById('m-theme').innerText = currentTheme === 'dark' ? t('themeLight') : t('themeDark');
             document.getElementById('m-music').innerText = t('music');
             document.getElementById('m-lang').innerText = t('lang');
             document.getElementById('m-font-size').innerText = t('fontTitle');
@@ -1262,6 +1267,7 @@
 
             updateCreateFormLabels();
             setFontSize(currentFontSize);
+            applyTheme(currentTheme);
         }
 
         function updateCreateFormLabels() {
@@ -1288,7 +1294,6 @@
             document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
         }
 
-        // YÊU CẦU 3: Tách quote và tác giả, tác giả không bôi đậm và cỡ chữ nhỏ hơn
         function displayRandomSlogan() {
             const list = slogans[currentLang] || slogans.vi;
             const fullText = list[Math.floor(Math.random() * list.length)];
@@ -1474,7 +1479,7 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
 
-        // YÊU CẦU 4: Hàm tính toán chuỗi (streak) liên tiếp
+        // Tính toán chuỗi liên tiếp (streak)
         function getStreakInfo(prog) {
             if (!prog || !prog.length) return { active: 0, max: 0 };
             let maxStreak = 0;
@@ -1554,7 +1559,6 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        // YÊU CẦU 4: Thêm vạch nối (streak connector) giữa các ngày hoàn thành liên tiếp
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
@@ -1580,11 +1584,11 @@
                             return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
-                        // YÊU CẦU 4 (Gợi ý hiển thị số streak): Hiển thị trực tiếp ở header tiến độ ngay cạnh phần trăm
+                        // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] (ví dụ: 🔥2)
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥 Chuỗi: ${streak.active} ngày</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -1658,7 +1662,6 @@
                             </div>`;
                     }
 
-                    // YÊU CẦU 4: Thêm vạch nối streak cho thử thách cá nhân
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                         let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
@@ -1684,6 +1687,7 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
 
+                    // YÊU CẦU 2: Định dạng hiển thị 🔥[số] cho phần cá nhân
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1701,7 +1705,7 @@
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥 Chuỗi: ${streak.active} ngày</span></span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
                                     ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2 rounded-full text-[10px] shadow-sm flex items-center justify-center h-4 leading-none">${t('pausedStatus')}</span>`:''}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
@@ -2735,7 +2739,7 @@
                 return;
             }
 
-            // YÊU CẦU 4: Hiển thị số chuỗi (streak) trực tiếp trong bảng xếp hạng
+            // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] trong Bảng xếp hạng
             container.innerHTML = mems.map(m => {
                 const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
                 const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
@@ -2749,7 +2753,7 @@
                                 <span class="truncate">${m.name}</span>
                             </div>
                             <div class="flex items-center gap-2 shrink-0">
-                                <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-amber-200 dark:border-amber-800">🔥 ${m.streak} ngày</span>
+                                <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${m.streak}</span>
                                 <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
                             </div>
                         </div>
