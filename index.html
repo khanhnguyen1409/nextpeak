@@ -229,6 +229,7 @@
         </div>
     </div>
 
+    <!-- MODAL REPORT / TỔNG KẾT KẾT QUẢ -->
     <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center">
@@ -247,18 +248,49 @@
                 <div id="report-html-preview" class="flex-1 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-y-auto text-xs text-slate-700 dark:text-slate-300 space-y-4 font-sans leading-relaxed"></div>
                 <p class="text-center text-[11px] text-slate-400 italic">Nội dung báo cáo kết quả đã được tự động sao chép vào bộ nhớ tạm.</p>
             </div>
+
+            <!-- YÊU CẦU 3: CẢI TIẾN TAB THƯỞNG PHẠT -->
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
-                <div class="p-3 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 space-y-1 shadow-xs" id="reward-rule-box"></div>
+                <!-- KHUNG QUY TẮC DẠNG ACCORDION THU GỌN -->
+                <div class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
+                    <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        <span class="flex items-center gap-1.5">📜 Quy tắc Kỷ Luật Team BVGP</span>
+                        <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 dark:border-slate-700 hidden">
+                        <div class="flex items-start gap-2">
+                            <span class="text-base shrink-0">🎯</span>
+                            <div>
+                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Tiêu chuẩn:</strong>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-300">💸 <span class="text-rose-600 font-bold">-100k</span> nếu bỏ cuộc | 🎁 <span class="text-emerald-600 font-bold">+1 Sách</span> nếu đạt mục tiêu.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-base shrink-0">🔥</span>
+                            <div>
+                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Nhóm Chơi Lớn:</strong>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-300">🎁 Thưởng tiền / 💸 Phạt tiền tùy chỉnh không giới hạn theo từng thử thách.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-base shrink-0">📌</span>
+                            <div>
+                                <strong class="text-slate-800 dark:text-slate-100 font-bold">Thử thách Cá Nhân:</strong>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-300">⚡ Tự cam kết Thưởng 🎁 / Phạt 💸 theo thỏa thuận cá nhân.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="rewards-summary-list" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TÙY CHỌN 3 CHẤM (THÊM CHỦC NĂNG CHỤP ẢNH CHIA SẺ) -->
+    <!-- MODAL TÙY CHỌN 3 CHẤM -->
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center uppercase tracking-wider text-[10px]">Tùy chọn</h4>
-            <!-- NÚT CHỤP ẢNH THÀNH TÍCH MỚI -->
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="w-full text-left py-2.5 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/35 text-indigo-600 dark:text-indigo-400 rounded-xl transition flex items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-900/35 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ Tạm dừng</button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/35 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ Tiếp tục</button>
@@ -293,20 +325,17 @@
                 <!-- KHUNG BÁO CÁO CÁ NHÂN -->
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                     
-                    <!-- HEADER CHẾ ĐỘ XEM: BADGE VÀ ICON CÂY BÚT EDIT -->
                     <div id="modal-view-header" class="flex justify-between items-center">
                         <div id="view-status"></div>
                         <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm hidden" title="Chỉnh sửa">✏️</button>
                     </div>
 
-                    <!-- NỘI DUNG CHẾ ĐỘ XEM -->
                     <div id="modal-view-section" class="space-y-2">
                         <div id="view-timestamp" class="text-[10px] text-slate-400 font-medium"></div>
                         <div id="view-note" class="hidden"></div>
                         <div id="view-image" class="hidden"></div>
                     </div>
 
-                    <!-- NỘI DUNG CHẾ ĐỘ CHỈNH SỬA / CHECK-IN MỚI -->
                     <div id="modal-edit-section" class="space-y-3 hidden">
                         <div id="status-selection-box" class="flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700">
                             <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600 dark:text-emerald-400">
@@ -315,7 +344,6 @@
                             </label>
                         </div>
 
-                        <!-- KHUNG GHI CHÚ VÀ TẢI ẢNH -->
                         <div class="space-y-1">
                             <label id="m-note-label" class="text-[11px] font-semibold text-slate-500">Ghi chú / Cảm xúc:</label>
                             <div class="relative border rounded-2xl bg-white dark:bg-slate-800 dark:border-slate-700 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
@@ -561,7 +589,6 @@
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
                 reportActive: "Hoạt động",
                 reportRewards: "Thưởng / Phạt",
-                rewardRuleTxt: "<strong class='block font-bold text-slate-800 dark:text-slate-100 mb-1'>📜 Quy tắc Kỷ Luật Team BVGP:</strong><p>• <strong>Thử thách Nhóm thường:</strong> -100k nếu bỏ cuộc, <span class='text-emerald-600 font-bold'>+1 Sách</span> nếu đạt.</p><p>• <strong>🔥 Chơi lớn:</strong> Áp dụng Thưởng/Phạt tùy chỉnh.</p><p>• <strong>Cá nhân:</strong> Tự cam kết.</p>",
                 noRewardRecord: "Chưa có thưởng/phạt.",
                 book: "Sách",
                 groupLabel: "Nhóm",
@@ -709,7 +736,6 @@
                 selfPenaltyPh: "E.g., 100 pushups...",
                 reportActive: "Active",
                 reportRewards: "Rewards",
-                rewardRuleTxt: "<strong class='block font-bold text-slate-800 dark:text-slate-100 mb-1'>📜 BVGP Rules:</strong><p>• <strong>Normal:</strong> -100k give up, <span class='text-emerald-600 font-bold'>+1 Book</span> finish.</p><p>• <strong>🔥 Big Play:</strong> Custom amounts.</p><p>• <strong>Personal:</strong> Self-commitments.</p>",
                 noRewardRecord: "No records.",
                 book: "Book(s)",
                 groupLabel: "Group",
@@ -805,9 +831,8 @@
 
         function t(key) { return translations[currentLang][key] || key; }
 
-        // YÊU CẦU 2: ĐỒNG BỘ NGUYÊN BẢN BADGE HOÀN THÀNH DÙNG CHUNG
         const UNIFORM_COMPLETED_BADGE_HTML = `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs">
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs shrink-0">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
                 Hoàn thành
             </span>`;
@@ -933,7 +958,6 @@
             
             document.getElementById('btn-report-active').innerText = t('reportActive');
             document.getElementById('btn-report-rewards').innerText = t('reportRewards');
-            document.getElementById('reward-rule-box').innerHTML = t('rewardRuleTxt');
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
             document.getElementById('m-share-text').innerText = t('shareAchievement');
@@ -1119,6 +1143,7 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
+                        // YÊU CẦU 1: CĂN GIỮA TUYỆT ĐỐI CHỮ "HÔM NAY" BẰNG TW-CLASSES
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             const lock = getDayLockStatus(c.startDate, dIdx, ic);
@@ -1139,7 +1164,7 @@
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-2xs whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
@@ -1154,7 +1179,6 @@
                             </div>`;
                     }
 
-                    // YÊU CẦU 3: GẮN ID card THÁCH ĐỂ CHỤP ẢNH
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1237,10 +1261,9 @@
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-2xs whitespace-nowrap z-10">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                     }).join('') + `</div>`;
 
-                    // YÊU CẦU 3: GẮN ID card THÁCH ĐỂ CHỤP ẢNH
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1424,25 +1447,38 @@
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
-        // YÊU CẦU 3: CHỤP ẢNH TOÀN BỘ KHUNG THỬ THÁCH VÀ TẢI VỀ
-        function captureChallengeCard(id) {
+        // YÊU CẦU 1: CHỤP ẢNH TÍNH NĂNG CHIA SẺ - BỎ KHUNG BÌNH LUẬN + XUẤT ẢNH JPG SẮC NÉT
+        async function captureChallengeCard(id) {
             const cardEl = document.getElementById(`challenge-card-${id}`);
             if(!cardEl) return;
             
-            html2canvas(cardEl, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-            }).then(canvas => {
+            // Ẩn tạm thời phần bình luận và nút 3 chấm khi chụp ảnh
+            const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
+            const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
+            
+            if(commentsContainer) commentsContainer.style.display = 'none';
+            if(actionBtn) actionBtn.style.display = 'none';
+
+            try {
+                const canvas = await html2canvas(cardEl, {
+                    scale: 2.5, // Tăng độ phân giải cho ảnh siêu nét
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+                });
+
                 const link = document.createElement('a');
-                link.download = `BVGP-Thuthach-${id}.png`;
-                link.href = canvas.toDataURL('image/png');
+                link.download = `BVGP-Thuthach-${id}.jpg`; // Xuất dạng JPG
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
                 link.click();
-            }).catch(err => {
+            } catch(err) {
                 console.error("Lỗi chụp ảnh:", err);
                 alert("Không thể tạo hình ảnh chia sẻ. Vui lòng thử lại!");
-            });
+            } finally {
+                // Phục hồi lại hiển thị bình luận và nút 3 chấm
+                if(commentsContainer) commentsContainer.style.display = '';
+                if(actionBtn) actionBtn.style.display = '';
+            }
         }
 
         function giveUpChallenge(id, isP) {
@@ -1522,7 +1558,6 @@
                 const completedCount = otherMembers.filter(m=>c.progress[m]&&c.progress[m][dIdx]&&c.progress[m][dIdx].completed).length;
                 document.getElementById('completed-ratio-text').innerText = `${completedCount}/${otherMembers.length}`;
                 
-                // YÊU CẦU 2: ĐỒNG BỘ NGUYÊN BẢN BADGE HOÀN THÀNH CHO THÀNH VIÊN KHÁC
                 document.getElementById('group-members-status-list').innerHTML = otherMembers.length ? otherMembers.map(mId => {
                     const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
                     const lockM = getDayLockStatus(c.startDate, dIdx, id);
@@ -1564,7 +1599,6 @@
             document.getElementById('day-modal').classList.remove('hidden');
         }
 
-        // YÊU CẦU 2: ĐỒNG BỘ CẢ BADGE CỦA BẠN KHI XEM BÁO CÁO
         function updateModalView(item, lock = { isFailed: false }) {
             let statusBadge = "";
             if (item.completed) {
@@ -1584,14 +1618,12 @@
             document.getElementById('view-image').classList.toggle('hidden', !item.image);
         }
 
-        // YÊU CẦU 1: ẨN HOÀN TOÀN ICON CÂY BÚT KHI ĐANG MỞ FORM CHECK-IN
         function setModalMode(ed) { 
             isEditMode = ed; 
             document.getElementById('modal-edit-section').classList.toggle('hidden', !ed); 
             document.getElementById('modal-view-section').classList.toggle('hidden', ed); 
             document.getElementById('view-status').classList.toggle('hidden', ed);
             
-            // Nếu ở chế độ Edit (ed===true) HOẶC là ReadOnly -> ẨN BÚT. Chỉ Hiện Bút khi ở Chế độ View lại kết quả!
             document.getElementById('modal-edit-btn').classList.toggle('hidden', ed || currentEditingDay?.isReadOnly);
         }
 
@@ -1641,7 +1673,6 @@
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // YÊU CẦU 4: SỬA ĐIỀU KIỆN TỔNG SỐ NGÀY PHẢI BẰNG HOẶC LỚN HƠN (>=) MỤC TIÊU
         document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
             const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||21, tot = parseInt(document.getElementById('create-days-input').value)||25;
@@ -1830,26 +1861,58 @@
         
         function toSuperscript(num) { const supers = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}; return String(num).split('').map(c => supers[c] || c).join(''); }
         
+        // YÊU CẦU 2: HIỂN THỊ TOÀN BỘ KẾT QUẢ HOẠT ĐỘNG DƯỚI DẠNG THANH TIẾN ĐỘ
         function renderReportPreview() {
             let rawTxt = currentLang==='vi'?"🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆\n\n":"🏆 BVGP TEAM REPORT 🏆\n\n";
-            let htmlTxt = `<h2 class="text-center font-bold text-lg text-indigo-700 dark:text-indigo-400">🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆</h2>`;
+            let htmlTxt = `<h2 class="text-center font-bold text-base text-indigo-700 dark:text-indigo-400 mb-2">🏆 BÁO CÁO KỶ LUẬT TEAM BVGP 🏆</h2>`;
             
             if(appData.sharedChallenges?.length){
                 const grps = appData.sharedChallenges.filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
                 if(grps.length){
                     rawTxt += `--- ${t('groupLabel').toUpperCase()} ---\n`;
-                    htmlTxt += `<div class="font-bold text-indigo-600 uppercase mt-4 mb-2">--- ${t('groupLabel')} ---</div><div class="space-y-4">`;
+                    htmlTxt += `<div class="font-bold text-indigo-600 uppercase text-xs mt-3 mb-2">--- ${t('groupLabel')} ---</div><div class="space-y-3">`;
                     grps.forEach((c,i) => {
                         rawTxt += `🎯 ${c.title}${toSuperscript(i+1)}${c.isBigPlay?" 🔥":""} (${formatDateString(c.startDate)})\n`;
-                        htmlTxt += `<div><p class="font-bold text-slate-800 dark:text-slate-100">🎯 ${c.title}<sup class="text-indigo-500">${i+1}</sup>${c.isBigPlay?" 🔥":""} <span class="text-[10px] text-slate-400 font-normal">(${formatDateString(c.startDate)})</span></p><div class="pl-4 mt-1 space-y-1">`;
+                        
+                        htmlTxt += `
+                            <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-2xs">
+                                <div class="flex justify-between items-center">
+                                    <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
+                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500">${i+1}</sup>
+                                    </strong>
+                                    <span class="text-[10px] text-slate-400">(${formatDateString(c.startDate)})</span>
+                                </div>
+                                <div class="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">`;
+                        
                         const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                        acts.map(mId => { const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; return {n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                            const isD = m.cnt>=(c.targetDays||21), pct = Math.round(m.cnt/(c.targetDays||21)*100), tag = isD?` - ${t('completed')}`:'';
-                            const lineStr = m.st==='given_up' ? `- ${m.n}: ${t('givenUpStatus')} (${m.cnt}/${c.targetDays||21} - ${pct}%${m.rsn?` - Rsn: ${m.rsn}`:''})` : `- ${m.n}: ${m.cnt}/${c.targetDays||21} (${pct}%)${tag}`;
+                        acts.map(mId => { 
+                            const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
+                            return {n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
+                        }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
+                            const tgt = c.targetDays || 21;
+                            const isD = m.cnt >= tgt;
+                            const pct = Math.round((m.cnt / tgt) * 100);
+                            
+                            let barColor = m.st === 'given_up' ? 'bg-rose-500' : (isD ? 'bg-indigo-600' : 'bg-indigo-400');
+                            let statusBadge = m.st === 'given_up' ? `<span class="text-rose-500 font-bold">🏳️ ${t('givenUpStatus')}</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ ${t('completed')}</span>` : '');
+                            
+                            const lineStr = m.st==='given_up' ? `- ${m.n}: ${t('givenUpStatus')} (${m.cnt}/${tgt} - ${pct}%${m.rsn?` - Rsn: ${m.rsn}`:''})` : `- ${m.n}: ${m.cnt}/${tgt} (${pct}%)${isD?` - ${t('completed')}`:''}`;
                             rawTxt += `   ${lineStr}\n`;
-                            htmlTxt += `<p class="${m.st==='given_up'?'text-rose-500':(isD?'text-indigo-600 font-bold':'text-slate-600 dark:text-slate-300')}">${lineStr}</p>`;
+                            
+                            htmlTxt += `
+                                <div class="space-y-1 text-[11px]">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-slate-700 dark:text-slate-200">${m.n}</span>
+                                        <span class="font-bold text-slate-600 dark:text-slate-300">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                                        <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
+                                    </div>
+                                    ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">Lý do: ${m.rsn}</p>` : ''}
+                                </div>`;
                         });
-                        rawTxt += '\n'; htmlTxt += `</div></div>`;
+                        rawTxt += '\n'; 
+                        htmlTxt += `</div></div>`;
                     });
                     htmlTxt += `</div>`;
                 }
@@ -1858,15 +1921,34 @@
             const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived);
             if(myH.length){
                 rawTxt += `--- ${t('personalLabel').toUpperCase()} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---\n`;
-                htmlTxt += `<div class="font-bold text-emerald-600 uppercase mt-6 mb-2">--- ${t('personalLabel')} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---</div><div class="space-y-2">`;
+                htmlTxt += `<div class="font-bold text-emerald-600 uppercase text-xs mt-4 mb-2">--- ${t('personalLabel')} (${appData.members.find(x=>x.id===loggedInUserId)?.name||''}) ---</div><div class="space-y-2">`;
+                
                 myH.sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id)).forEach((h,i) => {
-                    const cnt=(h.days||[]).filter(x=>x&&x.completed).length, isD=cnt>=(h.targetDays||21), pct=Math.round(cnt/(h.targetDays||21)*100);
+                    const tgt = h.targetDays || 21;
+                    const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
+                    const isD = cnt >= tgt;
+                    const pct = Math.round((cnt / tgt) * 100);
+                    
                     let line = `📌 ${h.text}${toSuperscript(i+1)}: `;
-                    if(h.status==='given_up') line += `${t('givenUpStatus')} (${cnt}/${h.targetDays||21} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else if(h.status==='paused') line += `${t('pausedStatus')} (${cnt}/${h.targetDays||21} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
-                    else line += `${cnt}/${h.targetDays||21} (${pct}%)${isD?` - ${t('completed')}`:''}`;
+                    if(h.status==='given_up') line += `${t('givenUpStatus')} (${cnt}/${tgt} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
+                    else if(h.status==='paused') line += `${t('pausedStatus')} (${cnt}/${tgt} - ${pct}%${h.reason?` - Rsn: ${h.reason}`:''})`;
+                    else line += `${cnt}/${tgt} (${pct}%)${isD?` - ${t('completed')}`:''}`;
                     rawTxt += `${line}\n`;
-                    htmlTxt += `<p class="${h.status==='given_up'?'text-rose-500':(isD?'text-emerald-600 font-bold':'text-slate-700 dark:text-slate-300')} pl-2 border-l-2 ${isD?'border-emerald-500':'border-slate-300'}">${line}</p>`;
+
+                    let barColor = h.status==='given_up' ? 'bg-rose-500' : (h.status==='paused' ? 'bg-amber-500' : (isD ? 'bg-emerald-600' : 'bg-emerald-400'));
+                    let statusBadge = h.status==='given_up' ? `<span class="text-rose-500 font-bold">🏳️ Bỏ cuộc</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold">⏸️ Tạm dừng</span>` : (isD ? `<span class="text-emerald-600 font-bold">✅ Hoàn thành</span>` : ''));
+
+                    htmlTxt += `
+                        <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5 shadow-2xs">
+                            <div class="flex justify-between items-center text-xs">
+                                <strong class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">📌 ${h.text}<sup class="text-emerald-500">${i+1}</sup></strong>
+                                <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px]">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                                <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
+                            </div>
+                            ${h.reason ? `<p class="text-[10px] text-slate-400 italic">Lý do: ${h.reason}</p>` : ''}
+                        </div>`;
                 });
                 htmlTxt += `</div>`;
             }
@@ -1875,39 +1957,70 @@
             document.getElementById('report-html-preview').setAttribute('data-raw', rawTxt);
         }
 
+        function toggleRewardRulesAccordion() {
+            const ruleBox = document.getElementById('reward-rule-box');
+            const arrow = document.getElementById('reward-rules-arrow');
+            if(ruleBox) {
+                ruleBox.classList.toggle('hidden');
+                if(arrow) arrow.style.transform = ruleBox.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        // YÊU CẦU 3: BỎ CHỮ NHÓM / CÁ NHÂN VÌ ĐÃ CÓ ICON TIÊU ĐỀ THỂ HIỆN
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
             appData.members.forEach(m => {
                 let book = 0, rew = 0, pen = 0, logs = [];
                 (appData.sharedChallenges||[]).forEach(c => {
-                    const tgt = c.targetDays||21, dur = `[${formatDateString(c.startDate)}]`, stat = c.participants ? c.participants[m.id] : null;
+                    const tgt = c.targetDays||21, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
+                    const icon = c.isBigPlay ? '🔥' : '🎯';
+                    
                     if(stat==='given_up'){
                         const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
-                        logs.push(`${c.isBigPlay?'🔥 ':''}${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} (-${p}k)`);
+                        logs.push(`<div class="flex items-center justify-between gap-1"><span>${icon} "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ -${p}k</span></div>`);
                     } else if(stat===true) {
                         const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
                         if(done>=tgt){
-                            if(c.isBigPlay){ rew += (c.customReward||0); logs.push(`🔥 ${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ +${c.customReward||0}k`); }
-                            else { book++; logs.push(`${t('groupLabel')} "${c.title}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ <span class="text-emerald-600 font-bold">+1 ${t('book')}</span>`); }
+                            if(c.isBigPlay){ 
+                                rew += (c.customReward||0); 
+                                logs.push(`<div class="flex items-center justify-between gap-1"><span>🔥 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-amber-600 shrink-0">✅ ➔ +${c.customReward||0}k</span></div>`); 
+                            }
+                            else { 
+                                book++; 
+                                logs.push(`<div class="flex items-center justify-between gap-1"><span>🎯 "${c.title}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ +1 Sách</span></div>`); 
+                            }
                         }
                     }
                 });
+                
                 if(m.id===loggedInUserId){
                     (appData.personalHabits[m.id]||[]).forEach(h => {
-                        const tgt = h.targetDays||21, dur = `[${formatDateString(h.startDate)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        if(h.status==='given_up') logs.push(`${t('personalLabel')} "${h.text}" <span class="text-[10px] text-slate-400">${dur}</span>: ${t('givenUpStatus')} ➔ 💸 ${h.selfPenalty||''}`);
-                        else if(done>=tgt) logs.push(`${t('personalLabel')} "${h.text}" <span class="text-[10px] text-slate-400">${dur}</span>: ✅ ➔ 🎁 ${h.selfReward||''}`);
+                        const tgt = h.targetDays||21, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
+                        if(h.status==='given_up') {
+                            logs.push(`<div class="flex items-center justify-between gap-1"><span>📌 "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-rose-600 shrink-0">🏳️ ➔ 💸 ${h.selfPenalty||''}</span></div>`);
+                        } else if(done>=tgt) {
+                            logs.push(`<div class="flex items-center justify-between gap-1"><span>📌 "${h.text}" <span class="text-[10px] text-slate-400">${dateStr}</span>:</span> <span class="font-bold text-emerald-600 shrink-0">✅ ➔ 🎁 ${h.selfReward||''}</span></div>`);
+                        }
                     });
                 }
+                
                 const badges = [];
-                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold">+${book} ${t('book')}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full font-bold">+${rew}k</span>`);
+                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-full font-bold">+${book} ${t('book')}</span>`);
+                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 rounded-full font-bold">+${rew}k</span>`);
                 if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full font-bold">0 ${t('book')}</span>`);
                 
                 container.innerHTML += `
-                    <div class="p-3 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-                        <div class="flex justify-between items-center"><span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">${m.avatar?`<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">`:'👤'} ${m.name}</span><div class="flex gap-1.5 items-center">${badges.join('')} <span class="text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full font-bold">-${pen}k</span></div></div>
-                        ${logs.length ? `<div class="text-[11px] bg-slate-50 dark:bg-slate-800 p-2 rounded-xl border border-slate-100 dark:border-slate-600 space-y-1">${logs.map(d=>`<div>${d}</div>`).join('')}</div>` : `<p class="text-[10px] italic text-slate-400">${t('noRewardRecord')}</p>`}
+                    <div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">
+                                ${m.avatar ? `<img src="${m.avatar}" class="w-6 h-6 rounded-full object-cover">` : '👤'} ${m.name}
+                            </span>
+                            <div class="flex gap-1.5 items-center">
+                                ${badges.join('')} 
+                                <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 py-0.5 rounded-full font-bold">-${pen}k</span>
+                            </div>
+                        </div>
+                        ${logs.length ? `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">${logs.join('')}</div>` : `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`}
                     </div>`;
             });
         }
