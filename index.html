@@ -3,19 +3,342 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quản lý Thử thách</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Quản lý Thử thách & Check-in</title>
+  
+  <style>
+    /* ==========================================
+       1. RESET & BASE STYLES
+       ========================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ==========================================
+       2. TABS & ICON SIZE EQUALIZATION
+       YÊU CẦU 1: Đồng bộ kích thước icon 2 tab
+       ========================================== */
+    .tab-header {
+      display: flex;
+      background-color: #ffffff;
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background-color: #4f46e5;
+      color: #ffffff;
+    }
+
+    /* Đảm bảo icon cá nhân và nhóm bằng kích thước nhau */
+    .tab-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 8px;
+    }
+
+    /* ==========================================
+       3. CARD THỬ THÁCH
+       YÊU CẦU 2 & 3: Bỏ icon lịch, xóa code thừa
+       ========================================== */
+    .challenge-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .challenge-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* Bỏ icon lịch, chỉ giữ text ngày tháng */
+    .challenge-date {
+      font-size: 13px;
+      color: #6b7280;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    .challenge-reward {
+      display: inline-block;
+      background: #f3f4f6;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    /* ==========================================
+       4. MODAL CHECK-IN
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
+    .my-checkin-card {
+      background: #f9fafb;
+      border: 1px solid #f3f4f6;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* YÊU CẦU 4A: Ô check-in đơn giản, không icon, không tích chọn sẵn */
+    .custom-checkbox {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    .custom-checkbox input {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+    }
+
+    #txtNote {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* VIEW MODE & BADGES */
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* YÊU CẦU 4C: Hạ cỡ chữ bằng với các thành viên khác (13px) */
+    .status-badge {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .status-completed {
+      background-color: #eef2ff;
+      color: #4f46e5;
+    }
+
+    .status-pending {
+      background-color: #f3f4f6;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+    }
+
+    /* YÊU CẦU 6: Trạng thái Không hoàn thành */
+    .status-failed {
+      background-color: #fef2f2;
+      color: #dc2626;
+    }
+
+    /* YÊU CẦU 4B: Nút icon cây bút */
+    .btn-edit-icon {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-edit-icon:hover {
+      background-color: #e5e7eb;
+    }
+
+    .view-timestamp {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+
+    .view-note {
+      margin-top: 8px;
+      font-size: 13px;
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .lock-notice {
+      font-size: 12px;
+      color: #dc2626;
+      margin-top: 8px;
+    }
+
+    /* ==========================================
+       5. MEMBERS SECTION
+       ========================================== */
+    .members-header {
+      background: #f3f4f6;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .members-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .member-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border: 1px solid #f3f4f6;
+      border-radius: 8px;
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .member-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #4f46e5;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .member-name {
+      font-size: 13px;
+    }
+
+    .member-name small {
+      color: #9ca3af;
+      font-size: 11px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
 
   <div class="container">
     <!-- 1. Thanh Chuyển Tab Thử Thách -->
     <div class="tab-header">
-      <button class="tab-btn active" id="tabGroup">
+      <button class="tab-btn active">
         <img src="https://via.placeholder.com/30/8b5cf6/ffffff?text=GP" class="tab-icon" alt="Group Icon" />
         <span>Thử thách nhóm</span>
       </button>
-      <button class="tab-btn" id="tabPersonal">
+      <button class="tab-btn">
         <img src="https://via.placeholder.com/30/10b981/ffffff?text=ME" class="tab-icon" alt="Personal Icon" />
         <span>Thử thách cá nhân</span>
       </button>
@@ -23,11 +346,10 @@
 
     <!-- 2. Danh sách Card Thử thách -->
     <div class="challenge-list">
-      <!-- Card Thử thách 1 (Ví dụ) -->
       <div class="challenge-card" onclick="openCheckinModal('2026-08-01', 'Dậy sớm')">
         <div class="challenge-title">🔥 Dậy sớm</div>
         
-        <!-- YÊU CẦU 2: Đã bỏ icon lịch, chỉ giữ text ngày tháng -->
+        <!-- YÊU CẦU 2: Đã loại bỏ icon tờ lịch, chỉ hiển thị text ngày tháng -->
         <div class="challenge-date">01/08/2026</div>
 
         <div class="challenge-reward">🎁 +1 Sách | 💸 -100k</div>
@@ -44,13 +366,13 @@
       </div>
 
       <div class="modal-body">
-        <!-- KHU VỰC CHECK-IN CỦA BẢN THÂN -->
+        <!-- KHU VỰC CHECK-IN BẢN THÂN -->
         <div class="my-checkin-card">
           
           <!-- Trạng thái 1: Chưa check-in / Đang chỉnh sửa -->
           <div class="checkin-edit-mode hidden" id="editMode">
             <div class="checkin-option">
-              <!-- YÊU CẦU 4A: Chỉ có ô Hoàn thành, không tích chọn sẵn, không có icon bên trong -->
+              <!-- YÊU CẦU 4A: Chỉ giữ ô Hoàn thành, không icon, không tích chọn sẵn -->
               <label class="custom-checkbox">
                 <input type="checkbox" id="chkComplete" />
                 <span>Hoàn thành</span>
@@ -64,10 +386,10 @@
             </div>
           </div>
 
-          <!-- Trạng thái 2: Đã check-in (Chế độ xem lại gọn nhẹ) -->
+          <!-- Trạng thái 2: Đã check-in (Chế độ xem lại ngắn gọn) -->
           <div class="checkin-view-mode hidden" id="viewMode">
             <div class="view-header">
-              <!-- YÊU CẦU 4C: Cỡ chữ nhỏ bằng thành viên khác -->
+              <!-- YÊU CẦU 4C: Cỡ chữ nhỏ 13px bằng các thành viên khác -->
               <span class="status-badge status-completed" id="myStatusBadge">
                 ✅ Hoàn thành
               </span>
@@ -85,6 +407,7 @@
           <!-- Trạng thái 3: Bị KHÓA do quá thời hạn 2 ngày -->
           <div class="checkin-locked-mode hidden" id="lockedMode">
             <div class="view-header">
+              <!-- YÊU CẦU 6: Hiển thị Không hoàn thành + Dấu X đỏ -->
               <span class="status-badge status-failed">
                 ❌ Không hoàn thành
               </span>
@@ -94,11 +417,10 @@
 
         </div>
 
-        <!-- YÊU CẦU 5: Thành viên khác: 1/2 (Không có space trước dấu 2 chấm) -->
+        <!-- YÊU CẦU 5: Thành viên khác: 1/2 (Không có khoảng trắng thừa trước dấu 2 chấm) -->
         <div class="members-section">
           <div class="members-header">
-            <span class="avatar-mini">👥</span>
-            <span>Thành viên khác: 1/2</span>
+            <span>👥 Thành viên khác: 1/2</span>
             <span class="arrow">▲</span>
           </div>
 
@@ -116,7 +438,7 @@
                 <span class="member-avatar">V</span>
                 <span class="member-name">Vẫn</span>
               </div>
-              <!-- Trạng thái của thành viên chưa làm -->
+              <!-- YÊU CẦU 6: Chưa làm hoặc Không hoàn thành của thành viên khác -->
               <span class="status-badge status-pending" id="member2Status">⏳ Chưa làm</span>
             </div>
           </div>
@@ -126,6 +448,112 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- JS LOGIC -->
+  <script>
+    // Trạng thái thử thách hiện tại
+    let currentChallenge = {
+      dateStr: "2026-08-01", // Định dạng YYYY-MM-DD
+      title: "Dậy sớm",
+      isCheckedIn: false,
+      note: ""
+    };
+
+    /**
+     * YÊU CẦU 6: Kiểm tra tự động khóa check-in sau 2 ngày (00:00 ngày thứ 2)
+     */
+    function checkLockStatus(challengeDateStr, isCheckedIn) {
+      const now = new Date();
+      
+      // Tính mốc 00:00 ngày tiếp theo sau 2 ngày
+      const challengeDate = new Date(challengeDateStr + "T00:00:00");
+      const lockDeadline = new Date(challengeDate);
+      lockDeadline.setDate(lockDeadline.getDate() + 2); // Cộng 2 ngày
+
+      if (isCheckedIn) {
+        return { isLocked: false, isFailed: false };
+      }
+
+      // Quá 00:00 ngày thứ 2 -> Tự động Khóa & Báo Không hoàn thành
+      if (now >= lockDeadline) {
+        return { isLocked: true, isFailed: true };
+      }
+
+      return { isLocked: false, isFailed: false };
+    }
+
+    // Mở Modal
+    function openCheckinModal(dateStr, title) {
+      currentChallenge.dateStr = dateStr;
+      currentChallenge.title = title;
+
+      document.getElementById("modalTitle").innerText = `${title} (01/08)`;
+      document.getElementById("checkinModal").classList.remove("hidden");
+
+      renderCheckinState();
+    }
+
+    // Đóng Modal
+    function closeModal() {
+      document.getElementById("checkinModal").classList.add("hidden");
+    }
+
+    // Cập nhật giao diện Modal
+    function renderCheckinState() {
+      const status = checkLockStatus(currentChallenge.dateStr, currentChallenge.isCheckedIn);
+
+      const editMode = document.getElementById("editMode");
+      const viewMode = document.getElementById("viewMode");
+      const lockedMode = document.getElementById("lockedMode");
+
+      editMode.classList.add("hidden");
+      viewMode.classList.add("hidden");
+      lockedMode.classList.add("hidden");
+
+      if (status.isLocked) {
+        // Trạng thái: Khóa & Không hoàn thành
+        lockedMode.classList.remove("hidden");
+      } else if (currentChallenge.isCheckedIn) {
+        // Trạng thái: Đã check-in (Chế độ xem gọn nhẹ + Icon cây bút)
+        viewMode.classList.remove("hidden");
+        const noteElem = document.getElementById("viewNote");
+        if (currentChallenge.note) {
+          noteElem.innerText = `"${currentChallenge.note}"`;
+          noteElem.classList.remove("hidden");
+        } else {
+          noteElem.classList.add("hidden");
+        }
+      } else {
+        // Trạng thái: Chưa check-in (Chưa tích chọn sẵn)
+        editMode.classList.remove("hidden");
+        document.getElementById("chkComplete").checked = false; // Yêu cầu 4A: Không tích chọn sẵn
+        document.getElementById("txtNote").value = "";
+      }
+    }
+
+    // Lưu kết quả
+    function submitCheckin() {
+      const isChecked = document.getElementById("chkComplete").checked;
+      if (!isChecked) {
+        alert("Vui lòng tích chọn 'Hoàn thành'!");
+        return;
+      }
+
+      currentChallenge.isCheckedIn = true;
+      currentChallenge.note = document.getElementById("txtNote").value.trim();
+
+      renderCheckinState();
+    }
+
+    // YÊU CẦU 4B: Bấm nút cây bút ✏️ để bật lại form chỉnh sửa
+    function enableEditMode() {
+      document.getElementById("viewMode").classList.add("hidden");
+      
+      const editMode = document.getElementById("editMode");
+      editMode.classList.remove("hidden");
+      
+      document.getElementById("chkComplete").checked = true;
+      document.getElementById("txtNote").value = currentChallenge.note;
+    }
+  </script>
 </body>
 </html>
