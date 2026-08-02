@@ -13,11 +13,13 @@
     </script>
     <!-- HTML2Canvas (Chụp ảnh) -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <!-- HEIC to JPEG Converter -->
-    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<!-- HEIC to JPEG Converter -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -146,11 +148,13 @@
     <!-- MODAL MENU SETTINGS -->
     <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
         <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[230px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
+            <!-- YÊU CẦU 1: Chế độ tối/sáng gộp 1 icon duy nhất chuyển đổi qua lại -->
             <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <span id="theme-status-icon" class="text-base">🌙</span>
                 <span id="m-theme">Chế độ tối</span>
             </button>
             
+            <!-- Nhạc nền -->
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
                 <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
                 <div class="flex items-center gap-2 shrink-0">
@@ -1073,6 +1077,7 @@
             });
         }
 
+        // YÊU CẦU 1: Áp dụng theme và cập nhật đồng bộ 1 icon duy nhất + tên trạng thái
         function applyTheme(theme) {
             currentTheme = theme;
             localStorage.setItem('bvgpTheme', currentTheme);
@@ -1329,23 +1334,7 @@
         ];
 
         let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': [] }, notifications: {} };
-        
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
-        let cachedUserName = localStorage.getItem('bvgpOfficialLoggedInUserName');
-        let cachedUserAvatar = localStorage.getItem('bvgpOfficialLoggedInUserAvatar');
-
-        // HIỂN THỊ LẬP TỨC TỪ CACHE (CHỐNG NHÁY TÊN KHI REFRESH)
-        if (loggedInUserId && cachedUserName) {
-            const isAdmin = loggedInUserId === 'member_7';
-            document.getElementById('current-user-label').innerHTML = isAdmin ? `${cachedUserName} 👑` : cachedUserName;
-            document.getElementById('current-user-avatar').innerHTML = cachedUserAvatar ? `<img src="${cachedUserAvatar}" class="w-full h-full object-cover">` : cachedUserName.charAt(0);
-            if(isAdmin) {
-                document.getElementById('btn-admin-tool').classList.remove('hidden');
-                document.getElementById('btn-cap-act').classList.remove('hidden');
-                document.getElementById('btn-cap-rew').classList.remove('hidden');
-            }
-        }
-
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
         let currentEditingDay = null;
@@ -1494,6 +1483,7 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
 
+        // Tính toán chuỗi liên tiếp (streak)
         function getStreakInfo(prog) {
             if (!prog || !prog.length) return { active: 0, max: 0 };
             let maxStreak = 0;
@@ -1598,6 +1588,7 @@
                             return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
+                        // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] (ví dụ: 🔥2)
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
@@ -1700,6 +1691,7 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
 
+                    // YÊU CẦU 2: Định dạng hiển thị 🔥[số] cho phần cá nhân
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1756,17 +1748,7 @@
             r.readAsDataURL(f);
         }
         function previewAvatarImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('avatar-file-name').innerText = f.name; compressImage(f, b => { tempAvatarBase64 = b; document.getElementById('preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover">`; }); } else document.getElementById('avatar-file-name').innerText = t('noFileSelected'); }
-        function saveAvatarImage() { 
-            if (!tempAvatarBase64) return alert(t('requireImage')); 
-            const idx = appData.members.findIndex(m => m.id === loggedInUserId); 
-            if (idx > -1) { 
-                appData.members[idx].avatar = tempAvatarBase64; 
-                localStorage.setItem('bvgpOfficialLoggedInUserAvatar', tempAvatarBase64);
-                dbRef.set(appData); 
-                alert(t('avatarSaved')); 
-                document.getElementById('avatar-modal').classList.add('hidden'); 
-            } 
-        }
+        function saveAvatarImage() { if (!tempAvatarBase64) return alert(t('requireImage')); const idx = appData.members.findIndex(m => m.id === loggedInUserId); if (idx > -1) { appData.members[idx].avatar = tempAvatarBase64; dbRef.set(appData); alert(t('avatarSaved')); document.getElementById('avatar-modal').classList.add('hidden'); } }
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
@@ -1840,13 +1822,6 @@
         function finishLogin(id) { 
             loggedInUserId = id; 
             localStorage.setItem('bvgpOfficialLoggedInUserId', id); 
-            
-            const m = appData.members.find(x => x.id === id);
-            if (m) {
-                localStorage.setItem('bvgpOfficialLoggedInUserName', m.name);
-                localStorage.setItem('bvgpOfficialLoggedInUserAvatar', m.avatar || '');
-            }
-
             document.getElementById('login-modal').classList.add('hidden'); 
             updateUserLabel(); 
             updateNotificationBadge(); 
@@ -1855,14 +1830,7 @@
             document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_7');
             renderList(); 
         }
-        function switchUser() { 
-            localStorage.removeItem('bvgpOfficialLoggedInUserId'); 
-            localStorage.removeItem('bvgpOfficialLoggedInUserName');
-            localStorage.removeItem('bvgpOfficialLoggedInUserAvatar');
-            loggedInUserId = null; 
-            closeUserMenu(); 
-            checkLogin(); 
-        }
+        function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
         function changePin() {
             const o = document.getElementById('old-pin-input').value.trim(), n = document.getElementById('new-pin-input').value.trim(), idx = appData.members.findIndex(m=>m.id===loggedInUserId);
             if (idx===-1) return;
@@ -1873,9 +1841,6 @@
         function updateUserLabel() { 
             const m = appData.members.find(x => x.id === loggedInUserId); 
             if (m) { 
-                localStorage.setItem('bvgpOfficialLoggedInUserName', m.name);
-                localStorage.setItem('bvgpOfficialLoggedInUserAvatar', m.avatar || '');
-
                 const isAdmin = loggedInUserId === 'member_7';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
@@ -2778,6 +2743,7 @@
                 return;
             }
 
+            // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] trong Bảng xếp hạng
             container.innerHTML = mems.map(m => {
                 const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
                 const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
