@@ -243,11 +243,12 @@
             <!-- TAB HOẠT ĐỘNG -->
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
                 <div class="flex justify-end relative">
-                    <!-- NÚT CHỤP ẢNH TAB HOẠT ĐỘNG 2 LỰA CHỌN -->
-                    <button onclick="toggleCaptureDropdown('active')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
+                    <!-- NÚT CHỤP ẢNH TAB HOẠT ĐỘNG 3 LỰA CHỌN -->
+                    <button onclick="toggleCaptureDropdown('active')" class="bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
                     <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
-                        <button onclick="executeCapture('active', 'personal')" id="btn-cap-act-user" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-indigo-600 dark:text-indigo-400 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
+                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
+                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 border-t border-slate-100 dark:border-slate-700">Nhóm</button>
+                        <button onclick="executeCapture('active', 'personal')" id="btn-cap-act-user" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
                     </div>
                 </div>
                 <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
@@ -259,10 +260,10 @@
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
                 <div class="flex justify-end relative">
                     <!-- NÚT CHỤP ẢNH TAB THƯỞNG PHẠT 2 LỰA CHỌN -->
-                    <button onclick="toggleCaptureDropdown('rewards')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
+                    <button onclick="toggleCaptureDropdown('rewards')" class="bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">📷</button>
                     <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
-                        <button onclick="executeCapture('rewards', 'personal')" id="btn-cap-rew-user" class="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 font-semibold text-indigo-600 dark:text-indigo-400 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
+                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200">Tất cả</button>
+                        <button onclick="executeCapture('rewards', 'personal')" id="btn-cap-rew-user" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 border-t border-slate-100 dark:border-slate-700">Cá nhân</button>
                     </div>
                 </div>
                 
@@ -308,12 +309,12 @@
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-700 text-center uppercase tracking-wider text-[10px]">Tùy chọn</h4>
-            <button id="action-btn-share" onclick="triggerMenuAction('share')" class="w-full text-left py-2.5 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/35 text-indigo-600 dark:text-indigo-400 rounded-xl transition flex items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
+            <button id="action-btn-share" onclick="triggerMenuAction('share')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 rounded-xl transition flex items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 dark:hover:bg-amber-900/35 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ Tạm dừng</button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/35 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ Tiếp tục</button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 dark:hover:bg-rose-900/35 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ Bỏ cuộc</button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition flex items-center gap-2">📦 Lưu trữ</button>
-            <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/35 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ Khôi phục</button>
+            <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 dark:hover:bg-slate-700 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ Khôi phục</button>
             <hr class="border-slate-100 dark:border-slate-700">
             <button id="action-btn-delete" onclick="triggerMenuAction('delete')" class="w-full text-left py-2.5 px-3 hover:bg-red-50 dark:hover:bg-red-900/35 text-red-600 rounded-xl transition flex items-center gap-2">🗑️ Xóa vĩnh viễn</button>
         </div>
@@ -848,8 +849,16 @@
 
         function t(key) { return translations[currentLang][key] || key; }
 
+        // YÊU CẦU 1: HÀM SẮP XẾP THEO NGÀY BẮT ĐẦU (Cũ nhất -> Mới nhất)
+        const sortByStartDate = (a, b) => {
+            const dateA = new Date(a.startDate).getTime();
+            const dateB = new Date(b.startDate).getTime();
+            if (dateA !== dateB) return dateA - dateB;
+            return (a.createdAt || a.id) - (b.createdAt || b.id);
+        };
+
         const UNIFORM_COMPLETED_BADGE_HTML = `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shrink-0">
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shrink-0">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
                 Hoàn thành
             </span>`;
@@ -1108,13 +1117,11 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
-        // YÊU CẦU 1: RENDER LIST CẢI TIẾN (SẮP XẾP TỪ CŨ ĐẾN MỚI, ĐÁNH SỐ ĐỒNG BỘ)
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
             
             if (activeTab === 'dashboard') {
-                // SẮP XẾP TỪ CŨ NHẤT ĐẾN MỚI NHẤT DỰA TRÊN CREATED AT / ID
                 list = (appData.sharedChallenges||[]).filter(c => {
                     const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
                     if (currentFilter === 'archived') return c.archived;
@@ -1122,7 +1129,7 @@
                     if (currentFilter === 'my') return j;
                     if (currentFilter === 'new') return !j;
                     return true;
-                }).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+                }).sort(sortByStartDate);
 
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
                 
@@ -1136,25 +1143,26 @@
                     const isCompleted = cnt >= tgt;
                     const isFailed = gu || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
+                    // YÊU CẦU 3: SỬA LỖI HTML2CANVAS KHÔNG CHỤP ĐƯỢC TAG BẰNG CÁCH DÙNG `flex w-fit` VÀ `div`
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
-                                <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</span>
-                                <span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Hoàn thành</span>
+                            <div class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
+                                <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</div>
+                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">Hoàn thành</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
-                                <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</span>
-                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Không hoàn thành</span>
+                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit">
+                                <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">Không hoàn thành</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="text-[11px] font-normal inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-sm">
-                                <span class="text-emerald-600 font-semibold">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</span>
-                                <span class="text-slate-300">|</span>
-                                <span class="text-rose-600 font-semibold">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</span>
+                            <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full text-[11px] font-normal w-fit">
+                                <div class="text-emerald-600 font-semibold">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
+                                <div class="text-slate-300">|</div>
+                                <div class="text-rose-600 font-semibold">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
                             </div>`;
                     }
 
@@ -1187,7 +1195,7 @@
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm">🏆</button></span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition">🏆</button></span>
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -1217,11 +1225,10 @@
                         </div>`;
                 });
             } else {
-                // SẮP XẾP TỪ CŨ NHẤT ĐẾN MỚI NHẤT DỰA TRÊN CREATED AT / ID
                 list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
                     if (currentFilter === 'archived') return h.archived;
                     return !h.archived;
-                }).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+                }).sort(sortByStartDate);
 
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
                 
@@ -1232,29 +1239,30 @@
                     const isCompleted = cnt >= tgt;
                     const isFailed = (st === 'given_up') || (tIdx >= tot && cnt < tgt) || ((tot - tIdx) < (tgt - cnt) && cnt < tgt);
 
+                    // YÊU CẦU 3: SỬA LỖI HTML2CANVAS KHÔNG CHỤP ĐƯỢC TAG CÁ NHÂN BẰNG CÁCH DÙNG `flex w-fit` VÀ `div`
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
-                                <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">🎁 ${h.selfReward||'---'}</span>
-                                <span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Hoàn thành</span>
+                            <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
+                                <div class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate max-w-[150px] sm:max-w-[200px]">🎁 ${h.selfReward||'---'}</div>
+                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0">Hoàn thành</div>
                             </div>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl shadow-sm">
-                                <span class="text-sm font-extrabold text-rose-600 dark:text-rose-400">💸 ${h.selfPenalty||'---'}</span>
-                                <span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">Không hoàn thành</span>
+                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3.5 py-1.5 rounded-2xl w-fit max-w-full">
+                                <div class="text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate max-w-[150px] sm:max-w-[200px]">💸 ${h.selfPenalty||'---'}</div>
+                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0">Không hoàn thành</div>
                             </div>`;
                     } else {
                         rewardPenaltyBoxHTML = `
                             <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-fit max-w-full">
                                 <div class="flex items-center gap-1.5 text-emerald-600">
-                                    <span class="shrink-0">🎁</span>
-                                    <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfReward||'---'}</span>
+                                    <div class="shrink-0">🎁</div>
+                                    <div class="break-words max-w-[250px] sm:max-w-[280px]">${h.selfReward||'---'}</div>
                                 </div>
                                 <div class="flex items-center gap-1.5 text-rose-600">
-                                    <span class="shrink-0">💸</span>
-                                    <span class="break-words max-w-[280px] sm:max-w-xs">${h.selfPenalty||'---'}</span>
+                                    <div class="shrink-0">💸</div>
+                                    <div class="break-words max-w-[250px] sm:max-w-[280px]">${h.selfPenalty||'---'}</div>
                                 </div>
                             </div>`;
                     }
@@ -1475,7 +1483,6 @@
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
-        // YÊU CẦU 4: CHỤP ẢNH CHIA SẺ THÀNH TÍCH (SỬA TRIỆT ĐỂ LỖI BỊ TRỐNG NỘI DUNG)
         async function captureChallengeCard(id) {
             const cardEl = document.getElementById(`challenge-card-${id}`);
             if(!cardEl) return;
@@ -1514,7 +1521,7 @@
             if(m) m.classList.toggle('hidden');
         }
 
-        // YÊU CẦU 2 & 3: THỰC THI CHỤP ẢNH KẾT QUẢ VỚI 2 LỰA CHỌN (TẤT CẢ / CÁ NHÂN)
+        // YÊU CẦU 2: THỰC THI CHỤP ẢNH KẾT QUẢ VỚI 3 LỰA CHỌN TRONG TAB HOẠT ĐỘNG
         async function executeCapture(tab, option) {
             document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
             const isDark = document.documentElement.classList.contains('dark');
@@ -1536,6 +1543,8 @@
 
                 if(option === 'personal') {
                     if(grpBox) grpBox.style.display = 'none';
+                } else if (option === 'group') {
+                    if(perBox) perBox.style.display = 'none';
                 }
 
                 try {
@@ -1553,6 +1562,7 @@
                     alert("Lỗi chụp ảnh Hoạt động!");
                 } finally {
                     if(grpBox) grpBox.style.display = '';
+                    if(perBox) perBox.style.display = '';
                     if(wasGrpHidden && grpContent) grpContent.classList.add('hidden');
                     if(wasPerHidden && perContent) perContent.classList.add('hidden');
                 }
@@ -1975,13 +1985,12 @@
             }
         }
 
-        // YÊU CẦU 2: CẬP NHẬT TAB HOẠT ĐỘNG (2 MỤC NHÓM/CÁ NHÂN DẠNG ACCORDION, BỔ SUNG AVATAR, NGÀY THÁNG, SẮP XẾP CŨ -> MỚI)
         function renderReportPreview() {
             let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 TIẾN ĐỘ HOÀN THÀNH</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             // 1. MỤC NHÓM
-            const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+            const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
             htmlTxt += `
                 <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
                     <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
@@ -2040,7 +2049,7 @@
             htmlTxt += `</div></div>`;
 
             // 2. MỤC CÁ NHÂN
-            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
 
             htmlTxt += `
@@ -2096,15 +2105,13 @@
             }
         }
 
-        // YÊU CẦU 3: CẬP NHẬT TAB THƯỞNG/ PHẠT (CĂN CHỈNH AVATAR, BỎ NGOẶC KÉP, TÍCH ĐẶT Ở CUỐI, TÍNH ĐỦ THỬ THÁCH BỊ PHẠT)
         function renderRewardsSummary() {
             const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
             appData.members.forEach(m => {
                 let book = 0, rew = 0, pen = 0;
                 let groupLogs = [], personalLogs = [];
 
-                // 1. SẮP XẾP THỬ THÁCH NHÓM TỪ CŨ ĐẾN MỚI
-                const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+                const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
                 sortedGroup.forEach(c => {
                     const tgt = c.targetDays||21, tot = c.totalDays||25, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
@@ -2130,9 +2137,8 @@
                     }
                 });
                 
-                // 2. SẮP XẾP THỬ THÁCH CÁ NHÂN TỪ CŨ ĐẾN MỚI
                 if(m.id === loggedInUserId) {
-                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort((a,b)=>(a.createdAt||a.id)-(b.createdAt||b.id));
+                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
                     const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
                     sortedPersonal.forEach(h => {
                         const tgt = h.targetDays||21, tot = h.totalDays||25, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
