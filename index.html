@@ -22,14 +22,24 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        body.font-small { font-size: 14px; }
+        body.font-small { font-size: 13px; }
+        body.font-small .text-xs { font-size: 11px !important; }
+        body.font-small .text-sm { font-size: 13px !important; }
+        body.font-small .text-base { font-size: 15px !important; }
+        body.font-small .text-2xl { font-size: 20px !important; }
+
         body.font-normal { font-size: 16px; }
+        body.font-normal .text-xs { font-size: 13px !important; }
+        body.font-normal .text-sm { font-size: 15px !important; }
+        body.font-normal .text-base { font-size: 17px !important; }
+        body.font-normal .text-2xl { font-size: 24px !important; }
+
         body.font-large { font-size: 19px; line-height: 1.6; }
-        body.font-large .text-xs { font-size: 14px !important; }
-        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 12px !important; }
-        body.font-large .text-sm { font-size: 17px !important; }
-        body.font-large .text-base { font-size: 20px !important; }
-        body.font-large .text-2xl { font-size: 28px !important; }
+        body.font-large .text-xs { font-size: 15px !important; }
+        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 13px !important; }
+        body.font-large .text-sm { font-size: 18px !important; }
+        body.font-large .text-base { font-size: 21px !important; }
+        body.font-large .text-2xl { font-size: 30px !important; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
@@ -203,12 +213,20 @@
                 </h3>
                 <button onclick="closeDescriptionModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
+            
             <div class="space-y-3 text-xs">
+                <!-- KHUNG THƯỞNG/PHẠT RIÊNG LẬP -->
+                <div id="desc-reward-frame" class="p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600">
+                    <!-- Nạp động -->
+                </div>
+
+                <!-- KHUNG THÔNG TIN CHI TIẾT -->
                 <div id="desc-modal-info" class="p-3.5 bg-indigo-50/50 dark:bg-slate-700/40 rounded-2xl border border-indigo-100 dark:border-slate-600 space-y-2 text-slate-700 dark:text-slate-200">
                     <!-- Nạp động -->
                 </div>
+
                 <div>
-                    <h4 id="desc-rule-title" class="font-bold text-slate-700 dark:text-slate-300 mb-1">📝 Mô tả / Quy tắc:</h4>
+                    <h4 id="desc-rule-title" class="font-bold text-slate-700 dark:text-slate-300 mb-1">📝 Mô tả/ Quy tắc thử thách</h4>
                     <div class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap py-2 leading-relaxed bg-slate-50 dark:bg-slate-900/50 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 min-h-[60px]" id="desc-modal-content"></div>
                 </div>
             </div>
@@ -322,14 +340,14 @@
     <!-- MAIN UI -->
     <div class="max-w-2xl mx-auto space-y-6 pb-20">
         
-        <!-- HEADER CÓ COVER SẮC NÉT -->
+        <!-- HEADER CÓ COVER TĂNG TƯƠNG PHẢN CHỮ -->
         <header class="relative w-full rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
-            <div class="absolute inset-0 bg-slate-900/20"></div>
+            <div class="absolute inset-0 bg-slate-900/45 backdrop-blur-[1px]"></div>
             
             <div class="relative z-10 flex items-start justify-between w-full">
                 <div class="flex flex-col items-center gap-1 cursor-pointer group" onclick="document.getElementById('user-menu-modal').classList.remove('hidden')">
                     <div id="current-user-avatar" class="w-12 h-12 rounded-full border-[2.5px] border-white overflow-hidden shadow-md flex items-center justify-center bg-indigo-100 text-indigo-600 font-bold text-lg group-hover:scale-105 transition-transform bg-white">👤</div>
-                    <span id="current-user-label" class="text-[11px] font-extrabold text-white bg-slate-900/60 px-2.5 py-0.5 rounded-full shadow-sm backdrop-blur-sm">---</span>
+                    <span id="current-user-label" class="text-[11px] font-black text-white bg-slate-900/70 px-2.5 py-0.5 rounded-full shadow-sm">---</span>
                 </div>
                 
                 <div class="flex items-center gap-2 mt-1">
@@ -342,8 +360,8 @@
             </div>
 
             <div class="relative z-10 text-center space-y-1 mt-4">
-                <h1 id="t-app-title" class="text-2xl font-extrabold text-white tracking-tight drop-shadow-md">Thử Thách Kỷ Luật BVGP</h1>
-                <p id="slogan-text" class="text-[11px] text-slate-200 italic px-4 drop-shadow"></p>
+                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-lg">Thử Thách Kỷ Luật BVGP</h1>
+                <p id="slogan-text" class="text-xs text-slate-100 font-semibold italic px-4 drop-shadow-md"></p>
             </div>
         </header>
 
@@ -353,7 +371,10 @@
                 <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs">
                 <span>Thử thách nhóm</span>
             </button>
-            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center gap-1.5">📌 Thử thách cá nhân</button>
+            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center gap-1.5">
+                <span id="tab-personal-avatar-icon"></span>
+                <span>Thử thách cá nhân</span>
+            </button>
         </div>
 
         <!-- BỘ LỌC VÀ NÚT TẠO -->
@@ -392,7 +413,7 @@
                         <input type="number" id="create-target-input" value="21" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 text-center" required>
                     </div>
                     <div class="col-span-1">
-                        <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng (ngày):</label>
+                        <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng ngày:</label>
                         <input type="number" id="create-days-input" value="25" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 text-center" required>
                     </div>
                 </div>
@@ -445,7 +466,7 @@
             vi: {
                 appTitle: "Thử Thách Kỷ Luật BVGP",
                 tabDashboard: "Thử thách nhóm",
-                tabUpdate: "📌 Thử thách cá nhân",
+                tabUpdate: "Thử thách cá nhân",
                 reportBtnText: "Kết quả",
                 reportModalTitle: "📋 Kết quả thử thách",
                 createSharedTitle: "Tạo thử thách nhóm",
@@ -454,7 +475,7 @@
                 descSharedPh: "Mô tả / Quy tắc thử thách (không bắt buộc)...",
                 startDate: "Ngày bắt đầu:",
                 targetDays: "Mục tiêu:",
-                totalDays: "Tổng (ngày):",
+                totalDays: "Tổng ngày:",
                 createBtn: "Tạo thử thách",
                 habitPh: "Tên thử thách cá nhân (VD: Thực tập lòng biết ơn)...",
                 descPersonalPh: "Mô tả / Mục tiêu chi tiết (không bắt buộc)...",
@@ -495,7 +516,7 @@
                 dayDetails: "Chi tiết ngày",
                 personal: "Cá nhân",
                 completedThisDay: "Hoàn thành",
-                createdBy: "Tạo bởi",
+                createdBy: "tạo bởi:",
                 alertFuture: "⏳ Chưa tới ngày này!",
                 settingsTitle: "⚙️ Cài đặt",
                 uploadAvatarTitle: "🖼️ Tải lên Avatar",
@@ -592,7 +613,7 @@
             en: {
                 appTitle: "BVGP Discipline",
                 tabDashboard: "Group Challenges",
-                tabUpdate: "📌 Personal",
+                tabUpdate: "Personal Challenges",
                 reportBtnText: "Results",
                 reportModalTitle: "📋 Results",
                 createSharedTitle: "Create Group Challenge",
@@ -642,7 +663,7 @@
                 dayDetails: "Day Details",
                 personal: "Personal",
                 completedThisDay: "Completed",
-                createdBy: "Created by",
+                createdBy: "created by:",
                 alertFuture: "⏳ Future date!",
                 settingsTitle: "⚙️ Settings",
                 uploadAvatarTitle: "🖼️ Avatar",
@@ -805,7 +826,11 @@
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
             document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-xs"><span>${t('tabDashboard')}</span>`;
-            document.getElementById('btn-update').innerText = t('tabUpdate');
+            
+            const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
+            document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
+            document.getElementById('btn-update').querySelector('span:last-child').innerText = t('tabUpdate');
+
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
@@ -847,7 +872,7 @@
             document.getElementById('hint-refresh-btn').innerHTML = t('hintRefresh');
             document.getElementById('notif-title').innerText = t('notifTitle');
             document.getElementById('notif-read-btn').innerText = t('markRead');
-            document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descSharedPh').split('(')[0]}`;
+            document.getElementById('desc-rule-title').innerHTML = `📝 Mô tả/ Quy tắc thử thách`;
             document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
 
             document.getElementById('modal-day-title').innerText = t('dayDetails');
@@ -881,6 +906,7 @@
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
 
             updateCreateFormLabels();
+            setFontSize(currentFontSize);
         }
 
         function updateCreateFormLabels() {
@@ -1005,7 +1031,7 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0">${u.name.charAt(0)}</div>`;
         }
 
-        // RENDER LIST
+        // RENDER LIST (KÈM THANH TIẾN ĐỘ VÀ MÀU NHẠT CHO MỖI THẺ)
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
@@ -1037,7 +1063,18 @@
                             if(ic) s="bg-indigo-600 text-white border-indigo-600"; else if(it) s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; else if(ifu) s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; else if(ip) s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-1.5 bg-amber-500 text-white text-[7px] px-1 rounded-full">${t('todayBadge')}</span>`:''}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
                         }).join('') + `</div>`;
-                        content = `<div class="space-y-3"><div class="flex justify-between items-center text-xs flex-wrap gap-2"><span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm">🏆</button></span>${gu?`<span class="text-rose-600 font-bold bg-rose-50 px-2.5 py-0.5 rounded-full">${t('givenUpStatus')}</span>`:''}</div>${gu?'':grid}</div>`;
+                        
+                        content = `
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <button onclick="openLeaderboardModal(${c.id})" class="p-1 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm">🏆</button></span>
+                                    ${gu?`<span class="text-rose-600 font-bold bg-rose-50 px-2.5 py-0.5 rounded-full">${t('givenUpStatus')}</span>`:''}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-indigo-400 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${gu?'':grid}
+                            </div>`;
                     }
 
                     container.innerHTML += `
@@ -1106,10 +1143,13 @@
                                 </div>
                                 <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2">⋮</button>
                             </div>
-                            <div class="space-y-3">
+                            <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span></span>
                                     ${stBadge}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${(st==='active')?grid:''}
                             </div>
@@ -1247,7 +1287,7 @@
                 if(c){ 
                     isArch=c.archived; 
                     const isJoined = c.participants && c.participants[loggedInUserId] === true;
-                    if(!isJoined) return; // Bảo vệ người chưa tham gia
+                    if(!isJoined) return;
                 } 
             } 
             else { const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){ isArch=h.archived; st=h.status||'active'; } }
@@ -1389,11 +1429,16 @@
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // TẠO THỬ THÁCH
+        // TẠO THỬ THÁCH (CÓ KIỂM TRA TỔNG NGÀY > MỤC TIÊU)
         document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
             const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||21, tot = parseInt(document.getElementById('create-days-input').value)||25;
             if(!tIn) return;
+
+            if(tot <= tgt) {
+                alert("⚠️ Tổng số ngày phải lớn hơn Mục tiêu!");
+                return;
+            }
             
             if (activeTab === 'dashboard') {
                 const isB = document.getElementById('create-bigplay-checkbox').checked, cR = document.getElementById('create-reward-input').value, cP = document.getElementById('create-penalty-input').value;
@@ -1464,7 +1509,7 @@
                 </div>`;
         }
 
-        // DETAIL MODAL TỐI ƯU
+        // DETAIL MODAL (CĂN CHỈNH KHUNG THƯỞNG/PHẠT & DÒNG TẠO BỞI)
         function showDescriptionModalById(id, isP) {
             let tT="", d="", s="", tgt=21, tot=25, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
             
@@ -1498,14 +1543,39 @@
 
             document.getElementById('desc-modal-header').innerHTML = `<span class="shrink-0">${modalTitleIconHTML}</span><span id="desc-modal-title-text">${tT}</span>`;
             
-            const rwUI = !isP ? `<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-900/40 px-2.5 py-0.5 rounded-full font-bold">🎁 +${isB?cR:1}${isB?'k':` ${t('book')}`}</span> <span class="text-slate-300">|</span> <span class="text-rose-600 bg-rose-50 dark:bg-rose-900/40 px-2.5 py-0.5 rounded-full font-bold">💸 -${isB?cP:100}k</span>` : `<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-900/40 px-2.5 py-0.5 rounded-full font-bold">🎁 ${sR}</span> <span class="text-slate-300">|</span> <span class="text-rose-600 bg-rose-50 dark:bg-rose-900/40 px-2.5 py-0.5 rounded-full font-bold">💸 ${sP}</span>`;
+            // RENDERING KHUNG THƯỞNG PHẠT RIÊNG LẬP NẰM DƯỚI TIÊU ĐỀ
+            const frameEl = document.getElementById('desc-reward-frame');
+            if(!isP) {
+                frameEl.className = "p-2.5 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600";
+                frameEl.innerHTML = `<div class="flex items-center gap-1.5 text-xs font-bold"><span class="text-emerald-600">🎁 +${isB?cR:1}${isB?'k':` ${t('book')}`}</span> <span class="text-slate-300">|</span> <span class="text-rose-600">💸 -${isB?cP:100}k</span></div>`;
+            } else {
+                frameEl.className = "p-3 bg-emerald-50/70 dark:bg-slate-700/50 rounded-2xl border border-emerald-100 dark:border-slate-600 space-y-1 text-xs font-bold";
+                frameEl.innerHTML = `
+                    <div class="text-emerald-600">🎁 ${sR}</div>
+                    <div class="text-rose-600">💸 ${sP}</div>
+                `;
+            }
             
+            // RENDERING KHUNG START/TARGET/TẠO BỞI VỚI LỀ TRÁI CĂN THẲNG HÀNG TỪ ICON LỊCH 📅
             document.getElementById('desc-modal-info').innerHTML = `
-                <div class="flex items-center gap-1 text-[11px] text-left pb-1 border-b border-indigo-100/60 dark:border-slate-600">${rwUI}</div>
-                <div class="flex items-center gap-2 font-medium">📅 Start: <strong>${formatDateString(s)}</strong> <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span></div>
-                <div class="flex items-center gap-2 font-medium">🎯 Target: <strong>${cnt}/${tgt}</strong></div>
-                <div class="flex items-center gap-1.5 text-xs"><span class="text-slate-500 dark:text-slate-400 font-normal">tạo bởi:</span> ${creatorAvatarHTML} <strong class="font-bold text-slate-700 dark:text-slate-200">${creatorNameDisplay}</strong></div>
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="w-5 flex justify-center shrink-0">📅</span>
+                    <span class="text-slate-500">Start:</span>
+                    <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
+                    <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="w-5 flex justify-center shrink-0">${modalTitleIconHTML}</span>
+                    <span class="text-slate-500">Target:</span>
+                    <strong class="text-slate-700 dark:text-slate-200">${cnt}/${tgt}</strong>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="w-5 flex justify-center shrink-0">${creatorAvatarHTML}</span>
+                    <span class="text-slate-400 font-normal">tạo bởi:</span>
+                    <strong class="font-bold text-slate-700 dark:text-slate-200">${creatorNameDisplay}</strong>
+                </div>
             `;
+            
             document.getElementById('desc-modal-content').innerText = d||t('noDescription');
             document.getElementById('description-modal').classList.remove('hidden');
         }
