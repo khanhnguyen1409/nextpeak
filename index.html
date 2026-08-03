@@ -17,8 +17,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
-<!-- HEIC to JPEG Converter -->
-<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <!-- HEIC to JPEG Converter -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -103,12 +103,25 @@
     <!-- MODAL MENU USER -->
     <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeUserMenu()">
         <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
+            <button onclick="openRenameModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">✏️ <span id="m-change-name">Đổi tên tài khoản</span></button>
             <button onclick="openAvatarModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🖼️ <span id="m-change-avatar">Đổi Avatar</span></button>
             <button onclick="openPinModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🔒 <span id="m-change-pin">Đổi mã PIN</span></button>
             <button onclick="openHistoryModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">⏱️ <span id="m-history">Lịch sử hoạt động</span></button>
             <button id="btn-admin-tool" onclick="openAdminCenterModal()" class="hidden w-full text-left py-2 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 rounded-xl transition flex items-center gap-2">🛠️ <span id="m-admin-center">Trung tâm Quản trị</span></button>
             <hr class="border-slate-100 dark:border-slate-700 my-1">
             <button onclick="switchUser()" class="w-full text-left py-2 px-3 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded-xl transition flex items-center gap-2">🚪 <span id="m-logout">Thoát</span></button>
+        </div>
+    </div>
+
+    <!-- MODAL ĐỔI TÊN TÀI KHOẢN -->
+    <div id="rename-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
+            <h3 id="s-rename-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">✏️ Đổi tên tài khoản</h3>
+            <input type="text" id="new-name-input" placeholder="Nhập tên mới..." class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <div class="flex gap-2 pt-2">
+                <button id="s-close-rename-btn" onclick="document.getElementById('rename-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+                <button onclick="changeMemberName()" id="s-update-name-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Cập nhật</button>
+            </div>
         </div>
     </div>
 
@@ -148,7 +161,6 @@
     <!-- MODAL MENU SETTINGS -->
     <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
         <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[230px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            <!-- YÊU CẦU 1: Chế độ tối/sáng gộp 1 icon duy nhất chuyển đổi qua lại -->
             <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <span id="theme-status-icon" class="text-base">🌙</span>
                 <span id="m-theme">Chế độ tối</span>
@@ -598,6 +610,7 @@
                 saveAvatarBtn: "Lưu Avatar",
                 changePinTitle: "Đổi mã PIN",
                 changePin: "Đổi mã PIN",
+                changeName: "Đổi tên tài khoản",
                 oldPinPh: "Mã PIN hiện tại",
                 newPinPh: "Mã PIN mới",
                 updatePinBtn: "Cập nhật",
@@ -769,6 +782,7 @@
                 saveAvatarBtn: "Save Avatar",
                 changePinTitle: "Change PIN",
                 changePin: "Change PIN",
+                changeName: "Change display name",
                 oldPinPh: "Current PIN",
                 newPinPh: "New PIN",
                 updatePinBtn: "Update",
@@ -1077,7 +1091,6 @@
             });
         }
 
-        // YÊU CẦU 1: Áp dụng theme và cập nhật đồng bộ 1 icon duy nhất + tên trạng thái
         function applyTheme(theme) {
             currentTheme = theme;
             localStorage.setItem('bvgpTheme', currentTheme);
@@ -1203,6 +1216,12 @@
             document.getElementById('l-reg-back-btn').innerText = t('backBtn');
             document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
             
+            document.getElementById('m-change-name').innerText = currentLang === 'vi' ? 'Đổi tên tài khoản' : 'Change display name';
+            document.getElementById('s-rename-title').innerText = currentLang === 'vi' ? '✏️ Đổi tên tài khoản' : '✏️ Change display name';
+            document.getElementById('new-name-input').placeholder = currentLang === 'vi' ? 'Nhập tên mới...' : 'Enter new name...';
+            document.getElementById('s-close-rename-btn').innerText = t('closeBtn');
+            document.getElementById('s-update-name-btn').innerText = t('saveUpdate');
+
             document.getElementById('m-theme').innerText = currentTheme === 'dark' ? t('themeLight') : t('themeDark');
             document.getElementById('m-music').innerText = t('music');
             document.getElementById('m-lang').innerText = t('lang');
@@ -1377,6 +1396,53 @@
         function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
         function closeSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.add('hidden'); }
         
+        function openRenameModal() {
+            closeUserMenu();
+            const m = appData.members.find(x => x.id === loggedInUserId);
+            if (m) {
+                document.getElementById('new-name-input').value = m.name;
+            }
+            document.getElementById('rename-modal').classList.remove('hidden');
+        }
+
+        function changeMemberName() {
+            const newName = document.getElementById('new-name-input').value.trim();
+            if (!newName) return alert('Vui lòng nhập tên mới!');
+
+            const mIdx = appData.members.findIndex(x => x.id === loggedInUserId);
+            if (mIdx === -1) return;
+
+            const currentName = appData.members[mIdx].name;
+            if (newName === currentName) {
+                document.getElementById('rename-modal').classList.add('hidden');
+                return;
+            }
+
+            const newNameLower = newName.toLowerCase();
+            const isMemberExist = appData.members.some(m => m.id !== loggedInUserId && m.name.toLowerCase() === newNameLower);
+            const isPendingExist = (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
+
+            if (isMemberExist || isPendingExist) {
+                return alert('⚠️ Tên này đã tồn tại trên hệ thống hoặc đang chờ duyệt. Vui lòng chọn tên khác!');
+            }
+
+            appData.members[mIdx].name = newName;
+
+            (appData.sharedChallenges || []).forEach(c => {
+                if (c.creatorId === loggedInUserId) {
+                    c.creatorName = newName;
+                }
+            });
+
+            dbRef.set(appData);
+
+            alert('✨ Đổi tên thành công!');
+            document.getElementById('rename-modal').classList.add('hidden');
+            
+            updateUserLabel();
+            renderList();
+        }
+
         function openAvatarModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); document.getElementById('preview-avatar').innerHTML=m.avatar?`<img src="${m.avatar}" class="w-full h-full object-cover">`:m.name.charAt(0); tempAvatarBase64=m.avatar||''; document.getElementById('avatar-modal').classList.remove('hidden'); }
         function openPinModal() { closeUserMenu(); document.getElementById('pin-modal').classList.remove('hidden'); }
         function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
@@ -1483,7 +1549,6 @@
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
 
-        // Tính toán chuỗi liên tiếp (streak)
         function getStreakInfo(prog) {
             if (!prog || !prog.length) return { active: 0, max: 0 };
             let maxStreak = 0;
@@ -1588,7 +1653,6 @@
                             return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
-                        // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] (ví dụ: 🔥2)
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
@@ -1691,7 +1755,6 @@
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
 
-                    // YÊU CẦU 2: Định dạng hiển thị 🔥[số] cho phần cá nhân
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -1785,12 +1848,20 @@
         function submitNewRegistration() {
             const name = document.getElementById('reg-name-input').value.trim();
             const pin = document.getElementById('reg-pin-input').value.trim();
-            if (!name) return alert('Vui lòng nhập tên!');
+            if (!name) return alert('Vui lòng nhập tên của bạn!');
             if (pin.length !== 4 || isNaN(pin)) return alert(t('pinFormat'));
+
+            const nameLower = name.toLowerCase();
+            const isMemberExist = (appData.members || []).some(m => m.name.toLowerCase() === nameLower);
+            const isPendingExist = (appData.pendingMembers || []).some(p => p.name.toLowerCase() === nameLower);
+
+            if (isMemberExist || isPendingExist) {
+                return alert('⚠️ Tên này đã được sử dụng hoặc đang trong danh sách chờ duyệt. Vui lòng chọn một tên khác!');
+            }
 
             appData.pendingMembers = appData.pendingMembers || [];
             const newId = 'member_' + Date.now();
-            appData.pendingMembers.push({ id: newId, name, pin });
+            appData.pendingMembers.push({ id: newId, name, pin, createdAt: Date.now() });
             
             sendNotification('member_7', 'system', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
 
@@ -2743,7 +2814,6 @@
                 return;
             }
 
-            // YÊU CẦU 2: Hiển thị streak định dạng 🔥[số] trong Bảng xếp hạng
             container.innerHTML = mems.map(m => {
                 const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
                 const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
