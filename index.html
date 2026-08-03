@@ -121,7 +121,7 @@
                 <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
 
-            <!-- 1. Đổi Avatar -->
+            <!-- Avatar -->
             <div class="flex flex-col items-center justify-center space-y-2 pt-1">
                 <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
                 
@@ -140,7 +140,7 @@
 
             <hr class="border-slate-100 dark:border-slate-700 my-2">
 
-            <!-- 2. Đổi Tên -->
+            <!-- Tên -->
             <div class="space-y-1.5">
                 <label id="profile-name-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">✏️ Tên hiển thị:</label>
                 <input type="text" id="profile-name-input" placeholder="Nhập tên mới..." class="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -148,7 +148,7 @@
 
             <hr class="border-slate-100 dark:border-slate-700 my-2">
 
-            <!-- 3. Đổi PIN -->
+            <!-- PIN -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
                     <label id="profile-pin-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400">🔒 Đổi mã PIN:</label>
@@ -158,7 +158,6 @@
                 <input type="password" id="profile-new-pin" placeholder="Mã PIN mới (4 số)" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
-            <!-- Nút thao tác -->
             <div class="flex gap-2 pt-2">
                 <button id="s-close-profile-btn" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-semibold">Đóng</button>
                 <button onclick="saveProfileChanges()" id="profile-save-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold transition">Lưu thay đổi</button>
@@ -175,6 +174,44 @@
             </div>
             
             <div class="space-y-4 text-xs">
+                <!-- ⚙️ Cấu hình Tham số Hệ thống -->
+                <div class="p-4 bg-indigo-50/60 dark:bg-slate-900/50 rounded-2xl border border-indigo-100 dark:border-slate-700 space-y-3">
+                    <h4 class="font-bold text-indigo-600 flex items-center gap-1.5 text-xs">⚙️ Cấu hình Tham số Hệ thống (Chỉ Admin)</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Thưởng mặc định:</label>
+                            <input type="text" id="cfg-reward-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Phạt mặc định (k):</label>
+                            <input type="number" id="cfg-penalty-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu (ngày):</label>
+                            <input type="number" id="cfg-target-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Tổng số ngày:</label>
+                            <input type="number" id="cfg-total-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 block mb-1">Mã Master PIN Quản trị:</label>
+                        <input type="password" id="cfg-masterpin-input" maxlength="4" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                    </div>
+                    <button onclick="saveSystemConfig()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition text-xs shadow-xs">💾 Lưu Cấu Hình Hệ Thống</button>
+                </div>
+
+                <!-- 💬 Quản lý Slogan & Playlist Nhạc -->
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-3">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-200">🎵 Quản lý Playlist Nhạc Nền</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-music-url-input" placeholder="Dán link MP3 mới..." class="flex-1 px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700">
+                        <button onclick="addMusicUrl()" class="bg-indigo-600 text-white px-3 py-1.5 rounded-xl font-bold">Thêm</button>
+                    </div>
+                    <div id="admin-music-list" class="space-y-1 max-h-28 overflow-y-auto pr-1"></div>
+                </div>
+
                 <!-- Duyệt thành viên mới -->
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border space-y-2">
                     <h4 id="admin-pending-title" class="font-bold text-indigo-600">👥 Duyệt tài khoản thành viên mới</h4>
@@ -187,7 +224,7 @@
                     <div id="admin-members-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
                 </div>
 
-                <!-- Hệ thống / Admin Reset -->
+                <!-- Khôi phục hệ thống -->
                 <div class="p-4 bg-rose-50/50 dark:bg-rose-950/20 rounded-2xl border border-rose-100 dark:border-rose-900/50 space-y-2">
                     <h4 id="admin-system-title" class="font-bold text-rose-600">⚙️ Khôi phục hệ thống (Admin Reset)</h4>
                     <p id="admin-system-desc" class="text-[11px] text-slate-500">Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.</p>
@@ -207,7 +244,6 @@
                 <span id="m-theme">Chế độ tối</span>
             </button>
             
-            <!-- Nhạc nền -->
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
                 <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
                 <div class="flex items-center gap-2 shrink-0">
@@ -314,7 +350,6 @@
                 <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng/ Phạt</button>
             </div>
 
-            <!-- TAB HOẠT ĐỘNG -->
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
                 <div class="flex justify-end relative">
                     <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
@@ -329,7 +364,6 @@
                 </div>
             </div>
 
-            <!-- TAB THƯỞNG PHẠT -->
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
                 <div class="flex justify-end relative">
                     <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
@@ -345,7 +379,7 @@
                             <span id="reward-rules-arrow" class="text-xs transition-transform duration-200">▼</span>
                         </button>
                         <div id="reward-rule-box" class="p-3 text-xs text-slate-700 dark:text-slate-200 space-y-2 border-t border-slate-200 hidden">
-                            <p>🎯 Nhóm thường: 💸 -100k phạt | 🎁 +1 Sách thưởng</p>
+                            <p id="rule-desc-group-text">🎯 Nhóm thường: Phạt & Thưởng theo cấu hình</p>
                             <p>🔥 Chơi lớn: Tùy chỉnh mức thưởng/phạt</p>
                             <p>📌 Cá nhân: Tự đặt cam kết</p>
                         </div>
@@ -453,7 +487,6 @@
                 
                 <div class="flex items-center gap-2 mt-1">
                     <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm flex items-center gap-1.5">Kết quả</button>
-                    <!-- Nút Tải Lại / Refresh -->
                     <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
                     <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">
                         🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
@@ -538,7 +571,6 @@
                     </div>
                 </div>
 
-                <!-- THƯỞNG PHẠT CÁ NHÂN (2 DÒNG) -->
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
                     <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
                         <div>
@@ -704,7 +736,7 @@
                 heicError: "Lỗi file HEIC!",
                 requireImage: "Vui lòng chọn ảnh!",
                 clickToPlay: "Chạm màn hình để bật nhạc!",
-                adminConfirmTitle: "PIN Quản trị (0000):",
+                adminConfirmTitle: "PIN Quản trị (Master PIN):",
                 adminConfirmWarn: "⚠️ XÓA TOÀN BỘ DỮ LIỆU TEST?",
                 adminSuccess: "✨ Dọn rác thành công!",
                 notAdmin: "Không có quyền hạn!",
@@ -885,7 +917,7 @@
                 heicError: "HEIC Error!",
                 requireImage: "Select image!",
                 clickToPlay: "Tap to play music!",
-                adminConfirmTitle: "Master PIN (0000):",
+                adminConfirmTitle: "Master PIN:",
                 adminConfirmWarn: "⚠️ RESET ALL DATA?",
                 adminSuccess: "✨ Cleaned!",
                 notAdmin: "No permission!",
@@ -926,160 +958,49 @@
             }
         };
 
-        const slogans = {
+        const defaultSlogans = {
             vi: [
                 "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
                 "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
                 "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun",
                 "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện. - Khuyết danh",
-                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle",
-                "Kỷ luật bản thân là chìa khóa mở ra cánh cửa tự do. - Stephen Covey",
-                "Sự khác biệt giữa không thể và có thể nằm ở sự quyết tâm. - Tommy Lasorda",
-                "Một ounce thực hành đáng giá hơn một tấn lý thuyết. - Swami Vivekananda",
-                "Không có con đường tắt nào dẫn đến bất kỳ nơi nào đáng giá. - Beverly Sills",
-                "Đừng chờ đợi cơ hội, hãy tạo ra nó. - George Bernard Shaw",
-                "Bí mật của tương lai bạn được cất giấu trong thói quen hằng ngày. - Mike Murdock",
-                "Chiến thắng lớn nhất là chiến thắng chính mình. - Plato",
-                "Cách tốt nhất để dự đoán tương lai là tạo ra nó. - Peter Drucker",
-                "Hãy sống mỗi ngày như thể đó là kiệt tác của bạn. - John Wooden",
-                "Những điều tuyệt vời không bao giờ đến từ vùng an toàn. - Khuyết danh",
-                "Thất bại là gia vị làm cho thành công thêm hương vị. - Truman Capote",
-                "Mọi thành tựu lớn đều đòi hỏi thời gian. - Maya Angelou",
-                "Không có gì là không thể với một trái tim sẵn sàng. - Khuyết danh",
-                "Đầu tư vào bản thân là khoản đầu tư sinh lời nhất. - Warren Buffett",
-                "Bạn không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm. - Jimmy Dean",
-                "Người duy nhất bạn nên cố gắng để tốt hơn chính là bạn của ngày hôm qua. - Khuyết danh",
-                "Hãy hướng về phía mặt trời, bóng tối sẽ khuất sau lưng bạn. - Walt Whitman",
-                "Thành công là đi từ thất bại này đến thất bại khác mà không mất đi nhiệt huyết. - Winston Churchill",
-                "Một người lạc quan luôn nhìn thấy cơ hội trong mọi khó khăn. - Winston Churchill",
-                "Đừng để ngày hôm qua chiếm quá nhiều thời gian của ngày hôm nay. - Will Rogers",
-                "Mỗi sáng thức dậy, bạn có hai lựa chọn: Ngủ tiếp với ước mơ, hay thức dậy và theo đuổi nó. - Khuyết danh",
-                "Kỷ luật là việc chọn giữa những gì bạn muốn bây giờ và những gì bạn muốn nhất. - Abraham Lincoln",
-                "Đừng bao giờ từ bỏ một ước mơ chỉ vì tốn thời gian. Thời gian đằng nào cũng trôi qua. - Earl Nightingale",
-                "Không bao giờ là quá muộn để trở thành người mà bạn muốn trở thành. - George Eliot",
-                "Hãy làm những gì bạn có thể, với những gì bạn có, ở nơi bạn đang đứng. - Theodore Roosevelt",
-                "Sức mạnh không đến từ thể chất, nó đến từ ý chí bất khuất. - Mahatma Gandhi",
-                "Kỷ luật sớm còn hơn hối hận muộn. - Khuyết danh",
-                "Hãy kiên nhẫn. Tất cả mọi thứ đều khó khăn trước khi trở nên dễ dàng. - Saadi",
-                "Bạn sẽ không bao giờ thay đổi cuộc đời mình cho đến khi bạn thay đổi điều mình làm mỗi ngày. - John C. Maxwell",
-                "Tôi đã thất bại đi thất bại lại, và đó là lý do tôi thành công. - Michael Jordan",
-                "Giới hạn duy nhất của bạn là do chính bạn tạo ra. - Khuyết danh",
-                "Một tâm trí tích cực sẽ mang lại một cuộc sống tích cực. - Khuyết danh",
-                "Khó khăn không phải để cản bước, mà là để tôi luyện bạn. - Khuyết danh",
-                "Thói quen tốt khó hình thành nhưng dễ sống cùng. - Khuyết danh",
-                "Trì hoãn là kẻ cắp của thời gian. - Edward Young",
-                "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn xây ước mơ của họ. - Tony Gaskins",
-                "Chỉ cần bạn không dừng lại, việc tiến chậm không là vấn đề. - Khổng Tử",
-                "Sự lặp lại là mẹ của mọi kỹ năng. - Tony Robbins",
-                "Tôi thà hối quyết vì những điều đã làm còn hơn là những điều chưa làm. - Mark Twain",
-                "Đau đớn do kỷ luật nặng vài ounce, đau đớn do hối tiếc nặng hàng tấn. - Jim Rohn",
-                "Hãy gieo một hành động, gặt một thói quen. - Khuyết danh",
-                "Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ. - Eleanor Roosevelt",
-                "Không có gì thay thế được sự chăm chỉ. - Thomas Edison",
-                "Bạn vĩ đại hơn những gì bạn nghĩ. - Khuyết danh",
-                "Hạnh phúc không phải là điểm đến, mà là hành trình. - Buddha"
+                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle"
             ],
             en: [
                 "Discipline is the bridge between goals and accomplishment. - Jim Rohn",
                 "A journey of a thousand miles begins with a single step. - Lao Tzu",
-                "Motivation is what gets you started. Habit is what keeps you going. - Jim Ryun",
-                "Success is not a miracle, it's a result of training. - Unknown",
-                "We are what we repeatedly do. - Aristotle",
-                "Self-discipline is the key to personal freedom. - Stephen Covey",
-                "The difference between the impossible and the possible lies in a man's determination. - Tommy Lasorda",
-                "An ounce of practice is worth more than tons of preaching. - Gandhi",
-                "There are no shortcuts to any place worth going. - Beverly Sills",
-                "Don't wait for opportunity. Create it. - George Bernard Shaw",
-                "The secret of your future is hidden in your daily routine. - Mike Murdock",
-                "The first and greatest victory is to conquer yourself. - Plato",
-                "The best way to predict the future is to create it. - Peter Drucker",
-                "Make each day your masterpiece. - John Wooden",
-                "Great things never came from comfort zones. - Unknown",
-                "Failure is the condiment that gives success its flavor. - Truman Capote",
-                "All great achievements require time. - Maya Angelou",
-                "Nothing is impossible to a willing heart. - Unknown",
-                "An investment in knowledge pays the best interest. - Benjamin Franklin",
-                "I can't change the direction of the wind, but I can adjust my sails. - Jimmy Dean",
-                "The only person you should try to be better than is who you were yesterday. - Unknown",
-                "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
-                "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
-                "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty. - Winston Churchill",
-                "Don't let yesterday take up too much of today. - Will Rogers",
-                "You have two choices: sleep with your dreams, or wake up and chase them. - Unknown",
-                "Discipline is choosing between what you want now and what you want most. - Abraham Lincoln",
-                "Never give up on a dream just because of the time it will take. The time will pass anyway. - Earl Nightingale",
-                "It is never too late to be what you might have been. - George Eliot",
-                "Do what you can, with what you have, where you are. - Theodore Roosevelt",
-                "Strength does not come from physical capacity. It comes from an indomitable will. - Mahatma Gandhi",
-                "Suffer the pain of discipline or suffer the pain of regret. - Jim Rohn",
-                "Have patience. All things are difficult before they become easy. - Saadi",
-                "You will never change your life until you change something you do daily. - John C. Maxwell",
-                "I have failed over and over, and that is why I succeed. - Michael Jordan",
-                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
-                "A positive mindset brings positive things. - Unknown",
-                "Obstacles don't have to stop you. - Michael Jordan",
-                "Good habits are hard to form but easy to live with. - Unknown",
-                "Procrastination is the thief of time. - Edward Young",
-                "If you don't build your dream, someone else will hire you to build theirs. - Tony Gaskins",
-                "It does not matter how slowly you go as long as you do not stop. - Confucius",
-                "Repetition is the mother of skill. - Tony Robbins",
-                "I regret the things I didn't do more than the things I did. - Mark Twain",
-                "Discipline weighs ounces, regret weighs tons. - Jim Rohn",
-                "Sow an act, reap a habit. - George Dana Boardman",
-                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-                "There is no substitute for hard work. - Thomas Edison",
-                "You are braver than you believe. - A.A. Milne",
-                "Happiness is a journey, not a destination. - Buddha"
+                "Motivation is what gets you started. Habit is what keeps you going. - Jim Ryun"
             ]
         };
 
-        const challengeHintsPool = {
+        const defaultHints = {
             vi: [
-                { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false }, { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false }, { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
-                { title: "Uống đủ nước", desc: "Uống đủ 2 Lít nước lọc", isP: false }, { title: "Không trà sữa", desc: "Chống cự cám dỗ đồ uống ngọt", isP: false }, { title: "Chạy bộ", desc: "Hoàn thành 2km mỗi ngày", isP: false },
-                { title: "Ngủ sớm", desc: "Lên giường trước 11:00 PM", isP: false }, { title: "Đi bộ", desc: "Đạt 5000 bước chân/ngày", isP: false }, { title: "Plank", desc: "Giữ Plank đúng tư thế 1 phút", isP: false },
-                { title: "Chống đẩy", desc: "Hoàn thành 20 cái Push-up", isP: false }, { title: "Học ngoại ngữ", desc: "Dành 15 phút học từ vựng", isP: false }, { title: "Không TikTok", desc: "Không lướt các nền tảng video ngắn", isP: false },
-                { title: "Ăn rau xanh", desc: "Bữa chính bắt buộc có rau xanh", isP: false }, { title: "Không ăn vặt", desc: "Chỉ ăn 3 bữa chính trong ngày", isP: false }, { title: "Đọc tin chuyên ngành", desc: "Đọc 1 bài báo kiến thức mới", isP: false },
-                { title: "Gọn gàng", desc: "Dọn dẹp bàn làm việc/giường ngủ", isP: false }, { title: "Tự nấu ăn", desc: "Không đặt đồ ăn ngoài", isP: false }, { title: "Thiền định", desc: "Ngồi nhắm mắt tĩnh tâm 10 phút", isP: false },
-                { title: "Liên lạc gia đình", desc: "Gọi điện hỏi thăm người thân", isP: false }, { title: "Không than vãn", desc: "Suy nghĩ tích cực suốt 24h", isP: false }, { title: "Nghe Podcast", desc: "Nghe 1 tập podcast phát triển bản thân", isP: false },
-                { title: "Stretching", desc: "Giãn cơ 10 phút trước khi ngủ", isP: false }, { title: "No Sugar", desc: "Tuyệt đối không tiêu thụ đường tinh luyện", isP: false }, { title: "Lập kế hoạch", desc: "Lên to-do list cho ngày hôm sau", isP: false }, { title: "Tập trung", desc: "Làm việc bằng phương pháp Pomodoro", isP: false },
-                
-                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true }, { title: "Mỉm cười", desc: "Cười với chính mình trong gương 1 phút", isP: true }, { title: "Hít thở sâu", desc: "Dành 5 phút hít thở tập trung", isP: true },
-                { title: "Chi tiêu tiết kiệm", desc: "Chỉ tiêu tối đa 100k hôm nay", isP: true }, { title: "Ôn tập kiến thức", desc: "Xem lại bài cũ trong 15 phút", isP: true }, { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true },
-                { title: "Mindful Eating", desc: "Không dùng điện thoại khi ăn", isP: true }, { title: "Khởi đầu tươi mát", desc: "Uống 1 cốc nước chanh ấm khi thức dậy", isP: true }, { title: "Tắm nắng", desc: "Dành 15 phút đón nắng sớm", isP: true },
-                { title: "Đọc Blog", desc: "Đọc 1 bài blog truyền cảm hứng", isP: true }, { title: "Nhạc tĩnh tâm", desc: "Nghe nhạc không lời trong lúc làm việc", isP: true }, { title: "Khen ngợi", desc: "Dành lời khen thật lòng cho 1 người", isP: true },
-                { title: "Detox MXH", desc: "Off hoàn toàn Facebook/Insta 24h", isP: true }, { title: "Từ thiện", desc: "Làm 1 việc tốt hoặc quyên góp nhỏ", isP: true }, { title: "Ăn chậm nhai kỹ", desc: "Nhai 20 lần trước khi nuốt", isP: true },
-                { title: "Không Cồn", desc: "Say No với Bia, Rượu", isP: true }, { title: "Sống xanh", desc: "Tưới và chăm sóc cây cối", isP: true }, { title: "Quản lý tài chính", desc: "Ghi chép lại toàn bộ chi tiêu trong ngày", isP: true },
-                { title: "Tự chuẩn bị bữa sáng", desc: "Làm bữa sáng đủ dinh dưỡng tại nhà", isP: true }, { title: "Ngủ trưa", desc: "Chợp mắt 15-20 phút buổi trưa", isP: true }, { title: "Viết nhật ký", desc: "Ghi lại những cảm xúc của ngày hôm nay", isP: true },
-                { title: "Học 5 từ vựng", desc: "Học và đặt câu với 5 từ tiếng Anh mới", isP: true }, { title: "Giảm cafein", desc: "Chỉ uống 1 ly cafe/trà trong ngày", isP: true }, { title: "Khám phá", desc: "Đi làm bằng một con đường mới", isP: true }, { title: "Đúng giờ", desc: "Đến đúng hoặc sớm hơn các cuộc hẹn", isP: true }
+                { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false },
+                { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false },
+                { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
+                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true },
+                { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true }
             ],
             en: [
-                { title: "Wake up early", desc: "Before 5:30 AM", isP: false }, { title: "Read", desc: "At least 20 pages", isP: false }, { title: "Workout", desc: "30 mins of sweating", isP: false },
-                { title: "Hydrate", desc: "Drink 2L of water", isP: false }, { title: "No bubble tea", desc: "Resist sweet drinks", isP: false }, { title: "Running", desc: "Run 2km daily", isP: false },
-                { title: "Sleep early", desc: "In bed by 11:00 PM", isP: false }, { title: "Walking", desc: "Hit 5000 steps", isP: false }, { title: "Plank", desc: "Hold plank for 1 minute", isP: false },
-                { title: "Push-ups", desc: "Do 20 push-ups", isP: false }, { title: "Language", desc: "Learn vocab for 15 mins", isP: false }, { title: "No TikTok", desc: "Stop scrolling short videos", isP: false },
-                { title: "Eat greens", desc: "Veggies in main meals", isP: false }, { title: "No snacks", desc: "Only 3 main meals", isP: false }, { title: "Industry news", desc: "Read 1 article", isP: false },
-                { title: "Tidy up", desc: "Clean desk/bed", isP: false }, { title: "Home cooking", desc: "No food delivery", isP: false }, { title: "Meditation", desc: "10 mins mindfulness", isP: false },
-                { title: "Call family", desc: "Talk to loved ones", isP: false }, { title: "No complaining", desc: "Stay positive 24h", isP: false }, { title: "Podcast", desc: "Listen to 1 episode", isP: false },
-                { title: "Stretching", desc: "10 mins before bed", isP: false }, { title: "No Sugar", desc: "Zero refined sugar", isP: false }, { title: "Planning", desc: "Make to-do list for tmr", isP: false }, { title: "Focus", desc: "Work with Pomodoro", isP: false },
-                
-                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }, { title: "Smile", desc: "Smile in the mirror for 1 min", isP: true }, { title: "Deep breaths", desc: "5 mins of breathing", isP: true },
-                { title: "Frugal day", desc: "Spend less than $5", isP: true }, { title: "Review notes", desc: "Study past material 15m", isP: true }, { title: "Skincare", desc: "Full night routine", isP: true },
-                { title: "Mindful Eating", desc: "No phone while eating", isP: true }, { title: "Fresh start", desc: "Warm lemon water upon waking", isP: true }, { title: "Sunlight", desc: "15 mins of morning sun", isP: true },
-                { title: "Read Blog", desc: "Read 1 inspiring post", isP: true }, { title: "Chill music", desc: "Lo-Fi while working", isP: true }, { title: "Compliment", desc: "Give a genuine compliment", isP: true },
-                { title: "Social Detox", desc: "No FB/IG for 24h", isP: true }, { title: "Charity", desc: "Do a good deed", isP: true }, { title: "Chew slowly", desc: "Chew 20 times per bite", isP: true },
-                { title: "Alcohol free", desc: "Say No to booze", isP: true }, { title: "Green life", desc: "Water the plants", isP: true }, { title: "Track spending", desc: "Log all expenses", isP: true },
-                { title: "Make breakfast", desc: "Cook a healthy morning meal", isP: true }, { title: "Power nap", desc: "15-20 min afternoon nap", isP: true }, { title: "Journaling", desc: "Write down today's feelings", isP: true },
-                { title: "5 new words", desc: "Learn 5 vocabulary words", isP: true }, { title: "Less Caffeine", desc: "Max 1 cup of coffee/tea", isP: true }, { title: "Explore", desc: "Take a new route to work", isP: true }, { title: "Be on time", desc: "Punctual to all meetings", isP: true }
+                { title: "Wake up early", desc: "Before 5:30 AM", isP: false },
+                { title: "Read", desc: "At least 20 pages", isP: false },
+                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }
             ]
         };
 
-        const musicPlaylist = [
+        const defaultPlaylist = [
             "https://files.catbox.moe/bfdutu.mp3",
             "https://files.catbox.moe/icvzx6.mp3",
-            "https://files.catbox.moe/4eq12q.mp3",
             "https://files.catbox.moe/4eq12q.mp3"
         ];
+
+        const defaultSystemConfig = {
+            defaultReward: "1 Sách",
+            defaultPenalty: 100,
+            defaultTargetDays: 14,
+            defaultTotalDays: 16,
+            masterPin: "0000"
+        };
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
         let currentFontSize = localStorage.getItem('bvgpFontSize') || 'normal';
@@ -1141,12 +1062,16 @@
         }
         function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); renderList(); }
 
-        // ====== MUSIC CONTROLS ======
+        // AUDIO CONTROLS
         let currentMusicIndex = 0;
         let isMusicPlaying = false;
         const audio = document.getElementById('bg-music');
         
         audio.addEventListener('ended', nextMusic);
+
+        function getPlaylist() {
+            return (appData.playlist && appData.playlist.length) ? appData.playlist : defaultPlaylist;
+        }
 
         function toggleMusicPlay() {
             if(isMusicPlaying) { 
@@ -1159,8 +1084,10 @@
         }
 
         function playCurrentMusic() {
-            if (audio.src !== musicPlaylist[currentMusicIndex]) {
-                audio.src = musicPlaylist[currentMusicIndex];
+            const list = getPlaylist();
+            if (currentMusicIndex >= list.length) currentMusicIndex = 0;
+            if (audio.src !== list[currentMusicIndex]) {
+                audio.src = list[currentMusicIndex];
             }
             audio.play().then(() => { 
                 isMusicPlaying = true; 
@@ -1169,15 +1096,17 @@
         }
 
         function nextMusic() {
-            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+            const list = getPlaylist();
+            currentMusicIndex = (currentMusicIndex + 1) % list.length;
             if (isMusicPlaying) playCurrentMusic();
-            else audio.src = musicPlaylist[currentMusicIndex];
+            else audio.src = list[currentMusicIndex];
         }
 
         function prevMusic() {
-            currentMusicIndex = (currentMusicIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
+            const list = getPlaylist();
+            currentMusicIndex = (currentMusicIndex - 1 + list.length) % list.length;
             if (isMusicPlaying) playCurrentMusic();
-            else audio.src = musicPlaylist[currentMusicIndex];
+            else audio.src = list[currentMusicIndex];
         }
 
         function toggleLanguage() {
@@ -1302,6 +1231,9 @@
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
 
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            document.getElementById('rule-desc-group-text').innerText = `🎯 Nhóm thường: 💸 -${sysCfg.defaultPenalty}k phạt | 🎁 +${sysCfg.defaultReward} thưởng`;
+
             document.getElementById('admin-modal-title').innerHTML = t('adminCenterTitle');
             document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
             document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
@@ -1317,11 +1249,16 @@
 
         function updateCreateFormLabels() {
             const isGrp = activeTab==='dashboard';
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            
             document.getElementById('form-create-title').innerText = isGrp ? t('createSharedTitle') : t('createPersonalTitle');
             document.getElementById('create-title-input').placeholder = isGrp ? t('challengePh') : t('habitPh');
             document.getElementById('create-desc-input').placeholder = isGrp ? t('descSharedPh') : t('descPersonalPh');
             document.getElementById('t-create-submit-btn').innerText = isGrp ? t('createBtn') : t('addHabitBtn');
             
+            document.getElementById('create-target-input').value = sysCfg.defaultTargetDays;
+            document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
+
             const submitBtn = document.getElementById('t-create-submit-btn');
             const panel = document.getElementById('master-create-panel');
             const togglePlusBtn = document.getElementById('btn-create-toggle');
@@ -1340,7 +1277,9 @@
         }
 
         function displayRandomSlogan() {
-            const list = slogans[currentLang] || slogans.vi;
+            const list = (appData.slogansPool && appData.slogansPool[currentLang] && appData.slogansPool[currentLang].length) 
+                ? appData.slogansPool[currentLang] 
+                : defaultSlogans[currentLang];
             const fullText = list[Math.floor(Math.random() * list.length)];
             const parts = fullText.split(' - ');
             const quote = parts[0] || fullText;
@@ -1369,7 +1308,15 @@
             { id: 'member_1', name: 'Khánh Nguyễn', avatar: '', pin: '', pinHistory: [] }
         ];
 
-        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_1': [] }, notifications: {} };
+        let appData = { 
+            members: defaultMembers, 
+            pendingMembers: [], 
+            sharedChallenges: [], 
+            personalHabits: { 'member_1': [] }, 
+            notifications: {},
+            systemConfig: defaultSystemConfig,
+            playlist: defaultPlaylist
+        };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
@@ -1397,6 +1344,8 @@
                 appData.sharedChallenges = sVal.sharedChallenges || [];
                 appData.personalHabits = sVal.personalHabits || appData.personalHabits;
                 appData.notifications = sVal.notifications || {};
+                appData.systemConfig = sVal.systemConfig || defaultSystemConfig;
+                appData.playlist = sVal.playlist || defaultPlaylist;
             } else {
                 dbRef.set(appData);
             }
@@ -1416,7 +1365,6 @@
         function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
         function closeSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.add('hidden'); }
         
-        // --- HỒ SƠ CÁ NHÂN ---
         function openProfileModal() {
             closeUserMenu();
             const m = appData.members.find(x => x.id === loggedInUserId);
@@ -1511,7 +1459,67 @@
             document.getElementById('admin-center-modal').classList.add('hidden');
         }
 
+        function saveSystemConfig() {
+            const reward = document.getElementById('cfg-reward-input').value.trim();
+            const penalty = parseInt(document.getElementById('cfg-penalty-input').value);
+            const target = parseInt(document.getElementById('cfg-target-input').value);
+            const total = parseInt(document.getElementById('cfg-total-input').value);
+            const masterPin = document.getElementById('cfg-masterpin-input').value.trim();
+
+            if (!reward || isNaN(penalty) || isNaN(target) || isNaN(total)) {
+                return alert('⚠️ Vui lòng nhập đúng và đầy đủ thông tin!');
+            }
+            if (masterPin && (masterPin.length !== 4 || isNaN(masterPin))) {
+                return alert('⚠️ Master PIN phải là 4 số!');
+            }
+
+            appData.systemConfig = {
+                defaultReward: reward,
+                defaultPenalty: penalty,
+                defaultTargetDays: target,
+                defaultTotalDays: total,
+                masterPin: masterPin || appData.systemConfig?.masterPin || "0000"
+            };
+
+            dbRef.set(appData);
+            alert('✨ Đã lưu Cấu hình Hệ thống mới!');
+            updateStaticTexts();
+            renderList();
+        }
+
+        function addMusicUrl() {
+            const url = document.getElementById('admin-music-url-input').value.trim();
+            if(!url) return;
+            appData.playlist = appData.playlist || [...defaultPlaylist];
+            appData.playlist.push(url);
+            document.getElementById('admin-music-url-input').value = '';
+            dbRef.set(appData);
+            renderAdminCenterContent();
+        }
+
+        function removeMusicUrl(idx) {
+            appData.playlist.splice(idx, 1);
+            dbRef.set(appData);
+            renderAdminCenterContent();
+        }
+
         function renderAdminCenterContent() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            document.getElementById('cfg-reward-input').value = sysCfg.defaultReward;
+            document.getElementById('cfg-penalty-input').value = sysCfg.defaultPenalty;
+            document.getElementById('cfg-target-input').value = sysCfg.defaultTargetDays;
+            document.getElementById('cfg-total-input').value = sysCfg.defaultTotalDays;
+            document.getElementById('cfg-masterpin-input').value = sysCfg.masterPin || "0000";
+
+            const musicContainer = document.getElementById('admin-music-list');
+            const listM = getPlaylist();
+            musicContainer.innerHTML = listM.map((u, i) => `
+                <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-1.5 rounded-lg border text-[10px]">
+                    <span class="truncate max-w-[280px] font-mono">${u}</span>
+                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 font-bold hover:underline">Xóa</button>
+                </div>
+            `).join('');
+
             const pendingContainer = document.getElementById('admin-pending-list');
             const pendingArr = appData.pendingMembers || [];
             if (!pendingArr.length) {
@@ -1633,7 +1641,8 @@
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
-            
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+
             if (activeTab === 'dashboard') {
                 list = (appData.sharedChallenges||[]).filter(c => {
                     const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
@@ -1647,7 +1656,7 @@
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
                 
                 list.forEach((c, idx) => {
-                    const tot=c.totalDays||16, tgt=c.targetDays||14, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
+                    const tot=c.totalDays||sysCfg.defaultTotalDays, tgt=c.targetDays||sysCfg.defaultTargetDays, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
                     let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
                     
                     const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
@@ -1658,27 +1667,30 @@
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     const isFailed = gu || (!isCompleted && cFinished);
 
+                    const defRewardText = sysCfg.defaultReward;
+                    const defPenaltyText = `${sysCfg.defaultPenalty}k`;
+
                     let rewardPenaltyBoxHTML = "";
                     let statusBadgeHTML = "";
 
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
                             <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
-                                <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</span>
+                                <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
                             <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
-                                <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</span>
+                                <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit max-w-full">
-                                <div class="text-emerald-600 truncate flex items-center gap-1">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
+                                <div class="text-emerald-600 truncate flex items-center gap-1">🎁 +${c.isBigPlay?(c.customReward||0)+'k':defRewardText}</div>
                                 <div class="text-slate-300 shrink-0">|</div>
-                                <div class="text-rose-600 truncate flex items-center gap-1">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
+                                <div class="text-rose-600 truncate flex items-center gap-1">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':defPenaltyText}</div>
                             </div>`;
                     }
 
@@ -1753,7 +1765,7 @@
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
                 
                 list.forEach((h, idx) => {
-                    const tot=h.totalDays||16, tgt=h.targetDays||14, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
+                    const tot=h.totalDays||sysCfg.defaultTotalDays, tgt=h.targetDays||sysCfg.defaultTargetDays, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     const streak = getStreakInfo(prog);
                     
@@ -1851,7 +1863,8 @@
         function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
         function renderHintList() {
-            const pool = challengeHintsPool[currentLang].filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
+            const list = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            const pool = list.filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
             const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
             document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
@@ -1948,8 +1961,9 @@
             else { appData.members[idx].pin === p ? finishLogin(selectedLoginMemberId) : alert(t('wrongPin')); }
         }
         function handleForgotPin() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const mp = prompt(currentLang === 'vi' ? "Nhập PIN quản trị (Master PIN):" : "Enter Master PIN:");
-            if (mp === "0000") { const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx > -1) { appData.members[idx].pin = ""; addPinHistoryLog(idx, "Reset PIN (Master)"); dbRef.set(appData); alert(t('resetPinSuccess')); handleLoginNext(); } } else if (mp !== null) alert(t('wrongMasterPin'));
+            if (mp === (sysCfg.masterPin || "0000")) { const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx > -1) { appData.members[idx].pin = ""; addPinHistoryLog(idx, "Reset PIN (Master)"); dbRef.set(appData); alert(t('resetPinSuccess')); handleLoginNext(); } } else if (mp !== null) alert(t('wrongMasterPin'));
         }
         function finishLogin(id) { 
             loggedInUserId = id; 
@@ -1976,14 +1990,17 @@
         }
         function handleResetTestData() {
             if (loggedInUserId !== 'member_1') return alert(t('notAdmin'));
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const mp = prompt(t('adminConfirmTitle'));
-            if (mp === "0000") {
+            if (mp === (sysCfg.masterPin || "0000")) {
                 if (!confirm(t('adminConfirmWarn'))) return;
                 appData.members = JSON.parse(JSON.stringify(defaultMembers));
                 appData.pendingMembers = [];
                 appData.notifications = {};
                 appData.sharedChallenges = [];
                 appData.personalHabits = { 'member_1': [] };
+                appData.systemConfig = defaultSystemConfig;
+                appData.playlist = defaultPlaylist;
 
                 dbRef.set(appData); 
                 alert(t('adminSuccess')); 
@@ -2079,7 +2096,6 @@
             document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
             document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
             
-            // Bỏ tùy chọn tạm dừng
             const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
             btnP.classList.add('hidden');
             btnR.classList.add('hidden');
@@ -2258,12 +2274,13 @@
         }
         function deleteChallenge(id, isP) { if(confirm(t('confirmDelete'))) { if(isP) appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].filter(x=>x.id!==id); else appData.sharedChallenges = appData.sharedChallenges.filter(x=>x.id!==id); dbRef.set(appData); } }
         function joinChallenge(id) { 
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const c=appData.sharedChallenges.find(x=>x.id===id); 
             if(!c)return; 
             c.participants=c.participants||{}; 
             c.participants[loggedInUserId]=true; 
             c.progress=c.progress||{}; 
-            if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||16).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
+            if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
             notifyAllChallengeMembers(c, 'join', `đã tham gia thử thách "${c.title}"!`);
             dbRef.set(appData); 
             alert(t('joinedSuccess')); 
@@ -2271,6 +2288,7 @@
 
         // DAY MODAL
         function openDayModal(id, dIdx, isP) {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
             if(dIdx > getTodayIndex(c.startDate)) return alert(t('alertFuture'));
             
@@ -2281,8 +2299,8 @@
                 item = (c.days&&c.days[dIdx]) || {completed:false,note:''}; 
             }
 
-            const tot = c.totalDays || 16;
-            const tgt = c.targetDays || 14;
+            const tot = c.totalDays || sysCfg.defaultTotalDays;
+            const tgt = c.targetDays || sysCfg.defaultTargetDays;
             const arrProg = !isP ? (c.progress&&c.progress[loggedInUserId]||[]) : (c.days||[]);
             const cnt = arrProg.filter(x=>x&&x.completed).length;
 
@@ -2411,6 +2429,7 @@
         }
 
         function saveDayDetail() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             if(!currentEditingDay || currentEditingDay.isReadOnly) return;
             const isComp = document.getElementById('modal-chk-completed').checked;
             const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date(), updated = { completed: isComp, note: document.getElementById('modal-note').value.trim(), image: tempDayImageBase64, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` };
@@ -2418,12 +2437,12 @@
             if(!isPersonal){ 
                 const c = appData.sharedChallenges.find(x=>x.id===id); 
                 if(c){ 
-                    c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays).fill(null).map(()=>({})); 
+                    c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({})); 
                     c.progress[loggedInUserId][dayIndex] = updated; 
                     if(updated.completed) {
                         const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
                         const dateStr = getDateString(c.startDate, dayIndex);
-                        if(cnt >= (c.targetDays||14)) {
+                        if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) {
                             notifyAllChallengeMembers(c, 'complete', `đã hoàn thành mục tiêu thử thách "${c.title}"! 🎉`);
                         } else {
                             notifyAllChallengeMembers(c, 'checkin', `đã Check-in ngày ${dateStr} - ${c.title}`);
@@ -2448,7 +2467,8 @@
 
         document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
-            const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||14, tot = parseInt(document.getElementById('create-days-input').value)||16;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||sysCfg.defaultTargetDays, tot = parseInt(document.getElementById('create-days-input').value)||sysCfg.defaultTotalDays;
             if(!tIn) return;
 
             if(tot < tgt) {
@@ -2468,8 +2488,8 @@
             }
             dbRef.set(appData); toggleCreatePanel(); e.target.reset(); 
             document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0]; 
-            document.getElementById('create-target-input').value = '14'; 
-            document.getElementById('create-days-input').value = '16';
+            document.getElementById('create-target-input').value = sysCfg.defaultTargetDays; 
+            document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
         };
 
         // COMMENTS
@@ -2529,12 +2549,13 @@
         }
 
         function showDescriptionModalById(id, isP) {
-            let tT="", d="", s="", tgt=14, tot=16, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            let tT="", d="", s="", tgt=sysCfg.defaultTargetDays, tot=sysCfg.defaultTotalDays, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
             
             if (!isP) {
                 const c = appData.sharedChallenges.find(x=>x.id===id);
                 if(c){ 
-                    tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||14; tot=c.totalDays||16; 
+                    tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||sysCfg.defaultTargetDays; tot=c.totalDays||sysCfg.defaultTotalDays; 
                     isB=c.isBigPlay; cR=c.customReward||0; cP=c.customPenalty||0;
                     
                     const creatorMember = appData.members.find(m => m.id === c.creatorId) || appData.members.find(m => m.name === c.creatorName);
@@ -2547,7 +2568,7 @@
             } else {
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
                 if(h){ 
-                    tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||14; tot=h.totalDays||16; 
+                    tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||sysCfg.defaultTargetDays; tot=h.totalDays||sysCfg.defaultTotalDays; 
                     sR=h.selfReward||'---'; sP=h.selfPenalty||'---';
                     
                     const curMember = appData.members.find(m => m.id === loggedInUserId);
@@ -2563,14 +2584,16 @@
             
             const frameEl = document.getElementById('desc-reward-frame');
             if(!isP) {
+                const rewTxt = isB ? `+${cR}k` : `+${sysCfg.defaultReward}`;
+                const penTxt = isB ? `-${cP}k` : `-${sysCfg.defaultPenalty}k`;
                 frameEl.className = "p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600";
                 frameEl.innerHTML = `
                     <div class="flex items-center gap-2 text-xs sm:text-sm font-normal">
                         <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
                         <div class="flex items-center gap-1.5">
-                            <span class="text-emerald-600">+${isB?cR:1}${isB?'k':` ${t('book')}`}</span>
+                            <span class="text-emerald-600 font-bold">${rewTxt}</span>
                             <span class="text-slate-300">|</span>
-                            <span class="text-rose-600">💸 -${isB?cP:100}k</span>
+                            <span class="text-rose-600 font-bold">💸 ${penTxt}</span>
                         </div>
                     </div>`;
             } else {
@@ -2578,11 +2601,11 @@
                 frameEl.innerHTML = `
                     <div class="flex items-center gap-2 font-normal">
                         <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
-                        <span class="text-emerald-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)]">${sR}</span>
+                        <span class="text-emerald-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sR}</span>
                     </div>
                     <div class="flex items-center gap-2 font-normal">
                         <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">💸</span>
-                        <span class="text-rose-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)]">${sP}</span>
+                        <span class="text-rose-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sP}</span>
                     </div>`;
             }
             
@@ -2641,6 +2664,7 @@
         }
 
         function renderReportPreview() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 ${t('completionProgress')}</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
@@ -2672,8 +2696,8 @@
                         const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
                         return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
                     }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                        const tgt = c.targetDays || 14;
-                        const tot = c.totalDays || 16;
+                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                        const tot = c.totalDays || sysCfg.defaultTotalDays;
                         const isD = m.cnt >= tgt;
                         const cFinished = isChallengeFinished(c.startDate, tot);
                         const isF = m.st==='given_up' || (!isD && cFinished);
@@ -2714,8 +2738,8 @@
 
             if(myH.length){
                 myH.forEach((h,i) => {
-                    const tgt = h.targetDays || 14;
-                    const tot = h.totalDays || 16;
+                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                    const tot = h.totalDays || sysCfg.defaultTotalDays;
                     const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
                     const isD = cnt >= tgt;
                     const cFinished = isChallengeFinished(h.startDate, tot);
@@ -2760,14 +2784,15 @@
         }
 
         function renderRewardsSummary() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
             appData.members.forEach(m => {
-                let book = 0, rew = 0, pen = 0;
+                let bookCount = 0, rew = 0, pen = 0;
                 let groupLogs = [], personalLogs = [];
 
                 const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
                 sortedGroup.forEach(c => {
-                    const tgt = c.targetDays||14, tot = c.totalDays||16, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
+                    const tgt = c.targetDays||sysCfg.defaultTargetDays, tot = c.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     
@@ -2776,7 +2801,7 @@
                         const isFailed = (stat === 'given_up') || (done < tgt && cFinished);
 
                         if (isFailed) {
-                            const p = c.isBigPlay ? (c.customPenalty||0) : 100; pen += p;
+                            const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
                             groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
@@ -2784,8 +2809,8 @@
                                 groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
-                                book++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +1 Sách ✅</span></div>`); 
+                                bookCount++; 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
                             }
                         }
                     }
@@ -2795,7 +2820,7 @@
                     const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
                     const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
                     sortedPersonal.forEach(h => {
-                        const tgt = h.targetDays||14, tot = h.totalDays||16, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
+                        const tgt = h.targetDays||sysCfg.defaultTargetDays, tot = h.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
                         const cFinished = isChallengeFinished(h.startDate, tot);
                         const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
 
@@ -2832,7 +2857,7 @@
                 }
                 
                 const badges = [];
-                if(book>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${book} ${t('book')}</span>`);
+                if(bookCount>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${bookCount} ${sysCfg.defaultReward}</span>`);
                 if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${rew}k</span>`);
                 if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">0 ${t('book')}</span>`);
                 
@@ -2874,9 +2899,10 @@
         function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
         
         function renderLeaderboardList(c) {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const container = document.getElementById('leaderboard-list-container');
             if(!container) return;
-            const tgt = c.targetDays || 14;
+            const tgt = c.targetDays || sysCfg.defaultTargetDays;
             
             const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
                 const u = appData.members.find(x => x.id === mId);
