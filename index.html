@@ -1384,6 +1384,10 @@
                 dbRef.set(appData);
             }
             
+            // ĐỒNG BỘ LẠI DANH SÁCH & KIỂM TRA ĐĂNG NHẬP KHI DỮ LIỆU TẢI XONG
+            populateLoginSelect();
+            checkLogin();
+
             updateUserLabel();
             updateNotificationBadge();
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
@@ -2838,8 +2842,6 @@
                 `;
             }).join('');
         }
-
-        checkLogin();
     </script>
 </body>
 </html>
