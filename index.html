@@ -1344,15 +1344,10 @@
         const dbRef = firebase.database().ref('bvgpOfficialTeamData');
 
         const defaultMembers = [
-            { id: 'member_2', name: 'Vẫn', avatar: '', pin: '', pinHistory: [] },
-            { id: 'member_3', name: 'Tính', avatar: '', pin: '', pinHistory: [] },
-            { id: 'member_4', name: 'Nghị', avatar: '', pin: '', pinHistory: [] },
-            { id: 'member_5', name: 'Lệnh', avatar: '', pin: '', pinHistory: [] },
-            { id: 'member_6', name: 'Bằng', avatar: '', pin: '', pinHistory: [] },
-            { id: 'member_7', name: 'Khánh', avatar: '', pin: '', pinHistory: [] }
+            { id: 'member_1', name: 'Khánh Nguyễn', avatar: '', pin: '', pinHistory: [] }
         ];
 
-        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_2': [], 'member_3': [], 'member_4': [], 'member_5': [], 'member_6': [], 'member_7': [] }, notifications: {} };
+        let appData = { members: defaultMembers, pendingMembers: [], sharedChallenges: [], personalHabits: { 'member_1': [] }, notifications: {} };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
         let isCreatingPin = false;
