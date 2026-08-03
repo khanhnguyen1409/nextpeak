@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW PEAK</title>
+    <title>NEXT PEAK</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -59,7 +59,7 @@
     <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
-            <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEW PEAK TEAM</h2>
+            <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEXT PEAK TEAM</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
                 <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover">
             </div>
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <!-- MODAL HỒ SƠ CÁ NHÂN (GỘP TÊN, AVATAR, PIN - THIẾT KẾ MỚI) -->
+    <!-- MODAL HỒ SƠ CÁ NHÂN -->
     <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -121,7 +121,7 @@
                 <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
 
-            <!-- 1. Đổi Avatar (Giao diện mới) -->
+            <!-- 1. Đổi Avatar -->
             <div class="flex flex-col items-center justify-center space-y-2 pt-1">
                 <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
                 
@@ -463,7 +463,7 @@
             </div>
 
             <div class="relative z-10 text-center space-y-1 mt-4">
-                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
+                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEXT PEAK</h1>
                 <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
                     <p id="slogan-text" class="text-xs sm:text-sm text-slate-100 font-medium italic leading-snug"></p>
                 </div>
@@ -563,7 +563,7 @@
     <script>
         const translations = {
             vi: {
-                appTitle: "NEW PEAK",
+                appTitle: "NEXT PEAK",
                 tabDashboard: "Thử thách nhóm",
                 tabUpdate: "Thử thách cá nhân",
                 reportBtnText: "Kết quả",
@@ -606,7 +606,7 @@
                 notePh: "Hôm nay bạn đã làm điều đó như thế nào? Đọng lại bên trong bạn những gì?...",
                 uploadImgLabel: "Tải ảnh lên:",
                 removeImg: "Xóa ảnh này",
-                welcome: "👋 Chào mừng bạn đến với NEW PEAK TEAM",
+                welcome: "👋 Chào mừng bạn đến với NEXT PEAK TEAM",
                 selectName: "Chọn đúng tên của bạn để tiếp tục.",
                 continueBtn: "Tiếp tục",
                 enterPin: "🔒 Nhập mã PIN bảo mật",
@@ -744,7 +744,7 @@
                 profileSuccess: "Cập nhật hồ sơ thành công!"
             },
             en: {
-                appTitle: "NEW PEAK",
+                appTitle: "NEXT PEAK",
                 tabDashboard: "Group Challenges",
                 tabUpdate: "Personal Challenges",
                 reportBtnText: "Results",
@@ -787,7 +787,7 @@
                 notePh: "How did it go today? How do you feel?...",
                 uploadImgLabel: "Upload image:",
                 removeImg: "Remove",
-                welcome: "👋 Welcome to NEW PEAK TEAM",
+                welcome: "👋 Welcome to NEXT PEAK TEAM",
                 selectName: "Select your name.",
                 continueBtn: "Continue",
                 enterPin: "🔒 Enter PIN",
@@ -1416,7 +1416,7 @@
         function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
         function closeSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.add('hidden'); }
         
-        // --- HỒ SƠ CÁ NHÂN (GỘP) ---
+        // --- HỒ SƠ CÁ NHÂN ---
         function openProfileModal() {
             closeUserMenu();
             const m = appData.members.find(x => x.id === loggedInUserId);
@@ -1663,22 +1663,22 @@
 
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                                🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}
+                            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
-                                💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}
+                            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-2xl text-xs font-semibold w-full">
-                                <div class="text-emerald-600 truncate">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
+                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit max-w-full">
+                                <div class="text-emerald-600 truncate flex items-center gap-1">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
                                 <div class="text-slate-300 shrink-0">|</div>
-                                <div class="text-rose-600 truncate">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
+                                <div class="text-rose-600 truncate flex items-center gap-1">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
                             </div>`;
                     }
 
@@ -1766,26 +1766,28 @@
 
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                                🎁 ${h.selfReward||'---'}
+                            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">🎁</span>
+                                <span class="truncate">${h.selfReward||'---'}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
-                                💸 ${h.selfPenalty||'---'}
+                            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">💸</span>
+                                <span class="truncate">${h.selfPenalty||'---'}</span>
                             </div>`;
                         statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-full">
-                                <div class="flex items-center gap-1.5 text-emerald-600">
+                            <div class="px-3 py-2 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-fit max-w-full">
+                                <div class="flex items-center gap-1.5 text-emerald-600 min-w-0">
                                     <div class="shrink-0 leading-none">🎁</div>
-                                    <div class="font-semibold break-words">${h.selfReward||'---'}</div>
+                                    <div class="font-semibold truncate">${h.selfReward||'---'}</div>
                                 </div>
-                                <div class="flex items-center gap-1.5 text-rose-600">
+                                <div class="flex items-center gap-1.5 text-rose-600 min-w-0">
                                     <div class="shrink-0 leading-none">💸</div>
-                                    <div class="font-semibold break-words">${h.selfPenalty||'---'}</div>
+                                    <div class="font-semibold truncate">${h.selfPenalty||'---'}</div>
                                 </div>
                             </div>`;
                     }
