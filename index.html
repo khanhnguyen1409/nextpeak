@@ -103,9 +103,9 @@
     <!-- MODAL MENU USER -->
     <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeUserMenu()">
         <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            <button onclick="openRenameModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">✏️ <span id="m-change-name">Đổi tên tài khoản</span></button>
-            <button onclick="openAvatarModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🖼️ <span id="m-change-avatar">Đổi Avatar</span></button>
-            <button onclick="openPinModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">🔒 <span id="m-change-pin">Đổi mã PIN</span></button>
+            <button onclick="openProfileModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                👤 <span id="m-profile">Hồ sơ cá nhân</span>
+            </button>
             <button onclick="openHistoryModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">⏱️ <span id="m-history">Lịch sử hoạt động</span></button>
             <button id="btn-admin-tool" onclick="openAdminCenterModal()" class="hidden w-full text-left py-2 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 rounded-xl transition flex items-center gap-2">🛠️ <span id="m-admin-center">Trung tâm Quản trị</span></button>
             <hr class="border-slate-100 dark:border-slate-700 my-1">
@@ -113,14 +113,51 @@
         </div>
     </div>
 
-    <!-- MODAL ĐỔI TÊN TÀI KHOẢN -->
-    <div id="rename-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
-            <h3 id="s-rename-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">✏️ Đổi tên tài khoản</h3>
-            <input type="text" id="new-name-input" placeholder="Nhập tên mới..." class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <!-- MODAL HỒ SƠ CÁ NHÂN (GỘP TÊN, AVATAR, PIN) -->
+    <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 id="profile-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">👤 Hồ sơ cá nhân</h3>
+                <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+
+            <!-- 1. Đổi Avatar -->
+            <div class="space-y-2">
+                <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">🖼️ Ảnh đại diện:</label>
+                <div class="flex items-center gap-3">
+                    <div id="profile-preview-avatar" class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-slate-500 shadow-sm shrink-0">👤</div>
+                    <div class="flex-1 space-y-1">
+                        <label for="profile-avatar-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition w-full text-center">📁 Chọn tệp...</label>
+                        <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
+                        <div id="profile-avatar-filename" class="text-[10px] text-slate-400 text-center truncate max-w-[130px]">Chưa chọn tệp</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-slate-100 dark:border-slate-700 my-2">
+
+            <!-- 2. Đổi Tên -->
+            <div class="space-y-1.5">
+                <label id="profile-name-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">✏️ Tên hiển thị:</label>
+                <input type="text" id="profile-name-input" placeholder="Nhập tên mới..." class="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <hr class="border-slate-100 dark:border-slate-700 my-2">
+
+            <!-- 3. Đổi PIN -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <label id="profile-pin-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400">🔒 Đổi mã PIN:</label>
+                    <span id="profile-pin-note" class="text-[9px] text-slate-400 italic">(Bỏ trống nếu không đổi)</span>
+                </div>
+                <input type="password" id="profile-old-pin" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="password" id="profile-new-pin" placeholder="Mã PIN mới (4 số)" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Nút thao tác -->
             <div class="flex gap-2 pt-2">
-                <button id="s-close-rename-btn" onclick="document.getElementById('rename-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-                <button onclick="changeMemberName()" id="s-update-name-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Cập nhật</button>
+                <button id="s-close-profile-btn" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-semibold">Đóng</button>
+                <button onclick="saveProfileChanges()" id="profile-save-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold transition">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -211,37 +248,7 @@
         </div>
     </div>
 
-    <!-- CÁC MODAL PHỤ -->
-    <div id="avatar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700">
-            <h3 id="s-avatar-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-4">🖼️ Tải lên Avatar</h3>
-            <div class="flex items-center gap-4">
-                <div id="preview-avatar" class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-700 overflow-hidden border border-slate-300 flex items-center justify-center font-bold text-slate-500 shadow-sm">👤</div>
-                <div class="flex-1 space-y-2">
-                    <label for="avatar-file-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-2 rounded-xl text-xs inline-block transition w-full text-center">📁 Chọn tệp...</label>
-                    <input type="file" id="avatar-file-input" accept="image/*" onchange="previewAvatarImage(event)" class="hidden">
-                    <div id="avatar-file-name" class="text-[10px] text-slate-400 text-center truncate max-w-[120px]">Chưa chọn tệp</div>
-                </div>
-            </div>
-            <div class="flex gap-2 mt-5">
-                <button id="s-close-avatar-btn" onclick="document.getElementById('avatar-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-                <button onclick="saveAvatarImage()" id="s-save-avatar-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Lưu Avatar</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="pin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
-            <h3 id="s-pin-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">🔒 Đổi mã PIN</h3>
-            <input type="password" id="old-pin-input" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <input type="password" id="new-pin-input" placeholder="Mã PIN mới" maxlength="4" class="w-full px-4 py-2 border rounded-xl text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <div class="flex gap-2 pt-2">
-                <button id="s-close-pin-btn" onclick="document.getElementById('pin-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
-                <button onclick="changePin()" id="s-update-pin-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold transition">Cập nhật</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- MODAL LỊCH SỬ -->
     <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
             <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">⏱️ <span id="s-history-title">Lịch sử hoạt động</span></h3>
@@ -250,6 +257,7 @@
         </div>
     </div>
 
+    <!-- MODAL LEADERBOARD -->
     <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -261,6 +269,7 @@
         </div>
     </div>
 
+    <!-- MODAL THÔNG BÁO -->
     <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -275,6 +284,7 @@
         </div>
     </div>
 
+    <!-- MODAL GỢI Ý -->
     <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -448,7 +458,6 @@
                 </div>
             </div>
 
-            <!-- Tên tác giả không bôi đậm, cỡ chữ nhỏ hơn quote -->
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEW PEAK</h1>
                 <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
@@ -525,6 +534,7 @@
                     </div>
                 </div>
 
+                <!-- THƯỞNG PHẠT CÁ NHÂN (2 DÒNG) -->
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
                     <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
                         <div>
@@ -718,7 +728,17 @@
                 adminSystemTitle: "⚙️ Khôi phục hệ thống (Admin Reset)",
                 adminSystemDesc: "Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.",
                 approve: "Duyệt",
-                reject: "Từ chối"
+                reject: "Từ chối",
+                
+                // --- BỔ SUNG DỊCH HỒ SƠ CÁ NHÂN ---
+                mProfile: "Hồ sơ cá nhân",
+                profileTitle: "👤 Hồ sơ cá nhân",
+                avatarLabel: "🖼️ Ảnh đại diện:",
+                nameLabel: "✏️ Tên hiển thị:",
+                pinLabel: "🔒 Đổi mã PIN:",
+                pinNote: "(Bỏ trống nếu không đổi)",
+                saveChanges: "Lưu thay đổi",
+                profileSuccess: "Cập nhật hồ sơ thành công!"
             },
             en: {
                 appTitle: "NEW PEAK",
@@ -890,7 +910,17 @@
                 adminSystemTitle: "⚙️ System Recovery (Admin Reset)",
                 adminSystemDesc: "Delete all test data and reset app to initial state.",
                 approve: "Approve",
-                reject: "Reject"
+                reject: "Reject",
+
+                // --- BỔ SUNG DỊCH HỒ SƠ CÁ NHÂN ---
+                mProfile: "Personal Profile",
+                profileTitle: "👤 Personal Profile",
+                avatarLabel: "🖼️ Profile Picture:",
+                nameLabel: "✏️ Display Name:",
+                pinLabel: "🔒 Change PIN:",
+                pinNote: "(Leave blank to keep current)",
+                saveChanges: "Save Changes",
+                profileSuccess: "Profile updated successfully!"
             }
         };
 
@@ -1216,19 +1246,19 @@
             document.getElementById('l-reg-back-btn').innerText = t('backBtn');
             document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
             
-            document.getElementById('m-change-name').innerText = currentLang === 'vi' ? 'Đổi tên tài khoản' : 'Change display name';
-            document.getElementById('s-rename-title').innerText = currentLang === 'vi' ? '✏️ Đổi tên tài khoản' : '✏️ Change display name';
-            document.getElementById('new-name-input').placeholder = currentLang === 'vi' ? 'Nhập tên mới...' : 'Enter new name...';
-            document.getElementById('s-close-rename-btn').innerText = t('closeBtn');
-            document.getElementById('s-update-name-btn').innerText = t('saveUpdate');
+            if (document.getElementById('m-profile')) document.getElementById('m-profile').innerText = t('mProfile');
+            if (document.getElementById('profile-modal-title')) document.getElementById('profile-modal-title').innerText = t('profileTitle');
+            if (document.getElementById('profile-avatar-label')) document.getElementById('profile-avatar-label').innerText = t('avatarLabel');
+            if (document.getElementById('profile-name-label')) document.getElementById('profile-name-label').innerText = t('nameLabel');
+            if (document.getElementById('profile-pin-label')) document.getElementById('profile-pin-label').innerText = t('pinLabel');
+            if (document.getElementById('profile-pin-note')) document.getElementById('profile-pin-note').innerText = t('pinNote');
+            if (document.getElementById('profile-save-btn')) document.getElementById('profile-save-btn').innerText = t('saveChanges');
 
             document.getElementById('m-theme').innerText = currentTheme === 'dark' ? t('themeLight') : t('themeDark');
             document.getElementById('m-music').innerText = t('music');
             document.getElementById('m-lang').innerText = t('lang');
             document.getElementById('m-font-size').innerText = t('fontTitle');
             document.getElementById('m-logout').innerText = t('logout');
-            document.getElementById('m-change-avatar').innerText = t('changeAvatar');
-            document.getElementById('m-change-pin').innerText = t('changePin');
             document.getElementById('m-history').innerText = t('history');
             document.getElementById('m-admin-center').innerText = t('adminToolTitle').replace('🛠️ ', '');
 
@@ -1247,12 +1277,6 @@
             document.getElementById('m-team-progress').innerText = t('teamProgress');
             document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
 
-            document.getElementById('s-avatar-title').innerHTML = `🖼️ ${t('uploadAvatarTitle')}`;
-            document.getElementById('s-save-avatar-btn').innerText = t('saveAvatarBtn');
-            document.getElementById('s-pin-title').innerHTML = `🔒 ${t('changePinTitle')}`;
-            document.getElementById('old-pin-input').placeholder = t('oldPinPh');
-            document.getElementById('new-pin-input').placeholder = t('newPinPh');
-            document.getElementById('s-update-pin-btn').innerText = t('updatePinBtn');
             document.getElementById('s-history-title').innerText = t('historyTitle');
             
             document.getElementById('btn-report-active').innerText = t('reportActive');
@@ -1269,13 +1293,10 @@
             document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
             
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
-            document.getElementById('s-close-avatar-btn').innerText = t('closeBtn');
-            document.getElementById('s-close-pin-btn').innerText = t('closeBtn');
             document.getElementById('s-close-history-btn').innerText = t('closeBtn');
             document.getElementById('notif-close-btn').innerText = t('closeBtn');
 
             document.getElementById('avatar-file-label').innerHTML = `📁 ${t('chooseFileBtn')}`;
-            document.getElementById('avatar-file-name').innerText = t('noFileSelected');
             document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
@@ -1379,7 +1400,6 @@
                 dbRef.set(appData);
             }
             
-            // ĐỒNG BỘ LẠI DANH SÁCH & KIỂM TRA ĐĂNG NHẬP KHI DỮ LIỆU TẢI XONG
             populateLoginSelect();
             checkLogin();
 
@@ -1395,55 +1415,90 @@
         function toggleSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.remove('hidden'); }
         function closeSettingsMenu() { document.getElementById('settings-dropdown-modal').classList.add('hidden'); }
         
-        function openRenameModal() {
+        // --- HỒ SƠ CÁ NHÂN (GỘP) ---
+        function openProfileModal() {
             closeUserMenu();
             const m = appData.members.find(x => x.id === loggedInUserId);
-            if (m) {
-                document.getElementById('new-name-input').value = m.name;
-            }
-            document.getElementById('rename-modal').classList.remove('hidden');
+            if (!m) return;
+
+            document.getElementById('profile-name-input').value = m.name;
+            tempAvatarBase64 = m.avatar || '';
+            document.getElementById('profile-preview-avatar').innerHTML = m.avatar 
+                ? `<img src="${m.avatar}" class="w-full h-full object-cover">` 
+                : m.name.charAt(0);
+            document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
+
+            document.getElementById('profile-old-pin').value = '';
+            document.getElementById('profile-new-pin').value = '';
+
+            document.getElementById('profile-modal').classList.remove('hidden');
         }
 
-        function changeMemberName() {
-            const newName = document.getElementById('new-name-input').value.trim();
-            if (!newName) return alert('Vui lòng nhập tên mới!');
+        function previewProfileAvatar(e) {
+            const f = e.target.files[0];
+            if (f) {
+                document.getElementById('profile-avatar-filename').innerText = f.name;
+                compressImage(f, b => {
+                    tempAvatarBase64 = b;
+                    document.getElementById('profile-preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover">`;
+                });
+            } else {
+                document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
+            }
+        }
 
+        function saveProfileChanges() {
             const mIdx = appData.members.findIndex(x => x.id === loggedInUserId);
             if (mIdx === -1) return;
 
-            const currentName = appData.members[mIdx].name;
-            if (newName === currentName) {
-                document.getElementById('rename-modal').classList.add('hidden');
-                return;
-            }
+            const m = appData.members[mIdx];
+            const newName = document.getElementById('profile-name-input').value.trim();
+            const oldPin = document.getElementById('profile-old-pin').value.trim();
+            const newPin = document.getElementById('profile-new-pin').value.trim();
 
-            const newNameLower = newName.toLowerCase();
-            const isMemberExist = appData.members.some(m => m.id !== loggedInUserId && m.name.toLowerCase() === newNameLower);
-            const isPendingExist = (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
+            let hasChanged = false;
 
-            if (isMemberExist || isPendingExist) {
-                return alert('⚠️ Tên này đã tồn tại trên hệ thống hoặc đang chờ duyệt. Vui lòng chọn tên khác!');
-            }
-
-            appData.members[mIdx].name = newName;
-
-            (appData.sharedChallenges || []).forEach(c => {
-                if (c.creatorId === loggedInUserId) {
-                    c.creatorName = newName;
+            if (newName && newName !== m.name) {
+                const newNameLower = newName.toLowerCase();
+                const isExist = appData.members.some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) ||
+                                (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
+                if (isExist) {
+                    return alert('⚠️ Tên này đã tồn tại trên hệ thống hoặc đang chờ duyệt!');
                 }
-            });
+                appData.members[mIdx].name = newName;
+                (appData.sharedChallenges || []).forEach(c => {
+                    if (c.creatorId === loggedInUserId) c.creatorName = newName;
+                });
+                hasChanged = true;
+            }
 
-            dbRef.set(appData);
+            if (tempAvatarBase64 !== (m.avatar || '')) {
+                appData.members[mIdx].avatar = tempAvatarBase64;
+                hasChanged = true;
+            }
 
-            alert('✨ Đổi tên thành công!');
-            document.getElementById('rename-modal').classList.add('hidden');
-            
-            updateUserLabel();
-            renderList();
+            if (newPin) {
+                if (m.pin && m.pin !== oldPin) {
+                    return alert(t('wrongPin'));
+                }
+                if (newPin.length !== 4 || isNaN(newPin)) {
+                    return alert(t('pinFormat'));
+                }
+                appData.members[mIdx].pin = newPin;
+                addPinHistoryLog(mIdx, "Đổi PIN");
+                hasChanged = true;
+            }
+
+            if (hasChanged) {
+                dbRef.set(appData);
+                alert(t('profileSuccess'));
+                updateUserLabel();
+                renderList();
+            }
+
+            document.getElementById('profile-modal').classList.add('hidden');
         }
 
-        function openAvatarModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); document.getElementById('preview-avatar').innerHTML=m.avatar?`<img src="${m.avatar}" class="w-full h-full object-cover">`:m.name.charAt(0); tempAvatarBase64=m.avatar||''; document.getElementById('avatar-modal').classList.remove('hidden'); }
-        function openPinModal() { closeUserMenu(); document.getElementById('pin-modal').classList.remove('hidden'); }
         function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
         
         function openAdminCenterModal() {
@@ -1602,6 +1657,7 @@
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     const isFailed = gu || (!isCompleted && cFinished);
 
+                    // LABEL LÊN ĐẦU & TỰ CẮT CHỮ TRUNCATE (NHÓM)
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
@@ -1667,7 +1723,7 @@
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
-                                <div class="space-y-1.5">
+                                <div class="space-y-1.5 w-full">
                                     <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
                                         ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
                                     </h4>
@@ -1702,6 +1758,7 @@
                     const cFinished = isChallengeFinished(h.startDate, tot);
                     const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
 
+                    // LABEL LÊN ĐẦU & TỰ CẮT CHỮ TRUNCATE (CÁ NHÂN)
                     let rewardPenaltyBoxHTML = "";
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
@@ -1809,8 +1866,7 @@
             r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
             r.readAsDataURL(f);
         }
-        function previewAvatarImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('avatar-file-name').innerText = f.name; compressImage(f, b => { tempAvatarBase64 = b; document.getElementById('preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover">`; }); } else document.getElementById('avatar-file-name').innerText = t('noFileSelected'); }
-        function saveAvatarImage() { if (!tempAvatarBase64) return alert(t('requireImage')); const idx = appData.members.findIndex(m => m.id === loggedInUserId); if (idx > -1) { appData.members[idx].avatar = tempAvatarBase64; dbRef.set(appData); alert(t('avatarSaved')); document.getElementById('avatar-modal').classList.add('hidden'); } }
+        
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
@@ -1901,13 +1957,7 @@
             renderList(); 
         }
         function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
-        function changePin() {
-            const o = document.getElementById('old-pin-input').value.trim(), n = document.getElementById('new-pin-input').value.trim(), idx = appData.members.findIndex(m=>m.id===loggedInUserId);
-            if (idx===-1) return;
-            if (appData.members[idx].pin && appData.members[idx].pin !== o) return alert(t('wrongPin'));
-            if (n.length !== 4 || isNaN(n)) return alert(t('pinFormat'));
-            appData.members[idx].pin = n; addPinHistoryLog(idx, "Đổi PIN"); dbRef.set(appData); alert(t('pinChanged')); document.getElementById('pin-modal').classList.add('hidden');
-        }
+
         function updateUserLabel() { 
             const m = appData.members.find(x => x.id === loggedInUserId); 
             if (m) { 
