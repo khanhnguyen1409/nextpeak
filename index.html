@@ -564,7 +564,7 @@
 
             <div class="relative z-10 text-center space-y-1 mt-4">
                 <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEXT PEAK</h1>
-                <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+                <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] min-h-[36px] flex items-center justify-center">
                     <p id="slogan-text" class="text-xs sm:text-sm text-slate-100 font-medium italic leading-snug"></p>
                 </div>
             </div>
@@ -1137,7 +1137,13 @@
         audio.addEventListener('ended', nextMusic);
 
         function getPlaylist() {
-            return (appData.playlist && appData.playlist.length) ? appData.playlist : defaultPlaylist;
+            let pl = appData.playlist;
+            if (Array.isArray(pl) && pl.length) return pl;
+            if (typeof pl === 'object' && pl !== null) {
+                const arr = Object.values(pl);
+                if (arr.length) return arr;
+            }
+            return defaultPlaylist;
         }
 
         function toggleMusicPlay() {
@@ -1343,11 +1349,23 @@
             document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
         }
 
+        // HÀM HIỂN THỊ SLOGAN NGẪU NHIÊN VỚI KHẢ NĂNG XỬ LÝ AN TOÀN
         function displayRandomSlogan() {
-            const list = (appData.slogansPool && appData.slogansPool[currentLang] && appData.slogansPool[currentLang].length) 
-                ? appData.slogansPool[currentLang] 
-                : defaultSlogans[currentLang];
-            const fullText = list[Math.floor(Math.random() * list.length)];
+            let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
+            
+            if (appData && appData.slogansPool) {
+                let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
+                if (Array.isArray(currentPool) && currentPool.length > 0) {
+                    list = currentPool;
+                } else if (typeof currentPool === 'object' && currentPool !== null) {
+                    const arr = Object.values(currentPool);
+                    if (arr.length > 0) list = arr;
+                }
+            }
+
+            if (!list || !list.length) list = defaultSlogans['vi'];
+
+            const fullText = list[Math.floor(Math.random() * list.length)] || "";
             const parts = fullText.split(' - ');
             const quote = parts[0] || fullText;
             const author = parts[1] ? parts[1] : '';
@@ -1427,7 +1445,8 @@
             updateUserLabel();
             updateNotificationBadge();
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); displayRandomSlogan();
+            updateStaticTexts(); 
+            displayRandomSlogan();
             renderList();
         });
 
@@ -1568,13 +1587,23 @@
             renderList();
         }
 
-        // SLOGAN MANAGEMENT
+        // SLOGAN MANAGEMENT (XỬ LÝ AN TOÀN VỚI FIREBASE)
         function addAdminSlogan() {
             const val = document.getElementById('admin-slogan-text-input').value.trim();
             if(!val) return alert('Vui lòng nhập nội dung Slogan!');
-            appData.slogansPool = appData.slogansPool || { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
-            appData.slogansPool[currentLang] = appData.slogansPool[currentLang] || [];
-            appData.slogansPool[currentLang].push(val);
+            
+            if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
+                appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
+            }
+            
+            let pool = appData.slogansPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultSlogans[currentLang]];
+            }
+            
+            pool.push(val);
+            appData.slogansPool[currentLang] = pool;
+            
             document.getElementById('admin-slogan-text-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
@@ -1582,7 +1611,13 @@
         }
 
         function deleteAdminSlogan(idx) {
-            appData.slogansPool[currentLang].splice(idx, 1);
+            if (!appData.slogansPool || !appData.slogansPool[currentLang]) return;
+            let pool = appData.slogansPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = Object.values(pool);
+            }
+            pool.splice(idx, 1);
+            appData.slogansPool[currentLang] = pool;
             dbRef.set(appData);
             renderAdminCenterContent();
             displayRandomSlogan();
@@ -1595,9 +1630,18 @@
             const isP = document.getElementById('admin-hint-isp-checkbox').checked;
 
             if(!title) return alert('Vui lòng nhập tiêu đề ý tưởng!');
-            appData.hintsPool = appData.hintsPool || { vi: [...defaultHints.vi], en: [...defaultHints.en] };
-            appData.hintsPool[currentLang] = appData.hintsPool[currentLang] || [];
-            appData.hintsPool[currentLang].push({ title, desc, isP });
+            
+            if (!appData.hintsPool || Array.isArray(appData.hintsPool)) {
+                appData.hintsPool = { vi: [...defaultHints.vi], en: [...defaultHints.en] };
+            }
+
+            let pool = appData.hintsPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultHints[currentLang]];
+            }
+
+            pool.push({ title, desc, isP });
+            appData.hintsPool[currentLang] = pool;
 
             document.getElementById('admin-hint-title-input').value = '';
             document.getElementById('admin-hint-desc-input').value = '';
@@ -1608,7 +1652,13 @@
         }
 
         function deleteAdminHint(idx) {
-            appData.hintsPool[currentLang].splice(idx, 1);
+            if (!appData.hintsPool || !appData.hintsPool[currentLang]) return;
+            let pool = appData.hintsPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = Object.values(pool);
+            }
+            pool.splice(idx, 1);
+            appData.hintsPool[currentLang] = pool;
             dbRef.set(appData);
             renderAdminCenterContent();
         }
@@ -1617,15 +1667,18 @@
         function addMusicUrl() {
             const url = document.getElementById('admin-music-url-input').value.trim();
             if(!url) return;
-            appData.playlist = appData.playlist || [...defaultPlaylist];
-            appData.playlist.push(url);
+            let listM = getPlaylist();
+            listM.push(url);
+            appData.playlist = listM;
             document.getElementById('admin-music-url-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
         }
 
         function removeMusicUrl(idx) {
-            appData.playlist.splice(idx, 1);
+            let listM = getPlaylist();
+            listM.splice(idx, 1);
+            appData.playlist = listM;
             dbRef.set(appData);
             renderAdminCenterContent();
         }
@@ -1641,7 +1694,9 @@
 
             // 2. Slogans List
             const sloganContainer = document.getElementById('admin-slogans-list');
-            const slogans = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultSlogans[currentLang];
+            let rawSlogans = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultSlogans[currentLang];
+            const slogans = Array.isArray(rawSlogans) ? rawSlogans : (typeof rawSlogans === 'object' && rawSlogans !== null ? Object.values(rawSlogans) : []);
+
             sloganContainer.innerHTML = slogans.map((s, i) => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200 text-[11px]">
                     <span class="truncate max-w-[280px] font-medium text-slate-700 dark:text-slate-200">"${s}"</span>
@@ -1651,7 +1706,9 @@
 
             // 3. Hints List
             const hintContainer = document.getElementById('admin-hints-list');
-            const hints = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            let rawHints = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            const hints = Array.isArray(rawHints) ? rawHints : (typeof rawHints === 'object' && rawHints !== null ? Object.values(rawHints) : []);
+
             hintContainer.innerHTML = hints.map((h, i) => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200 text-[11px]">
                     <div class="min-w-0 pr-2">
@@ -2015,8 +2072,10 @@
 
         function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
+        
         function renderHintList() {
-            const list = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            let rawList = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            const list = Array.isArray(rawList) ? rawList : (typeof rawList === 'object' && rawList !== null ? Object.values(rawList) : []);
             const pool = list.filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
             const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
@@ -3097,6 +3156,9 @@
                 `;
             }).join('');
         }
+
+        // TẢI SLOGAN NGAY KHI MỞ TRANG LẦN ĐẦU (KHÔNG CHỜ FIREBASE)
+        displayRandomSlogan();
     </script>
 </body>
 </html>
