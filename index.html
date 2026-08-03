@@ -121,20 +121,27 @@
                 <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
 
-            <!-- 1. Đổi Avatar -->
-            <div class="space-y-2">
-                <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">🖼️ Ảnh đại diện:</label>
-                <div class="flex items-center gap-3">
-                    <div id="profile-preview-avatar" class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-slate-500 shadow-sm shrink-0">👤</div>
-                    <div class="flex-1 space-y-1">
-                        <label for="profile-avatar-input" id="avatar-file-label" class="cursor-pointer bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-xl text-xs inline-block transition w-full text-center">📁 Chọn tệp...</label>
-                        <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
-                        <div id="profile-avatar-filename" class="text-[10px] text-slate-400 text-center truncate max-w-[130px]">Chưa chọn tệp</div>
+            <!-- 1. Đổi Avatar (Giao diện mới gọn gàng, thanh lịch) -->
+            <div class="flex flex-col items-center justify-center space-y-2 pt-1">
+                <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
+                
+                <div class="relative cursor-pointer group">
+                    <!-- Khung Avatar hình tròn -->
+                    <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition group-hover:brightness-95">
+                        👤
                     </div>
+                    
+                    <!-- Nút Nổi Nút Camera -->
+                    <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform group-hover:scale-110 flex items-center justify-center text-xs">
+                        📷
+                    </label>
+                    
+                    <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
                 </div>
-            </div>
 
-            <hr class="border-slate-100 dark:border-slate-700 my-2">
+                <!-- Tên file đã chọn (Nhỏ gọn phía dưới) -->
+                <div id="profile-avatar-filename" class="text-[10px] text-slate-400 italic text-center truncate max-w-[200px]">Chưa chọn tệp</div>
+            </div>
 
             <!-- 2. Đổi Tên -->
             <div class="space-y-1.5">
@@ -1422,10 +1429,11 @@
             if (!m) return;
 
             document.getElementById('profile-name-input').value = m.name;
+            // 2. Load avatar hiện tại (Cập nhật font-size cho đẹp)
             tempAvatarBase64 = m.avatar || '';
             document.getElementById('profile-preview-avatar').innerHTML = m.avatar 
                 ? `<img src="${m.avatar}" class="w-full h-full object-cover">` 
-                : m.name.charAt(0);
+                : `<span class="text-2xl">${m.name.charAt(0)}</span>`;
             document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
 
             document.getElementById('profile-old-pin').value = '';
