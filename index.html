@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <!-- MODAL HỒ SƠ CÁ NHÂN (GỘP TÊN, AVATAR, PIN) -->
+    <!-- MODAL HỒ SƠ CÁ NHÂN (GỘP TÊN, AVATAR, PIN - THIẾT KẾ MỚI) -->
     <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -121,27 +121,24 @@
                 <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
 
-            <!-- 1. Đổi Avatar (Giao diện mới gọn gàng, thanh lịch) -->
+            <!-- 1. Đổi Avatar (Giao diện mới) -->
             <div class="flex flex-col items-center justify-center space-y-2 pt-1">
                 <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
                 
                 <div class="relative cursor-pointer group">
-                    <!-- Khung Avatar hình tròn -->
                     <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition group-hover:brightness-95">
                         👤
                     </div>
-                    
-                    <!-- Nút Nổi Nút Camera -->
                     <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform group-hover:scale-110 flex items-center justify-center text-xs">
                         📷
                     </label>
-                    
                     <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
                 </div>
 
-                <!-- Tên file đã chọn (Nhỏ gọn phía dưới) -->
                 <div id="profile-avatar-filename" class="text-[10px] text-slate-400 italic text-center truncate max-w-[200px]">Chưa chọn tệp</div>
             </div>
+
+            <hr class="border-slate-100 dark:border-slate-700 my-2">
 
             <!-- 2. Đổi Tên -->
             <div class="space-y-1.5">
@@ -364,8 +361,8 @@
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 pb-2 border-b text-center uppercase text-[10px]">Tùy chọn</h4>
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
-            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition flex items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
-            <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
+            <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
+            <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
             <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
@@ -737,7 +734,6 @@
                 approve: "Duyệt",
                 reject: "Từ chối",
                 
-                // --- BỔ SUNG DỊCH HỒ SƠ CÁ NHÂN ---
                 mProfile: "Hồ sơ cá nhân",
                 profileTitle: "👤 Hồ sơ cá nhân",
                 avatarLabel: "🖼️ Ảnh đại diện:",
@@ -919,7 +915,6 @@
                 approve: "Approve",
                 reject: "Reject",
 
-                // --- BỔ SUNG DỊCH HỒ SƠ CÁ NHÂN ---
                 mProfile: "Personal Profile",
                 profileTitle: "👤 Personal Profile",
                 avatarLabel: "🖼️ Profile Picture:",
@@ -1303,7 +1298,6 @@
             document.getElementById('s-close-history-btn').innerText = t('closeBtn');
             document.getElementById('notif-close-btn').innerText = t('closeBtn');
 
-            document.getElementById('avatar-file-label').innerHTML = `📁 ${t('chooseFileBtn')}`;
             document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
@@ -1429,7 +1423,6 @@
             if (!m) return;
 
             document.getElementById('profile-name-input').value = m.name;
-            // 2. Load avatar hiện tại (Cập nhật font-size cho đẹp)
             tempAvatarBase64 = m.avatar || '';
             document.getElementById('profile-preview-avatar').innerHTML = m.avatar 
                 ? `<img src="${m.avatar}" class="w-full h-full object-cover">` 
@@ -1665,26 +1658,27 @@
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     const isFailed = gu || (!isCompleted && cFinished);
 
-                    // LABEL LÊN ĐẦU & TỰ CẮT CHỮ TRUNCATE (NHÓM)
                     let rewardPenaltyBoxHTML = "";
+                    let statusBadgeHTML = "";
+
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 px-3 py-1.5 rounded-2xl w-full max-w-full overflow-hidden">
-                                <div class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate min-w-0">🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}</div>
+                            <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                                🎁 +${c.isBigPlay ? (c.customReward||0)+'k' : `1 ${t('book')}`}
                             </div>`;
+                        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3 py-1.5 rounded-2xl w-full max-w-full overflow-hidden">
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate min-w-0">💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}</div>
+                            <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                                💸 -${c.isBigPlay ? (c.customPenalty||0)+'k' : '100k'}
                             </div>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-2xl text-[11px] font-normal w-full max-w-full overflow-hidden">
-                                <div class="text-emerald-600 font-semibold truncate min-w-0">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
+                            <div class="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-2xl text-xs font-semibold w-full">
+                                <div class="text-emerald-600 truncate">🎁 +${c.isBigPlay?(c.customReward||0)+'k':`1 ${t('book')}`}</div>
                                 <div class="text-slate-300 shrink-0">|</div>
-                                <div class="text-rose-600 font-semibold truncate min-w-0">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
+                                <div class="text-rose-600 truncate">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':'100k'}</div>
                             </div>`;
                     }
 
@@ -1720,6 +1714,7 @@
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                    ${statusBadgeHTML}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -1766,30 +1761,31 @@
                     const cFinished = isChallengeFinished(h.startDate, tot);
                     const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
 
-                    // LABEL LÊN ĐẦU & TỰ CẮT CHỮ TRUNCATE (CÁ NHÂN)
                     let rewardPenaltyBoxHTML = "";
+                    let statusBadgeHTML = "";
+
                     if (isCompleted) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-3 py-1.5 rounded-2xl w-full max-w-full overflow-hidden">
-                                <div class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 truncate min-w-0">🎁 ${h.selfReward||'---'}</div>
+                            <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                                🎁 ${h.selfReward||'---'}
                             </div>`;
+                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Hoàn thành':'Completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
-                            <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 px-3 py-1.5 rounded-2xl w-full max-w-full overflow-hidden">
-                                <div class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 truncate min-w-0">💸 ${h.selfPenalty||'---'}</div>
+                            <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                                💸 ${h.selfPenalty||'---'}
                             </div>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${(currentLang==='vi'?'Không hoàn thành':'Incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
-                            <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-[11px] font-normal w-full max-w-full overflow-hidden">
-                                <div class="flex items-center gap-1.5 text-emerald-600 min-w-0">
+                            <div class="p-2.5 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-full">
+                                <div class="flex items-center gap-1.5 text-emerald-600">
                                     <div class="shrink-0 leading-none">🎁</div>
-                                    <div class="truncate font-semibold">${h.selfReward||'---'}</div>
+                                    <div class="font-semibold break-words">${h.selfReward||'---'}</div>
                                 </div>
-                                <div class="flex items-center gap-1.5 text-rose-600 min-w-0">
+                                <div class="flex items-center gap-1.5 text-rose-600">
                                     <div class="shrink-0 leading-none">💸</div>
-                                    <div class="truncate font-semibold">${h.selfPenalty||'---'}</div>
+                                    <div class="font-semibold break-words">${h.selfPenalty||'---'}</div>
                                 </div>
                             </div>`;
                     }
@@ -1837,7 +1833,7 @@
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
-                                    ${(st==='paused')?`<span class="text-amber-600 font-bold bg-amber-50 px-2 rounded-full text-[10px] shadow-sm flex items-center justify-center h-4 leading-none">${t('pausedStatus')}</span>`:''}
+                                    ${statusBadgeHTML}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
                                     <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
@@ -2081,11 +2077,10 @@
             document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
             document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
             
+            // Bỏ tùy chọn tạm dừng
             const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
-            if(isP && !isArch) {
-                btnP.classList.toggle('hidden', st !== 'active');
-                btnR.classList.toggle('hidden', st !== 'paused');
-            } else { btnP.classList.add('hidden'); btnR.classList.add('hidden'); }
+            btnP.classList.add('hidden');
+            btnR.classList.add('hidden');
             
             const btnGiveUp = document.getElementById('action-btn-giveup');
             const btnRejoin = document.getElementById('action-btn-rejoin');
@@ -2113,8 +2108,6 @@
             else if(act==='rejoin') rejoinChallenge(id, isPersonal);
             else if(act==='archive') archiveChallenge(id, isPersonal, true);
             else if(act==='restore') archiveChallenge(id, isPersonal, false);
-            else if(act==='pause') pauseChallenge(id);
-            else if(act==='resume') resumeChallenge(id, true);
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
@@ -2256,8 +2249,6 @@
             }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
         }
-        function pauseChallenge(id) { const r=promptReason(); if(r===null)return; const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='paused'; h.reason=r;} dbRef.set(appData); }
-        function resumeChallenge(id, isP) { if(isP){ const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active'; h.reason='';} dbRef.set(appData); } }
         function archiveChallenge(id, isP, toArchive) {
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges;
             const x = arr.find(i=>i.id===id); if(x) x.archived = toArchive;
