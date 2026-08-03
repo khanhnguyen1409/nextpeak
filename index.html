@@ -1862,7 +1862,8 @@
             const newId = 'member_' + Date.now();
             appData.pendingMembers.push({ id: newId, name, pin, createdAt: Date.now() });
             
-            sendNotification('member_1', 'system', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
+            // --- ĐÃ ĐỔI TYPE THÀNH 'pending_approval' ---
+            sendNotification('member_1', 'pending_approval', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
 
             dbRef.set(appData);
 
@@ -1965,12 +1966,15 @@
                 if(n.type === 'tag') { icon = '🏷️'; act = `${t('taggedYou')} "${n.challengeTitle}"`; }
                 else if(n.type === 'reply') { icon = '↩️'; act = `${t('repliedYou')} "${n.challengeTitle}"`; }
                 else if(n.type === 'system') { icon = '🤖'; act = n.text; }
-                
+                else if(n.type === 'pending_approval') { icon = '👥'; act = n.text; }
+
+                const isClickable = n.type === 'pending_approval';
+
                 container.innerHTML += `
-                    <div class="p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2">
+                    <div onclick="handleNotificationClick(${n.id}, '${n.type}')" class="p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2 ${isClickable ? 'cursor-pointer hover:border-indigo-400 hover:shadow-xs' : ''}">
                         <div class="space-y-1">
-                            <p class="text-slate-800 dark:text-slate-100"><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' ? act : ''}</p>
-                            ${(n.type === 'tag' || n.type === 'reply' || n.type === 'system') && n.text ? `<p class="text-slate-500 text-[11px] bg-white/60 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">${n.text}</p>` : ''}
+                            <p class="text-slate-800 dark:text-slate-100"><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' && n.type !== 'pending_approval' ? act : ''}</p>
+                            ${(n.type === 'tag' || n.type === 'reply' || n.type === 'system' || n.type === 'pending_approval') && n.text ? `<p class="text-slate-500 text-[11px] bg-white/60 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">${n.text}</p>` : ''}
                             <span class="text-[10px] text-slate-400 block">${n.timestamp}</span>
                         </div>
                         ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1"></span>` : ''}
@@ -1978,6 +1982,27 @@
             });
         }
         function markAllNotificationsRead() { if (appData.notifications[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); dbRef.set(appData); renderNotificationList(); updateNotificationBadge(); }
+
+function handleNotificationClick(nId, type) {
+            // Đánh dấu thông báo này là đã đọc
+            if (appData.notifications[loggedInUserId]) {
+                const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
+                if (notif) notif.read = true;
+                dbRef.set(appData);
+                updateNotificationBadge();
+            }
+
+            closeNotificationModal();
+
+            // Nếu là thông báo chờ duyệt -> mở thẳng Trung tâm Quản trị
+            if (type === 'pending_approval') {
+                if (loggedInUserId === 'member_1') {
+                    openAdminCenterModal();
+                } else {
+                    alert('Chỉ Admin mới có quyền duyệt thành viên!');
+                }
+            }
+        }
 
         function openActionMenuModal(id, isP) {
             selectedMenuChallenge = { id, isPersonal: isP };
