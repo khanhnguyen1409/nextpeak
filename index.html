@@ -1923,10 +1923,17 @@
             const mp = prompt(t('adminConfirmTitle'));
             if (mp === "0000") {
                 if (!confirm(t('adminConfirmWarn'))) return;
-                appData.members.forEach(m => { m.avatar = ''; m.pinHistory = []; }); appData.notifications = {};
-                (appData.sharedChallenges||[]).forEach(c => { c.comments = []; c.archived = false; if(c.progress) Object.keys(c.progress).forEach(mId => c.progress[mId] = Array(c.totalDays||16).fill(null).map(()=>({completed:false}))); c.participantReasons = {}; if(c.participants) Object.keys(c.participants).forEach(mId => { if(c.participants[mId]==='given_up') c.participants[mId]=true; }); });
-                if(appData.personalHabits) Object.keys(appData.personalHabits).forEach(mId => { appData.personalHabits[mId].forEach(h => { h.comments=[]; h.archived=false; h.status='active'; h.reason=''; h.days = Array(h.totalDays||16).fill(null).map(()=>({completed:false})); }); });
-                dbRef.set(appData); alert(t('adminSuccess')); closeUserMenu(); closeAdminCenterModal();
+                // Đặt lại danh sách thành viên chỉ còn đúng Khánh Nguyễn (defaultMembers)
+                appData.members = JSON.parse(JSON.stringify(defaultMembers));
+                appData.pendingMembers = [];
+                appData.notifications = {};
+                appData.sharedChallenges = [];
+                appData.personalHabits = { 'member_1': [] };
+                
+                dbRef.set(appData); 
+                alert(t('adminSuccess')); 
+                closeUserMenu(); 
+                closeAdminCenterModal();
             } else if (mp !== null) alert(t('wrongMasterPin'));
         }
 
