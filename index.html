@@ -11,13 +11,12 @@
             darkMode: 'class'
         }
     </script>
-    <!-- HTML2Canvas (Chụp ảnh) -->
+    <!-- HTML2Canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <!-- HEIC to JPEG Converter -->
+    <!-- HEIC Converter -->
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
     <style>
@@ -64,17 +63,13 @@
                 <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover">
             </div>
             
-            <!-- VIEW CHỌN HOẶC ĐĂNG KÝ -->
             <div id="login-step-1" class="space-y-3">
                 <p id="l-select-name" class="text-xs text-slate-500 dark:text-slate-400">Chọn đúng tên của bạn để tiếp tục.</p>
-                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100">
-                    <!-- Render bằng JS -->
-                </select>
+                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100"></select>
                 <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
                 <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center">✨ Đăng ký tài khoản mới</button>
             </div>
 
-            <!-- VIEW ĐĂNG KÝ MỚI -->
             <div id="register-step-view" class="space-y-3 hidden">
                 <p id="l-reg-title" class="text-xs font-bold text-emerald-600">✨ Đăng ký thành viên mới</p>
                 <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
@@ -85,7 +80,6 @@
                 </div>
             </div>
 
-            <!-- VIEW NHẬP PIN -->
             <div id="login-step-2" class="space-y-3 hidden">
                 <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">🔒 Nhập mã PIN bảo mật</p>
                 <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100">
@@ -120,35 +114,21 @@
                 <h3 id="profile-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">👤 Hồ sơ cá nhân</h3>
                 <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
-
-            <!-- Avatar -->
             <div class="flex flex-col items-center justify-center space-y-2 pt-1">
                 <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
-                
                 <div class="relative cursor-pointer group">
-                    <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition group-hover:brightness-95">
-                        👤
-                    </div>
-                    <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform group-hover:scale-110 flex items-center justify-center text-xs">
-                        📷
-                    </label>
+                    <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition group-hover:brightness-95">👤</div>
+                    <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform group-hover:scale-110 flex items-center justify-center text-xs">📷</label>
                     <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
                 </div>
-
                 <div id="profile-avatar-filename" class="text-[10px] text-slate-400 italic text-center truncate max-w-[200px]">Chưa chọn tệp</div>
             </div>
-
             <hr class="border-slate-100 dark:border-slate-700 my-2">
-
-            <!-- Tên -->
             <div class="space-y-1.5">
                 <label id="profile-name-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">✏️ Tên hiển thị:</label>
                 <input type="text" id="profile-name-input" placeholder="Nhập tên mới..." class="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
-
             <hr class="border-slate-100 dark:border-slate-700 my-2">
-
-            <!-- PIN -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
                     <label id="profile-pin-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400">🔒 Đổi mã PIN:</label>
@@ -157,7 +137,6 @@
                 <input type="password" id="profile-old-pin" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <input type="password" id="profile-new-pin" placeholder="Mã PIN mới (4 số)" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
-
             <div class="flex gap-2 pt-2">
                 <button id="s-close-profile-btn" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-semibold">Đóng</button>
                 <button onclick="saveProfileChanges()" id="profile-save-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold transition">Lưu thay đổi</button>
@@ -165,119 +144,124 @@
         </div>
     </div>
 
-    <!-- MODAL TRUNG TÂM QUẢN TRỊ (ADMIN CENTER - GẬP/MỞ ACCORDION UI) -->
-    <div id="admin-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
+    <!-- MODAL TRUNG TÂM QUẢN TRỊ (ADMIN CENTER UI MỚI HIỆN ĐẠI & ĐỒNG BỘ) -->
+    <div id="admin-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl shadow-2xl max-w-lg w-full space-y-4 border border-slate-200/80 dark:border-slate-700 max-h-[88vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 id="admin-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🛠️ Trung tâm Quản trị</h3>
-                <button onclick="closeAdminCenterModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <h3 id="admin-modal-title" class="font-extrabold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🛠️ Trung tâm Quản trị</h3>
+                <button onclick="closeAdminCenterModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
             </div>
             
-            <div class="space-y-3 text-xs">
+            <div class="space-y-3 text-xs overflow-y-auto pr-1 flex-1 no-scrollbar">
                 
-                <!-- ACCORDION 1: ⚙️ Cấu hình Tham số Hệ thống -->
-                <div class="border border-indigo-100 dark:border-slate-700 rounded-2xl overflow-hidden bg-indigo-50/40 dark:bg-slate-900/40">
-                    <button onclick="toggleAdminAccordion('config')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100/50 transition">
-                        <span class="flex items-center gap-2">⚙️ Cấu hình Tham số Mặc định</span>
+                <!-- ACCORDION 1: ⚙️ Cấu hình Tham số -->
+                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
+                    <button onclick="toggleAdminAccordion('config')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
+                        <span id="adm-acc-config-title" class="flex items-center gap-2">⚙️ Cấu hình Tham số Mặc định</span>
                         <span id="adm-arrow-config" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-config" class="p-4 space-y-3 border-t border-indigo-100 dark:border-slate-700 bg-white dark:bg-slate-800 hidden">
+                    <div id="adm-sec-config" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
+                        <!-- Thưởng & Phạt tách làm 2 dòng riêng biệt -->
+                        <div class="space-y-2">
+                            <div>
+                                <label id="adm-cfg-reward-label" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 block mb-1">🎁 Thưởng mặc định:</label>
+                                <input type="text" id="cfg-reward-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label id="adm-cfg-penalty-label" class="text-[11px] font-bold text-rose-600 dark:text-rose-400 block mb-1">💸 Phạt mặc định (k):</label>
+                                <input type="number" id="cfg-penalty-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Thưởng mặc định:</label>
-                                <input type="text" id="cfg-reward-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                <label id="adm-cfg-target-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">🎯 Mục tiêu (ngày):</label>
+                                <input type="number" id="cfg-target-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
                             </div>
                             <div>
-                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Phạt mặc định (k):</label>
-                                <input type="number" id="cfg-penalty-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu (ngày):</label>
-                                <input type="number" id="cfg-target-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Tổng số ngày:</label>
-                                <input type="number" id="cfg-total-input" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                <label id="adm-cfg-total-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">📅 Tổng số ngày:</label>
+                                <input type="number" id="cfg-total-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
                             </div>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 block mb-1">Mã Master PIN Quản trị:</label>
-                            <input type="password" id="cfg-masterpin-input" maxlength="4" class="w-full px-2.5 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                            <label id="adm-cfg-masterpin-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">🔑 Mã Master PIN Quản trị:</label>
+                            <input type="password" id="cfg-masterpin-input" maxlength="4" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
                         </div>
-                        <button onclick="saveSystemConfig()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition text-xs shadow-xs">💾 Lưu Cấu Hình Mặc Định</button>
+                        <button onclick="saveSystemConfig()" id="adm-cfg-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold transition text-xs shadow-sm">💾 Lưu Cấu Hình Mặc Định</button>
                     </div>
                 </div>
 
                 <!-- ACCORDION 2: 💬 Quản lý Kho Slogan -->
-                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/40">
-                    <button onclick="toggleAdminAccordion('slogan')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 transition">
-                        <span class="flex items-center gap-2">💬 Quản lý Kho Slogan Truyền Động Lực</span>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
+                    <button onclick="toggleAdminAccordion('slogan')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
+                        <span id="adm-acc-slogan-title" class="flex items-center gap-2">💬 Quản lý Kho Slogan Truyền Động Lực</span>
                         <span id="adm-arrow-slogan" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-slogan" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hidden">
+                    <div id="adm-sec-slogan" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div class="space-y-2">
-                            <textarea id="admin-slogan-text-input" rows="2" placeholder="Nhập câu slogan mới... (Dùng ' - ' để phân cách Tác giả)" class="w-full p-2.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            <button onclick="addAdminSlogan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 rounded-xl font-bold transition">Thêm Slogan Mới</button>
+                            <p id="adm-slogan-hint" class="text-[10px] text-slate-400 italic">💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.</p>
+                            <textarea id="admin-slogan-text-input" rows="3" placeholder="Ví dụ: Kỷ luật là cầu nối... - Jim Rohn" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <button onclick="addAdminSlogan()" id="adm-slogan-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition">Thêm Slogan Mới</button>
                         </div>
-                        <div class="pt-2 border-t">
-                            <h5 class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Slogan hiện tại:</h5>
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
+                            <h5 id="adm-slogan-list-title" class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Slogan hiện tại:</h5>
                             <div id="admin-slogans-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- ACCORDION 3: 💡 Quản lý Kho Ý Tưởng (Hints) -->
-                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/40">
-                    <button onclick="toggleAdminAccordion('hint')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 transition">
-                        <span class="flex items-center gap-2">💡 Quản lý Kho Ý Tưởng Thử Thách (Hints)</span>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
+                    <button onclick="toggleAdminAccordion('hint')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
+                        <span id="adm-acc-hint-title" class="flex items-center gap-2">💡 Quản lý Kho Ý Tưởng Thử Thách (Hints)</span>
                         <span id="adm-arrow-hint" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-hint" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hidden">
-                        <div class="space-y-2 bg-amber-50/60 dark:bg-slate-900/40 p-3 rounded-2xl border border-amber-100">
-                            <input type="text" id="admin-hint-title-input" placeholder="Tên ý tưởng (VD: Đọc sách, Chạy bộ...)" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700">
-                            <input type="text" id="admin-hint-desc-input" placeholder="Mô tả ngắn gọn..." class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700">
+                    <div id="adm-sec-hint" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
+                        <div class="space-y-2.5 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-200/80 dark:border-slate-700">
+                            <p id="adm-hint-bulk-note" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-medium">💡 Thêm nhiều dòng cùng lúc dạng: <code class="bg-indigo-50 dark:bg-slate-800 px-1 rounded">Tiêu đề | Mô tả</code></p>
+                            <textarea id="admin-hint-bulk-input" rows="3" placeholder="Đọc sách | Đọc 20 trang sách mỗi ngày..." class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             <div class="flex justify-between items-center pt-1">
-                                <label class="flex items-center gap-1.5 font-bold text-[11px] text-slate-600 dark:text-slate-300">
+                                <label class="flex items-center gap-1.5 font-bold text-[11px] text-slate-600 dark:text-slate-300 cursor-pointer">
                                     <input type="checkbox" id="admin-hint-isp-checkbox" class="w-3.5 h-3.5 text-indigo-600 rounded">
-                                    <span>Dành cho Thử thách Cá nhân</span>
+                                    <span id="adm-hint-is-personal-label">Dành cho Thử thách Cá nhân</span>
                                 </label>
-                                <button onclick="addAdminHint()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-xl font-bold transition">Thêm Ý Tưởng</button>
+                                <button onclick="addAdminHint()" id="adm-hint-add-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm">Thêm Ý Tưởng</button>
                             </div>
                         </div>
-                        <div class="pt-2 border-t">
-                            <h5 class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Gợi ý Hiện tại:</h5>
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
+                            <h5 id="adm-hint-list-title" class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Gợi ý Hiện tại:</h5>
                             <div id="admin-hints-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- ACCORDION 4: 🎵 Quản lý Playlist Nhạc Nền -->
-                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/40">
-                    <button onclick="toggleAdminAccordion('music')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 transition">
-                        <span class="flex items-center gap-2">🎵 Quản lý Playlist Nhạc Nền</span>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
+                    <button onclick="toggleAdminAccordion('music')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
+                        <span id="adm-acc-music-title" class="flex items-center gap-2">🎵 Quản lý Playlist Nhạc Nền</span>
                         <span id="adm-arrow-music" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-music" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hidden">
-                        <div class="flex gap-2">
-                            <input type="text" id="admin-music-url-input" placeholder="Dán link MP3 mới..." class="flex-1 px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700">
-                            <button onclick="addMusicUrl()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl font-bold">Thêm</button>
+                    <div id="adm-sec-music" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
+                        <div class="space-y-2">
+                            <p id="adm-music-hint" class="text-[10px] text-slate-400 italic">💡 Có thể dán nhiều link MP3 (mỗi dòng 1 link).</p>
+                            <textarea id="admin-music-url-input" rows="2" placeholder="Dán link MP3..." class="w-full p-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
+                            <button onclick="addMusicUrl()" id="adm-music-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 rounded-xl font-bold transition">Thêm Link Nhạc</button>
                         </div>
-                        <div id="admin-music-list" class="space-y-1 max-h-32 overflow-y-auto pr-1"></div>
+                        <div id="admin-music-list" class="space-y-1.5 max-h-32 overflow-y-auto pr-1 pt-1"></div>
                     </div>
                 </div>
 
                 <!-- ACCORDION 5: 👥 Duyệt & Quản lý Thành viên -->
-                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/40">
-                    <button onclick="toggleAdminAccordion('members')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 transition">
-                        <span class="flex items-center gap-2">👥 Duyệt & Quản lý Thành viên</span>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
+                    <button onclick="toggleAdminAccordion('members')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
+                        <span id="adm-acc-members-title" class="flex items-center gap-2">👥 Duyệt & Quản lý Thành viên</span>
                         <span id="adm-arrow-members" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-members" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hidden">
+                    <div id="adm-sec-members" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div>
-                            <h4 id="admin-pending-title" class="font-bold text-indigo-600 mb-2">Yêu cầu đăng ký mới:</h4>
+                            <h4 id="admin-pending-title" class="font-bold text-indigo-600 dark:text-indigo-400 mb-2">Yêu cầu đăng ký mới:</h4>
                             <div id="admin-pending-list" class="space-y-2"></div>
                         </div>
-                        <hr class="my-2">
+                        <hr class="my-2 border-slate-100 dark:border-slate-700">
                         <div>
                             <h4 id="admin-members-title" class="font-bold text-slate-700 dark:text-slate-200 mb-2">Danh sách thành viên chính thức:</h4>
                             <div id="admin-members-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
@@ -285,21 +269,21 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 6: ⚠️ Khôi phục Hệ thống (Admin Reset) -->
-                <div class="border border-rose-200 dark:border-rose-900/50 rounded-2xl overflow-hidden bg-rose-50/40 dark:bg-rose-950/20">
-                    <button onclick="toggleAdminAccordion('reset')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-rose-600 hover:bg-rose-100/50 transition">
-                        <span class="flex items-center gap-2">⚠️ Khôi phục Hệ thống (Admin Reset)</span>
+                <!-- ACCORDION 6: ⚠️ Khôi phục Hệ thống -->
+                <div class="border border-rose-200 dark:border-rose-900/40 rounded-2xl overflow-hidden bg-rose-50/30 dark:bg-rose-950/10 transition-all">
+                    <button onclick="toggleAdminAccordion('reset')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-rose-600 hover:bg-rose-100/40 transition">
+                        <span id="adm-acc-reset-title" class="flex items-center gap-2">⚠️ Khôi phục Hệ thống (Admin Reset)</span>
                         <span id="adm-arrow-reset" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="adm-sec-reset" class="p-4 space-y-2 border-t border-rose-200 dark:border-rose-900/50 bg-white dark:bg-slate-800 hidden">
-                        <p id="admin-system-desc" class="text-[11px] text-slate-500">Xóa toàn bộ dữ liệu thử thách test, đưa ứng dụng về trạng thái ban đầu.</p>
+                    <div id="adm-sec-reset" class="p-4 space-y-2.5 border-t border-rose-200 dark:border-rose-900/40 bg-white dark:bg-slate-800/80 hidden">
+                        <p id="admin-system-desc" class="text-[11px] text-slate-500 dark:text-slate-400">Xóa toàn bộ dữ liệu thử thách test, đưa ứng dụng về trạng thái ban đầu.</p>
                         <button onclick="handleResetTestData()" id="admin-reset-btn" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-bold transition text-xs shadow-xs">Admin Reset</button>
                     </div>
                 </div>
 
             </div>
 
-            <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold mt-2">Đóng</button>
+            <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold transition mt-2">Đóng</button>
         </div>
     </div>
 
@@ -310,7 +294,6 @@
                 <span id="theme-status-icon" class="text-base">🌙</span>
                 <span id="m-theme">Chế độ tối</span>
             </button>
-            
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
                 <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
                 <div class="flex items-center gap-2 shrink-0">
@@ -319,7 +302,6 @@
                     <button onclick="nextMusic()" class="hover:text-indigo-600 transition scale-110 px-0.5">⏭</button>
                 </div>
             </div>
-
             <button onclick="toggleLanguage()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
                 <span class="flex items-center gap-2">🌐 <span id="m-lang">Ngôn ngữ</span></span>
                 <span id="lang-status-text" class="text-indigo-600 font-bold">VI</span>
@@ -586,9 +568,7 @@
         <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="flex items-center gap-2 text-xs">
                 <span id="t-filter-label" class="font-bold text-slate-600 dark:text-slate-300 pl-1">👁️ Hiển thị:</span>
-                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer text-slate-700 dark:text-slate-200">
-                    <!-- Render bằng JS -->
-                </select>
+                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer text-slate-700 dark:text-slate-200"></select>
             </div>
             <button onclick="toggleCreatePanel()" id="btn-create-toggle" class="bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm text-lg shrink-0">+</button>
         </div>
@@ -825,14 +805,43 @@
                 registerPlaceholderPin: "Tạo mã PIN 4 số...",
                 registerSubmitBtn: "Gửi yêu cầu",
                 registerSuccess: "Đã gửi yêu cầu đăng ký! Chờ Admin phê duyệt.",
-                adminCenterTitle: "🛠️ Trung tâm Quản trị",
+
+                // Bổ sung dịch song ngữ cho Admin Center
+                admAccConfigTitle: "⚙️ Cấu hình Tham số Mặc định",
+                admCfgRewardLabel: "🎁 Thưởng mặc định:",
+                admCfgPenaltyLabel: "💸 Phạt mặc định (k):",
+                admCfgTargetLabel: "🎯 Mục tiêu (ngày):",
+                admCfgTotalLabel: "📅 Tổng số ngày:",
+                admCfgMasterpinLabel: "🔑 Mã Master PIN Quản trị:",
+                admCfgSaveBtn: "💾 Lưu Cấu Hình Mặc Định",
+
+                admAccSloganTitle: "💬 Quản lý Kho Slogan Truyền Động Lực",
+                admSloganHint: "💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.",
+                admSloganPh: "Ví dụ: Kỷ luật là cầu nối... - Jim Rohn",
+                admSloganAddBtn: "Thêm Slogan Mới",
+                admSloganListTitle: "Danh sách Slogan hiện tại:",
+
+                admAccHintTitle: "💡 Quản lý Kho Ý Tưởng Thử Thách (Hints)",
+                admHintBulkNote: "💡 Thêm nhiều dòng cùng lúc dạng: Tiêu đề | Mô tả",
+                admHintBulkPh: "Đọc sách | Đọc 20 trang sách mỗi ngày...",
+                admHintIsPersonalLabel: "Dành cho Thử thách Cá nhân",
+                admHintAddBtn: "Thêm Ý Tưởng",
+                admHintListTitle: "Danh sách Gợi ý Hiện tại:",
+
+                admAccMusicTitle: "🎵 Quản lý Playlist Nhạc Nền",
+                admMusicHint: "💡 Có thể dán nhiều link MP3 (mỗi dòng 1 link).",
+                admMusicPh: "Dán link MP3...",
+                admMusicAddBtn: "Thêm Link Nhạc",
+
+                admAccMembersTitle: "👥 Duyệt & Quản lý Thành viên",
                 adminPendingTitle: "👥 Duyệt tài khoản thành viên mới",
                 adminMembersTitle: "📋 Quản lý danh sách thành viên",
-                adminSystemTitle: "⚙️ Khôi phục hệ thống (Admin Reset)",
+
+                admAccResetTitle: "⚠️ Khôi phục Hệ thống (Admin Reset)",
                 adminSystemDesc: "Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.",
                 approve: "Duyệt",
                 reject: "Từ chối",
-                
+
                 mProfile: "Hồ sơ cá nhân",
                 profileTitle: "👤 Hồ sơ cá nhân",
                 avatarLabel: "🖼️ Ảnh đại diện:",
@@ -1006,10 +1015,39 @@
                 registerPlaceholderPin: "Create 4-digit PIN...",
                 registerSubmitBtn: "Submit Request",
                 registerSuccess: "Registration submitted! Waiting for Admin approval.",
-                adminCenterTitle: "🛠️ Admin Center",
+
+                // Admin Center Translation
+                admAccConfigTitle: "⚙️ System Configuration",
+                admCfgRewardLabel: "🎁 Default Reward:",
+                admCfgPenaltyLabel: "💸 Default Penalty (k):",
+                admCfgTargetLabel: "🎯 Target (days):",
+                admCfgTotalLabel: "📅 Total Days:",
+                admCfgMasterpinLabel: "🔑 Admin Master PIN:",
+                admCfgSaveBtn: "💾 Save System Config",
+
+                admAccSloganTitle: "💬 Motivation Slogan Management",
+                admSloganHint: "💡 Paste multiple lines at once. Use ' - ' for Author.",
+                admSloganPh: "E.g. Discipline is the bridge... - Jim Rohn",
+                admSloganAddBtn: "Add Slogan(s)",
+                admSloganListTitle: "Current Slogans:",
+
+                admAccHintTitle: "💡 Challenge Hints Management",
+                admHintBulkNote: "💡 Add multiple lines format: Title | Description",
+                admHintBulkPh: "Read Books | Read 20 pages every day...",
+                admHintIsPersonalLabel: "For Personal Challenges",
+                admHintAddBtn: "Add Hint(s)",
+                admHintListTitle: "Current Hints:",
+
+                admAccMusicTitle: "🎵 Playlist Management",
+                admMusicHint: "💡 Paste multiple MP3 URLs (one per line).",
+                admMusicPh: "Paste MP3 link(s)...",
+                admMusicAddBtn: "Add Music Link(s)",
+
+                admAccMembersTitle: "👥 Member Approvals & List",
                 adminPendingTitle: "👥 Pending Member Approvals",
-                adminMembersTitle: "📋 Member Management",
-                adminSystemTitle: "⚙️ System Recovery (Admin Reset)",
+                adminMembersTitle: "📋 Official Member List",
+
+                admAccResetTitle: "⚠️ System Recovery (Admin Reset)",
                 adminSystemDesc: "Delete all test data and reset app to initial state.",
                 approve: "Approve",
                 reject: "Reject",
@@ -1129,7 +1167,6 @@
         }
         function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); renderList(); }
 
-        // AUDIO CONTROLS
         let currentMusicIndex = 0;
         let isMusicPlaying = false;
         const audio = document.getElementById('bg-music');
@@ -1307,13 +1344,42 @@
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             document.getElementById('rule-desc-group-text').innerText = `🎯 Nhóm thường: 💸 -${sysCfg.defaultPenalty}k phạt | 🎁 +${sysCfg.defaultReward} thưởng`;
 
+            // Dynamic Song ngữ Admin Center
             document.getElementById('admin-modal-title').innerHTML = t('adminCenterTitle');
-            document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
-            document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
-            document.getElementById('admin-system-title').innerText = t('adminSystemTitle');
-            document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
-            document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
-            document.getElementById('admin-close-btn').innerText = t('closeBtn');
+            if (document.getElementById('adm-acc-config-title')) document.getElementById('adm-acc-config-title').innerHTML = t('admAccConfigTitle');
+            if (document.getElementById('adm-cfg-reward-label')) document.getElementById('adm-cfg-reward-label').innerText = t('admCfgRewardLabel');
+            if (document.getElementById('adm-cfg-penalty-label')) document.getElementById('adm-cfg-penalty-label').innerText = t('admCfgPenaltyLabel');
+            if (document.getElementById('adm-cfg-target-label')) document.getElementById('adm-cfg-target-label').innerText = t('admCfgTargetLabel');
+            if (document.getElementById('adm-cfg-total-label')) document.getElementById('adm-cfg-total-label').innerText = t('admCfgTotalLabel');
+            if (document.getElementById('adm-cfg-masterpin-label')) document.getElementById('adm-cfg-masterpin-label').innerText = t('admCfgMasterpinLabel');
+            if (document.getElementById('adm-cfg-save-btn')) document.getElementById('adm-cfg-save-btn').innerText = t('admCfgSaveBtn');
+
+            if (document.getElementById('adm-acc-slogan-title')) document.getElementById('adm-acc-slogan-title').innerHTML = t('admAccSloganTitle');
+            if (document.getElementById('adm-slogan-hint')) document.getElementById('adm-slogan-hint').innerText = t('admSloganHint');
+            if (document.getElementById('admin-slogan-text-input')) document.getElementById('admin-slogan-text-input').placeholder = t('admSloganPh');
+            if (document.getElementById('adm-slogan-add-btn')) document.getElementById('adm-slogan-add-btn').innerText = t('admSloganAddBtn');
+            if (document.getElementById('adm-slogan-list-title')) document.getElementById('adm-slogan-list-title').innerText = t('admSloganListTitle');
+
+            if (document.getElementById('adm-acc-hint-title')) document.getElementById('adm-acc-hint-title').innerHTML = t('admAccHintTitle');
+            if (document.getElementById('adm-hint-bulk-note')) document.getElementById('adm-hint-bulk-note').innerHTML = t('admHintBulkNote');
+            if (document.getElementById('admin-hint-bulk-input')) document.getElementById('admin-hint-bulk-input').placeholder = t('admHintBulkPh');
+            if (document.getElementById('adm-hint-is-personal-label')) document.getElementById('adm-hint-is-personal-label').innerText = t('admHintIsPersonalLabel');
+            if (document.getElementById('adm-hint-add-btn')) document.getElementById('adm-hint-add-btn').innerText = t('admHintAddBtn');
+            if (document.getElementById('adm-hint-list-title')) document.getElementById('adm-hint-list-title').innerText = t('admHintListTitle');
+
+            if (document.getElementById('adm-acc-music-title')) document.getElementById('adm-acc-music-title').innerHTML = t('admAccMusicTitle');
+            if (document.getElementById('adm-music-hint')) document.getElementById('adm-music-hint').innerText = t('admMusicHint');
+            if (document.getElementById('admin-music-url-input')) document.getElementById('admin-music-url-input').placeholder = t('admMusicPh');
+            if (document.getElementById('adm-music-add-btn')) document.getElementById('adm-music-add-btn').innerText = t('admMusicAddBtn');
+
+            if (document.getElementById('adm-acc-members-title')) document.getElementById('adm-acc-members-title').innerHTML = t('admAccMembersTitle');
+            if (document.getElementById('admin-pending-title')) document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
+            if (document.getElementById('admin-members-title')) document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
+
+            if (document.getElementById('adm-acc-reset-title')) document.getElementById('adm-acc-reset-title').innerHTML = t('admAccResetTitle');
+            if (document.getElementById('admin-system-desc')) document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
+            if (document.getElementById('admin-reset-btn')) document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
+            if (document.getElementById('admin-close-btn')) document.getElementById('admin-close-btn').innerText = t('closeBtn');
 
             updateCreateFormLabels();
             setFontSize(currentFontSize);
@@ -1349,7 +1415,6 @@
             document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
         }
 
-        // HÀM HIỂN THỊ SLOGAN NGẪU NHIÊN VỚI KHẢ NĂNG XỬ LÝ AN TOÀN
         function displayRandomSlogan() {
             let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
             
@@ -1376,7 +1441,6 @@
             }
         }
 
-        // FIREBASE SETUP
         const firebaseConfig = {
             apiKey: "AIzaSyBAY8N4lKXlLexdcEoEuE6DdyVVcA0cDs",
             authDomain: "bgvp-challenge.firebaseapp.com",
@@ -1540,7 +1604,6 @@
 
         function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
         
-        // ADMIN ACCORDION CONTROLS
         function toggleAdminAccordion(secId) {
             const sec = document.getElementById(`adm-sec-${secId}`);
             const arrow = document.getElementById(`adm-arrow-${secId}`);
@@ -1587,11 +1650,14 @@
             renderList();
         }
 
-        // SLOGAN MANAGEMENT (XỬ LÝ AN TOÀN VỚI FIREBASE)
+        // HỖ TRỢ THÊM SLOGAN HÀNG LOẠT (BULK ADD)
         function addAdminSlogan() {
             const val = document.getElementById('admin-slogan-text-input').value.trim();
             if(!val) return alert('Vui lòng nhập nội dung Slogan!');
             
+            const lines = val.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            if (!lines.length) return;
+
             if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
                 appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
             }
@@ -1601,7 +1667,7 @@
                 pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultSlogans[currentLang]];
             }
             
-            pool.push(val);
+            pool.push(...lines);
             appData.slogansPool[currentLang] = pool;
             
             document.getElementById('admin-slogan-text-input').value = '';
@@ -1623,14 +1689,25 @@
             displayRandomSlogan();
         }
 
-        // HINT MANAGEMENT
+        // HỖ TRỢ THÊM HINTS HÀNG LOẠT (BULK ADD)
         function addAdminHint() {
-            const title = document.getElementById('admin-hint-title-input').value.trim();
-            const desc = document.getElementById('admin-hint-desc-input').value.trim();
+            const raw = document.getElementById('admin-hint-bulk-input').value.trim();
             const isP = document.getElementById('admin-hint-isp-checkbox').checked;
 
-            if(!title) return alert('Vui lòng nhập tiêu đề ý tưởng!');
+            if(!raw) return alert('Vui lòng nhập ít nhất một ý tưởng!');
             
+            const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            const newHints = lines.map(line => {
+                const parts = line.split('|');
+                return {
+                    title: parts[0].trim(),
+                    desc: parts[1] ? parts[1].trim() : '',
+                    isP
+                };
+            }).filter(h => h.title.length > 0);
+
+            if(!newHints.length) return;
+
             if (!appData.hintsPool || Array.isArray(appData.hintsPool)) {
                 appData.hintsPool = { vi: [...defaultHints.vi], en: [...defaultHints.en] };
             }
@@ -1640,11 +1717,10 @@
                 pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultHints[currentLang]];
             }
 
-            pool.push({ title, desc, isP });
+            pool.push(...newHints);
             appData.hintsPool[currentLang] = pool;
 
-            document.getElementById('admin-hint-title-input').value = '';
-            document.getElementById('admin-hint-desc-input').value = '';
+            document.getElementById('admin-hint-bulk-input').value = '';
             document.getElementById('admin-hint-isp-checkbox').checked = false;
 
             dbRef.set(appData);
@@ -1663,13 +1739,16 @@
             renderAdminCenterContent();
         }
 
-        // MUSIC PLAYLIST MANAGEMENT
+        // HỖ TRỢ THÊM MP3 PLAYLIST HÀNG LOẠT (BULK ADD)
         function addMusicUrl() {
-            const url = document.getElementById('admin-music-url-input').value.trim();
-            if(!url) return;
+            const raw = document.getElementById('admin-music-url-input').value.trim();
+            if(!raw) return;
+            const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            
             let listM = getPlaylist();
-            listM.push(url);
+            listM.push(...lines);
             appData.playlist = listM;
+
             document.getElementById('admin-music-url-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
@@ -1698,9 +1777,9 @@
             const slogans = Array.isArray(rawSlogans) ? rawSlogans : (typeof rawSlogans === 'object' && rawSlogans !== null ? Object.values(rawSlogans) : []);
 
             sloganContainer.innerHTML = slogans.map((s, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200 text-[11px]">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
                     <span class="truncate max-w-[280px] font-medium text-slate-700 dark:text-slate-200">"${s}"</span>
-                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 font-bold hover:underline shrink-0 ml-2">Xóa</button>
+                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -1710,12 +1789,12 @@
             const hints = Array.isArray(rawHints) ? rawHints : (typeof rawHints === 'object' && rawHints !== null ? Object.values(rawHints) : []);
 
             hintContainer.innerHTML = hints.map((h, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200 text-[11px]">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
                     <div class="min-w-0 pr-2">
                         <strong class="text-slate-800 dark:text-slate-100 block truncate">${h.isP ? '📌 Cá nhân' : '🎯 Nhóm'}: ${h.title}</strong>
                         <span class="text-[10px] text-slate-400 truncate block">${h.desc || 'Không có mô tả'}</span>
                     </div>
-                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 font-bold hover:underline shrink-0">Xóa</button>
+                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 text-[11px]">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -1723,9 +1802,9 @@
             const musicContainer = document.getElementById('admin-music-list');
             const listM = getPlaylist();
             musicContainer.innerHTML = listM.map((u, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-1.5 rounded-lg border text-[10px]">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200/80 dark:border-slate-600 text-[11px]">
                     <span class="truncate max-w-[280px] font-mono text-slate-600 dark:text-slate-300">${u}</span>
-                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 font-bold hover:underline shrink-0 ml-2">Xóa</button>
+                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -1736,11 +1815,11 @@
                 pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">Không có yêu cầu chờ duyệt.</p>`;
             } else {
                 pendingContainer.innerHTML = pendingArr.map(p => `
-                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border">
-                        <span class="font-bold text-slate-800 dark:text-slate-100">👤 ${p.name}</span>
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600">
+                        <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">👤 ${p.name}</span>
                         <div class="flex gap-1.5">
-                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition">${t('approve')}</button>
-                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition">${t('reject')}</button>
+                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition">${t('approve')}</button>
+                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition">${t('reject')}</button>
                         </div>
                     </div>
                 `).join('');
@@ -1748,12 +1827,12 @@
 
             const membersContainer = document.getElementById('admin-members-list');
             membersContainer.innerHTML = appData.members.map(m => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600">
                     <div class="flex items-center gap-2">
                         ${getMemberAvatarHTML(m.id, "w-6 h-6")}
-                        <span class="font-bold text-slate-800 dark:text-slate-100">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span>
+                        <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span>
                     </div>
-                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold transition">🗑️ Xóa</button>` : ''}
+                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold transition">🗑️ ${t('delete')}</button>` : ''}
                 </div>
             `).join('');
         }
@@ -2500,7 +2579,6 @@
             alert(t('joinedSuccess')); 
         }
 
-        // DAY MODAL
         function openDayModal(id, dIdx, isP) {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
@@ -2706,7 +2784,6 @@
             document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
         };
 
-        // COMMENTS
         function toggleCommentSection(id) { const el = document.getElementById(`comment-section-${id}`); if (el) el.classList.toggle('hidden'); }
         function insertTagToComment(cId, name) { const i=document.getElementById(`comment-text-${cId}`); if(i){ i.value = `@${name} ` + i.value.replace(`@${name} `, ''); i.focus(); } }
         function setReplyToComment(cId, cmId, aName, aId) { activeReplyTo[cId]={cmId, aName, aId}; const rb=document.getElementById(`reply-banner-${cId}`); if(rb){ document.getElementById(`reply-name-${cId}`).innerText=`@${aName}`; rb.classList.remove('hidden'); insertTagToComment(cId, aName); } }
@@ -3157,7 +3234,6 @@
             }).join('');
         }
 
-        // TẢI SLOGAN NGAY KHI MỞ TRANG LẦN ĐẦU (KHÔNG CHỜ FIREBASE)
         displayRandomSlogan();
     </script>
 </body>
