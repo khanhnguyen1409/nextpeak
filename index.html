@@ -1479,7 +1479,7 @@
                         ${getMemberAvatarHTML(m.id, "w-6 h-6")}
                         <span class="font-bold text-slate-800 dark:text-slate-100">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span>
                     </div>
-                    ${m.id !== 'member_7' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold transition">🗑️ Xóa</button>` : ''}
+                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold transition">🗑️ Xóa</button>` : ''}
                 </div>
             `).join('');
         }
@@ -1502,7 +1502,7 @@
         }
 
         function deleteMember(mId) {
-            if (mId === 'member_7') return alert('Không thể xóa tài khoản Admin gốc!');
+            if (mId === 'member_1') return alert('Không thể xóa tài khoản Admin gốc!');
             if (!confirm(`Bạn có chắc muốn xóa thành viên này khỏi hệ thống?`)) return;
             appData.members = appData.members.filter(m => m.id !== mId);
             delete appData.personalHabits[mId];
@@ -1681,7 +1681,7 @@
                             </div>
                             ${j ? avs : ''}
                             ${content}
-                            ${(j || ro) && loggedInUserId === 'member_7' ? renderCommentSectionHTML(c.id, c.comments||[], false) : ''}
+                            ${(j || ro) && loggedInUserId === 'member_1' ? renderCommentSectionHTML(c.id, c.comments||[], false) : ''}
                         </div>`;
                 });
             } else {
@@ -1779,7 +1779,7 @@
                                 </div>
                                 ${grid}
                             </div>
-                            ${loggedInUserId === 'member_7' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
+                            ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
                         </div>`;
                 });
             }
@@ -1828,7 +1828,7 @@
                 document.getElementById('login-step-2').classList.add('hidden');
             } else { 
                 updateUserLabel(); 
-                document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_7'); 
+                document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
             }
         }
 
@@ -1862,7 +1862,7 @@
             const newId = 'member_' + Date.now();
             appData.pendingMembers.push({ id: newId, name, pin, createdAt: Date.now() });
             
-            sendNotification('member_7', 'system', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
+            sendNotification('member_1', 'system', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
 
             dbRef.set(appData);
 
@@ -1895,9 +1895,9 @@
             document.getElementById('login-modal').classList.add('hidden'); 
             updateUserLabel(); 
             updateNotificationBadge(); 
-            document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_7'); 
-            document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_7');
-            document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_7');
+            document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
+            document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
+            document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
             renderList(); 
         }
         function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
@@ -1911,7 +1911,7 @@
         function updateUserLabel() { 
             const m = appData.members.find(x => x.id === loggedInUserId); 
             if (m) { 
-                const isAdmin = loggedInUserId === 'member_7';
+                const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
                 document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
@@ -1919,7 +1919,7 @@
             } 
         }
         function handleResetTestData() {
-            if (loggedInUserId !== 'member_7') return alert(t('notAdmin'));
+            if (loggedInUserId !== 'member_1') return alert(t('notAdmin'));
             const mp = prompt(t('adminConfirmTitle'));
             if (mp === "0000") {
                 if (!confirm(t('adminConfirmWarn'))) return;
@@ -1993,7 +1993,7 @@
             
             document.getElementById('action-btn-archive').classList.toggle('hidden', isArch);
             document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
-            document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_7');
+            document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
             
             const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
             if(isP && !isArch) {
