@@ -1862,7 +1862,6 @@
             const newId = 'member_' + Date.now();
             appData.pendingMembers.push({ id: newId, name, pin, createdAt: Date.now() });
             
-            // --- ĐÃ ĐỔI TYPE THÀNH 'pending_approval' ---
             sendNotification('member_1', 'pending_approval', 'Hệ thống', 'Đăng ký mới', `Tài khoản "${name}" đang chờ bạn phê duyệt.`);
 
             dbRef.set(appData);
@@ -1924,13 +1923,12 @@
             const mp = prompt(t('adminConfirmTitle'));
             if (mp === "0000") {
                 if (!confirm(t('adminConfirmWarn'))) return;
-                // Đặt lại danh sách thành viên chỉ còn đúng Khánh Nguyễn (defaultMembers)
                 appData.members = JSON.parse(JSON.stringify(defaultMembers));
                 appData.pendingMembers = [];
                 appData.notifications = {};
                 appData.sharedChallenges = [];
                 appData.personalHabits = { 'member_1': [] };
-                
+
                 dbRef.set(appData); 
                 alert(t('adminSuccess')); 
                 closeUserMenu(); 
@@ -1958,6 +1956,25 @@
         function openNotificationModal() { renderNotificationList(); document.getElementById('notification-modal').classList.remove('hidden'); }
         function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
         
+        function handleNotificationClick(nId, type) {
+            if (appData.notifications[loggedInUserId]) {
+                const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
+                if (notif) notif.read = true;
+                dbRef.set(appData);
+                updateNotificationBadge();
+            }
+
+            closeNotificationModal();
+
+            if (type === 'pending_approval') {
+                if (loggedInUserId === 'member_1') {
+                    openAdminCenterModal();
+                } else {
+                    alert('Chỉ Admin mới có quyền duyệt thành viên!');
+                }
+            }
+        }
+
         function renderNotificationList() {
             const container = document.getElementById('notification-list'); container.innerHTML = ''; const notifs = appData.notifications[loggedInUserId] || [];
             if (!notifs.length) return container.innerHTML = `<p class="text-slate-400 italic text-center py-6">${t('noNotif')}</p>`;
@@ -1982,27 +1999,6 @@
             });
         }
         function markAllNotificationsRead() { if (appData.notifications[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); dbRef.set(appData); renderNotificationList(); updateNotificationBadge(); }
-
-function handleNotificationClick(nId, type) {
-            // Đánh dấu thông báo này là đã đọc
-            if (appData.notifications[loggedInUserId]) {
-                const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
-                if (notif) notif.read = true;
-                dbRef.set(appData);
-                updateNotificationBadge();
-            }
-
-            closeNotificationModal();
-
-            // Nếu là thông báo chờ duyệt -> mở thẳng Trung tâm Quản trị
-            if (type === 'pending_approval') {
-                if (loggedInUserId === 'member_1') {
-                    openAdminCenterModal();
-                } else {
-                    alert('Chỉ Admin mới có quyền duyệt thành viên!');
-                }
-            }
-        }
 
         function openActionMenuModal(id, isP) {
             selectedMenuChallenge = { id, isPersonal: isP };
