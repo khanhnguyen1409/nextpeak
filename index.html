@@ -3131,3 +3131,53 @@
                     
                     let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
                     let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-Tôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
+600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : ''));
+                        
+                        htmlTxt += `
+                            <div class="space-y-1 text-[11px]">
+                                <div class="flex justify-between items-center gap-2">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate"><span class="truncate">${h.text}</span></span>
+                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                </div>
+                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
+                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                            </div>`;
+                });
+                htmlTxt += `</div></div>`;
+            } else {
+                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noHabits')}</p></div></div>`;
+            }
+
+            document.getElementById('report-html-preview').innerHTML = htmlTxt;
+        }
+
+        function renderRewardsSummary() {
+            const container = document.getElementById('rewards-summary-list');
+            // Logic hiển thị phần Thưởng/Phạt
+            container.innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">${t('noRewardRecord')}</p>`;
+        }
+
+        function toggleRewardRulesAccordion() {
+            const box = document.getElementById('reward-rule-box');
+            const arrow = document.getElementById('reward-rules-arrow');
+            if (box) {
+                box.classList.toggle('hidden');
+                arrow.style.transform = box.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function openLeaderboardModal(id) {
+            document.getElementById('leaderboard-modal-title').innerText = t('leaderboard');
+            document.getElementById('leaderboard-list-container').innerHTML = `<p class="text-center text-slate-500 text-xs py-4">Dữ liệu đang được cập nhật...</p>`;
+            document.getElementById('leaderboard-modal').classList.remove('hidden');
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboard-modal').classList.add('hidden');
+        }
+
+    </script>
+</body>
+</html>
+<!-- đã đầy đủ -->
