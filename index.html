@@ -3176,10 +3176,8 @@
     const sysCfg = appData.systemConfig || defaultSystemConfig;
     const tgt = c.targetDays || sysCfg.defaultTargetDays;
 
-    // Lọc danh sách các thành viên tham gia hoặc đã bỏ cuộc
     const participants = Object.keys(c.participants || {}).filter(mId => c.participants[mId] === true || c.participants[mId] === 'given_up');
 
-    // Tính toán số ngày hoàn thành của từng thành viên
     const rankedList = participants.map(mId => {
         const memberInfo = appData.members.find(x => x.id === mId);
         const prog = (c.progress && c.progress[mId]) ? c.progress[mId] : [];
@@ -3193,22 +3191,23 @@
         };
     });
 
-    // Sắp xếp: Ai hoàn thành nhiều hơn đứng trước. Nếu bằng nhau, ưu tiên người hoàn thành đạt mục tiêu (tgt) trước.
-    rankedList.sort((a, b) => {
-        if (b.completedCount !== a.completedCount) {
-            return b.completedCount - a.completedCount;
-        }
-        return 0;
-    });
+    // Sắp xếp giảm dần theo số ngày hoàn thành
+    rankedList.sort((a, b) => b.completedCount - a.completedCount);
 
     if (!rankedList.length) {
         container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">${t('noOtherMembers')}</p>`;
     } else {
-        container.innerHTML = rankedList.map((item, index) => {
-            let medal = `<span class="w-6 text-center font-bold text-slate-500">${index + 1}</span>`;
-            if (index === 0) medal = `<span class="w-6 text-center text-base">🥇</span>`;
-            else if (index === 1) medal = `<span class="w-6 text-center text-base">🥈</span>`;
-            else if (index === 2) medal = `<span class="w-6 text-center text-base">🥉</span>`;
+        let currentRank = 1;
+        container.innerHTML = rankedList.map((item, index, arr) => {
+            // Nếu điểm số khác người đứng trước, cập nhật lại hạng bằng vị trí index + 1
+            if (index > 0 && item.completedCount < arr[index - 1].completedCount) {
+                currentRank = index + 1;
+            }
+
+            let medal = `<span class="w-6 text-center font-bold text-slate-500">${currentRank}</span>`;
+            if (currentRank === 1) medal = `<span class="w-6 text-center text-base">🥇</span>`;
+            else if (currentRank === 2) medal = `<span class="w-6 text-center text-base">🥈</span>`;
+            else if (currentRank === 3) medal = `<span class="w-6 text-center text-base">🥉</span>`;
 
             const isDone = item.completedCount >= tgt;
 
