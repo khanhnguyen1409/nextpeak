@@ -70,17 +70,16 @@
         .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
+<body id="main-cover-id" class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
 
     <!-- AUDIO NHẠC NỀN -->
     <audio id="bg-music"></audio>
 
     <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden animate-fade-in">
+    <div id="login-screen-id" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in bg-cover bg-center">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700 animate-scale-in">
             <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEXT PEAK TEAM</h2>
-            <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
-                <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover" loading="lazy">
+            <div id="login-cover-container" class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-cover bg-center" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png');">
             </div>
             
             <div id="login-step-1" class="space-y-3">
@@ -180,6 +179,11 @@
                         <span id="adm-arrow-config" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="adm-sec-config" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
+                        <!-- QUẢN LÝ ẢNH COVER -->
+                        <div class="space-y-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+                            <label class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 block mb-1">🖼️ Đổi Ảnh Bìa (Cover) Toàn Hệ Thống:</label>
+                            <input type="file" id="admin-cover-file-input" accept="image/*" onchange="handleAdminChangeCover(event)" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
+                        </div>
                         <div class="space-y-2">
                             <div>
                                 <label id="adm-cfg-reward-label" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 block mb-1">🎁 Thưởng mặc định:</label>
@@ -421,9 +425,9 @@
                 <div class="flex justify-end relative">
                     <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition-all duration-200 items-center gap-1">📷</button>
                     <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs animate-scale-in">
-                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition"></button>
-                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
-                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
+                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition">Tất cả</button>
+                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition">Nhóm</button>
+                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition">Cá nhân</button>
                     </div>
                 </div>
                 <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
@@ -435,8 +439,8 @@
                 <div class="flex justify-end relative">
                     <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition-all duration-200 items-center gap-1">📷</button>
                     <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs animate-scale-in">
-                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition"></button>
-                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
+                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition">Tất cả</button>
+                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition">Cá nhân</button>
                     </div>
                 </div>
                 <div id="rewards-capture-wrapper" class="space-y-3">
@@ -543,7 +547,7 @@
     <div class="max-w-2xl mx-auto space-y-6 pb-20">
         
         <!-- HEADER -->
-        <header class="relative w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between animate-fade-in" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
+        <header id="app-main-cover" class="relative w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between animate-fade-in" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/40"></div>
             
             <div class="relative z-10 flex items-start justify-between w-full">
@@ -658,6 +662,51 @@
 
     <!-- MAIN SCRIPT -->
     <script>
+        // 1. HÀM NÉN ẢNH DÙNG CHUNG
+        function compressImage(file, maxWidth = 1200, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                let f = file;
+                if (f && (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i))) {
+                    heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }).then(c => {
+                        f = Array.isArray(c) ? c[0] : c;
+                        processReader(f);
+                    }).catch(err => reject(err));
+                } else {
+                    processReader(f);
+                }
+
+                function processReader(targetFile) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(targetFile);
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                            resolve(compressedBase64);
+                        };
+                        img.onerror = (err) => reject(err);
+                    };
+                    reader.onerror = (err) => reject(err);
+                }
+            });
+        }
+
         const translations = {
             vi: {
                 appTitle: "NEXT PEAK",
@@ -846,7 +895,7 @@
                 admHintAddBtn: "Thêm Ý Tưởng",
                 admHintListTitle: "Danh sách Gợi ý Hiện tại:",
 
-                admAccMusicTitle: "🎵 Quản lý Playlist Nhạc Nền",
+                admAccMusicTitle: "🎵 Playlist Music Management",
                 admMusicHint: "💡 Có thể dán nhiều link MP3 (mỗi dòng 1 link).",
                 admMusicPh: "Dán link MP3...",
                 admMusicAddBtn: "Thêm Link Nhạc",
@@ -1181,7 +1230,8 @@
             defaultPenalty: 100,
             defaultTargetDays: 14,
             defaultTotalDays: 16,
-            masterPin: "0000"
+            masterPin: "0000",
+            coverImage: "https://i.postimg.cc/XYf3bPDg/cover.png"
         };
 
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
@@ -1616,6 +1666,11 @@
                 dbRef.set(appData);
             }
             
+            // Apply cover image dynamically from Firebase data
+            if (appData.systemConfig && appData.systemConfig.coverImage) {
+                applyCoverImageToUI(appData.systemConfig.coverImage);
+            }
+
             populateLoginSelect();
             checkLogin();
 
@@ -1626,6 +1681,43 @@
             displayRandomSlogan();
             renderList();
         });
+
+        // 2. XỬ LÝ ẢNH COVER (Admin thay đổi & Hiển thị 2 nơi)
+        async function handleAdminChangeCover(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressedCover = await compressImage(file, 1920, 0.8);
+                await firebase.database().ref('bvgpOfficialTeamData/systemConfig').update({
+                    coverImage: compressedCover
+                });
+                alert("Cập nhật ảnh bìa thành công!");
+            } catch (error) {
+                console.error("Lỗi khi cập nhật cover:", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại.");
+            }
+        }
+
+        function applyCoverImageToUI(coverBase64String) {
+            if (!coverBase64String) return;
+
+            // 1. Màn hình Đăng nhập (Login Screen)
+            const loginScreen = document.getElementById('login-cover-container');
+            if (loginScreen) {
+                loginScreen.style.backgroundImage = `url('${coverBase64String}')`;
+                loginScreen.style.backgroundSize = 'cover';
+                loginScreen.style.backgroundPosition = 'center';
+            }
+
+            // 2. Màn hình chính / Admin Center (Main App Header)
+            const mainAppCover = document.getElementById('app-main-cover');
+            if (mainAppCover) {
+                mainAppCover.style.backgroundImage = `url('${coverBase64String}')`;
+                mainAppCover.style.backgroundSize = 'cover';
+                mainAppCover.style.backgroundPosition = 'center';
+            }
+        }
 
         function toggleUserMenu() { document.getElementById('user-menu-modal').classList.remove('hidden'); }
         function closeUserMenu() { document.getElementById('user-menu-modal').classList.add('hidden'); }
@@ -1650,14 +1742,17 @@
             document.getElementById('profile-modal').classList.remove('hidden');
         }
 
-        function previewProfileAvatar(e) {
+        async function previewProfileAvatar(e) {
             const f = e.target.files[0];
             if (f) {
                 document.getElementById('profile-avatar-filename').innerText = f.name;
-                compressImage(f, b => {
+                try {
+                    const b = await compressImage(f, 300, 0.7);
                     tempAvatarBase64 = b;
                     document.getElementById('profile-preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover animate-fade-in" loading="lazy">`;
-                });
+                } catch(err) {
+                    alert(t('heicError'));
+                }
             } else {
                 document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
             }
@@ -1750,6 +1845,7 @@
             }
 
             appData.systemConfig = {
+                ...appData.systemConfig,
                 defaultReward: reward,
                 defaultPenalty: penalty,
                 defaultTargetDays: target,
@@ -2270,19 +2366,23 @@
             document.getElementById('create-title-input').value = title;
             document.getElementById('create-desc-input').value = desc;
         }
-
-        async function compressImage(file, cb) {
-            let f = file;
-            if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
-                try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
-                catch (e) { return alert(t('heicError')); }
-            }
-            const r = new FileReader();
-            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
-            r.readAsDataURL(f);
-        }
         
-        function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
+        async function previewDayImage(e) {
+            const f = e.target.files[0];
+            if (f) {
+                document.getElementById('day-file-name').innerText = f.name;
+                try {
+                    const b = await compressImage(f, 1200, 0.7);
+                    tempDayImageBase64 = b;
+                    document.getElementById('modal-image-preview').src = b;
+                    document.getElementById('modal-image-preview-container').classList.remove('hidden');
+                } catch(err) {
+                    alert(t('heicError'));
+                }
+            } else {
+                document.getElementById('day-file-name').innerText = t('noFileSelected');
+            }
+        }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
         function populateLoginSelect() {
@@ -2293,11 +2393,12 @@
         function checkLogin() {
             populateLoginSelect();
             if (!loggedInUserId || !appData.members.some(m => m.id === loggedInUserId)) {
-                document.getElementById('login-modal').classList.remove('hidden'); 
+                document.getElementById('login-screen-id').classList.remove('hidden'); 
                 document.getElementById('login-step-1').classList.remove('hidden'); 
                 document.getElementById('register-step-view').classList.add('hidden');
                 document.getElementById('login-step-2').classList.add('hidden');
             } else { 
+                document.getElementById('login-screen-id').classList.add('hidden');
                 updateUserLabel(); 
                 document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
             }
@@ -2364,7 +2465,7 @@
         function finishLogin(id) { 
             loggedInUserId = id; 
             localStorage.setItem('bvgpOfficialLoggedInUserId', id); 
-            document.getElementById('login-modal').classList.add('hidden'); 
+            document.getElementById('login-screen-id').classList.add('hidden'); 
             updateUserLabel(); 
             updateNotificationBadge(); 
             document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
@@ -2372,7 +2473,13 @@
             document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
             renderList(); 
         }
-        function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
+        function switchUser() { 
+            localStorage.removeItem('bvgpOfficialLoggedInUserId'); 
+            loggedInUserId = null; 
+            closeUserMenu(); 
+            document.getElementById('login-screen-id').classList.remove('hidden');
+            checkLogin(); 
+        }
 
         function updateUserLabel() { 
             const m = appData.members.find(x => x.id === loggedInUserId); 
@@ -2825,34 +2932,78 @@
             currentEditingDay = null; 
         }
 
-        function saveDayDetail() {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
+        // 3. THÀNH VIÊN GỬI BÁO CÁO (Tối ưu Băng thông với `.update()`)
+        async function submitDailyReport(userId, challengeIndex, dayIndex, imageFile, textNote) {
+            try {
+                let finalImageBase64 = null;
+                
+                if (imageFile) {
+                    finalImageBase64 = await compressImage(imageFile, 1200, 0.7);
+                }
+
+                const now = new Date();
+                const updates = {
+                    completed: document.getElementById('modal-chk-completed').checked,
+                    timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`
+                };
+
+                if (textNote !== undefined) updates.note = textNote;
+                if (finalImageBase64) updates.image = finalImageBase64;
+                else if (tempDayImageBase64) updates.image = tempDayImageBase64;
+
+                const path = `sharedChallenges/${challengeIndex}/progress/${userId}/${dayIndex}`;
+                await firebase.database().ref('bvgpOfficialTeamData/' + path).update(updates);
+
+                alert("Gửi báo cáo thành công!");
+            } catch (error) {
+                console.error("Lỗi báo cáo:", error);
+                alert("Gửi báo cáo thất bại.");
+            }
+        }
+
+        async function saveDayDetail() {
             if(!currentEditingDay || currentEditingDay.isReadOnly) return;
             const isComp = document.getElementById('modal-chk-completed').checked;
-            const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date(), updated = { completed: isComp, note: document.getElementById('modal-note').value.trim(), image: tempDayImageBase64, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` };
+            const {id, dayIndex, isPersonal} = currentEditingDay;
+            const noteText = document.getElementById('modal-note').value.trim();
+            const imageFileInput = document.getElementById('modal-image-file').files[0];
             
-            if(!isPersonal){ 
-                const c = appData.sharedChallenges.find(x=>x.id===id); 
-                if(c){ 
-                    c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({})); 
-                    c.progress[loggedInUserId][dayIndex] = updated; 
-                    if(updated.completed) {
-                        const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
+            if(!isPersonal){
+                const challengeIndex = appData.sharedChallenges.findIndex(x => x.id === id);
+                if(challengeIndex !== -1) {
+                    await submitDailyReport(loggedInUserId, challengeIndex, dayIndex, imageFileInput, noteText);
+                    const c = appData.sharedChallenges[challengeIndex];
+                    if(isComp) {
+                        const cnt = (c.progress[loggedInUserId] || []).filter(x => x && x.completed).length;
                         const dateStr = getDateString(c.startDate, dayIndex);
-                        if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) {
+                        if(cnt >= (c.targetDays || appData.systemConfig.defaultTargetDays)) {
                             notifyAllChallengeMembers(c, 'complete', `${t('ntfComplete')} "${c.title}"! 🎉`);
                         } else {
                             notifyAllChallengeMembers(c, 'checkin', `${t('ntfCheckin')} ${dateStr} - ${c.title}`);
                         }
                     }
-                } 
-            } 
-            else { 
-                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
+                }
+            } else {
+                const now = new Date();
+                const updated = { 
+                    completed: isComp, 
+                    note: noteText, 
+                    image: tempDayImageBase64, 
+                    timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` 
+                };
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { 
+                    if(h.id===id){ 
+                        const d=h.days?[...h.days]:[]; 
+                        d[dayIndex]=updated; 
+                        return {...h, days:d}; 
+                    } 
+                    return h; 
+                });
+                await dbRef.set(appData);
+                updateModalView(updated); 
             }
-            dbRef.set(appData); 
-            updateModalView(updated); 
-            setModalMode(false);
+            
+            closeDayModal();
             renderList();
         }
 
@@ -2912,7 +3063,7 @@
                 cancelReplyToComment(cId); dbRef.set(appData);
                 renderList();
             };
-            f ? compressImage(f, save) : save();
+            f ? compressImage(f, 1200, 0.7).then(save).catch(() => alert(t('heicError'))) : save();
         }
         function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); renderList(); }
 
@@ -3214,11 +3365,12 @@
                 if (!userRewardsHTML) userRewardsHTML = `<div class="text-xs text-slate-400 italic">${t('noRewardRecord')}</div>`;
 
                 return `
-                    <div id="rewards-user-card-${m.id}" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 animate-slide-up">
-                        <div class="flex items-center gap-2 font-bold text-xs text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-1.5">
-                            ${getMemberAvatarHTML(m.id, "w-6 h-6")} ${m.name}
+                    <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 animate-slide-up">
+                        <div class="flex items-center gap-2 font-bold text-xs text-slate-800 dark:text-slate-100">
+                            ${getMemberAvatarHTML(m.id, "w-5 h-5")}
+                            <span>${m.name}</span>
                         </div>
-                        <div class="space-y-1 pl-2">
+                        <div class="space-y-1 pl-7">
                             ${userRewardsHTML}
                         </div>
                     </div>
