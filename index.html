@@ -3191,7 +3191,6 @@
         };
     });
 
-    // Sắp xếp giảm dần theo số ngày hoàn thành
     rankedList.sort((a, b) => b.completedCount - a.completedCount);
 
     if (!rankedList.length) {
@@ -3199,7 +3198,6 @@
     } else {
         let currentRank = 1;
         container.innerHTML = rankedList.map((item, index, arr) => {
-            // Nếu điểm số khác người đứng trước, cập nhật lại hạng bằng vị trí index + 1
             if (index > 0 && item.completedCount < arr[index - 1].completedCount) {
                 currentRank = index + 1;
             }
@@ -3210,6 +3208,7 @@
             else if (currentRank === 3) medal = `<span class="w-6 text-center text-base">🥉</span>`;
 
             const isDone = item.completedCount >= tgt;
+            const percent = Math.round((item.completedCount / tgt) * 100);
 
             return `
                 <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200 dark:border-slate-600 text-xs animate-slide-up">
@@ -3222,7 +3221,7 @@
                         </div>
                     </div>
                     <div class="font-extrabold text-indigo-600 dark:text-indigo-400 text-sm">
-                        ${item.completedCount}/${tgt} 
+                        ${item.completedCount}/${tgt} <span class="text-[11px] font-semibold text-slate-400">(${percent}%)</span>
                     </div>
                 </div>
             `;
