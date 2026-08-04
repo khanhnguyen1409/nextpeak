@@ -173,7 +173,7 @@
             </div>
             
             <div class="space-y-3 text-xs overflow-y-auto pr-1 flex-1 no-scrollbar">
-                <!-- ACCORDION 1 -->
+                <!-- ACCORDION 1: ⚙️ Cấu hình Tham số -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('config')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
                         <span id="adm-acc-config-title" class="flex items-center gap-2">⚙️ Cấu hình Tham số Mặc định</span>
@@ -208,7 +208,7 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 2 -->
+                <!-- ACCORDION 2: 💬 Quản lý Kho Slogan -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('slogan')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
                         <span id="adm-acc-slogan-title" class="flex items-center gap-2">💬 Quản lý Kho Slogan Truyền Động Lực</span>
@@ -227,7 +227,7 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 3 -->
+                <!-- ACCORDION 3: 💡 Quản lý Kho Ý Tưởng (Hints) -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('hint')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
                         <span id="adm-acc-hint-title" class="flex items-center gap-2">💡 Quản lý Kho Ý Tưởng Thử Thách (Hints)</span>
@@ -252,7 +252,7 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 4 -->
+                <!-- ACCORDION 4: 🎵 Quản lý Playlist Nhạc Nền -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('music')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
                         <span id="adm-acc-music-title" class="flex items-center gap-2">🎵 Quản lý Playlist Nhạc Nền</span>
@@ -268,7 +268,7 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 5 -->
+                <!-- ACCORDION 5: 👥 Duyệt & Quản lý Thành viên -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('members')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
                         <span id="adm-acc-members-title" class="flex items-center gap-2">👥 Duyệt & Quản lý Thành viên</span>
@@ -287,7 +287,7 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 6 -->
+                <!-- ACCORDION 6: ⚠️ Khôi phục Hệ thống -->
                 <div class="border border-rose-200 dark:border-rose-900/40 rounded-2xl overflow-hidden bg-rose-50/30 dark:bg-rose-950/10 transition-all">
                     <button onclick="toggleAdminAccordion('reset')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-rose-600 hover:bg-rose-100/40 transition">
                         <span id="adm-acc-reset-title" class="flex items-center gap-2">⚠️ Khôi phục Hệ thống (Admin Reset)</span>
@@ -298,6 +298,7 @@
                         <button onclick="handleResetTestData()" id="admin-reset-btn" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all duration-200 text-xs shadow-xs">Admin Reset</button>
                     </div>
                 </div>
+
             </div>
 
             <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 mt-2">Đóng</button>
@@ -654,7 +655,8 @@
 
         <div id="main-list-container" class="space-y-6"></div>
     </div>
-<!-- MAIN SCRIPT -->
+
+    <!-- MAIN SCRIPT -->
     <script>
         const translations = {
             vi: {
@@ -822,6 +824,7 @@
                 registerSubmitBtn: "Gửi yêu cầu",
                 registerSuccess: "Đã gửi yêu cầu đăng ký! Chờ Admin phê duyệt.",
 
+                // Admin Center
                 admAccConfigTitle: "⚙️ Cấu hình Tham số Mặc định",
                 admCfgRewardLabel: "🎁 Thưởng mặc định:",
                 admCfgPenaltyLabel: "💸 Phạt mặc định (k):",
@@ -1187,7 +1190,7 @@
         let activeTab = 'dashboard';
         let currentFilter = 'my';
 
-        function t(key) { return translations[currentLang]?.[key] || translations['vi'][key] || key; }
+        function t(key) { return translations[currentLang][key] || key; }
 
         const sortByStartDate = (a, b) => {
             const dateA = new Date(a.startDate).getTime();
@@ -1250,7 +1253,7 @@
         audio.addEventListener('ended', nextMusic);
 
         function getPlaylist() {
-            let pl = appData?.playlist;
+            let pl = appData.playlist;
             if (Array.isArray(pl) && pl.length) return pl;
             if (typeof pl === 'object' && pl !== null) {
                 const arr = Object.values(pl);
@@ -1345,6 +1348,11 @@
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('btn-report').innerText = t('reportBtnText');
             
+            const refreshBtn = document.getElementById('btn-refresh-title');
+            if (refreshBtn) {
+                refreshBtn.title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
+            }
+            
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
             renderFilterOptions();
             
@@ -1431,7 +1439,7 @@
             document.getElementById('day-file-name').innerText = t('noFileSelected');
             document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
 
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             document.getElementById('rule-desc-group-text').innerText = `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`;
             document.getElementById('rule-desc-bigplay-text').innerText = t('ruleDescBigPlay');
             document.getElementById('rule-desc-personal-text').innerText = t('ruleDescPersonal');
@@ -1493,7 +1501,7 @@
 
         function updateCreateFormLabels() {
             const isGrp = activeTab==='dashboard';
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             
             document.getElementById('form-create-title').innerText = isGrp ? t('createSharedTitle') : t('createPersonalTitle');
             document.getElementById('create-title-input').placeholder = isGrp ? t('challengePh') : t('habitPh');
@@ -1583,8 +1591,7 @@
         let selectedMenuChallenge = null;
         let activeReplyTo = {};
 
-        const dateInputEl = document.getElementById('create-date-input');
-        if (dateInputEl) dateInputEl.value = new Date().toISOString().split('T')[0];
+        document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0];
 
         dbRef.on('value', (snapshot) => {
             if (snapshot.val()) {
@@ -1627,7 +1634,7 @@
         
         function openProfileModal() {
             closeUserMenu();
-            const m = (appData.members || []).find(x => x.id === loggedInUserId);
+            const m = appData.members.find(x => x.id === loggedInUserId);
             if (!m) return;
 
             document.getElementById('profile-name-input').value = m.name;
@@ -1653,12 +1660,11 @@
                 });
             } else {
                 document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
-                e.target.value = '';
             }
         }
 
         function saveProfileChanges() {
-            const mIdx = (appData.members || []).findIndex(x => x.id === loggedInUserId);
+            const mIdx = appData.members.findIndex(x => x.id === loggedInUserId);
             if (mIdx === -1) return;
 
             const m = appData.members[mIdx];
@@ -1670,7 +1676,7 @@
 
             if (newName && newName !== m.name) {
                 const newNameLower = newName.toLowerCase();
-                const isExist = (appData.members || []).some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) ||
+                const isExist = appData.members.some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) ||
                                         (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
                 if (isExist) {
                     return alert(t('errNameExist'));
@@ -1709,13 +1715,7 @@
             document.getElementById('profile-modal').classList.add('hidden');
         }
 
-        function openHistoryModal() { 
-            closeUserMenu(); 
-            const m = (appData.members || []).find(x => x.id === loggedInUserId); 
-            const hl = document.getElementById('pin-history-list'); 
-            hl.innerHTML = (m && m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50 animate-slide-up"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; 
-            document.getElementById('history-modal').classList.remove('hidden'); 
-        }
+        function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50 animate-slide-up"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
         
         function toggleAdminAccordion(secId) {
             const sec = document.getElementById(`adm-sec-${secId}`);
@@ -1811,7 +1811,7 @@
             const newHints = lines.map(line => {
                 const parts = line.split('|');
                 return {
-                    title: parts[0]?.trim() || '',
+                    title: parts[0].trim(),
                     desc: parts[1] ? parts[1].trim() : '',
                     isP
                 };
@@ -1873,7 +1873,7 @@
         }
 
         function renderAdminCenterContent() {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             document.getElementById('cfg-reward-input').value = sysCfg.defaultReward;
             document.getElementById('cfg-penalty-input').value = sysCfg.defaultPenalty;
             document.getElementById('cfg-target-input').value = sysCfg.defaultTargetDays;
@@ -1915,7 +1915,7 @@
             `).join('');
 
             const pendingContainer = document.getElementById('admin-pending-list');
-            const pendingArr = appData?.pendingMembers || [];
+            const pendingArr = appData.pendingMembers || [];
             if (!pendingArr.length) {
                 pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">${t('noPendingReq')}</p>`;
             } else {
@@ -1931,7 +1931,7 @@
             }
 
             const membersContainer = document.getElementById('admin-members-list');
-            membersContainer.innerHTML = (appData?.members || []).map(m => `
+            membersContainer.innerHTML = appData.members.map(m => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 animate-slide-up">
                     <div class="flex items-center gap-2">
                         ${getMemberAvatarHTML(m.id, "w-6 h-6")}
@@ -1945,9 +1945,7 @@
         function approveMember(pId) {
             const p = (appData.pendingMembers || []).find(x => x.id === pId);
             if (!p) return;
-            appData.members = appData.members || [];
             appData.members.push({ id: p.id, name: p.name, avatar: '', pin: p.pin, pinHistory: [] });
-            appData.personalHabits = appData.personalHabits || {};
             appData.personalHabits[p.id] = [];
             appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
             dbRef.set(appData);
@@ -1956,7 +1954,7 @@
         }
 
         function rejectMember(pId) {
-            appData.pendingMembers = (appData.pendingMembers || []).filter(x => x.id !== pId);
+            appData.pendingMembers = appData.pendingMembers.filter(x => x.id !== pId);
             dbRef.set(appData);
             renderAdminCenterContent();
         }
@@ -1964,8 +1962,8 @@
         function deleteMember(mId) {
             if (mId === 'member_1') return alert(t('errDeleteAdmin'));
             if (!confirm(t('confirmDelMember'))) return;
-            appData.members = (appData.members || []).filter(m => m.id !== mId);
-            if (appData.personalHabits) delete appData.personalHabits[mId];
+            appData.members = appData.members.filter(m => m.id !== mId);
+            delete appData.personalHabits[mId];
             if (loggedInUserId === mId) {
                 switchUser();
             }
@@ -2003,7 +2001,7 @@
         function promptReason() { let r = prompt(t('requireReason')); while(r!==null && !r.trim()){ alert(t('reasonRequiredAlert')); r = prompt(t('requireReason')); } return r ? r.trim() : null; }
 
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
-            const u = (appData?.members || []).find(x => x.id === mId);
+            const u = appData.members.find(x => x.id === mId);
             if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 leading-none">?</div>`;
             return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0" loading="lazy">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
@@ -2037,10 +2035,10 @@
         function renderList() {
             const container = document.getElementById('main-list-container'); container.innerHTML = '';
             let list = [];
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
 
             if (activeTab === 'dashboard') {
-                list = (appData?.sharedChallenges || []).filter(c => {
+                list = (appData.sharedChallenges||[]).filter(c => {
                     const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
                     if (currentFilter === 'archived') return c.archived;
                     if (c.archived) return false;
@@ -2152,7 +2150,7 @@
                         </div>`;
                 });
             } else {
-                list = (appData?.personalHabits?.[loggedInUserId] || []).filter(h => {
+                list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
                     if (currentFilter === 'archived') return h.archived === true;
                     if (currentFilter === 'active') return !h.archived;
                     return true;
@@ -2276,59 +2274,25 @@
         async function compressImage(file, cb) {
             let f = file;
             if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
-                try { 
-                    const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); 
-                    f = Array.isArray(c) ? c[0] : c; 
-                } catch (e) { 
-                    return alert(t('heicError')); 
-                }
+                try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
+                catch (e) { return alert(t('heicError')); }
             }
             const r = new FileReader();
-            r.onload = e => { 
-                const i = new Image(); 
-                i.onload = () => { 
-                    const cv = document.createElement('canvas'); 
-                    let w = i.width, h = i.height; 
-                    if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} 
-                    cv.width=w; cv.height=h; 
-                    cv.getContext('2d').drawImage(i,0,0,w,h); 
-                    cb(cv.toDataURL('image/jpeg', 0.7)); 
-                }; 
-                i.src = e.target.result; 
-            };
+            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
             r.readAsDataURL(f);
         }
         
-        function previewDayImage(e) { 
-            const f = e.target.files[0]; 
-            if (f) { 
-                document.getElementById('day-file-name').innerText = f.name; 
-                compressImage(f, b => { 
-                    tempDayImageBase64 = b; 
-                    document.getElementById('modal-image-preview').src = b; 
-                    document.getElementById('modal-image-preview-container').classList.remove('hidden'); 
-                }); 
-            } else {
-                document.getElementById('day-file-name').innerText = t('noFileSelected');
-                e.target.value = '';
-            }
-        }
-        function removeDayImage() { 
-            tempDayImageBase64 = ''; 
-            const imgFileEl = document.getElementById('modal-image-file');
-            if(imgFileEl) imgFileEl.value = ''; 
-            document.getElementById('day-file-name').innerText = t('noFileSelected'); 
-            document.getElementById('modal-image-preview-container').classList.add('hidden'); 
-        }
+        function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
+        function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
 
         function populateLoginSelect() {
             const selectEl = document.getElementById('login-select');
-            if(selectEl) selectEl.innerHTML = (appData?.members || []).map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+            selectEl.innerHTML = appData.members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
         }
 
         function checkLogin() {
             populateLoginSelect();
-            if (!loggedInUserId || !(appData?.members || []).some(m => m.id === loggedInUserId)) {
+            if (!loggedInUserId || !appData.members.some(m => m.id === loggedInUserId)) {
                 document.getElementById('login-modal').classList.remove('hidden'); 
                 document.getElementById('login-step-1').classList.remove('hidden'); 
                 document.getElementById('register-step-view').classList.add('hidden');
@@ -2358,8 +2322,8 @@
             if (pin.length !== 4 || isNaN(pin)) return alert(t('pinFormat'));
 
             const nameLower = name.toLowerCase();
-            const isMemberExist = (appData?.members || []).some(m => m.name.toLowerCase() === nameLower);
-            const isPendingExist = (appData?.pendingMembers || []).some(p => p.name.toLowerCase() === nameLower);
+            const isMemberExist = (appData.members || []).some(m => m.name.toLowerCase() === nameLower);
+            const isPendingExist = (appData.pendingMembers || []).some(p => p.name.toLowerCase() === nameLower);
 
             if (isMemberExist || isPendingExist) {
                 return alert(t('errNameExist'));
@@ -2378,56 +2342,24 @@
         }
 
         function handleLoginNext() {
-            selectedLoginMemberId = document.getElementById('login-select').value; 
-            const m = (appData?.members || []).find(x => x.id === selectedLoginMemberId);
-            if(!m) return;
-            document.getElementById('login-step-1').classList.add('hidden'); 
-            document.getElementById('login-step-2').classList.remove('hidden');
-            const pt = document.getElementById('login-pin-title'), pb = document.getElementById('login-pin-btn'); 
-            document.getElementById('login-pin-input').value = '';
-            if (!m.pin) { 
-                pt.innerText = currentLang === 'vi' ? `🔒 Tạo mã PIN cho ${m.name}` : `🔒 Create PIN for ${m.name}`; 
-                pb.innerText = currentLang==='vi'?'Tạo PIN':'Create'; 
-                isCreatingPin = true; 
-            } else { 
-                pt.innerText = currentLang === 'vi' ? `🔑 Nhập mã PIN của ${m.name}` : `🔑 Enter PIN for ${m.name}`; 
-                pb.innerText = currentLang==='vi'?'Đăng nhập':'Login'; 
-                isCreatingPin = false; 
-            }
+            selectedLoginMemberId = document.getElementById('login-select').value; const m = appData.members.find(x => x.id === selectedLoginMemberId);
+            document.getElementById('login-step-1').classList.add('hidden'); document.getElementById('login-step-2').classList.remove('hidden');
+            const pt = document.getElementById('login-pin-title'), pb = document.getElementById('login-pin-btn'); document.getElementById('login-pin-input').value = '';
+            if (!m.pin) { pt.innerText = currentLang === 'vi' ? `🔒 Tạo mã PIN cho ${m.name}` : `🔒 Create PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Tạo PIN':'Create'; isCreatingPin = true; } 
+            else { pt.innerText = currentLang === 'vi' ? `🔑 Nhập mã PIN của ${m.name}` : `🔑 Enter PIN for ${m.name}`; pb.innerText = currentLang==='vi'?'Đăng nhập':'Login'; isCreatingPin = false; }
         }
         function handleLoginBack() { document.getElementById('login-step-2').classList.add('hidden'); document.getElementById('login-step-1').classList.remove('hidden'); }
-        function addPinHistoryLog(idx, note) { 
-            const now = new Date(); 
-            appData.members[idx].pinHistory = appData.members[idx].pinHistory || []; 
-            appData.members[idx].pinHistory.unshift({ time: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} - ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, note }); 
-        }
+        function addPinHistoryLog(idx, note) { const now = new Date(); appData.members[idx].pinHistory = appData.members[idx].pinHistory || []; appData.members[idx].pinHistory.unshift({ time: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} - ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, note }); }
         function handlePinSubmit() {
-            const p = document.getElementById('login-pin-input').value.trim(); 
-            if (p.length !== 4 || isNaN(p)) return alert(t('pinFormat'));
-            const idx = (appData?.members || []).findIndex(m => m.id === selectedLoginMemberId); 
-            if (idx === -1) return;
-            if (isCreatingPin) { 
-                appData.members[idx].pin = p; 
-                addPinHistoryLog(idx, "Khởi tạo PIN"); 
-                dbRef.set(appData); 
-                finishLogin(selectedLoginMemberId); 
-            } else { 
-                appData.members[idx].pin === p ? finishLogin(selectedLoginMemberId) : alert(t('wrongPin')); 
-            }
+            const p = document.getElementById('login-pin-input').value.trim(); if (p.length !== 4 || isNaN(p)) return alert(t('pinFormat'));
+            const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx === -1) return;
+            if (isCreatingPin) { appData.members[idx].pin = p; addPinHistoryLog(idx, "Khởi tạo PIN"); dbRef.set(appData); finishLogin(selectedLoginMemberId); } 
+            else { appData.members[idx].pin === p ? finishLogin(selectedLoginMemberId) : alert(t('wrongPin')); }
         }
         function handleForgotPin() {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const mp = prompt(currentLang === 'vi' ? "Nhập PIN quản trị (Master PIN):" : "Enter Master PIN:");
-            if (mp === (sysCfg.masterPin || "0000")) { 
-                const idx = (appData?.members || []).findIndex(m => m.id === selectedLoginMemberId); 
-                if (idx > -1) { 
-                    appData.members[idx].pin = ""; 
-                    addPinHistoryLog(idx, "Reset PIN (Master)"); 
-                    dbRef.set(appData); 
-                    alert(t('resetPinSuccess')); 
-                    handleLoginNext(); 
-                } 
-            } else if (mp !== null) alert(t('wrongMasterPin'));
+            if (mp === (sysCfg.masterPin || "0000")) { const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx > -1) { appData.members[idx].pin = ""; addPinHistoryLog(idx, "Reset PIN (Master)"); dbRef.set(appData); alert(t('resetPinSuccess')); handleLoginNext(); } } else if (mp !== null) alert(t('wrongMasterPin'));
         }
         function finishLogin(id) { 
             loggedInUserId = id; 
@@ -2436,29 +2368,25 @@
             updateUserLabel(); 
             updateNotificationBadge(); 
             document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
-            const capAct = document.getElementById('btn-cap-act');
-            const capRew = document.getElementById('btn-cap-rew');
-            if(capAct) capAct.classList.toggle('hidden', loggedInUserId !== 'member_1');
-            if(capRew) capRew.classList.toggle('hidden', loggedInUserId !== 'member_1');
+            document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
+            document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
             renderList(); 
         }
         function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
 
         function updateUserLabel() { 
-            const m = (appData?.members || []).find(x => x.id === loggedInUserId); 
+            const m = appData.members.find(x => x.id === loggedInUserId); 
             if (m) { 
                 const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover" loading="lazy">` : m.name.charAt(0); 
-                const capAct = document.getElementById('btn-cap-act');
-                const capRew = document.getElementById('btn-cap-rew');
-                if(capAct) capAct.classList.toggle('hidden', !isAdmin);
-                if(capRew) capRew.classList.toggle('hidden', !isAdmin);
+                document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
+                document.getElementById('btn-cap-rew').classList.toggle('hidden', !isAdmin);
             } 
         }
         function handleResetTestData() {
             if (loggedInUserId !== 'member_1') return alert(t('notAdmin'));
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const mp = prompt(t('adminConfirmTitle'));
             if (mp === (sysCfg.masterPin || "0000")) {
                 if (!confirm(t('adminConfirmWarn'))) return;
@@ -2480,21 +2408,16 @@
         }
 
         function updateNotificationBadge() {
-            if (!loggedInUserId) return; 
-            const unread = (appData?.notifications?.[loggedInUserId] || []).filter(n => !n.read).length; 
-            const b = document.getElementById('notif-badge');
+            if (!loggedInUserId) return; const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; const b = document.getElementById('notif-badge');
             if (b) { unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); }
         }
         function sendNotification(tId, type, sName, title, txt) {
-            if (!tId || tId === loggedInUserId) return; 
-            appData.notifications = appData.notifications || {}; 
-            appData.notifications[tId] = appData.notifications[tId] || []; 
-            const now = new Date();
+            if (!tId || tId === loggedInUserId) return; if (!appData.notifications) appData.notifications = {}; if (!appData.notifications[tId]) appData.notifications[tId] = []; const now = new Date();
             appData.notifications[tId].unshift({ id: Date.now(), type, senderName: sName, challengeTitle: title, text: txt, timestamp: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`, read: false });
         }
         function notifyAllChallengeMembers(c, type, actionDesc) {
             if (!c || !c.participants) return;
-            const actorName = (appData?.members || []).find(m => m.id === loggedInUserId)?.name || 'Member';
+            const actorName = appData.members.find(m => m.id === loggedInUserId)?.name || 'Member';
             Object.keys(c.participants).forEach(mId => {
                 if (mId !== loggedInUserId && (c.participants[mId] === true || c.participants[mId] === 'given_up')) {
                     sendNotification(mId, type, actorName, c.title, actionDesc);
@@ -2505,7 +2428,7 @@
         function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
         
         function handleNotificationClick(nId, type) {
-            if (appData?.notifications?.[loggedInUserId]) {
+            if (appData.notifications[loggedInUserId]) {
                 const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
                 if (notif) notif.read = true;
                 dbRef.set(appData);
@@ -2524,8 +2447,7 @@
         }
 
         function renderNotificationList() {
-            const container = document.getElementById('notification-list'); container.innerHTML = ''; 
-            const notifs = appData?.notifications?.[loggedInUserId] || [];
+            const container = document.getElementById('notification-list'); container.innerHTML = ''; const notifs = appData.notifications[loggedInUserId] || [];
             if (!notifs.length) return container.innerHTML = `<p class="text-slate-400 italic text-center py-6">${t('noNotif')}</p>`;
             notifs.forEach(n => {
                 let icon = '🔔', act = n.text;
@@ -2547,12 +2469,7 @@
                     </div>`;
             });
         }
-        function markAllNotificationsRead() { 
-            if (appData?.notifications?.[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); 
-            dbRef.set(appData); 
-            renderNotificationList(); 
-            updateNotificationBadge(); 
-        }
+        function markAllNotificationsRead() { if (appData.notifications[loggedInUserId]) appData.notifications[loggedInUserId].forEach(n => n.read = true); dbRef.set(appData); renderNotificationList(); updateNotificationBadge(); }
 
         function openActionMenuModal(id, isP) {
             selectedMenuChallenge = { id, isPersonal: isP };
@@ -2560,15 +2477,16 @@
             let isArch = false, st = 'active';
             
             if(!isP){ 
-                const c = (appData?.sharedChallenges || []).find(x=>x.id===id); 
+                const c = appData.sharedChallenges.find(x=>x.id===id); 
                 if(c){ 
                     isArch=c.archived; 
                     const pStatus = c.participants ? c.participants[loggedInUserId] : null;
                     if(pStatus !== true && pStatus !== 'given_up') return;
                     st = pStatus === true ? 'active' : 'given_up';
                 } 
-            } else { 
-                const h = (appData?.personalHabits?.[loggedInUserId] || []).find(x=>x.id===id); 
+            } 
+            else { 
+                const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); 
                 if(h){ isArch=h.archived; st=h.status||'active'; } 
             }
             
@@ -2577,21 +2495,21 @@
             document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
             
             const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
-            if(btnP) btnP.classList.add('hidden');
-            if(btnR) btnR.classList.add('hidden');
+            btnP.classList.add('hidden');
+            btnR.classList.add('hidden');
             
             const btnGiveUp = document.getElementById('action-btn-giveup');
             const btnRejoin = document.getElementById('action-btn-rejoin');
             if (isArch) {
-                if(btnGiveUp) btnGiveUp.classList.add('hidden');
-                if(btnRejoin) btnRejoin.classList.add('hidden');
+                btnGiveUp.classList.add('hidden');
+                btnRejoin.classList.add('hidden');
             } else {
                 if (st === 'given_up') {
-                    if(btnGiveUp) btnGiveUp.classList.add('hidden');
-                    if(btnRejoin) btnRejoin.classList.remove('hidden');
+                    btnGiveUp.classList.add('hidden');
+                    btnRejoin.classList.remove('hidden');
                 } else {
-                    if(btnGiveUp) btnGiveUp.classList.remove('hidden');
-                    if(btnRejoin) btnRejoin.classList.add('hidden');
+                    btnGiveUp.classList.remove('hidden');
+                    btnRejoin.classList.add('hidden');
                 }
             }
 
@@ -2633,6 +2551,7 @@
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
                 link.click();
             } catch(err) {
+                console.error("Capture Error:", err);
                 alert(t('errCapture'));
             } finally {
                 if(commentsContainer) commentsContainer.style.display = '';
@@ -2646,8 +2565,7 @@
         }
 
         async function executeCapture(tab, option) {
-            const capMenu = document.getElementById(`capture-menu-${tab}`);
-            if(capMenu) capMenu.classList.add('hidden');
+            document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
             const isDark = document.documentElement.classList.contains('dark');
             const bgColor = isDark ? '#0f172a' : '#ffffff';
 
@@ -2692,7 +2610,7 @@
             } else if(tab === 'rewards') {
                 const wrapperEl = document.getElementById('rewards-capture-wrapper');
                 const rulesAccordion = document.getElementById('reward-rules-accordion');
-                const allUserCards = wrapperEl ? wrapperEl.querySelectorAll('[id^="rewards-user-card-"]') : [];
+                const allUserCards = wrapperEl.querySelectorAll('[id^="rewards-user-card-"]');
                 
                 if(rulesAccordion) rulesAccordion.style.display = 'none';
 
@@ -2727,54 +2645,35 @@
         function giveUpChallenge(id, isP) {
             const r=promptReason(); if(r===null)return;
             if(!isP){ 
-                const c=(appData?.sharedChallenges || []).find(x=>x.id===id); 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
                 if(c&&c.participants){ 
                     c.participants[loggedInUserId]='given_up'; 
                     c.participantReasons=c.participantReasons||{}; 
                     c.participantReasons[loggedInUserId]=r; 
                     notifyAllChallengeMembers(c, 'giveup', `${t('ntfGiveUp')} "${c.title}".`);
                 } 
-            } else { 
-                const h=(appData?.personalHabits?.[loggedInUserId] || []).find(x=>x.id===id); 
-                if(h){h.status='given_up'; h.reason=r;} 
-            } 
-            dbRef.set(appData);
+            }
+            else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
         }
         function rejoinChallenge(id, isP) {
             if(!isP){ 
-                const c=(appData?.sharedChallenges || []).find(x=>x.id===id); 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
                 if(c&&c.participants){ 
                     c.participants[loggedInUserId]=true; 
                     notifyAllChallengeMembers(c, 'rejoin', `${t('ntfRejoin')} "${c.title}".`);
                 } 
-            } else { 
-                const h=(appData?.personalHabits?.[loggedInUserId] || []).find(x=>x.id===id); 
-                if(h){h.status='active';} 
-            } 
-            dbRef.set(appData);
+            }
+            else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
         }
         function archiveChallenge(id, isP, toArchive) {
-            const arr = isP ? (appData?.personalHabits?.[loggedInUserId] || []) : (appData?.sharedChallenges || []);
-            const x = arr.find(i=>i.id===id); 
-            if(x) x.archived = toArchive;
-            dbRef.set(appData); 
-            if(toArchive) alert(t('archivedSuccess'));
+            const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges;
+            const x = arr.find(i=>i.id===id); if(x) x.archived = toArchive;
+            dbRef.set(appData); if(toArchive) alert(t('archivedSuccess'));
         }
-        function deleteChallenge(id, isP) { 
-            if(confirm(t('confirmDelete'))) { 
-                if(isP) {
-                    if(appData?.personalHabits?.[loggedInUserId]) {
-                        appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].filter(x=>x.id!==id);
-                    }
-                } else {
-                    appData.sharedChallenges = (appData?.sharedChallenges || []).filter(x=>x.id!==id);
-                }
-                dbRef.set(appData); 
-            } 
-        }
+        function deleteChallenge(id, isP) { if(confirm(t('confirmDelete'))) { if(isP) appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].filter(x=>x.id!==id); else appData.sharedChallenges = appData.sharedChallenges.filter(x=>x.id!==id); dbRef.set(appData); } }
         function joinChallenge(id) { 
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
-            const c=(appData?.sharedChallenges || []).find(x=>x.id===id); 
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            const c=appData.sharedChallenges.find(x=>x.id===id); 
             if(!c)return; 
             c.participants=c.participants||{}; 
             c.participants[loggedInUserId]=true; 
@@ -2786,10 +2685,8 @@
         }
 
         function openDayModal(id, dIdx, isP) {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
-            const arr = isP ? (appData?.personalHabits?.[loggedInUserId] || []) : (appData?.sharedChallenges || []);
-            const c = arr.find(x=>x.id===id); 
-            if(!c)return;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
             if(dIdx > getTodayIndex(c.startDate)) return alert(t('alertFuture'));
             
             let item;
@@ -2812,10 +2709,7 @@
             const isReadOnlyMode = c.archived || !isParticipant || isFinished || dayLocked;
             
             currentEditingDay = { id, dayIndex:dIdx, isPersonal:isP, isReadOnly: isReadOnlyMode };
-            tempDayImageBase64 = ''; 
-            const imgFileEl = document.getElementById('modal-image-file');
-            if(imgFileEl) imgFileEl.value = ''; 
-            document.getElementById('day-file-name').innerText = t('noFileSelected');
+            tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected');
             
             const gsc = document.getElementById('group-day-status-container');
             const rn = document.getElementById('modal-read-only-notice');
@@ -2854,7 +2748,7 @@
                 document.getElementById('completed-ratio-text').innerText = `${completedCount}/${otherMembers.length}`;
                 
                 document.getElementById('group-members-status-list').innerHTML = otherMembers.length ? otherMembers.map(mId => {
-                    const u = (appData?.members || []).find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
+                    const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
                     const avHTML = getMemberAvatarHTML(mId, "h-6 w-6");
                     
                     let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">⏳ ${t('incomplete')}</span>`;
@@ -2932,13 +2826,13 @@
         }
 
         function saveDayDetail() {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             if(!currentEditingDay || currentEditingDay.isReadOnly) return;
             const isComp = document.getElementById('modal-chk-completed').checked;
             const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date(), updated = { completed: isComp, note: document.getElementById('modal-note').value.trim(), image: tempDayImageBase64, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` };
             
             if(!isPersonal){ 
-                const c = (appData?.sharedChallenges || []).find(x=>x.id===id); 
+                const c = appData.sharedChallenges.find(x=>x.id===id); 
                 if(c){ 
                     c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({})); 
                     c.progress[loggedInUserId][dayIndex] = updated; 
@@ -2952,9 +2846,9 @@
                         }
                     }
                 } 
-            } else { 
-                appData.personalHabits = appData.personalHabits || {};
-                appData.personalHabits[loggedInUserId] = (appData.personalHabits[loggedInUserId] || []).map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
+            } 
+            else { 
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
             }
             dbRef.set(appData); 
             updateModalView(updated); 
@@ -2969,10 +2863,9 @@
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        const masterFormEl = document.getElementById('master-create-form');
-        if(masterFormEl) masterFormEl.onsubmit = e => {
+        document.getElementById('master-create-form').onsubmit = e => {
             e.preventDefault();
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||sysCfg.defaultTargetDays, tot = parseInt(document.getElementById('create-days-input').value)||sysCfg.defaultTotalDays;
             if(!tIn) return;
 
@@ -2981,16 +2874,13 @@
                 return;
             }
             
-            const creatorM = (appData?.members || []).find(m=>m.id===loggedInUserId);
             if (activeTab === 'dashboard') {
                 const isB = document.getElementById('create-bigplay-checkbox').checked, cR = document.getElementById('create-reward-input').value, cP = document.getElementById('create-penalty-input').value;
                 if(isB && (!cR || !cP)) return alert(t('bigPlayRequire'));
-                appData.sharedChallenges = appData.sharedChallenges || [];
-                appData.sharedChallenges.push({ id:Date.now(), createdAt:Date.now(), title:tIn, description:dIn, creatorName:creatorM?.name||'Member', creatorId:loggedInUserId, startDate:start, targetDays:tgt, totalDays:tot, isBigPlay:isB, customReward:parseInt(cR)||0, customPenalty:parseInt(cP)||0, archived:false, comments:[], participants:{[loggedInUserId]:true}, progress:{[loggedInUserId]:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}))} });
+                appData.sharedChallenges.push({ id:Date.now(), createdAt:Date.now(), title:tIn, description:dIn, creatorName:appData.members.find(m=>m.id===loggedInUserId)?.name||'Member', creatorId:loggedInUserId, startDate:start, targetDays:tgt, totalDays:tot, isBigPlay:isB, customReward:parseInt(cR)||0, customPenalty:parseInt(cP)||0, archived:false, comments:[], participants:{[loggedInUserId]:true}, progress:{[loggedInUserId]:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}))} });
             } else {
                 const sR = document.getElementById('create-self-reward-input').value.trim(), sP = document.getElementById('create-self-penalty-input').value.trim();
                 if(!sR || !sP) return alert(t('selfRuleRequire'));
-                appData.personalHabits = appData.personalHabits || {};
                 appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId]||[];
                 appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:dIn, startDate:start, targetDays:tgt, totalDays:tot, selfReward:sR, selfPenalty:sP, status:'active', archived:false, comments:[], days:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
             }
@@ -3005,32 +2895,26 @@
         function setReplyToComment(cId, cmId, aName, aId) { activeReplyTo[cId]={cmId, aName, aId}; const rb=document.getElementById(`reply-banner-${cId}`); if(rb){ document.getElementById(`reply-name-${cId}`).innerText=`@${aName}`; rb.classList.remove('hidden'); insertTagToComment(cId, aName); } }
         function cancelReplyToComment(cId) { delete activeReplyTo[cId]; const rb=document.getElementById(`reply-banner-${cId}`); if(rb) rb.classList.add('hidden'); }
         function previewCommentImage(cId, e) { const f=e.target.files[0], n=document.getElementById(`comment-filename-${cId}`); if(n) n.innerText=f?f.name:''; }
-        function highlightTags(txt) { let f=txt||''; (appData?.members || []).forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5 shadow-sm">@${m.name}</span>`)); return f; }
+        function highlightTags(txt) { let f=txt||''; appData.members.forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5 shadow-sm">@${m.name}</span>`)); return f; }
         
         function addComment(cId, isP) {
             const txt = document.getElementById(`comment-text-${cId}`)?.value.trim()||'', f = document.getElementById(`comment-file-${cId}`)?.files[0];
             if(!txt && !f) return alert(t('requireContent'));
-            const m = (appData?.members || []).find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
-            let cTitle = isP ? (appData?.personalHabits?.[loggedInUserId]||[]).find(x=>x.id===cId)?.text : (appData?.sharedChallenges || []).find(x=>x.id===cId)?.title;
+            const m = appData.members.find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
+            let cTitle = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)?.text : appData.sharedChallenges.find(x=>x.id===cId)?.title;
             
             const save = (img='') => {
                 const obj = { id: Date.now(), memberId: loggedInUserId, memberName: m?m.name:'User', memberAvatar: m?m.avatar:'', text: txt, image: img, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, replyTo: rp?{commentId:rp.cmId, authorName:rp.aName}:null };
-                const arr = isP ? ((appData?.personalHabits?.[loggedInUserId]||[]).find(x=>x.id===cId)) : (appData?.sharedChallenges || []).find(x=>x.id===cId);
+                const arr = isP ? ((appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)) : appData.sharedChallenges.find(x=>x.id===cId);
                 if(arr){ arr.comments = arr.comments||[]; arr.comments.push(obj); }
                 if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
-                (appData?.members || []).forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
+                appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
                 cancelReplyToComment(cId); dbRef.set(appData);
                 renderList();
             };
             f ? compressImage(f, save) : save();
         }
-        function deleteComment(cId, cmId, isP) { 
-            if(!confirm(t('confirmDeleteCm'))) return; 
-            const arr = isP ? (appData?.personalHabits?.[loggedInUserId]||[]).find(x=>x.id===cId) : (appData?.sharedChallenges || []).find(x=>x.id===cId); 
-            if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); 
-            dbRef.set(appData); 
-            renderList(); 
-        }
+        function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); renderList(); }
 
         function renderCommentSectionHTML(cId, cms=[], isP=false) {
             let lst = cms.length ? cms.map(c => `
@@ -3043,7 +2927,7 @@
                     ${c.text?`<p class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">${highlightTags(c.text)}</p>`:''}
                     ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border dark:border-slate-700 object-cover mt-1" loading="lazy">`:''}
                 </div>`).join('') : `<p class="text-slate-400 italic text-[11px] text-center py-2">${t('noComments')}</p>`;
-            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + (appData?.members || []).map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300 transition active:scale-95">@${m.name}</button>`).join('') + `</div>`;
+            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + appData.members.map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300 transition active:scale-95">@${m.name}</button>`).join('') + `</div>`;
             return `
                 <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
                     <button type="button" onclick="toggleCommentSection(${cId})" class="flex justify-between w-full text-xs font-bold text-slate-500 hover:text-indigo-600 transition"><span class="flex gap-1.5">${t('commentCount')} (${cms.length})</span><span class="text-[10px]">▼</span></button>
@@ -3063,16 +2947,16 @@
         }
 
         function showDescriptionModalById(id, isP) {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             let tT="", d="", s="", tgt=sysCfg.defaultTargetDays, tot=sysCfg.defaultTotalDays, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
             
             if (!isP) {
-                const c = (appData?.sharedChallenges || []).find(x=>x.id===id);
+                const c = appData.sharedChallenges.find(x=>x.id===id);
                 if(c){ 
                     tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||sysCfg.defaultTargetDays; tot=c.totalDays||sysCfg.defaultTotalDays; 
                     isB=c.isBigPlay; cR=c.customReward||0; cP=c.customPenalty||0;
                     
-                    const creatorMember = (appData?.members || []).find(m => m.id === c.creatorId) || (appData?.members || []).find(m => m.name === c.creatorName);
+                    const creatorMember = appData.members.find(m => m.id === c.creatorId) || appData.members.find(m => m.name === c.creatorName);
                     creatorAvatarHTML = creatorMember ? getMemberAvatarHTML(creatorMember.id, "w-4 h-4") : getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
                     creatorNameDisplay = creatorMember ? creatorMember.name : (c.creatorName || 'Team');
                     
@@ -3080,12 +2964,12 @@
                     modalTitleIconHTML = isB ? '🔥' : '🎯';
                 }
             } else {
-                const h = (appData?.personalHabits?.[loggedInUserId] || []).find(x=>x.id===id);
+                const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
                 if(h){ 
                     tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||sysCfg.defaultTargetDays; tot=h.totalDays||sysCfg.defaultTotalDays; 
                     sR=h.selfReward||'---'; sP=h.selfPenalty||'---';
                     
-                    const curMember = (appData?.members || []).find(m => m.id === loggedInUserId);
+                    const curMember = appData.members.find(m => m.id === loggedInUserId);
                     creatorAvatarHTML = curMember ? getMemberAvatarHTML(curMember.id, "w-4 h-4") : getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
                     creatorNameDisplay = curMember ? curMember.name : t('personal');
                     
@@ -3151,12 +3035,12 @@
         }
 
         function openLeaderboardModal(id) {
-            const c = (appData?.sharedChallenges || []).find(x => x.id === id);
+            const c = appData.sharedChallenges.find(x => x.id === id);
             if(!c) return;
             document.getElementById('leaderboard-modal-title').innerText = `${t('leaderboard')}: ${c.title}`;
             
             const participants = Object.keys(c.participants || {}).filter(mId => c.participants[mId] === true || c.participants[mId] === 'given_up');
-            const tgt = c.targetDays || (appData?.systemConfig || defaultSystemConfig).defaultTargetDays;
+            const tgt = c.targetDays || (appData.systemConfig || defaultSystemConfig).defaultTargetDays;
 
             participants.sort((a, b) => {
                 const progA = c.progress && c.progress[a] ? c.progress[a] : [];
@@ -3169,7 +3053,7 @@
 
             const container = document.getElementById('leaderboard-list-container');
             container.innerHTML = participants.map((mId, index) => {
-                const u = (appData?.members || []).find(x => x.id === mId);
+                const u = appData.members.find(x => x.id === mId);
                 const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
                 const cnt = prog.filter(x => x && x.completed).length;
                 const pct = Math.round((cnt / tgt) * 100);
@@ -3241,12 +3125,12 @@
         }
 
         function renderReportContent() {
-            const sysCfg = appData?.systemConfig || defaultSystemConfig;
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
             
             const activePreview = document.getElementById('report-html-preview');
             let grpHTML = `<div id="act-box-grp" class="space-y-2"><h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-xs uppercase tracking-wider">🎯 ${t('tabDashboard')}</h4><div id="act-content-grp" class="space-y-2">`;
             
-            const shared = appData?.sharedChallenges || [];
+            const shared = appData.sharedChallenges || [];
             if (!shared.length) {
                 grpHTML += `<p class="text-xs text-slate-400 italic">Không có thử thách nhóm.</p>`;
             } else {
@@ -3254,7 +3138,7 @@
                     grpHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><strong class="text-xs text-slate-800 dark:text-slate-100 block">${c.title}</strong><div class="space-y-1 text-[11px]">`;
                     const participants = Object.keys(c.participants || {}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up');
                     participants.forEach(mId => {
-                        const u = (appData?.members || []).find(x => x.id === mId);
+                        const u = appData.members.find(x => x.id === mId);
                         const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
                         const tgt = c.targetDays || sysCfg.defaultTargetDays;
                         const cnt = prog.filter(x => x && x.completed).length;
@@ -3269,8 +3153,8 @@
 
             let perHTML = `<div id="act-box-per" class="space-y-2 pt-2"><h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider">📌 ${t('tabUpdate')}</h4><div id="act-content-per" class="space-y-2">`;
             let hasPersonal = false;
-            (appData?.members || []).forEach(m => {
-                const habits = (appData?.personalHabits || {})[m.id] || [];
+            appData.members.forEach(m => {
+                const habits = appData.personalHabits[m.id] || [];
                 if (habits.length) {
                     hasPersonal = true;
                     perHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><div class="flex items-center gap-1.5 font-bold text-xs text-slate-700 dark:text-slate-200">${getMemberAvatarHTML(m.id, "w-5 h-5")} ${m.name}</div><div class="space-y-1 text-[11px]">`;
@@ -3289,7 +3173,7 @@
             activePreview.innerHTML = grpHTML + perHTML;
 
             const rewardsContainer = document.getElementById('rewards-summary-list');
-            rewardsContainer.innerHTML = (appData?.members || []).map(m => {
+            rewardsContainer.innerHTML = appData.members.map(m => {
                 let userRewardsHTML = '';
                 
                 shared.forEach(c => {
@@ -3312,7 +3196,7 @@
                     }
                 });
 
-                const habits = (appData?.personalHabits || {})[m.id] || [];
+                const habits = appData.personalHabits[m.id] || [];
                 habits.forEach(h => {
                     const tgt = h.targetDays || sysCfg.defaultTargetDays;
                     const cnt = (h.days || []).filter(x => x && x.completed).length;
