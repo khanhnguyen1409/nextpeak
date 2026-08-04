@@ -1306,25 +1306,36 @@
         }
 
         function renderFilterOptions() {
-            const sel = document.getElementById('main-filter-select');
-            const oldVal = sel.value;
-            if (activeTab === 'dashboard') {
-                sel.innerHTML = `
-                    <option value="my">${t('optMy')}</option>
-                    <option value="new">${t('optNew')}</option>
-                    <option value="archived">${t('optArchived')}</option>
-                `;
-                if (['my', 'new', 'archived'].includes(oldVal)) sel.value = oldVal;
-                else { sel.value = 'my'; currentFilter = 'my'; }
-            } else {
-                sel.innerHTML = `
-                    <option value="active">${t('optActive')}</option>
-                    <option value="archived">${t('optArchived')}</option>
-                `;
-                if (['active', 'archived'].includes(oldVal)) sel.value = oldVal;
-                else { sel.value = 'active'; currentFilter = 'active'; }
-            }
+    const sel = document.getElementById('main-filter-select');
+    if (!sel) return;
+    const oldVal = sel.value;
+    if (activeTab === 'dashboard') {
+        sel.innerHTML = `
+            <option value="my">${t('optMy')}</option>
+            <option value="new">${t('optNew')}</option>
+            <option value="archived">${t('optArchived')}</option>
+        `;
+        if (['my', 'new', 'archived'].includes(oldVal)) {
+            sel.value = oldVal;
+            currentFilter = oldVal;
+        } else { 
+            sel.value = 'my'; 
+            currentFilter = 'my'; 
         }
+    } else {
+        sel.innerHTML = `
+            <option value="active">${t('optActive')}</option>
+            <option value="archived">${t('optArchived')}</option>
+        `;
+        if (['active', 'archived'].includes(oldVal)) {
+            sel.value = oldVal;
+            currentFilter = oldVal;
+        } else { 
+            sel.value = 'active'; 
+            currentFilter = 'active'; 
+        }
+    }
+}
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
@@ -1514,30 +1525,30 @@
         }
 
         function displayRandomSlogan() {
-            let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
-            
-            if (appData && appData.slogansPool) {
-                let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
-                if (Array.isArray(currentPool) && currentPool.length > 0) {
-                    list = currentPool;
-                } else if (typeof currentPool === 'object' && currentPool !== null) {
-                    const arr = Object.values(currentPool);
-                    if (arr.length > 0) list = arr;
-                }
-            }
-
-            if (!list || !list.length) list = defaultSlogans['vi'];
-
-            const fullText = list[Math.floor(Math.random() * list.length)] || "";
-            const parts = fullText.split(' - ');
-            const quote = parts[0] || fullText;
-            const author = parts[1] ? parts[1] : '';
-            
-            const sloganEl = document.getElementById('slogan-text');
-            if (sloganEl) {
-                sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
-            }
+    let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
+    
+    if (appData && appData.slogansPool) {
+        let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
+        if (Array.isArray(currentPool) && currentPool.length > 0) {
+            list = currentPool;
+        } else if (typeof currentPool === 'object' && currentPool !== null) {
+            const arr = Object.values(currentPool);
+            if (arr.length > 0) list = arr;
         }
+    }
+
+    if (!list || !list.length) list = defaultSlogans['vi'];
+
+    const fullText = list[Math.floor(Math.random() * list.length)] || "";
+    const parts = fullText.split(' - ');
+    const quote = parts[0] || fullText;
+    const author = parts[1] ? parts[1] : '';
+    
+    const sloganEl = document.getElementById('slogan-text');
+    if (sloganEl) {
+        sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
+    }
+}
 
         const firebaseConfig = {
             apiKey: "AIzaSyBAY8N4lKXlLexdcEoEuE6DdyVVcA0cDs",
