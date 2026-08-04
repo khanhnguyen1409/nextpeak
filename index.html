@@ -334,53 +334,6 @@
         </div>
     </div>
 
-    <!-- MODAL TIỆN ÍCH (POMODORO & TASK MATRIX) -->
-    <div id="tools-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col animate-scale-in">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">⚡ <span id="tools-modal-title">Công cụ Năng suất</span></h3>
-                <button onclick="closeToolsModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg transition">✕</button>
-            </div>
-            <!-- Tab chọn công cụ -->
-            <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
-                <button onclick="switchToolTab('pomodoro')" id="btn-tool-pomodoro" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95">Pomodoro Timer</button>
-                <button onclick="switchToolTab('matrix')" id="btn-tool-matrix" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition active:scale-95">Ma trận Task</button>
-            </div>
-
-            <!-- Giao diện Pomodoro -->
-            <div id="tool-view-pomodoro" class="space-y-4 text-center py-4">
-                <div class="inline-flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl gap-1 text-xs">
-                    <button onclick="setPomoMode('work')" id="pomo-mode-work" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold">Làm việc (25p)</button>
-                    <button onclick="setPomoMode('break')" id="pomo-mode-break" class="px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300">Nghỉ ngơi (5p)</button>
-                </div>
-                <div id="pomo-display" class="text-5xl font-black text-indigo-600 dark:text-indigo-400 tracking-wider font-mono">25:00</div>
-                <div class="flex justify-center gap-2 pt-2">
-                    <button onclick="startPomo()" id="pomo-start-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs transition active:scale-95">Bắt đầu</button>
-                    <button onclick="resetPomo()" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-xl font-bold text-xs transition active:scale-95">Đặt lại</button>
-                </div>
-            </div>
-
-            <!-- Giao diện Ma trận Task -->
-            <div id="tool-view-matrix" class="space-y-3 overflow-y-auto flex-1 text-xs hidden pr-1">
-                <div class="space-y-2 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border">
-                    <input type="text" id="matrix-task-input" placeholder="Nhập tên công việc cần ưu tiên..." class="w-full px-3 py-2 border rounded-xl dark:bg-slate-700 dark:text-slate-100 outline-none focus:ring-2 focus:ring-indigo-500">
-                    <div class="flex gap-2">
-                        <select id="matrix-quadrant-select" class="flex-1 px-3 py-1.5 border rounded-xl dark:bg-slate-700 dark:text-slate-100 outline-none">
-                            <option value="q1">🔥 Khẩn cấp & Quan trọng (Làm ngay)</option>
-                            <option value="q2">📅 Không khẩn cấp & Quan trọng (Lên lịch)</option>
-                            <option value="q3">⚡ Khẩn cấp & Không quan trọng (Ủy quyền)</option>
-                            <option value="q4">🗑️ Không khẩn cấp & Không quan trọng (Loại bỏ)</option>
-                        </select>
-                        <button onclick="addMatrixTask()" class="bg-indigo-600 text-white px-4 py-1.5 rounded-xl font-bold active:scale-95 transition">Thêm</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto" id="matrix-tasks-container"></div>
-            </div>
-
-            <button onclick="closeToolsModal()" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold transition">Đóng</button>
-        </div>
-    </div>
-
     <!-- MODAL CHI TIẾT TỔNG QUAN -->
     <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto animate-scale-in">
@@ -601,8 +554,7 @@
                 
                 <div class="flex items-center gap-2 mt-1">
                     <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-3.5 py-1.5 rounded-xl font-bold transition-all duration-200 shadow-sm flex items-center gap-1.5">Kết quả</button>
-                    <!-- THAY THẾ NÚT TẢI LẠI TRANG BẰNG ICON CÔNG CỤ (POMODORO & TASK MATRIX) -->
-                    <button onclick="openToolsModal()" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100" title="Công cụ Năng suất">⚡</button>
+                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
                     <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100">
                         🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </button>
@@ -821,7 +773,7 @@
                 commentCount: "💬 Bình luận",
                 noComments: "Chưa có bình luận. Hãy mở lời!",
                 writeComment: "Viết bình luận (@tên)...",
-                repylingTo: "Đang trả lời",
+                replyingTo: "Đang trả lời",
                 quickTag: "Tag:",
                 send: "Gửi",
                 reply: "Trả lời",
@@ -871,7 +823,8 @@
                 registerPlaceholderPin: "Tạo mã PIN 4 số...",
                 registerSubmitBtn: "Gửi yêu cầu",
                 registerSuccess: "Đã gửi yêu cầu đăng ký! Chờ Admin phê duyệt.",
-                
+
+                // Admin Center
                 admAccConfigTitle: "⚙️ Cấu hình Tham số Mặc định",
                 admCfgRewardLabel: "🎁 Thưởng mặc định:",
                 admCfgPenaltyLabel: "💸 Phạt mặc định (k):",
@@ -893,13 +846,58 @@
                 admHintAddBtn: "Thêm Ý Tưởng",
                 admHintListTitle: "Danh sách Gợi ý Hiện tại:",
 
-                admAccMusicTitle: "🎵 Playlist Music Management",
-                admMusicHint: "💡 Dán link MP3...",
-                admMusicPh: "Link MP3...",
-                admMusicAddBtn: "Thêm",
-                
+                admAccMusicTitle: "🎵 Quản lý Playlist Nhạc Nền",
+                admMusicHint: "💡 Có thể dán nhiều link MP3 (mỗi dòng 1 link).",
+                admMusicPh: "Dán link MP3...",
+                admMusicAddBtn: "Thêm Link Nhạc",
+
+                admAccMembersTitle: "👥 Duyệt & Quản lý Thành viên",
+                adminPendingTitle: "👥 Duyệt tài khoản thành viên mới",
+                adminMembersTitle: "📋 Quản lý danh sách thành viên",
+
+                admAccResetTitle: "⚠️ Khôi phục Hệ thống (Admin Reset)",
+                adminSystemDesc: "Xóa toàn bộ dữ liệu test, đưa ứng dụng về trạng thái ban đầu.",
                 approve: "Duyệt",
-                reject: "Từ chối"
+                reject: "Từ chối",
+
+                mProfile: "Hồ sơ cá nhân",
+                profileTitle: "👤 Hồ sơ cá nhân",
+                avatarLabel: "🖼️ Ảnh đại diện:",
+                nameLabel: "✏️ Tên hiển thị:",
+                pinLabel: "🔒 Đổi mã PIN:",
+                pinNote: "(Bỏ trống nếu không đổi)",
+                saveChanges: "Lưu thay đổi",
+                profileSuccess: "Cập nhật hồ sơ thành công!",
+
+                capAll: "Tất cả",
+                capGroup: "Nhóm",
+                capPersonal: "Cá nhân",
+                profileNamePh: "Nhập tên mới...",
+                ruleDescBigPlay: "🔥 Chơi lớn: Tùy chỉnh mức thưởng/phạt",
+                ruleDescPersonal: "📌 Cá nhân: Tự đặt cam kết",
+                errNameExist: "⚠️ Tên này đã tồn tại trên hệ thống hoặc đang chờ duyệt!",
+                errEnterName: "Vui lòng nhập tên của bạn!",
+                errTotalTarget: "⚠️ Tổng số ngày phải lớn hơn hoặc bằng Mục tiêu!",
+                errFillAll: "⚠️ Vui lòng nhập đúng và đầy đủ thông tin!",
+                errMasterPin: "⚠️ Master PIN phải là 4 số!",
+                sysSaved: "✨ Đã lưu Cấu hình Hệ thống mới!",
+                errEnterSlogan: "Vui lòng nhập nội dung Slogan!",
+                errEnterHint: "Vui lòng nhập ít nhất một ý tưởng!",
+                errAdminOnly: "Chỉ Admin mới có quyền duyệt thành viên!",
+                errDeleteAdmin: "Không thể xóa tài khoản Admin gốc!",
+                confirmDelMember: "Bạn có chắc muốn xóa thành viên này khỏi hệ thống?",
+                errCapture: "Lỗi chụp ảnh. Vui lòng thử lại!",
+                noDescInfo: "Không có mô tả",
+                noPendingReq: "Không có yêu cầu chờ duyệt.",
+                sysNotif: "Hệ thống",
+                sysNewReg: "Đăng ký mới",
+                sysWaitApprove: "đang chờ bạn phê duyệt.",
+                ntfGiveUp: "đã bỏ cuộc thử thách",
+                ntfRejoin: "đã tham gia trở lại thử thách",
+                ntfJoin: "đã tham gia thử thách",
+                ntfComplete: "đã hoàn thành mục tiêu thử thách",
+                ntfCheckin: "đã Check-in ngày",
+                txtReason: "Lý do"
             },
             en: {
                 appTitle: "NEXT PEAK",
@@ -1015,7 +1013,7 @@
                 commentCount: "💬 Comments",
                 noComments: "No comments yet.",
                 writeComment: "Write (@name)...",
-                repylingTo: "Replying to",
+                replyingTo: "Replying to",
                 quickTag: "Tag:",
                 send: "Send",
                 reply: "Reply",
@@ -1065,7 +1063,7 @@
                 registerPlaceholderPin: "Create 4-digit PIN...",
                 registerSubmitBtn: "Submit Request",
                 registerSuccess: "Registration submitted! Waiting for Admin approval.",
-                
+
                 admAccConfigTitle: "⚙️ System Configuration",
                 admCfgRewardLabel: "🎁 Default Reward:",
                 admCfgPenaltyLabel: "💸 Default Penalty (k):",
@@ -1091,9 +1089,54 @@
                 admMusicHint: "💡 Paste multiple MP3 URLs (one per line).",
                 admMusicPh: "Paste MP3 link(s)...",
                 admMusicAddBtn: "Add Music Link(s)",
-                
+
+                admAccMembersTitle: "👥 Member Approvals & List",
+                adminPendingTitle: "👥 Pending Member Approvals",
+                adminMembersTitle: "📋 Official Member List",
+
+                admAccResetTitle: "⚠️ System Recovery (Admin Reset)",
+                adminSystemDesc: "Delete all test data and reset app to initial state.",
                 approve: "Approve",
-                reject: "Reject"
+                reject: "Reject",
+
+                mProfile: "Personal Profile",
+                profileTitle: "👤 Personal Profile",
+                avatarLabel: "🖼️ Profile Picture:",
+                nameLabel: "✏️ Display Name:",
+                pinLabel: "🔒 Change PIN:",
+                pinNote: "(Leave blank to keep current)",
+                saveChanges: "Save Changes",
+                profileSuccess: "Profile updated successfully!",
+
+                capAll: "All",
+                capGroup: "Group",
+                capPersonal: "Personal",
+                profileNamePh: "Enter new name...",
+                ruleDescBigPlay: "🔥 Big Play: Custom rewards/penalties",
+                ruleDescPersonal: "📌 Personal: Self-commitment",
+                errNameExist: "⚠️ This name already exists or is pending approval!",
+                errEnterName: "Please enter your name!",
+                errTotalTarget: "⚠️ Total days must be >= Target days!",
+                errFillAll: "⚠️ Please fill in all information correctly!",
+                errMasterPin: "⚠️ Master PIN must be 4 digits!",
+                sysSaved: "✨ System Configuration saved!",
+                errEnterSlogan: "Please enter Slogan content!",
+                errEnterHint: "Please enter at least one idea!",
+                errAdminOnly: "Only Admin can approve members!",
+                errDeleteAdmin: "Cannot delete the root Admin account!",
+                confirmDelMember: "Are you sure you want to remove this member?",
+                errCapture: "Capture error. Please try again!",
+                noDescInfo: "No description",
+                noPendingReq: "No pending requests.",
+                sysNotif: "System",
+                sysNewReg: "New Registration",
+                sysWaitApprove: "is waiting for your approval.",
+                ntfGiveUp: "gave up the challenge",
+                ntfRejoin: "rejoined the challenge",
+                ntfJoin: "joined the challenge",
+                ntfComplete: "completed the challenge goal",
+                ntfCheckin: "checked-in on",
+                txtReason: "Reason"
             }
         };
 
@@ -1101,7 +1144,9 @@
             vi: [
                 "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
                 "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
-                "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun"
+                "Động lực giúp bạn bắt đầu, thói quen giúp bạn tiếp tục. - Jim Ryun",
+                "Thành công không phải là phép màu, nó là kết quả của sự rèn luyện. - Khuyết danh",
+                "Chúng ta là những gì chúng ta thường xuyên làm. - Aristotle"
             ],
             en: [
                 "Discipline is the bridge between goals and accomplishment. - Jim Rohn",
@@ -1113,17 +1158,22 @@
         const defaultHints = {
             vi: [
                 { title: "Dậy sớm", desc: "Dậy trước 5:30 AM", isP: false },
-                { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false }
+                { title: "Đọc sách", desc: "Đọc ít nhất 20 trang", isP: false },
+                { title: "Tập thể dục", desc: "Vận động đổ mồ hôi 30 phút", isP: false },
+                { title: "Lòng biết ơn", desc: "Viết ra 3 điều bạn biết ơn hôm nay", isP: true },
+                { title: "Chăm sóc da", desc: "Skincare đầy đủ các bước buổi tối", isP: true }
             ],
             en: [
                 { title: "Wake up early", desc: "Before 5:30 AM", isP: false },
-                { title: "Read", desc: "At least 20 pages", isP: false }
+                { title: "Read", desc: "At least 20 pages", isP: false },
+                { title: "Gratitude", desc: "Write 3 things you're grateful for", isP: true }
             ]
         };
 
         const defaultPlaylist = [
             "https://files.catbox.moe/bfdutu.mp3",
-            "https://files.catbox.moe/icvzx6.mp3"
+            "https://files.catbox.moe/icvzx6.mp3",
+            "https://files.catbox.moe/4eq12q.mp3"
         ];
 
         const defaultSystemConfig = {
@@ -1199,6 +1249,7 @@
         let currentMusicIndex = 0;
         let isMusicPlaying = false;
         const audio = document.getElementById('bg-music');
+        
         audio.addEventListener('ended', nextMusic);
 
         function getPlaylist() {
@@ -1285,6 +1336,7 @@
 
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('btn-report').innerText = t('reportBtnText');
+            document.getElementById('btn-refresh-title').title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
             
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
             renderFilterOptions();
@@ -1391,6 +1443,42 @@
             updateCapButtons('capture-menu-active');
             updateCapButtons('capture-menu-rewards');
 
+            document.getElementById('admin-modal-title').innerHTML = t('adminToolTitle');
+            if (document.getElementById('adm-acc-config-title')) document.getElementById('adm-acc-config-title').innerHTML = t('admAccConfigTitle');
+            if (document.getElementById('adm-cfg-reward-label')) document.getElementById('adm-cfg-reward-label').innerText = t('admCfgRewardLabel');
+            if (document.getElementById('adm-cfg-penalty-label')) document.getElementById('adm-cfg-penalty-label').innerText = t('admCfgPenaltyLabel');
+            if (document.getElementById('adm-cfg-target-label')) document.getElementById('adm-cfg-target-label').innerText = t('admCfgTargetLabel');
+            if (document.getElementById('adm-cfg-total-label')) document.getElementById('adm-cfg-total-label').innerText = t('admCfgTotalLabel');
+            if (document.getElementById('adm-cfg-masterpin-label')) document.getElementById('adm-cfg-masterpin-label').innerText = t('admCfgMasterpinLabel');
+            if (document.getElementById('adm-cfg-save-btn')) document.getElementById('adm-cfg-save-btn').innerText = t('admCfgSaveBtn');
+
+            if (document.getElementById('adm-acc-slogan-title')) document.getElementById('adm-acc-slogan-title').innerHTML = t('admAccSloganTitle');
+            if (document.getElementById('adm-slogan-hint')) document.getElementById('adm-slogan-hint').innerText = t('admSloganHint');
+            if (document.getElementById('admin-slogan-text-input')) document.getElementById('admin-slogan-text-input').placeholder = t('admSloganPh');
+            if (document.getElementById('adm-slogan-add-btn')) document.getElementById('adm-slogan-add-btn').innerText = t('admSloganAddBtn');
+            if (document.getElementById('adm-slogan-list-title')) document.getElementById('adm-slogan-list-title').innerText = t('admSloganListTitle');
+
+            if (document.getElementById('adm-acc-hint-title')) document.getElementById('adm-acc-hint-title').innerHTML = t('admAccHintTitle');
+            if (document.getElementById('adm-hint-bulk-note')) document.getElementById('adm-hint-bulk-note').innerHTML = t('admHintBulkNote');
+            if (document.getElementById('admin-hint-bulk-input')) document.getElementById('admin-hint-bulk-input').placeholder = t('admHintBulkPh');
+            if (document.getElementById('adm-hint-is-personal-label')) document.getElementById('adm-hint-is-personal-label').innerText = t('admHintIsPersonalLabel');
+            if (document.getElementById('adm-hint-add-btn')) document.getElementById('adm-hint-add-btn').innerText = t('admHintAddBtn');
+            if (document.getElementById('adm-hint-list-title')) document.getElementById('adm-hint-list-title').innerText = t('admHintListTitle');
+
+            if (document.getElementById('adm-acc-music-title')) document.getElementById('adm-acc-music-title').innerHTML = t('admAccMusicTitle');
+            if (document.getElementById('adm-music-hint')) document.getElementById('adm-music-hint').innerText = t('admMusicHint');
+            if (document.getElementById('admin-music-url-input')) document.getElementById('admin-music-url-input').placeholder = t('admMusicPh');
+            if (document.getElementById('adm-music-add-btn')) document.getElementById('adm-music-add-btn').innerText = t('admMusicAddBtn');
+
+            if (document.getElementById('adm-acc-members-title')) document.getElementById('adm-acc-members-title').innerHTML = t('admAccMembersTitle');
+            if (document.getElementById('admin-pending-title')) document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
+            if (document.getElementById('admin-members-title')) document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
+
+            if (document.getElementById('adm-acc-reset-title')) document.getElementById('adm-acc-reset-title').innerHTML = t('admAccResetTitle');
+            if (document.getElementById('admin-system-desc')) document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
+            if (document.getElementById('admin-reset-btn')) document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
+            if (document.getElementById('admin-close-btn')) document.getElementById('admin-close-btn').innerText = t('closeBtn');
+
             updateCreateFormLabels();
             setFontSize(currentFontSize);
             applyTheme(currentTheme);
@@ -1427,14 +1515,24 @@
 
         function displayRandomSlogan() {
             let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
+            
             if (appData && appData.slogansPool) {
                 let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
-                if (Array.isArray(currentPool) && currentPool.length > 0) list = currentPool;
+                if (Array.isArray(currentPool) && currentPool.length > 0) {
+                    list = currentPool;
+                } else if (typeof currentPool === 'object' && currentPool !== null) {
+                    const arr = Object.values(currentPool);
+                    if (arr.length > 0) list = arr;
+                }
             }
+
+            if (!list || !list.length) list = defaultSlogans['vi'];
+
             const fullText = list[Math.floor(Math.random() * list.length)] || "";
             const parts = fullText.split(' - ');
             const quote = parts[0] || fullText;
             const author = parts[1] ? parts[1] : '';
+            
             const sloganEl = document.getElementById('slogan-text');
             if (sloganEl) {
                 sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
@@ -1466,8 +1564,7 @@
             systemConfig: defaultSystemConfig,
             playlist: defaultPlaylist,
             slogansPool: defaultSlogans,
-            hintsPool: defaultHints,
-            matrixTasks: []
+            hintsPool: defaultHints
         };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
         let selectedLoginMemberId = null;
@@ -1500,14 +1597,16 @@
                 appData.playlist = sVal.playlist || defaultPlaylist;
                 appData.slogansPool = sVal.slogansPool || defaultSlogans;
                 appData.hintsPool = sVal.hintsPool || defaultHints;
-                appData.matrixTasks = sVal.matrixTasks || [];
             } else {
                 dbRef.set(appData);
             }
+            
             populateLoginSelect();
             checkLogin();
+
             updateUserLabel();
             updateNotificationBadge();
+            document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
             updateStaticTexts(); 
             displayRandomSlogan();
             renderList();
@@ -1522,12 +1621,17 @@
             closeUserMenu();
             const m = appData.members.find(x => x.id === loggedInUserId);
             if (!m) return;
+
             document.getElementById('profile-name-input').value = m.name;
             tempAvatarBase64 = m.avatar || '';
-            document.getElementById('profile-preview-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover" loading="lazy">` : `<span class="text-2xl">${m.name.charAt(0)}</span>`;
+            document.getElementById('profile-preview-avatar').innerHTML = m.avatar 
+                ? `<img src="${m.avatar}" class="w-full h-full object-cover" loading="lazy">` 
+                : `<span class="text-2xl">${m.name.charAt(0)}</span>`;
             document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
+
             document.getElementById('profile-old-pin').value = '';
             document.getElementById('profile-new-pin').value = '';
+
             document.getElementById('profile-modal').classList.remove('hidden');
         }
 
@@ -1547,36 +1651,52 @@
         function saveProfileChanges() {
             const mIdx = appData.members.findIndex(x => x.id === loggedInUserId);
             if (mIdx === -1) return;
+
             const m = appData.members[mIdx];
             const newName = document.getElementById('profile-name-input').value.trim();
             const oldPin = document.getElementById('profile-old-pin').value.trim();
             const newPin = document.getElementById('profile-new-pin').value.trim();
+
             let hasChanged = false;
 
             if (newName && newName !== m.name) {
                 const newNameLower = newName.toLowerCase();
-                const isExist = appData.members.some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) || (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
-                if (isExist) return alert(t('errNameExist'));
+                const isExist = appData.members.some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) ||
+                                (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
+                if (isExist) {
+                    return alert(t('errNameExist'));
+                }
                 appData.members[mIdx].name = newName;
+                (appData.sharedChallenges || []).forEach(c => {
+                    if (c.creatorId === loggedInUserId) c.creatorName = newName;
+                });
                 hasChanged = true;
             }
+
             if (tempAvatarBase64 !== (m.avatar || '')) {
                 appData.members[mIdx].avatar = tempAvatarBase64;
                 hasChanged = true;
             }
+
             if (newPin) {
-                if (m.pin && m.pin !== oldPin) return alert(t('wrongPin'));
-                if (newPin.length !== 4 || isNaN(newPin)) return alert(t('pinFormat'));
+                if (m.pin && m.pin !== oldPin) {
+                    return alert(t('wrongPin'));
+                }
+                if (newPin.length !== 4 || isNaN(newPin)) {
+                    return alert(t('pinFormat'));
+                }
                 appData.members[mIdx].pin = newPin;
                 addPinHistoryLog(mIdx, "Đổi PIN");
                 hasChanged = true;
             }
+
             if (hasChanged) {
                 dbRef.set(appData);
                 alert(t('profileSuccess'));
                 updateUserLabel();
                 renderList();
             }
+
             document.getElementById('profile-modal').classList.add('hidden');
         }
 
@@ -1591,8 +1711,14 @@
             if(arrow) arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
-        function openAdminCenterModal() { closeUserMenu(); renderAdminCenterContent(); document.getElementById('admin-center-modal').classList.remove('hidden'); }
-        function closeAdminCenterModal() { document.getElementById('admin-center-modal').classList.add('hidden'); }
+        function openAdminCenterModal() {
+            closeUserMenu();
+            renderAdminCenterContent();
+            document.getElementById('admin-center-modal').classList.remove('hidden');
+        }
+        function closeAdminCenterModal() {
+            document.getElementById('admin-center-modal').classList.add('hidden');
+        }
 
         function saveSystemConfig() {
             const reward = document.getElementById('cfg-reward-input').value.trim();
@@ -1600,8 +1726,22 @@
             const target = parseInt(document.getElementById('cfg-target-input').value);
             const total = parseInt(document.getElementById('cfg-total-input').value);
             const masterPin = document.getElementById('cfg-masterpin-input').value.trim();
-            if (!reward || isNaN(penalty) || isNaN(target) || isNaN(total)) return alert(t('errFillAll'));
-            appData.systemConfig = { defaultReward: reward, defaultPenalty: penalty, defaultTargetDays: target, defaultTotalDays: total, masterPin: masterPin || appData.systemConfig?.masterPin || "0000" };
+
+            if (!reward || isNaN(penalty) || isNaN(target) || isNaN(total)) {
+                return alert(t('errFillAll'));
+            }
+            if (masterPin && (masterPin.length !== 4 || isNaN(masterPin))) {
+                return alert(t('errMasterPin'));
+            }
+
+            appData.systemConfig = {
+                defaultReward: reward,
+                defaultPenalty: penalty,
+                defaultTargetDays: target,
+                defaultTotalDays: total,
+                masterPin: masterPin || appData.systemConfig?.masterPin || "0000"
+            };
+
             dbRef.set(appData);
             alert(t('sysSaved'));
             updateStaticTexts();
@@ -1611,11 +1751,22 @@
         function addAdminSlogan() {
             const val = document.getElementById('admin-slogan-text-input').value.trim();
             if(!val) return alert(t('errEnterSlogan'));
+            
             const lines = val.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            if (!appData.slogansPool || Array.isArray(appData.slogansPool)) appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
-            let pool = appData.slogansPool[currentLang] || [];
+            if (!lines.length) return;
+
+            if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
+                appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
+            }
+            
+            let pool = appData.slogansPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultSlogans[currentLang]];
+            }
+            
             pool.push(...lines);
             appData.slogansPool[currentLang] = pool;
+            
             document.getElementById('admin-slogan-text-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
@@ -1623,7 +1774,11 @@
         }
 
         function deleteAdminSlogan(idx) {
-            let pool = appData.slogansPool[currentLang] || [];
+            if (!appData.slogansPool || !appData.slogansPool[currentLang]) return;
+            let pool = appData.slogansPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = Object.values(pool);
+            }
             pool.splice(idx, 1);
             appData.slogansPool[currentLang] = pool;
             dbRef.set(appData);
@@ -1634,20 +1789,46 @@
         function addAdminHint() {
             const raw = document.getElementById('admin-hint-bulk-input').value.trim();
             const isP = document.getElementById('admin-hint-isp-checkbox').checked;
+
             if(!raw) return alert(t('errEnterHint'));
+            
             const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            const newHints = lines.map(line => { const p = line.split('|'); return { title: p[0].trim(), desc: p[1] ? p[1].trim() : '', isP }; });
-            if (!appData.hintsPool || Array.isArray(appData.hintsPool)) appData.hintsPool = { vi: [...defaultHints.vi], en: [...defaultHints.en] };
-            let pool = appData.hintsPool[currentLang] || [];
+            const newHints = lines.map(line => {
+                const parts = line.split('|');
+                return {
+                    title: parts[0].trim(),
+                    desc: parts[1] ? parts[1].trim() : '',
+                    isP
+                };
+            }).filter(h => h.title.length > 0);
+
+            if(!newHints.length) return;
+
+            if (!appData.hintsPool || Array.isArray(appData.hintsPool)) {
+                appData.hintsPool = { vi: [...defaultHints.vi], en: [...defaultHints.en] };
+            }
+
+            let pool = appData.hintsPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultHints[currentLang]];
+            }
+
             pool.push(...newHints);
             appData.hintsPool[currentLang] = pool;
+
             document.getElementById('admin-hint-bulk-input').value = '';
+            document.getElementById('admin-hint-isp-checkbox').checked = false;
+
             dbRef.set(appData);
             renderAdminCenterContent();
         }
 
         function deleteAdminHint(idx) {
-            let pool = appData.hintsPool[currentLang] || [];
+            if (!appData.hintsPool || !appData.hintsPool[currentLang]) return;
+            let pool = appData.hintsPool[currentLang];
+            if (!Array.isArray(pool)) {
+                pool = Object.values(pool);
+            }
             pool.splice(idx, 1);
             appData.hintsPool[currentLang] = pool;
             dbRef.set(appData);
@@ -1658,9 +1839,11 @@
             const raw = document.getElementById('admin-music-url-input').value.trim();
             if(!raw) return;
             const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            
             let listM = getPlaylist();
             listM.push(...lines);
             appData.playlist = listM;
+
             document.getElementById('admin-music-url-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
@@ -1683,49 +1866,63 @@
             document.getElementById('cfg-masterpin-input').value = sysCfg.masterPin || "0000";
 
             const sloganContainer = document.getElementById('admin-slogans-list');
-            let slogans = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultSlogans[currentLang];
+            let rawSlogans = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultSlogans[currentLang];
+            const slogans = Array.isArray(rawSlogans) ? rawSlogans : (typeof rawSlogans === 'object' && rawSlogans !== null ? Object.values(rawSlogans) : []);
+
             sloganContainer.innerHTML = slogans.map((s, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border text-xs">
-                    <span class="truncate max-w-[280px] font-medium">"${s}"</span>
-                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 font-bold">${t('delete')}</button>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs animate-slide-up">
+                    <span class="truncate max-w-[280px] font-medium text-slate-700 dark:text-slate-200">"${s}"</span>
+                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
             const hintContainer = document.getElementById('admin-hints-list');
-            let hints = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            let rawHints = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
+            const hints = Array.isArray(rawHints) ? rawHints : (typeof rawHints === 'object' && rawHints !== null ? Object.values(rawHints) : []);
+
             hintContainer.innerHTML = hints.map((h, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border text-xs">
-                    <div class="min-w-0 pr-2"><strong class="block truncate">${h.isP ? '📌 ' + t('personalLabel') : '🎯 ' + t('groupLabel')}: ${h.title}</strong></div>
-                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 font-bold">${t('delete')}</button>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs animate-slide-up">
+                    <div class="min-w-0 pr-2">
+                        <strong class="text-slate-800 dark:text-slate-100 block truncate">${h.isP ? '📌 ' + t('personalLabel') : '🎯 ' + t('groupLabel')}: ${h.title}</strong>
+                        <span class="text-[10px] text-slate-400 truncate block">${h.desc || t('noDescInfo')}</span>
+                    </div>
+                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
             const musicContainer = document.getElementById('admin-music-list');
             const listM = getPlaylist();
             musicContainer.innerHTML = listM.map((u, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border text-[11px]">
-                    <span class="truncate max-w-[280px] font-mono">${u}</span>
-                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 font-bold">${t('delete')}</button>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200/80 dark:border-slate-600 text-[11px] animate-slide-up">
+                    <span class="truncate max-w-[280px] font-mono text-slate-600 dark:text-slate-300">${u}</span>
+                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
             const pendingContainer = document.getElementById('admin-pending-list');
             const pendingArr = appData.pendingMembers || [];
-            pendingContainer.innerHTML = pendingArr.length ? pendingArr.map(p => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border">
-                    <span class="font-bold text-xs">👤 ${p.name}</span>
-                    <div class="flex gap-1.5">
-                        <button onclick="approveMember('${p.id}')" class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">${t('approve')}</button>
-                        <button onclick="rejectMember('${p.id}')" class="bg-rose-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">${t('reject')}</button>
+            if (!pendingArr.length) {
+                pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">${t('noPendingReq')}</p>`;
+            } else {
+                pendingContainer.innerHTML = pendingArr.map(p => `
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 animate-slide-up">
+                        <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">👤 ${p.name}</span>
+                        <div class="flex gap-1.5">
+                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all duration-200">${t('approve')}</button>
+                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 active:scale-95 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all duration-200">${t('reject')}</button>
+                        </div>
                     </div>
-                </div>
-            `).join('') : `<p class="text-[11px] text-slate-400 italic">${t('noPendingReq')}</p>`;
+                `).join('');
+            }
 
             const membersContainer = document.getElementById('admin-members-list');
             membersContainer.innerHTML = appData.members.map(m => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border">
-                    <div class="flex items-center gap-2">${getMemberAvatarHTML(m.id, "w-6 h-6")}<span class="font-bold text-xs">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span></div>
-                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold">🗑️ ${t('delete')}</button>` : ''}
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 animate-slide-up">
+                    <div class="flex items-center gap-2">
+                        ${getMemberAvatarHTML(m.id, "w-6 h-6")}
+                        <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span>
+                    </div>
+                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold transition active:scale-95">🗑️ ${t('delete')}</button>` : ''}
                 </div>
             `).join('');
         }
@@ -1752,13 +1949,15 @@
             if (!confirm(t('confirmDelMember'))) return;
             appData.members = appData.members.filter(m => m.id !== mId);
             delete appData.personalHabits[mId];
-            if (loggedInUserId === mId) switchUser();
+            if (loggedInUserId === mId) {
+                switchUser();
+            }
             dbRef.set(appData);
             renderAdminCenterContent();
             populateLoginSelect();
         }
 
-        function toggleCreatePanel() { document.getElementById('master-create-panel').classList.toggle('hidden'); }
+        function toggleCreatePanel() { const p = document.getElementById('master-create-panel'); p.classList.toggle('hidden'); }
         function toggleBigPlayInputs() { document.getElementById(`create-bigplay-inputs`).classList.toggle('hidden', !document.getElementById(`create-bigplay-checkbox`).checked); }
         
         function switchTab(tab) {
@@ -1794,14 +1993,26 @@
 
         function getStreakInfo(prog) {
             if (!prog || !prog.length) return { active: 0, max: 0 };
-            let maxStreak = 0, currentStreak = 0, activeStreak = 0, countingActive = true;
+            let maxStreak = 0;
+            let currentStreak = 0;
+            let activeStreak = 0;
+            let countingActive = true;
+
             for (let i = 0; i < prog.length; i++) {
-                if (prog[i] && prog[i].completed) { currentStreak++; if (currentStreak > maxStreak) maxStreak = currentStreak; }
-                else { currentStreak = 0; }
+                if (prog[i] && prog[i].completed) {
+                    currentStreak++;
+                    if (currentStreak > maxStreak) maxStreak = currentStreak;
+                } else {
+                    currentStreak = 0;
+                }
             }
+            
             for (let i = prog.length - 1; i >= 0; i--) {
-                if (prog[i] && prog[i].completed) { if (countingActive) activeStreak++; }
-                else { if (activeStreak > 0) countingActive = false; }
+                if (prog[i] && prog[i].completed) {
+                    if (countingActive) activeStreak++;
+                } else {
+                    if (activeStreak > 0) countingActive = false;
+                }
             }
             return { active: activeStreak, max: maxStreak };
         }
@@ -1835,46 +2046,91 @@
                     const cFinished = isChallengeFinished(c.startDate, tot);
                     const isFailed = gu || (!isCompleted && cFinished);
 
-                    let rewardPenaltyBoxHTML = "", statusBadgeHTML = "";
+                    const defRewardText = sysCfg.defaultReward;
+                    const defPenaltyText = `${sysCfg.defaultPenalty}k`;
+
+                    let rewardPenaltyBoxHTML = "";
+                    let statusBadgeHTML = "";
+
                     if (isCompleted) {
-                        rewardPenaltyBoxHTML = `<div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 rounded-2xl w-fit text-xs font-extrabold text-emerald-600 flex items-center gap-1.5 truncate"><span>🎁</span> <span>+${c.isBigPlay ? (c.customReward||0)+'k' : sysCfg.defaultReward}</span></div>`;
-                        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">${t('completed')}</span>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('completed')}</span>`;
                     } else if (isFailed) {
-                        rewardPenaltyBoxHTML = `<div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 rounded-2xl w-fit text-xs font-extrabold text-rose-600 flex items-center gap-1.5 truncate"><span>💸</span> <span>-${c.isBigPlay ? (c.customPenalty||0)+'k' : sysCfg.defaultPenalty+'k'}</span></div>`;
-                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">${t('incomplete')}</span>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('incomplete')}</span>`;
                     } else {
-                        rewardPenaltyBoxHTML = `<div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit"><div class="text-emerald-650">🎁 +${c.isBigPlay?(c.customReward||0)+'k':sysCfg.defaultReward}</div><div class="text-slate-300">|</div><div class="text-rose-600">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':sysCfg.defaultPenalty+'k'}</div></div>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit max-w-full">
+                                <div class="text-emerald-600 truncate flex items-center gap-1">🎁 +${c.isBigPlay?(c.customReward||0)+'k':defRewardText}</div>
+                                <div class="text-slate-300 shrink-0">|</div>
+                                <div class="text-rose-600 truncate flex items-center gap-1">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':defPenaltyText}</div>
+                            </div>`;
                     }
 
                     let content = "";
-                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
+                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 active:scale-95 transition-all duration-200">${t('joinChallenge')}</button></div>`;
                     else if (j) {
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
                             let lockBadge = "";
+
                             const dayLocked = isDayLocked(c.startDate, dIdx);
-                            if(ic) s="bg-indigo-600 text-white border-indigo-600";
-                            else if(dayLocked && !ic) { s="bg-rose-100 text-rose-700 border-rose-300"; lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px]">❌</span>'; }
-                            else if(it) s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold shadow-sm";
-                            else if(ifu) s="bg-slate-100 text-slate-400 opacity-40";
-                            else s="bg-rose-50 text-rose-700 border-2 border-rose-300";
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 bg-amber-500 text-white text-[8px] px-1.5 rounded-full">Hôm nay</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                            const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
+                            let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-indigo-400 dark:bg-indigo-300 z-20 pointer-events-none"></span>` : "";
+
+                            if(ic) {
+                                s="bg-indigo-600 text-white border-indigo-600"; 
+                            } else if(dayLocked && !ic) {
+                                s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
+                            } else if(it) {
+                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold shadow-sm"; 
+                            } else if(ifu) {
+                                s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                            } else {
+                                s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
+                            }
+
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition-all duration-200 active:scale-[0.9] ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
-                        content = `<div class="space-y-2"><div class="flex justify-between items-center text-xs"><span class="font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt}</span> <span class="bg-amber-50 text-amber-700 px-2 rounded font-extrabold">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 rounded-lg text-indigo-700 w-6 h-6 inline-flex items-center justify-center">🏆</button></span>${statusBadgeHTML}</div><div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden"><div class="bg-indigo-400 h-full rounded-full" style="width: ${Math.min(pct, 100)}%"></div></div>${grid}</div>`;
+                        
+                        content = `
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 active:scale-95 transition-all duration-200 flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                    ${statusBadgeHTML}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-indigo-400 dark:bg-indigo-500 h-full rounded-full transition-all duration-700 ease-out" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${grid}
+                            </div>`;
                     }
 
                     container.innerHTML += `
-                        <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border space-y-3">
+                        <div id="challenge-card-${c.id}" class="animate-slide-up bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
-                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 flex items-center gap-1">${c.isBigPlay ? '🔥' : '🎯'} ${c.title}</h4>
-                                    <div class="flex items-center gap-2 text-[11px] text-slate-500 italic"><span>${formatDateString(c.startDate)}</span>${ro?`<span class="bg-amber-100 text-amber-800 px-2 rounded-full font-bold">${t('readOnlyMode')}</span>`:''}</div>
+                                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
+                                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                                    </h4>
+                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
+                                        <span>${formatDateString(c.startDate)}</span>
+                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
+                                    </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 p-2 font-bold text-lg">⋮</button>` : ''}
+                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 active:scale-90 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8 transition-all duration-200">⋮</button>` : ''}
                             </div>
-                            ${j ? avs : ''} ${content}
+                            ${j ? avs : ''}
+                            ${content}
                             ${(j || ro) && loggedInUserId === 'member_1' ? renderCommentSectionHTML(c.id, c.comments||[], false) : ''}
                         </div>`;
                 });
@@ -1885,52 +2141,96 @@
                     return true;
                 }).sort(sortByStartDate);
 
-                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border">${t('noHabits')}</p>`;
+                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 animate-slide-up">${t('noHabits')}</p>`;
                 
                 list.forEach((h, idx) => {
                     const tot=h.totalDays||sysCfg.defaultTotalDays, tgt=h.targetDays||sysCfg.defaultTargetDays, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
                     const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
                     const streak = getStreakInfo(prog);
+                    
                     const isCompleted = cnt >= tgt;
                     const cFinished = isChallengeFinished(h.startDate, tot);
                     const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
 
-                    let rewardPenaltyBoxHTML = "", statusBadgeHTML = "";
+                    let rewardPenaltyBoxHTML = "";
+                    let statusBadgeHTML = "";
+
                     if (isCompleted) {
-                        rewardPenaltyBoxHTML = `<div class="px-3 py-1.5 bg-emerald-50 rounded-2xl text-xs font-extrabold text-emerald-600 flex items-center gap-1.5"><span>🎁</span> <span>${h.selfReward||'---'}</span></div>`;
-                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">${t('completed')}</span>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">🎁</span>
+                                <span class="truncate">${h.selfReward||'---'}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('completed')}</span>`;
                     } else if (isFailed) {
-                        rewardPenaltyBoxHTML = `<div class="px-3 py-1.5 bg-rose-50 rounded-2xl text-xs font-extrabold text-rose-600 flex items-center gap-1.5"><span>💸</span> <span>${h.selfPenalty||'---'}</span></div>`;
-                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">${t('incomplete')}</span>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">💸</span>
+                                <span class="truncate">${h.selfPenalty||'---'}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('incomplete')}</span>`;
                     } else {
-                        rewardPenaltyBoxHTML = `<div class="px-3 py-2 bg-emerald-50/60 rounded-2xl text-xs"><div class="text-emerald-600 font-semibold">🎁 ${h.selfReward||'---'}</div><div class="text-rose-600 font-semibold">💸 ${h.selfPenalty||'---'}</div></div>`;
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-2 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-fit max-w-full">
+                                <div class="flex items-center gap-1.5 text-emerald-600 min-w-0">
+                                    <div class="shrink-0 leading-none">🎁</div>
+                                    <div class="font-semibold truncate">${h.selfReward||'---'}</div>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-rose-600 min-w-0">
+                                    <div class="shrink-0 leading-none">💸</div>
+                                    <div class="font-semibold truncate">${h.selfPenalty||'---'}</div>
+                                </div>
+                            </div>`;
                     }
 
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
-                        let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600", lockBadge = "";
+                        let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
+                        let lockBadge = "";
+
                         const dayLocked = isDayLocked(h.startDate, dIdx);
-                        if(ic) s="bg-emerald-600 text-white border-emerald-600";
-                        else if(dayLocked && !ic) { s="bg-rose-100 text-rose-700 border-rose-300"; lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px]">❌</span>'; }
-                        else if(it) s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold shadow-sm";
-                        else if(ifu) s="bg-slate-100 text-slate-400 opacity-40";
-                        else s="bg-rose-50 text-rose-700 border-2 border-rose-300";
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px]">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 bg-amber-500 text-white text-[8px] px-1.5 rounded-full">Hôm nay</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}</button>`;
+                        const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
+                        let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-emerald-400 dark:bg-emerald-300 z-20 pointer-events-none"></span>` : "";
+
+                        if(ic) {
+                            s="bg-emerald-600 text-white border-emerald-600"; 
+                        } else if(dayLocked && !ic) {
+                            s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
+                        } else if(it) {
+                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold shadow-sm"; 
+                        } else if(ifu) {
+                            s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                        } else {
+                            s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
+                        }
+
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition-all duration-200 active:scale-[0.9] ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
 
                     container.innerHTML += `
-                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border space-y-3">
+                        <div id="challenge-card-${h.id}" class="animate-slide-up bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
-                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 flex items-center gap-1">${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}</h4>
-                                    <div class="flex items-center gap-2 text-[11px] text-slate-500 italic"><span>${formatDateString(h.startDate)}</span>${ro?`<span class="bg-amber-100 text-amber-800 px-2 rounded-full font-bold">${t('readOnlyMode')}</span>`:''}</div>
+                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
+                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                                    </h4>
+                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
+                                        <span>${formatDateString(h.startDate)}</span>
+                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
+                                    </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 p-2 font-bold text-lg">⋮</button>
+                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 active:scale-90 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8 transition-all duration-200">⋮</button>
                             </div>
                             <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs"><span class="font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt}</span> <span class="bg-amber-50 text-amber-700 px-2 rounded font-extrabold">🔥${streak.active}</span></span>${statusBadgeHTML}</div>
-                                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden"><div class="bg-emerald-400 h-full rounded-full" style="width: ${Math.min(pct, 100)}%"></div></div>
+                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
+                                    ${statusBadgeHTML}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-emerald-400 dark:bg-emerald-500 h-full rounded-full transition-all duration-700 ease-out" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
                                 ${grid}
                             </div>
                             ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
@@ -1944,11 +2244,11 @@
         
         function renderHintList() {
             let rawList = (appData.hintsPool && appData.hintsPool[currentLang]) ? appData.hintsPool[currentLang] : defaultHints[currentLang];
-            const list = Array.isArray(rawList) ? rawList : Object.values(rawList);
+            const list = Array.isArray(rawList) ? rawList : (typeof rawList === 'object' && rawList !== null ? Object.values(rawList) : []);
             const pool = list.filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
             const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
-            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border flex justify-between items-center gap-2"><div><strong class="block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
+            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="animate-slide-up p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} hover:opacity-90 active:scale-95 transition-all duration-200 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc) {
             closeHintModal();
@@ -1991,6 +2291,8 @@
         function openRegisterView() {
             document.getElementById('login-step-1').classList.add('hidden');
             document.getElementById('register-step-view').classList.remove('hidden');
+            document.getElementById('reg-name-input').value = '';
+            document.getElementById('reg-pin-input').value = '';
         }
 
         function closeRegisterView() {
@@ -2003,13 +2305,23 @@
             const pin = document.getElementById('reg-pin-input').value.trim();
             if (!name) return alert(t('errEnterName'));
             if (pin.length !== 4 || isNaN(pin)) return alert(t('pinFormat'));
+
             const nameLower = name.toLowerCase();
-            if ((appData.members || []).some(m => m.name.toLowerCase() === nameLower) || (appData.pendingMembers || []).some(p => p.name.toLowerCase() === nameLower)) return alert(t('errNameExist'));
+            const isMemberExist = (appData.members || []).some(m => m.name.toLowerCase() === nameLower);
+            const isPendingExist = (appData.pendingMembers || []).some(p => p.name.toLowerCase() === nameLower);
+
+            if (isMemberExist || isPendingExist) {
+                return alert(t('errNameExist'));
+            }
+
             appData.pendingMembers = appData.pendingMembers || [];
             const newId = 'member_' + Date.now();
             appData.pendingMembers.push({ id: newId, name, pin, createdAt: Date.now() });
+            
             sendNotification('member_1', 'pending_approval', t('sysNotif'), t('sysNewReg'), `${t('sysNotif')} "${name}" ${t('sysWaitApprove')}`);
+
             dbRef.set(appData);
+
             alert(t('registerSuccess'));
             closeRegisterView();
         }
@@ -2072,7 +2384,7 @@
                 appData.playlist = defaultPlaylist;
                 appData.slogansPool = defaultSlogans;
                 appData.hintsPool = defaultHints;
-                appData.matrixTasks = [];
+
                 dbRef.set(appData); 
                 alert(t('adminSuccess')); 
                 closeUserMenu(); 
@@ -2092,7 +2404,9 @@
             if (!c || !c.participants) return;
             const actorName = appData.members.find(m => m.id === loggedInUserId)?.name || 'Member';
             Object.keys(c.participants).forEach(mId => {
-                if (mId !== loggedInUserId && (c.participants[mId] === true || c.participants[mId] === 'given_up')) sendNotification(mId, type, actorName, c.title, actionDesc);
+                if (mId !== loggedInUserId && (c.participants[mId] === true || c.participants[mId] === 'given_up')) {
+                    sendNotification(mId, type, actorName, c.title, actionDesc);
+                }
             });
         }
         function openNotificationModal() { renderNotificationList(); document.getElementById('notification-modal').classList.remove('hidden'); }
@@ -2105,10 +2419,15 @@
                 dbRef.set(appData);
                 updateNotificationBadge();
             }
+
             closeNotificationModal();
+
             if (type === 'pending_approval') {
-                if (loggedInUserId === 'member_1') openAdminCenterModal();
-                else alert(t('errAdminOnly'));
+                if (loggedInUserId === 'member_1') {
+                    openAdminCenterModal();
+                } else {
+                    alert(t('errAdminOnly'));
+                }
             }
         }
 
@@ -2121,11 +2440,17 @@
                 else if(n.type === 'reply') { icon = '↩️'; act = `${t('repliedYou')} "${n.challengeTitle}"`; }
                 else if(n.type === 'system') { icon = '🤖'; act = n.text; }
                 else if(n.type === 'pending_approval') { icon = '👥'; act = n.text; }
+
                 const isClickable = n.type === 'pending_approval';
+
                 container.innerHTML += `
-                    <div onclick="handleNotificationClick(${n.id}, '${n.type}')" class="p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50' : 'bg-indigo-50 font-medium'} flex items-start justify-between gap-2 ${isClickable ? 'cursor-pointer' : ''}">
-                        <div class="space-y-1"><p><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' && n.type !== 'pending_approval' ? act : ''}</p><span class="text-[10px] text-slate-400">${n.timestamp}</span></div>
-                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1"></span>` : ''}
+                    <div onclick="handleNotificationClick(${n.id}, '${n.type}')" class="animate-slide-up p-3 rounded-2xl border transition-all duration-200 ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2 ${isClickable ? 'cursor-pointer hover:border-indigo-400 hover:shadow-xs active:scale-[0.98]' : ''}">
+                        <div class="space-y-1">
+                            <p class="text-slate-800 dark:text-slate-100"><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' && n.type !== 'pending_approval' ? act : ''}</p>
+                            ${(n.type === 'tag' || n.type === 'reply' || n.type === 'system' || n.type === 'pending_approval') && n.text ? `<p class="text-slate-500 text-[11px] bg-white/60 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">${n.text}</p>` : ''}
+                            <span class="text-[10px] text-slate-400 block">${n.timestamp}</span>
+                        </div>
+                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1 shadow-sm"></span>` : ''}
                     </div>`;
             });
         }
@@ -2135,22 +2460,44 @@
             selectedMenuChallenge = { id, isPersonal: isP };
             const m = document.getElementById('action-menu-modal');
             let isArch = false, st = 'active';
+            
             if(!isP){ 
                 const c = appData.sharedChallenges.find(x=>x.id===id); 
-                if(c){ isArch=c.archived; const pStatus = c.participants ? c.participants[loggedInUserId] : null; if(pStatus !== true && pStatus !== 'given_up') return; st = pStatus === true ? 'active' : 'given_up'; } 
-            } else { 
+                if(c){ 
+                    isArch=c.archived; 
+                    const pStatus = c.participants ? c.participants[loggedInUserId] : null;
+                    if(pStatus !== true && pStatus !== 'given_up') return;
+                    st = pStatus === true ? 'active' : 'given_up';
+                } 
+            } 
+            else { 
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); 
                 if(h){ isArch=h.archived; st=h.status||'active'; } 
             }
+            
             document.getElementById('action-btn-archive').classList.toggle('hidden', isArch);
             document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
             document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
-            const btnGiveUp = document.getElementById('action-btn-giveup'), btnRejoin = document.getElementById('action-btn-rejoin');
-            if (isArch) { btnGiveUp.classList.add('hidden'); btnRejoin.classList.add('hidden'); }
-            else {
-                if (st === 'given_up') { btnGiveUp.classList.add('hidden'); btnRejoin.classList.remove('hidden'); }
-                else { btnGiveUp.classList.remove('hidden'); btnRejoin.classList.add('hidden'); }
+            
+            const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
+            btnP.classList.add('hidden');
+            btnR.classList.add('hidden');
+            
+            const btnGiveUp = document.getElementById('action-btn-giveup');
+            const btnRejoin = document.getElementById('action-btn-rejoin');
+            if (isArch) {
+                btnGiveUp.classList.add('hidden');
+                btnRejoin.classList.add('hidden');
+            } else {
+                if (st === 'given_up') {
+                    btnGiveUp.classList.add('hidden');
+                    btnRejoin.classList.remove('hidden');
+                } else {
+                    btnGiveUp.classList.remove('hidden');
+                    btnRejoin.classList.add('hidden');
+                }
             }
+
             m.classList.remove('hidden');
         }
         function closeActionMenuModal() { document.getElementById('action-menu-modal').classList.add('hidden'); selectedMenuChallenge = null; }
@@ -2168,42 +2515,139 @@
         async function captureChallengeCard(id) {
             const cardEl = document.getElementById(`challenge-card-${id}`);
             if(!cardEl) return;
+            
             const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
             const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
+            
             if(commentsContainer) commentsContainer.style.display = 'none';
             if(actionBtn) actionBtn.style.display = 'none';
+
             try {
-                const canvas = await html2canvas(cardEl, { scale: 3, useCORS: true, backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff' });
+                const canvas = await html2canvas(cardEl, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+                });
+
                 const link = document.createElement('a');
                 link.download = `BVGP-Challenge-${id}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
                 link.click();
-            } catch(err) { alert(t('errCapture')); }
-            finally { if(commentsContainer) commentsContainer.style.display = ''; if(actionBtn) actionBtn.style.display = ''; }
+            } catch(err) {
+                console.error("Capture Error:", err);
+                alert(t('errCapture'));
+            } finally {
+                if(commentsContainer) commentsContainer.style.display = '';
+                if(actionBtn) actionBtn.style.display = '';
+            }
         }
 
-        function toggleCaptureDropdown(tab) { document.getElementById(`capture-menu-${tab}`)?.classList.toggle('hidden'); }
+        function toggleCaptureDropdown(tab) {
+            const m = document.getElementById(`capture-menu-${tab}`);
+            if(m) m.classList.toggle('hidden');
+        }
 
         async function executeCapture(tab, option) {
             document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
             const isDark = document.documentElement.classList.contains('dark');
             const bgColor = isDark ? '#0f172a' : '#ffffff';
+
             if(tab === 'active') {
                 const container = document.getElementById('report-active-container');
+                const grpBox = document.getElementById('act-box-grp');
+                const perBox = document.getElementById('act-box-per');
+                
+                const grpContent = document.getElementById('act-content-grp');
+                const perContent = document.getElementById('act-content-per');
+                const wasGrpHidden = grpContent?.classList.contains('hidden');
+                const wasPerHidden = perContent?.classList.contains('hidden');
+
+                if(grpContent) grpContent.classList.remove('hidden');
+                if(perContent) perContent.classList.remove('hidden');
+
+                if(option === 'personal') {
+                    if(grpBox) grpBox.style.display = 'none';
+                } else if (option === 'group') {
+                    if(perBox) perBox.style.display = 'none';
+                }
+
                 try {
-                    const canvas = await html2canvas(container, { scale: 3, useCORS: true, backgroundColor: bgColor });
-                    const link = document.createElement('a'); link.download = `BVGP-Report-${option}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.95); link.click();
-                } catch(e) { alert(t('errCapture')); }
+                    const canvas = await html2canvas(container, {
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: bgColor
+                    });
+                    const link = document.createElement('a');
+                    link.download = `BVGP-Report-${option}-${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+                } catch(e) {
+                    alert(t('errCapture'));
+                } finally {
+                    if(grpBox) grpBox.style.display = '';
+                    if(perBox) perBox.style.display = '';
+                    if(wasGrpHidden && grpContent) grpContent.classList.add('hidden');
+                    if(wasPerHidden && perContent) perContent.classList.add('hidden');
+                }
+            } else if(tab === 'rewards') {
+                const wrapperEl = document.getElementById('rewards-capture-wrapper');
+                const rulesAccordion = document.getElementById('reward-rules-accordion');
+                const allUserCards = wrapperEl.querySelectorAll('[id^="rewards-user-card-"]');
+                
+                if(rulesAccordion) rulesAccordion.style.display = 'none';
+
+                if(option === 'personal') {
+                    allUserCards.forEach(card => {
+                        if(card.id !== `rewards-user-card-${loggedInUserId}`) {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+
+                try {
+                    const canvas = await html2canvas(wrapperEl, {
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: bgColor
+                    });
+                    const link = document.createElement('a');
+                    link.download = `BVGP-Rewards-${option}-${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+                } catch(e) {
+                    alert(t('errCapture'));
+                } finally {
+                    if(rulesAccordion) rulesAccordion.style.display = '';
+                    allUserCards.forEach(card => card.style.display = '');
+                }
             }
         }
 
         function giveUpChallenge(id, isP) {
             const r=promptReason(); if(r===null)return;
-            if(!isP){ const c=appData.sharedChallenges.find(x=>x.id===id); if(c&&c.participants){ c.participants[loggedInUserId]='given_up'; c.participantReasons=c.participantReasons||{}; c.participantReasons[loggedInUserId]=r; notifyAllChallengeMembers(c, 'giveup', `${t('ntfGiveUp')} "${c.title}".`); } }
+            if(!isP){ 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
+                if(c&&c.participants){ 
+                    c.participants[loggedInUserId]='given_up'; 
+                    c.participantReasons=c.participantReasons||{}; 
+                    c.participantReasons[loggedInUserId]=r; 
+                    notifyAllChallengeMembers(c, 'giveup', `${t('ntfGiveUp')} "${c.title}".`);
+                } 
+            }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
         }
         function rejoinChallenge(id, isP) {
-            if(!isP){ const c=appData.sharedChallenges.find(x=>x.id===id); if(c&&c.participants){ c.participants[loggedInUserId]=true; notifyAllChallengeMembers(c, 'rejoin', `${t('ntfRejoin')} "${c.title}".`); } }
+            if(!isP){ 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
+                if(c&&c.participants){ 
+                    c.participants[loggedInUserId]=true; 
+                    notifyAllChallengeMembers(c, 'rejoin', `${t('ntfRejoin')} "${c.title}".`);
+                } 
+            }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
         }
         function archiveChallenge(id, isP, toArchive) {
@@ -2214,35 +2658,61 @@
         function deleteChallenge(id, isP) { if(confirm(t('confirmDelete'))) { if(isP) appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].filter(x=>x.id!==id); else appData.sharedChallenges = appData.sharedChallenges.filter(x=>x.id!==id); dbRef.set(appData); } }
         function joinChallenge(id) { 
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            const c=appData.sharedChallenges.find(x=>x.id===id); if(!c)return; 
-            c.participants=c.participants||{}; c.participants[loggedInUserId]=true; c.progress=c.progress||{}; 
+            const c=appData.sharedChallenges.find(x=>x.id===id); 
+            if(!c)return; 
+            c.participants=c.participants||{}; 
+            c.participants[loggedInUserId]=true; 
+            c.progress=c.progress||{}; 
             if(!c.progress[loggedInUserId]) c.progress[loggedInUserId]=Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})); 
             notifyAllChallengeMembers(c, 'join', `${t('ntfJoin')} "${c.title}"!`);
-            dbRef.set(appData); alert(t('joinedSuccess')); 
+            dbRef.set(appData); 
+            alert(t('joinedSuccess')); 
         }
 
         function openDayModal(id, dIdx, isP) {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges, c = arr.find(x=>x.id===id); if(!c)return;
             if(dIdx > getTodayIndex(c.startDate)) return alert(t('alertFuture'));
-            let item = !isP ? (c.progress&&c.progress[loggedInUserId]&&c.progress[loggedInUserId][dIdx]) || {completed:false,note:''} : (c.days&&c.days[dIdx]) || {completed:false,note:''};
-            const tot = c.totalDays || sysCfg.defaultTotalDays, tgt = c.targetDays || sysCfg.defaultTargetDays;
+            
+            let item;
+            if(!isP){
+                item = (c.progress&&c.progress[loggedInUserId]&&c.progress[loggedInUserId][dIdx]) || {completed:false,note:''};
+            } else { 
+                item = (c.days&&c.days[dIdx]) || {completed:false,note:''}; 
+            }
+
+            const tot = c.totalDays || sysCfg.defaultTotalDays;
+            const tgt = c.targetDays || sysCfg.defaultTargetDays;
             const arrProg = !isP ? (c.progress&&c.progress[loggedInUserId]||[]) : (c.days||[]);
             const cnt = arrProg.filter(x=>x&&x.completed).length;
+
             const cFinished = isChallengeFinished(c.startDate, tot);
             const isFinished = (cnt >= tgt) || (c.participants && c.participants[loggedInUserId] === 'given_up') || (isP && c.status === 'given_up') || cFinished;
             const dayLocked = isDayLocked(c.startDate, dIdx);
+
             const isParticipant = isP || (c.participants && c.participants[loggedInUserId] === true);
             const isReadOnlyMode = c.archived || !isParticipant || isFinished || dayLocked;
             
             currentEditingDay = { id, dayIndex:dIdx, isPersonal:isP, isReadOnly: isReadOnlyMode };
             tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected');
             
-            const gsc = document.getElementById('group-day-status-container'), rn = document.getElementById('modal-read-only-notice'), ln = document.getElementById('modal-lock-notice');
+            const gsc = document.getElementById('group-day-status-container');
+            const rn = document.getElementById('modal-read-only-notice');
+            const ln = document.getElementById('modal-lock-notice');
+            
             rn.classList.toggle('hidden', !c.archived);
-            if (isFinished && !c.archived) { ln.innerText = t('endedNotice'); ln.classList.remove('hidden'); }
-            else if (dayLocked && !c.archived && !isFinished) { ln.innerText = t('lockNotice'); ln.classList.remove('hidden'); }
-            else ln.classList.add('hidden');
+            
+            if (isFinished && !c.archived) {
+                ln.innerText = t('endedNotice');
+                ln.className = "p-2 bg-slate-100 text-slate-800 text-[11px] rounded-lg font-bold text-center animate-scale-in";
+                ln.classList.remove('hidden');
+            } else if (dayLocked && !c.archived && !isFinished) {
+                ln.innerText = t('lockNotice');
+                ln.className = "p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center animate-scale-in";
+                ln.classList.remove('hidden');
+            } else {
+                ln.classList.add('hidden');
+            }
             
             const iconSpan = document.getElementById('modal-title-icon');
             if(!isP) iconSpan.innerHTML = c.isBigPlay ? '🔥' : '🎯';
@@ -2250,34 +2720,74 @@
 
             if(!isP){
                 gsc.classList.remove('hidden');
+                
                 const otherMembers = Object.keys(c.participants||{}).filter(m => m !== loggedInUserId && (c.participants[m]===true || c.participants[m]==='given_up'));
+                
+                otherMembers.sort((m1, m2) => {
+                    const cnt1 = (c.progress&&c.progress[m1]) ? c.progress[m1].filter(x=>x&&x.completed).length : 0;
+                    const cnt2 = (c.progress&&c.progress[m2]) ? c.progress[m2].filter(x=>x&&x.completed).length : 0;
+                    return cnt2 - cnt1;
+                });
+
                 const completedCount = otherMembers.filter(m=>c.progress[m]&&c.progress[m][dIdx]&&c.progress[m][dIdx].completed).length;
                 document.getElementById('completed-ratio-text').innerText = `${completedCount}/${otherMembers.length}`;
+                
                 document.getElementById('group-members-status-list').innerHTML = otherMembers.length ? otherMembers.map(mId => {
-                    const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'';
-                    return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border text-xs space-y-1"><div class="flex justify-between font-semibold"><span>${u?u.name:mId}</span><span>${id?'✅':'⏳'}</span></div>${n?`<span>💬 ${n}</span>`:''}</div>`;
+                    const u = appData.members.find(x=>x.id===mId), p = c.progress[mId]&&c.progress[mId][dIdx], id = (p&&p.completed), n = (p&&p.note)?p.note:'', i = (p&&p.image)?p.image:'', tm = (p&&p.timestamp)?p.timestamp:'';
+                    const avHTML = getMemberAvatarHTML(mId, "h-6 w-6");
+                    
+                    let statusLabel = `<span class="text-slate-500 bg-slate-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">⏳ ${t('incomplete')}</span>`;
+                    if (id) {
+                        statusLabel = getCompletedBadgeHTML();
+                    } else if (dayLocked && !id) {
+                        statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ ${t('incomplete')}</span>`;
+                    }
+
+                    return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2 animate-slide-up"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1" loading="lazy"></div>`:''}</div>`;
                 }).join('') : `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noOtherMembers')}</p>`;
-            } else gsc.classList.add('hidden');
+            } else { 
+                gsc.classList.add('hidden'); 
+            }
 
             document.getElementById('modal-day-title').innerText = `${c.title||c.text} (${getDateString(c.startDate, dIdx)})`;
+            
             document.getElementById('modal-chk-completed').checked = !!item.completed;
             document.getElementById('modal-note').value = item.note||'';
-            if(item.image){ tempDayImageBase64 = item.image; document.getElementById('modal-image-preview').src = item.image; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }
-            else document.getElementById('modal-image-preview-container').classList.add('hidden');
+            
+            if(item.image){ 
+                tempDayImageBase64 = item.image; 
+                document.getElementById('modal-image-preview').src = item.image; 
+                document.getElementById('modal-image-preview-container').classList.remove('hidden'); 
+            } else {
+                document.getElementById('modal-image-preview-container').classList.add('hidden');
+            }
             
             updateModalView(item, { isFailed: dayLocked && !item.completed });
-            setModalMode(isReadOnlyMode ? false : (!item.completed && !item.note && !item.image));
+            
+            if (isReadOnlyMode) {
+                setModalMode(false);
+            } else {
+                setModalMode(!item.completed && !item.note && !item.image);
+            }
             document.getElementById('day-modal').classList.remove('hidden');
         }
 
         function updateModalView(item, lock = { isFailed: false }) {
-            let statusBadge = item.completed ? getCompletedBadgeHTML() : (lock.isFailed ? `<span class="text-rose-600 bg-rose-50 border px-2.5 rounded-lg text-xs font-semibold">❌ ${t('incomplete')}</span>` : `<span class="text-slate-600 bg-slate-100 px-2.5 rounded-lg text-xs font-semibold">⏳ ${t('incomplete')}</span>`);
+            let statusBadge = "";
+            if (item.completed) {
+                statusBadge = getCompletedBadgeHTML();
+            } else if (lock.isFailed) {
+                statusBadge = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">❌ ${t('incomplete')}</span>`;
+            } else {
+                statusBadge = `<span class="text-slate-600 bg-slate-100 dark:bg-slate-700/60 px-2.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 h-5 leading-none">⏳ ${t('incomplete')}</span>`;
+            }
+
             document.getElementById('view-status').innerHTML = statusBadge;
             document.getElementById('view-timestamp').innerText = item.timestamp ? `${t('updatedAt')}: ${item.timestamp}` : ''; 
             document.getElementById('view-timestamp').classList.toggle('hidden', !item.timestamp);
-            document.getElementById('view-note').innerHTML = item.note ? `<p class="italic bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border text-xs">💬 "${item.note}"</p>` : ''; 
+            document.getElementById('view-note').innerHTML = item.note ? `<p class="italic bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border dark:border-slate-700 text-xs">💬 "${item.note}"</p>` : ''; 
             document.getElementById('view-note').classList.toggle('hidden', !item.note);
-            document.getElementById('view-image').innerHTML = item.image ? `<div class="w-full rounded-2xl overflow-hidden bg-slate-900/5 border flex justify-center items-center p-1 mt-2"><img src="${item.image}" class="w-full max-h-[350px] object-contain rounded-xl" loading="lazy"></div>` : ''; 
+            document.getElementById('view-image').innerHTML = item.image ? `<div class="w-full rounded-2xl overflow-hidden bg-slate-900/5 border border-slate-200 dark:border-slate-700 flex justify-center items-center p-1 mt-2 animate-scale-in"><img src="${item.image}" class="w-full max-h-[350px] object-contain rounded-xl" loading="lazy"></div>` : ''; 
             document.getElementById('view-image').classList.toggle('hidden', !item.image);
         }
 
@@ -2286,11 +2796,19 @@
             document.getElementById('modal-edit-section').classList.toggle('hidden', !ed); 
             document.getElementById('modal-view-section').classList.toggle('hidden', ed); 
             document.getElementById('view-status').classList.toggle('hidden', ed);
+            
             document.getElementById('modal-edit-btn').classList.toggle('hidden', ed || currentEditingDay?.isReadOnly);
         }
 
-        function toggleModalEdit() { if(currentEditingDay?.isReadOnly) return alert(t('notParticipant')); setModalMode(!isEditMode); }
-        function closeDayModal() { document.getElementById('day-modal').classList.add('hidden'); currentEditingDay = null; }
+        function toggleModalEdit() { 
+            if(currentEditingDay?.isReadOnly) return alert(t('notParticipant')); 
+            setModalMode(!isEditMode); 
+        }
+
+        function closeDayModal() { 
+            document.getElementById('day-modal').classList.add('hidden'); 
+            currentEditingDay = null; 
+        }
 
         function saveDayDetail() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
@@ -2305,18 +2823,27 @@
                     c.progress[loggedInUserId][dayIndex] = updated; 
                     if(updated.completed) {
                         const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
-                        if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) notifyAllChallengeMembers(c, 'complete', `${t('ntfComplete')} "${c.title}"! 🎉`);
-                        else notifyAllChallengeMembers(c, 'checkin', `${t('ntfCheckin')} ${getDateString(c.startDate, dayIndex)} - ${c.title}`);
+                        const dateStr = getDateString(c.startDate, dayIndex);
+                        if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) {
+                            notifyAllChallengeMembers(c, 'complete', `${t('ntfComplete')} "${c.title}"! 🎉`);
+                        } else {
+                            notifyAllChallengeMembers(c, 'checkin', `${t('ntfCheckin')} ${dateStr} - ${c.title}`);
+                        }
                     }
                 } 
-            } else { 
+            } 
+            else { 
                 appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
             }
-            dbRef.set(appData); updateModalView(updated); setModalMode(false); renderList();
+            dbRef.set(appData); 
+            updateModalView(updated); 
+            setModalMode(false);
+            renderList(); // Re-render to update badges immediately
         }
 
         function toggleDayModalProgressAccordion() {
-            const list = document.getElementById('group-members-status-list'), arrow = document.getElementById('day-modal-progress-arrow');
+            const list = document.getElementById('group-members-status-list');
+            const arrow = document.getElementById('day-modal-progress-arrow');
             list.classList.toggle('hidden');
             arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
@@ -2326,7 +2853,11 @@
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||sysCfg.defaultTargetDays, tot = parseInt(document.getElementById('create-days-input').value)||sysCfg.defaultTotalDays;
             if(!tIn) return;
-            if(tot < tgt) return alert(t('errTotalTarget'));
+
+            if(tot < tgt) {
+                alert(t('errTotalTarget'));
+                return;
+            }
             
             if (activeTab === 'dashboard') {
                 const isB = document.getElementById('create-bigplay-checkbox').checked, cR = document.getElementById('create-reward-input').value, cP = document.getElementById('create-penalty-input').value;
@@ -2344,25 +2875,27 @@
             document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
         };
 
-        function toggleCommentSection(id) { document.getElementById(`comment-section-${id}`)?.classList.toggle('hidden'); }
-        function insertTagToComment(cId, name) { const i=document.getElementById(`comment-text-${cId}`); if(i){ i.value = `@${name} ` + i.value; i.focus(); } }
-        function setReplyToComment(cId, cmId, aName, aId) { activeReplyTo[cId]={cmId, aName, aId}; document.getElementById(`reply-name-${cId}`).innerText=`@${aName}`; document.getElementById(`reply-banner-${cId}`).classList.remove('hidden'); insertTagToComment(cId, aName); }
-        function cancelReplyToComment(cId) { delete activeReplyTo[cId]; document.getElementById(`reply-banner-${cId}`)?.classList.add('hidden'); }
+        function toggleCommentSection(id) { const el = document.getElementById(`comment-section-${id}`); if (el) el.classList.toggle('hidden'); }
+        function insertTagToComment(cId, name) { const i=document.getElementById(`comment-text-${cId}`); if(i){ i.value = `@${name} ` + i.value.replace(`@${name} `, ''); i.focus(); } }
+        function setReplyToComment(cId, cmId, aName, aId) { activeReplyTo[cId]={cmId, aName, aId}; const rb=document.getElementById(`reply-banner-${cId}`); if(rb){ document.getElementById(`reply-name-${cId}`).innerText=`@${aName}`; rb.classList.remove('hidden'); insertTagToComment(cId, aName); } }
+        function cancelReplyToComment(cId) { delete activeReplyTo[cId]; const rb=document.getElementById(`reply-banner-${cId}`); if(rb) rb.classList.add('hidden'); }
         function previewCommentImage(cId, e) { const f=e.target.files[0], n=document.getElementById(`comment-filename-${cId}`); if(n) n.innerText=f?f.name:''; }
-        function highlightTags(txt) { let f=txt||''; appData.members.forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded-md">@${m.name}</span>`)); return f; }
+        function highlightTags(txt) { let f=txt||''; appData.members.forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5 shadow-sm">@${m.name}</span>`)); return f; }
         
         function addComment(cId, isP) {
             const txt = document.getElementById(`comment-text-${cId}`)?.value.trim()||'', f = document.getElementById(`comment-file-${cId}`)?.files[0];
             if(!txt && !f) return alert(t('requireContent'));
             const m = appData.members.find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
             let cTitle = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)?.text : appData.sharedChallenges.find(x=>x.id===cId)?.title;
+            
             const save = (img='') => {
                 const obj = { id: Date.now(), memberId: loggedInUserId, memberName: m?m.name:'User', memberAvatar: m?m.avatar:'', text: txt, image: img, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, replyTo: rp?{commentId:rp.cmId, authorName:rp.aName}:null };
                 const arr = isP ? ((appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)) : appData.sharedChallenges.find(x=>x.id===cId);
                 if(arr){ arr.comments = arr.comments||[]; arr.comments.push(obj); }
                 if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
                 appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
-                cancelReplyToComment(cId); dbRef.set(appData); renderList();
+                cancelReplyToComment(cId); dbRef.set(appData);
+                renderList();
             };
             f ? compressImage(f, save) : save();
         }
@@ -2370,23 +2903,28 @@
 
         function renderCommentSectionHTML(cId, cms=[], isP=false) {
             let lst = cms.length ? cms.map(c => `
-                <div class="p-2.5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xs space-y-1.5 border">
-                    <div class="flex justify-between"><div class="flex items-center gap-1.5 font-bold"><span class="text-slate-700 dark:text-slate-200">${c.memberName}</span><span class="text-[9px] text-slate-400">(${c.timestamp})</span></div><div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 font-bold">↩️</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 font-bold">✕</button>`:''}</div></div>
-                    ${c.replyTo?`<div class="text-[9px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-lg w-fit">↩️ @${c.replyTo.authorName}</div>`:''}
-                    ${c.text?`<p class="text-slate-600 dark:text-slate-300">${highlightTags(c.text)}</p>`:''}
-                    ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border object-cover mt-1" loading="lazy">`:''}
+                <div class="p-2.5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xs space-y-1.5 border border-slate-100 dark:border-slate-700 animate-slide-up">
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-1.5 font-bold">${c.memberAvatar?`<img src="${c.memberAvatar}" class="w-5 h-5 rounded-full object-cover" loading="lazy">`:`<div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px]">${c.memberName.charAt(0)}</div>`}<span class="text-slate-700 dark:text-slate-200">${c.memberName}</span><span class="text-[9px] text-slate-400 font-normal">(${c.timestamp})</span></div>
+                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold transition">↩️</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-bold transition">✕</button>`:''}</div>
+                    </div>
+                    ${c.replyTo?`<div class="text-[9px] text-indigo-600 font-bold bg-indigo-50 dark:bg-indigo-900/40 px-2 py-0.5 rounded-lg w-fit">↩️ ${t('replyingTo')} @${c.replyTo.authorName}</div>`:''}
+                    ${c.text?`<p class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">${highlightTags(c.text)}</p>`:''}
+                    ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border dark:border-slate-700 object-cover mt-1" loading="lazy">`:''}
                 </div>`).join('') : `<p class="text-slate-400 italic text-[11px] text-center py-2">${t('noComments')}</p>`;
+            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + appData.members.map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300 transition active:scale-95">@${m.name}</button>`).join('') + `</div>`;
             return `
-                <div class="pt-3 border-t space-y-3">
-                    <button type="button" onclick="toggleCommentSection(${cId})" class="flex justify-between w-full text-xs font-bold text-slate-500"><span>${t('commentCount')} (${cms.length})</span><span>▼</span></button>
-                    <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border">
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
+                    <button type="button" onclick="toggleCommentSection(${cId})" class="flex justify-between w-full text-xs font-bold text-slate-500 hover:text-indigo-600 transition"><span class="flex gap-1.5">${t('commentCount')} (${cms.length})</span><span class="text-[10px]">▼</span></button>
+                    <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-700 animate-scale-in origin-top">
                         <div class="space-y-2 max-h-52 overflow-y-auto pr-1">${lst}</div>
-                        <div class="space-y-2 pt-2 border-t">
-                            <div id="reply-banner-${cId}" class="hidden flex justify-between items-center bg-indigo-100 px-2.5 py-1 rounded-xl text-[11px] text-indigo-700 font-bold"><span>↩️ <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})">✕</button></div>
-                            <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none bg-white dark:bg-slate-800 dark:border-slate-600"></textarea>
+                        <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                            <div id="reply-banner-${cId}" class="hidden flex justify-between items-center bg-indigo-100 dark:bg-indigo-900/40 px-2.5 py-1 rounded-xl text-[11px] text-indigo-700 dark:text-indigo-300 font-bold animate-fade-in"><span>↩️ ${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm hover:scale-110 transition">✕</button></div>
+                            ${tags}
+                            <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 transition"></textarea>
                             <div class="flex justify-between gap-2">
-                                <label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 px-2.5 py-1.5 rounded-xl text-[10px] font-bold">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[9px] text-slate-400"></span>
-                                <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 text-white font-bold text-xs px-4 py-1.5 rounded-xl">${t('send')}</button>
+                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 transition px-2.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-700 dark:text-slate-200 active:scale-95">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[9px] text-slate-400 truncate max-w-[100px]"></span></div>
+                                <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm transition-all duration-200">${t('send')}</button>
                             </div>
                         </div>
                     </div>
@@ -2395,66 +2933,240 @@
 
         function showDescriptionModalById(id, isP) {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let tT="", d="", s="", tgt=sysCfg.defaultTargetDays, tot=sysCfg.defaultTotalDays, isB=false, cR=0, cP=0, sR='', sP='', creatorNameDisplay="";
+            let tT="", d="", s="", tgt=sysCfg.defaultTargetDays, tot=sysCfg.defaultTotalDays, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
+            
             if (!isP) {
                 const c = appData.sharedChallenges.find(x=>x.id===id);
-                if(c){ tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||sysCfg.defaultTargetDays; tot=c.totalDays||sysCfg.defaultTotalDays; isB=c.isBigPlay; cR=c.customReward||0; cP=c.customPenalty||0; creatorNameDisplay=c.creatorName||'Team'; }
+                if(c){ 
+                    tT=c.title; d=c.description; s=c.startDate; tgt=c.targetDays||sysCfg.defaultTargetDays; tot=c.totalDays||sysCfg.defaultTotalDays; 
+                    isB=c.isBigPlay; cR=c.customReward||0; cP=c.customPenalty||0;
+                    
+                    const creatorMember = appData.members.find(m => m.id === c.creatorId) || appData.members.find(m => m.name === c.creatorName);
+                    creatorAvatarHTML = creatorMember ? getMemberAvatarHTML(creatorMember.id, "w-4 h-4") : getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
+                    creatorNameDisplay = creatorMember ? creatorMember.name : (c.creatorName || 'Team');
+                    
+                    cnt = (c.progress && c.progress[loggedInUserId]) ? c.progress[loggedInUserId].filter(x => x && x.completed).length : 0;
+                    modalTitleIconHTML = isB ? '🔥' : '🎯';
+                }
             } else {
                 const h = (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id);
-                if(h){ tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||sysCfg.defaultTargetDays; tot=h.totalDays||sysCfg.defaultTotalDays; sR=h.selfReward||'---'; sP=h.selfPenalty||'---'; creatorNameDisplay=t('personal'); }
+                if(h){ 
+                    tT=h.text; d=h.description; s=h.startDate; tgt=h.targetDays||sysCfg.defaultTargetDays; tot=h.totalDays||sysCfg.defaultTotalDays; 
+                    sR=h.selfReward||'---'; sP=h.selfPenalty||'---';
+                    
+                    const curMember = appData.members.find(m => m.id === loggedInUserId);
+                    creatorAvatarHTML = curMember ? getMemberAvatarHTML(curMember.id, "w-4 h-4") : getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
+                    creatorNameDisplay = curMember ? curMember.name : t('personal');
+                    
+                    cnt = (h.days||[]).filter(x=>x&&x.completed).length;
+                    modalTitleIconHTML = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
+                }
             }
-            document.getElementById('desc-modal-header').innerHTML = `<span>${tT}</span>`;
+
+            document.getElementById('desc-modal-header').innerHTML = `<span class="shrink-0">${modalTitleIconHTML}</span><span id="desc-modal-title-text">${tT}</span>`;
+            
             const frameEl = document.getElementById('desc-reward-frame');
             if(!isP) {
-                frameEl.innerHTML = `<div class="flex items-center gap-2 text-xs font-normal"><span>🎁</span> <span class="text-emerald-600 font-bold">${isB ? `+${cR}k` : `+${sysCfg.defaultReward}`}</span> <span class="text-slate-300">|</span> <span class="text-rose-600 font-bold">💸 ${isB ? `-${cP}k` : `-${sysCfg.defaultPenalty}k`}</span></div>`;
+                const rewTxt = isB ? `+${cR}k` : `+${sysCfg.defaultReward}`;
+                const penTxt = isB ? `-${cP}k` : `-${sysCfg.defaultPenalty}k`;
+                frameEl.className = "p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600";
+                frameEl.innerHTML = `
+                    <div class="flex items-center gap-2 text-xs sm:text-sm font-normal">
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-emerald-600 font-bold">${rewTxt}</span>
+                            <span class="text-slate-300">|</span>
+                            <span class="text-rose-600 font-bold">💸 ${penTxt}</span>
+                        </div>
+                    </div>`;
             } else {
-                frameEl.innerHTML = `<div class="text-emerald-600 font-bold text-xs">🎁 ${sR}</div><div class="text-rose-600 font-bold text-xs">💸 ${sP}</div>`;
+                frameEl.className = "p-3 bg-emerald-50/70 dark:bg-slate-700/50 rounded-2xl border border-emerald-100 dark:border-slate-600 space-y-2";
+                frameEl.innerHTML = `
+                    <div class="flex items-center gap-2 font-normal">
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
+                        <span class="text-emerald-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sR}</span>
+                    </div>
+                    <div class="flex items-center gap-2 font-normal">
+                        <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">💸</span>
+                        <span class="text-rose-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sP}</span>
+                    </div>`;
             }
-            document.getElementById('desc-modal-info').innerHTML = `<div>📅 ${formatDateString(s)} ➔ ${getEndDate(s, tot)}</div><div>🎯 ${tgt}/${tot} ngày</div><div>👤 ${creatorNameDisplay}</div>`;
+            
+            document.getElementById('desc-modal-info').innerHTML = `
+                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">📅</span>
+                    <span class="text-slate-500">${t('startDateLabel')}</span>
+                    <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
+                    <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎯</span>
+                    <span class="text-slate-500">${t('targetTotalDays')}</span>
+                    <strong class="text-slate-700 dark:text-slate-200">${tgt}/${tot}</strong>
+                </div>
+                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="w-6 flex justify-center shrink-0">${creatorAvatarHTML}</span>
+                    <span class="text-slate-400 font-normal">${t('createdBy')}</span>
+                    <strong class="font-bold text-slate-700 dark:text-slate-200">${creatorNameDisplay}</strong>
+                </div>
+            `;
+            
             document.getElementById('desc-modal-content').innerText = d||t('noDescription');
             document.getElementById('description-modal').classList.remove('hidden');
         }
         function closeDescriptionModal() { document.getElementById('description-modal').classList.add('hidden'); }
 
-        function openReportModal() { switchReportTab('active'); document.getElementById('report-modal').classList.remove('hidden'); }
+        function openReportModal() { 
+            switchReportTab('active'); 
+            document.getElementById('report-modal').classList.remove('hidden'); 
+        }
         function closeReportModal() { document.getElementById('report-modal').classList.add('hidden'); }
         
         function switchReportTab(tab) {
             ['active', 'rewards'].forEach(tKey => { 
-                document.getElementById(`btn-report-${tKey}`).className = "flex-1 py-1.5 rounded-lg text-slate-500 transition"; 
-                document.getElementById(`report-${tKey}-view`).classList.add('hidden'); 
+                const btn = document.getElementById(`btn-report-${tKey}`);
+                const view = document.getElementById(`report-${tKey}-view`);
+                if(btn) btn.className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 font-normal transition"; 
+                if(view) view.classList.add('hidden'); 
             });
-            document.getElementById(`btn-report-${tab}`).className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 font-bold transition"; 
-            document.getElementById(`report-${tab}-view`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-report-${tab}`);
+            const activeView = document.getElementById(`report-${tab}-view`);
+            if(activeBtn) activeBtn.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95"; 
+            if(activeView) activeView.classList.remove('hidden');
             if (tab === 'active') renderReportPreview();
             else if (tab === 'rewards') renderRewardsSummary();
         }
 
         function toggleActivityAccordion(type) {
-            const content = document.getElementById(`act-content-${type}`), arrow = document.getElementById(`act-arrow-${type}`);
-            if(content) { content.classList.toggle('hidden'); if(arrow) arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }
+            const content = document.getElementById(`act-content-${type}`);
+            const arrow = document.getElementById(`act-arrow-${type}`);
+            if(content) {
+                content.classList.toggle('hidden');
+                if(arrow) arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
         }
 
         function renderReportPreview() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-600 uppercase mb-2">🏆 ${t('completionProgress')}</h2>`;
+            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2 animate-fade-in">🏆 ${t('completionProgress')}</h2>`;
+            const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
+
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
-            htmlTxt += `<div class="border rounded-2xl overflow-hidden"><button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50 font-bold text-xs flex justify-between"><span>${t('groupTabReport')} (${grps.length})</span><span id="act-arrow-grp">▼</span></button><div id="act-content-grp" class="p-3 space-y-3 hidden bg-white dark:bg-slate-800">`;
-            grps.forEach((c,i) => {
-                htmlTxt += `<div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border space-y-2"><div class="font-bold text-xs">${c.title}</div>`;
-                const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                acts.forEach(mId => {
-                    const cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), tgt=c.targetDays||sysCfg.defaultTargetDays, pct=Math.round((cnt/tgt)*100);
-                    htmlTxt += `<div class="text-[11px]"><div class="flex justify-between"><span>${appData.members.find(x=>x.id===mId)?.name||mId}</span><span>${cnt}/${tgt} (${pct}%)</span></div><div class="w-full bg-slate-200 h-1.5 rounded-full"><div class="bg-indigo-400 h-full rounded-full" style="width:${Math.min(pct,100)}%"></div></div></div>`;
+            htmlTxt += `
+                <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs animate-slide-up">
+                    <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
+                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm" loading="lazy"> ${t('groupTabReport')} (${grps.length})</span>
+                        <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
+
+            if(grps.length){
+                grps.forEach((c,i) => {
+                    htmlTxt += `
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
+                            <div class="flex justify-between items-center w-full overflow-hidden gap-2">
+                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs min-w-0 shrink">
+                                    <span class="shrink-0">${c.isBigPlay ? '🔥' : '🎯'}</span>
+                                    <span class="truncate">${c.title}</span>
+                                    <sup class="text-indigo-500 font-bold text-[10px] shrink-0">${i+1}</sup>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium shrink-0">[${getDateString(c.startDate, 0)}]</span>
+                            </div>
+                            <div class="space-y-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/80">`;
+                    
+                    const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
+                    acts.map(mId => { 
+                        const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
+                        return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
+                    }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
+                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                        const tot = c.totalDays || sysCfg.defaultTotalDays;
+                        const isD = m.cnt >= tgt;
+                        const cFinished = isChallengeFinished(c.startDate, tot);
+                        const isF = m.st==='given_up' || (!isD && cFinished);
+                        const pct = Math.round((m.cnt / tgt) * 100);
+                        
+                        let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
+                        let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : '');
+                        
+                        htmlTxt += `
+                            <div class="space-y-1 text-[11px]">
+                                <div class="flex justify-between items-center gap-2">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate">${getMemberAvatarHTML(m.mId, "w-4 h-4")} <span class="truncate">${m.n}</span></span>
+                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                </div>
+                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
+                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">${t('txtReason')}: ${m.rsn}</p>` : ''}
+                            </div>`;
+                    });
+                    htmlTxt += `</div></div>`;
                 });
-                htmlTxt += `</div>`;
-            });
+            } else {
+                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noChallenges')}</p>`;
+            }
             htmlTxt += `</div></div>`;
+
+            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
+            const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
+
+            htmlTxt += `
+                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2 animate-slide-up">
+                    <button onclick="toggleActivityAccordion('per')" class="w-full p-3 bg-emerald-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition">
+                        <span class="flex items-center gap-1.5">${userAv} ${currentMemberName.toUpperCase()} (${myH.length})</span>
+                        <span id="act-arrow-per" class="text-xs transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
+
+            if(myH.length){
+                myH.forEach((h,i) => {
+                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                    const tot = h.totalDays || sysCfg.defaultTotalDays;
+                    const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
+                    const isD = cnt >= tgt;
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const isF = h.status==='given_up' || (!isD && cFinished);
+                    const pct = Math.round((cnt / tgt) * 100);
+                    
+                    let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
+                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-Tôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
+600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : ''));
+                        
+                        htmlTxt += `
+                            <div class="space-y-1 text-[11px]">
+                                <div class="flex justify-between items-center gap-2">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate"><span class="truncate">${h.text}</span></span>
+                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                                </div>
+                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
+                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                            </div>`;
+                });
+                htmlTxt += `</div></div>`;
+            } else {
+                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noHabits')}</p></div></div>`;
+            }
+
             document.getElementById('report-html-preview').innerHTML = htmlTxt;
         }
 
-        function renderRewardsSummary() { document.getElementById('rewards-summary-list').innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">${t('noRewardRecord')}</p>`; }
-        function toggleRewardRulesAccordion() { document.getElementById('reward-rule-box').classList.toggle('hidden'); }
+        function renderRewardsSummary() {
+            const container = document.getElementById('rewards-summary-list');
+            // Logic hiển thị phần Thưởng/Phạt
+            container.innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">${t('noRewardRecord')}</p>`;
+        }
+
+        function toggleRewardRulesAccordion() {
+            const box = document.getElementById('reward-rule-box');
+            const arrow = document.getElementById('reward-rules-arrow');
+            if (box) {
+                box.classList.toggle('hidden');
+                arrow.style.transform = box.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
         function openLeaderboardModal(id) {
     const c = appData.sharedChallenges.find(x => x.id === id);
     if (!c) return;
@@ -2521,100 +3233,10 @@
     document.getElementById('leaderboard-modal').classList.remove('hidden');
 }
 
-        // --- TÍCH HỢP MỚI: POMODORO & TASK MATRIX ---
-        function openToolsModal() { document.getElementById('tools-modal').classList.remove('hidden'); }
-        function closeToolsModal() { document.getElementById('tools-modal').classList.add('hidden'); }
-
-        function switchToolTab(tab) {
-            ['pomodoro', 'matrix'].forEach(k => {
-                document.getElementById(`btn-tool-${k}`).className = "flex-1 py-1.5 rounded-lg text-slate-500 transition";
-                document.getElementById(`tool-view-${k}`).classList.add('hidden');
-            });
-            document.getElementById(`btn-tool-${tab}`).className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 font-bold transition";
-            document.getElementById(`tool-view-${tab}`).classList.remove('hidden');
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboard-modal').classList.add('hidden');
         }
 
-        // Pomodoro State
-        let pomoTime = 25 * 60, pomoInterval = null, pomoRunning = false, pomoIsWork = true;
-        function setPomoMode(mode) {
-            clearInterval(pomoInterval); pomoRunning = false;
-            document.getElementById('pomo-start-btn').innerText = 'Bắt đầu';
-            pomoIsWork = (mode === 'work');
-            pomoTime = pomoIsWork ? 25 * 60 : 5 * 60;
-            document.getElementById('pomo-mode-work').className = pomoIsWork ? "px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold" : "px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300";
-            document.getElementById('pomo-mode-break').className = !pomoIsWork ? "px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold" : "px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300";
-            updatePomoDisplay();
-        }
-        function updatePomoDisplay() {
-            const m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
-            const s = (pomoTime % 60).toString().padStart(2, '0');
-            document.getElementById('pomo-display').innerText = `${m}:${s}`;
-        }
-        function startPomo() {
-            if (pomoRunning) {
-                clearInterval(pomoInterval); pomoRunning = false;
-                document.getElementById('pomo-start-btn').innerText = 'Tiếp tục';
-            } else {
-                pomoRunning = true;
-                document.getElementById('pomo-start-btn').innerText = 'Tạm dừng';
-                pomoInterval = setInterval(() => {
-                    if (pomoTime > 0) {
-                        pomoTime--; updatePomoDisplay();
-                    } else {
-                        clearInterval(pomoInterval); pomoRunning = false;
-                        alert(pomoIsWork ? "Hết giờ làm việc! Hãy nghỉ ngơi nào." : "Hết giờ nghỉ! Quay lại làm việc thôi.");
-                        setPomoMode(pomoIsWork ? 'break' : 'work');
-                    }
-                }, 1000);
-            }
-        }
-        function resetPomo() {
-            clearInterval(pomoInterval); pomoRunning = false;
-            document.getElementById('pomo-start-btn').innerText = 'Bắt đầu';
-            pomoTime = pomoIsWork ? 25 * 60 : 5 * 60;
-            updatePomoDisplay();
-        }
-
-        // Task Matrix State & Logic
-        function addMatrixTask() {
-            const val = document.getElementById('matrix-task-input').value.trim();
-            const quad = document.getElementById('matrix-quadrant-select').value;
-            if(!val) return;
-            appData.matrixTasks = appData.matrixTasks || [];
-            appData.matrixTasks.push({ id: Date.now(), text: val, quadrant: quad, completed: false });
-            document.getElementById('matrix-task-input').value = '';
-            dbRef.set(appData);
-            renderMatrixTasks();
-        }
-        function toggleMatrixTask(id) {
-            appData.matrixTasks = (appData.matrixTasks || []).map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-            dbRef.set(appData);
-            renderMatrixTasks();
-        }
-        function deleteMatrixTask(id) {
-            appData.matrixTasks = (appData.matrixTasks || []).filter(t => t.id !== id);
-            dbRef.set(appData);
-            renderMatrixTasks();
-        }
-        function renderMatrixTasks() {
-            const container = document.getElementById('matrix-tasks-container');
-            const tasks = appData.matrixTasks || [];
-            if(!tasks.length) {
-                container.innerHTML = `<p class="text-center text-slate-400 italic py-4 col-span-2">Chưa có công việc nào trong ma trận.</p>`;
-                return;
-            }
-            container.innerHTML = tasks.map(t => `
-                <div class="p-2.5 bg-slate-50 dark:bg-slate-700/60 rounded-xl border flex justify-between items-center text-xs">
-                    <div class="flex items-center gap-2 truncate">
-                        <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleMatrixTask(${t.id})" class="rounded text-indigo-600">
-                        <span class="${t.completed ? 'line-through text-slate-400' : 'font-medium'} truncate">${t.text}</span>
-                    </div>
-                    <button onclick="deleteMatrixTask(${t.id})" class="text-rose-500 font-bold shrink-0 ml-1">✕</button>
-                </div>
-            `).join('');
-        }
-        // Gọi render khi khởi động dữ liệu
-        dbRef.on('value', () => { renderMatrixTasks(); });
     </script>
 </body>
 </html>
