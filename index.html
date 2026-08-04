@@ -14,7 +14,7 @@
     </script>
     <!-- HTML2Canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Chỉ cần App và Database, Bỏ Storage) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <!-- HEIC Converter -->
@@ -180,6 +180,20 @@
                         <span id="adm-arrow-config" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="adm-sec-config" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
+                        <!-- THAY ĐỔI ẢNH BÌA VÀO ĐÂY -->
+                        <div class="mb-3">
+                            <label id="adm-cfg-cover-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block mb-1">🖼️ Ảnh bìa ứng dụng:</label>
+                            <div class="flex items-center gap-3">
+                                <img id="cfg-cover-preview" src="" class="w-20 h-12 object-cover rounded-lg border border-slate-200 hidden shadow-sm">
+                                <label class="cursor-pointer bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-[10px] font-bold px-3 py-1.5 rounded-lg transition text-slate-700 dark:text-slate-200 active:scale-95">
+                                    Tải ảnh
+                                    <input type="file" id="cfg-cover-input" accept="image/*" class="hidden" onchange="previewAdminCover(event)">
+                                </label>
+                                <button id="cfg-cover-remove" type="button" class="hidden text-rose-500 text-[10px] font-bold hover:underline transition" onclick="removeAdminCover()">Xóa</button>
+                            </div>
+                        </div>
+                        <hr class="border-slate-100 dark:border-slate-700 my-2">
+
                         <div class="space-y-2">
                             <div>
                                 <label id="adm-cfg-reward-label" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 block mb-1">🎁 Thưởng mặc định:</label>
@@ -543,7 +557,7 @@
     <div class="max-w-2xl mx-auto space-y-6 pb-20">
         
         <!-- HEADER -->
-        <header class="relative w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between animate-fade-in" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
+        <header id="main-header-cover" class="relative w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between animate-fade-in" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/40"></div>
             
             <div class="relative z-10 flex items-start justify-between w-full">
@@ -784,7 +798,7 @@
                 restoredReadOnly: "🔒 Thử thách đã lưu trữ (Chỉ xem)",
                 requireReason: "Vui lòng nhập lý do:",
                 reasonRequiredAlert: "Lý do là bắt buộc!",
-                confirmDelete: "Bạn có chắc muốn xóa vĩnh viễn?",
+                confirmDelete: "Bạn có chắc muốn xóa vĩnh tuần?",
                 confirmDeleteCm: "Xóa bình luận này?",
                 requireContent: "Nhập nội dung hoặc chọn ảnh!",
                 notParticipant: "Chỉ người tham gia mới có quyền!",
@@ -826,6 +840,7 @@
 
                 // Admin Center
                 admAccConfigTitle: "⚙️ Cấu hình Tham số Mặc định",
+                admCfgCoverLabel: "🖼️ Ảnh bìa ứng dụng:",
                 admCfgRewardLabel: "🎁 Thưởng mặc định:",
                 admCfgPenaltyLabel: "💸 Phạt mặc định (k):",
                 admCfgTargetLabel: "🎯 Mục tiêu (ngày):",
@@ -1065,6 +1080,7 @@
                 registerSuccess: "Registration submitted! Waiting for Admin approval.",
 
                 admAccConfigTitle: "⚙️ System Configuration",
+                admCfgCoverLabel: "🖼️ App Cover Image:",
                 admCfgRewardLabel: "🎁 Default Reward:",
                 admCfgPenaltyLabel: "💸 Default Penalty (k):",
                 admCfgTargetLabel: "🎯 Target (days):",
@@ -1177,6 +1193,7 @@
         ];
 
         const defaultSystemConfig = {
+            coverImage: "https://i.postimg.cc/XYf3bPDg/cover.png",
             defaultReward: "1 Sách",
             defaultPenalty: 100,
             defaultTargetDays: 14,
@@ -1460,6 +1477,7 @@
 
             document.getElementById('admin-modal-title').innerHTML = t('adminToolTitle');
             if (document.getElementById('adm-acc-config-title')) document.getElementById('adm-acc-config-title').innerHTML = t('admAccConfigTitle');
+            if (document.getElementById('adm-cfg-cover-label')) document.getElementById('adm-cfg-cover-label').innerText = t('admCfgCoverLabel');
             if (document.getElementById('adm-cfg-reward-label')) document.getElementById('adm-cfg-reward-label').innerText = t('admCfgRewardLabel');
             if (document.getElementById('adm-cfg-penalty-label')) document.getElementById('adm-cfg-penalty-label').innerText = t('admCfgPenaltyLabel');
             if (document.getElementById('adm-cfg-target-label')) document.getElementById('adm-cfg-target-label').innerText = t('admCfgTargetLabel');
@@ -1588,6 +1606,7 @@
         let isEditMode = false;
         let tempAvatarBase64 = '';
         let tempDayImageBase64 = '';
+        let tempAdminCoverBase64 = '';
         let selectedMenuChallenge = null;
         let activeReplyTo = {};
 
@@ -1622,6 +1641,11 @@
             updateUserLabel();
             updateNotificationBadge();
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
+            
+            // Cập nhật ảnh bìa từ cấu hình
+            const coverUrl = appData.systemConfig?.coverImage || 'https://i.postimg.cc/XYf3bPDg/cover.png';
+            document.getElementById('main-header-cover').style.backgroundImage = `url('${coverUrl}')`;
+
             updateStaticTexts(); 
             displayRandomSlogan();
             renderList();
@@ -1735,6 +1759,26 @@
             document.getElementById('admin-center-modal').classList.add('hidden');
         }
 
+        function previewAdminCover(e) {
+            const f = e.target.files[0];
+            if (f) {
+                // Nén ảnh cover (cho phép kích thước lớn hơn một chút so với avatar)
+                compressImage(f, b => {
+                    tempAdminCoverBase64 = b;
+                    document.getElementById('cfg-cover-preview').src = b;
+                    document.getElementById('cfg-cover-preview').classList.remove('hidden');
+                    document.getElementById('cfg-cover-remove').classList.remove('hidden');
+                }, 1000); // Tối đa 1000px chiều ngang
+            }
+        }
+
+        function removeAdminCover() {
+            tempAdminCoverBase64 = '';
+            document.getElementById('cfg-cover-input').value = '';
+            document.getElementById('cfg-cover-preview').classList.add('hidden');
+            document.getElementById('cfg-cover-remove').classList.add('hidden');
+        }
+
         function saveSystemConfig() {
             const reward = document.getElementById('cfg-reward-input').value.trim();
             const penalty = parseInt(document.getElementById('cfg-penalty-input').value);
@@ -1750,6 +1794,7 @@
             }
 
             appData.systemConfig = {
+                coverImage: tempAdminCoverBase64 || "https://i.postimg.cc/XYf3bPDg/cover.png",
                 defaultReward: reward,
                 defaultPenalty: penalty,
                 defaultTargetDays: target,
@@ -1874,6 +1919,17 @@
 
         function renderAdminCenterContent() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
+
+            tempAdminCoverBase64 = sysCfg.coverImage || '';
+            if (tempAdminCoverBase64 && tempAdminCoverBase64 !== "https://i.postimg.cc/XYf3bPDg/cover.png") {
+                document.getElementById('cfg-cover-preview').src = tempAdminCoverBase64;
+                document.getElementById('cfg-cover-preview').classList.remove('hidden');
+                document.getElementById('cfg-cover-remove').classList.remove('hidden');
+            } else {
+                document.getElementById('cfg-cover-preview').classList.add('hidden');
+                document.getElementById('cfg-cover-remove').classList.add('hidden');
+            }
+
             document.getElementById('cfg-reward-input').value = sysCfg.defaultReward;
             document.getElementById('cfg-penalty-input').value = sysCfg.defaultPenalty;
             document.getElementById('cfg-target-input').value = sysCfg.defaultTargetDays;
@@ -2271,14 +2327,29 @@
             document.getElementById('create-desc-input').value = desc;
         }
 
-        async function compressImage(file, cb) {
+        async function compressImage(file, cb, maxWidth = 800) {
             let f = file;
             if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
                 try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
                 catch (e) { return alert(t('heicError')); }
             }
             const r = new FileReader();
-            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
+            r.onload = e => { 
+                const i = new Image(); 
+                i.onload = () => { 
+                    const cv = document.createElement('canvas'); 
+                    let w = i.width, h = i.height; 
+                    if(w > h) {
+                        if(w > maxWidth) { h *= maxWidth/w; w = maxWidth; }
+                    } else {
+                        if(h > maxWidth) { w *= maxWidth/h; h = maxWidth; }
+                    } 
+                    cv.width = w; cv.height = h; 
+                    cv.getContext('2d').drawImage(i, 0, 0, w, h); 
+                    cb(cv.toDataURL('image/jpeg', 0.7)); 
+                }; 
+                i.src = e.target.result; 
+            };
             r.readAsDataURL(f);
         }
         
@@ -3104,7 +3175,7 @@
                 btnRew.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95";
                 btnAct.className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition active:scale-95";
                 viewRew.classList.remove('hidden');
-                viewAct.classList.add('hidden');
+viewAct.classList.add('hidden');
             }
         }
 
@@ -3116,7 +3187,7 @@
         }
 
         function openReportModal() {
-            renderReportContent();
+            renderReport();
             document.getElementById('report-modal').classList.remove('hidden');
         }
 
@@ -3124,107 +3195,178 @@
             document.getElementById('report-modal').classList.add('hidden');
         }
 
-        function renderReportContent() {
+        function renderReport() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             
-            const activePreview = document.getElementById('report-html-preview');
-            let grpHTML = `<div id="act-box-grp" class="space-y-2"><h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-xs uppercase tracking-wider">🎯 ${t('tabDashboard')}</h4><div id="act-content-grp" class="space-y-2">`;
+            // 1. Render Active Tab (HTML Preview)
+            const htmlPreview = document.getElementById('report-html-preview');
+            let reportHTML = `<h4 class="font-extrabold text-indigo-700 dark:text-indigo-400 text-sm border-b pb-2 mb-2 uppercase">${t('completionProgress')}</h4>`;
             
-            const shared = appData.sharedChallenges || [];
-            if (!shared.length) {
-                grpHTML += `<p class="text-xs text-slate-400 italic">Không có thử thách nhóm.</p>`;
+            // Nhóm
+            reportHTML += `<div id="act-box-grp" class="mb-4">`;
+            reportHTML += `<h5 class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-2 flex items-center justify-between"><span>🎯 ${t('groupTabReport')}</span> <button class="text-[10px] text-indigo-600 font-normal hover:underline" onclick="document.getElementById('act-content-grp').classList.toggle('hidden')">${t('actionMenu')}</button></h5>`;
+            reportHTML += `<div id="act-content-grp" class="space-y-2">`;
+            
+            const sharedList = (appData.sharedChallenges || []).filter(c => !c.archived).sort(sortByStartDate);
+            if (!sharedList.length) {
+                reportHTML += `<p class="text-[11px] text-slate-400 italic">${t('noChallenges')}</p>`;
             } else {
-                shared.forEach(c => {
-                    grpHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><strong class="text-xs text-slate-800 dark:text-slate-100 block">${c.title}</strong><div class="space-y-1 text-[11px]">`;
-                    const participants = Object.keys(c.participants || {}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up');
+                sharedList.forEach(c => {
+                    const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                    reportHTML += `<div class="bg-white dark:bg-slate-800 p-2.5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">`;
+                    reportHTML += `<div class="font-bold text-slate-700 dark:text-slate-200 text-[11px] mb-1.5 flex items-center gap-1">${c.isBigPlay?'🔥':'🎯'} ${c.title}</div>`;
+                    
+                    const participants = Object.keys(c.participants || {}).filter(mId => c.participants[mId] === true || c.participants[mId] === 'given_up');
                     participants.forEach(mId => {
                         const u = appData.members.find(x => x.id === mId);
                         const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
-                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
                         const cnt = prog.filter(x => x && x.completed).length;
                         const pct = Math.round((cnt / tgt) * 100);
                         const isGu = c.participants[mId] === 'given_up';
-                        grpHTML += `<div class="flex justify-between items-center"><span class="flex items-center gap-1.5">${getMemberAvatarHTML(mId, "w-4 h-4")} ${u ? u.name : mId}</span><span class="font-bold ${isGu ? 'text-rose-500' : 'text-indigo-600'}">${cnt}/${tgt} (${pct}%) ${isGu ? '[Bỏ cuộc]' : ''}</span></div>`;
+                        
+                        let statusText = `${cnt}/${tgt}`;
+                        if (isGu) statusText += ` (🏳️ ${t('givenUpStatus')})`;
+                        
+                        reportHTML += `<div class="flex justify-between items-center text-[10px] py-0.5 border-b border-slate-50 last:border-0">`;
+                        reportHTML += `<span class="flex items-center gap-1.5">${getMemberAvatarHTML(mId, "w-4 h-4")} ${u ? u.name : mId}</span>`;
+                        reportHTML += `<span class="font-semibold ${cnt >= tgt ? 'text-emerald-600' : (isGu ? 'text-rose-500' : 'text-indigo-600')}">${statusText}</span>`;
+                        reportHTML += `</div>`;
                     });
-                    grpHTML += `</div></div>`;
+                    reportHTML += `</div>`;
                 });
             }
-            grpHTML += `</div></div>`;
+            reportHTML += `</div></div>`;
 
-            let perHTML = `<div id="act-box-per" class="space-y-2 pt-2"><h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider">📌 ${t('tabUpdate')}</h4><div id="act-content-per" class="space-y-2">`;
-            let hasPersonal = false;
-            appData.members.forEach(m => {
-                const habits = appData.personalHabits[m.id] || [];
-                if (habits.length) {
-                    hasPersonal = true;
-                    perHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><div class="flex items-center gap-1.5 font-bold text-xs text-slate-700 dark:text-slate-200">${getMemberAvatarHTML(m.id, "w-5 h-5")} ${m.name}</div><div class="space-y-1 text-[11px]">`;
-                    habits.forEach(h => {
+            // Cá nhân
+            reportHTML += `<div id="act-box-per">`;
+            reportHTML += `<h5 class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-2 flex items-center justify-between"><span>📌 ${t('personal')}</span> <button class="text-[10px] text-indigo-600 font-normal hover:underline" onclick="document.getElementById('act-content-per').classList.toggle('hidden')">${t('actionMenu')}</button></h5>`;
+            reportHTML += `<div id="act-content-per" class="space-y-2">`;
+            
+            const allMembers = appData.members;
+            let hasAnyPersonal = false;
+            
+            allMembers.forEach(m => {
+                const pList = (appData.personalHabits[m.id] || []).filter(h => !h.archived).sort(sortByStartDate);
+                if (pList.length > 0) {
+                    hasAnyPersonal = true;
+                    reportHTML += `<div class="bg-white dark:bg-slate-800 p-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">`;
+                    reportHTML += `<div class="font-bold text-slate-600 dark:text-slate-300 text-[10px] mb-1.5 flex items-center gap-1.5">${getMemberAvatarHTML(m.id, "w-4 h-4")} ${m.name}</div>`;
+                    
+                    pList.forEach(h => {
                         const tgt = h.targetDays || sysCfg.defaultTargetDays;
                         const cnt = (h.days || []).filter(x => x && x.completed).length;
-                        const pct = Math.round((cnt / tgt) * 100);
-                        perHTML += `<div class="flex justify-between items-center"><span>• ${h.text}</span><span class="font-bold text-emerald-600">${cnt}/${tgt} (${pct}%)</span></div>`;
+                        const isGu = h.status === 'given_up';
+                        let statusText = `${cnt}/${tgt}`;
+                        if (isGu) statusText += ` (🏳️ ${t('givenUpStatus')})`;
+                        
+                        reportHTML += `<div class="flex justify-between items-center text-[10px] pl-2 py-0.5 border-l-2 border-emerald-200 dark:border-emerald-800/50 mb-1">`;
+                        reportHTML += `<span class="truncate pr-2">${h.text}</span>`;
+                        reportHTML += `<span class="font-semibold shrink-0 ${cnt >= tgt ? 'text-emerald-600' : (isGu ? 'text-rose-500' : 'text-slate-500')}">${statusText}</span>`;
+                        reportHTML += `</div>`;
                     });
-                    perHTML += `</div></div>`;
+                    reportHTML += `</div>`;
                 }
             });
-            if (!hasPersonal) perHTML += `<p class="text-xs text-slate-400 italic">Không có thử thách cá nhân.</p>`;
-            perHTML += `</div></div>`;
+            
+            if (!hasAnyPersonal) {
+                reportHTML += `<p class="text-[11px] text-slate-400 italic">${t('noHabits')}</p>`;
+            }
+            reportHTML += `</div></div>`;
+            
+            htmlPreview.innerHTML = reportHTML;
 
-            activePreview.innerHTML = grpHTML + perHTML;
-
-            const rewardsContainer = document.getElementById('rewards-summary-list');
-            rewardsContainer.innerHTML = appData.members.map(m => {
-                let userRewardsHTML = '';
-                
-                shared.forEach(c => {
-                    const st = c.participants ? c.participants[m.id] : null;
-                    if (st === true || st === 'given_up') {
-                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
-                        const prog = c.progress && c.progress[m.id] ? c.progress[m.id] : [];
-                        const cnt = prog.filter(x => x && x.completed).length;
-                        const isCompleted = cnt >= tgt;
-                        const cFinished = isChallengeFinished(c.startDate, c.totalDays || sysCfg.defaultTotalDays);
-                        const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
-
-                        if (isCompleted) {
-                            const rew = c.isBigPlay ? `${c.customReward || 0}k` : sysCfg.defaultReward;
-                            userRewardsHTML += `<div class="text-xs text-emerald-600 font-semibold flex items-center gap-1">🎁 Thử thách "${c.title}": +${rew}</div>`;
-                        } else if (isFailed) {
-                            const pen = c.isBigPlay ? `${c.customPenalty || 0}k` : `${sysCfg.defaultPenalty}k`;
-                            userRewardsHTML += `<div class="text-xs text-rose-600 font-semibold flex items-center gap-1">💸 Thử thách "${c.title}": -${pen}</div>`;
-                        }
-                    }
-                });
-
-                const habits = appData.personalHabits[m.id] || [];
-                habits.forEach(h => {
-                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
-                    const cnt = (h.days || []).filter(x => x && x.completed).length;
-                    const isCompleted = cnt >= tgt;
-                    const cFinished = isChallengeFinished(h.startDate, h.totalDays || sysCfg.defaultTotalDays);
-                    const isFailed = (h.status === 'given_up') || (!isCompleted && cFinished);
-
-                    if (isCompleted) {
-                        userRewardsHTML += `<div class="text-xs text-emerald-600 font-semibold flex items-center gap-1">🎁 Cá nhân "${h.text}": +${h.selfReward || '---'}</div>`;
-                    } else if (isFailed) {
-                        userRewardsHTML += `<div class="text-xs text-rose-600 font-semibold flex items-center gap-1">💸 Cá nhân "${h.text}": -${h.selfPenalty || '---'}</div>`;
-                    }
-                });
-
-                if (!userRewardsHTML) userRewardsHTML = `<div class="text-xs text-slate-400 italic">${t('noRewardRecord')}</div>`;
-
-                return `
-                    <div id="rewards-user-card-${m.id}" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 animate-slide-up">
-                        <div class="flex items-center gap-2 font-bold text-xs text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-1.5">
-                            ${getMemberAvatarHTML(m.id, "w-6 h-6")} ${m.name}
-                        </div>
-                        <div class="space-y-1 pl-2">
-                            ${userRewardsHTML}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            // 2. Render Rewards Tab
+            renderRewardsSummary();
         }
+
+        function renderRewardsSummary() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            const container = document.getElementById('rewards-summary-list');
+            
+            const activeShared = (appData.sharedChallenges || []).filter(c => !c.archived);
+            const summary = {};
+            
+            appData.members.forEach(m => {
+                summary[m.id] = { name: m.name, rewards: [], penalties: [], selfRewards: [], selfPenalties: [] };
+            });
+
+            activeShared.forEach(c => {
+                const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                const tot = c.totalDays || sysCfg.defaultTotalDays;
+                const cFinished = isChallengeFinished(c.startDate, tot);
+                const rewVal = c.isBigPlay ? (c.customReward||0) + 'k' : sysCfg.defaultReward;
+                const penVal = c.isBigPlay ? (c.customPenalty||0) + 'k' : sysCfg.defaultPenalty + 'k';
+
+                Object.keys(c.participants || {}).forEach(mId => {
+                    if (c.participants[mId] !== true && c.participants[mId] !== 'given_up') return;
+                    if (!summary[mId]) return;
+                    
+                    const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
+                    const cnt = prog.filter(x => x && x.completed).length;
+                    const isGu = c.participants[mId] === 'given_up';
+                    
+                    if (cnt >= tgt) {
+                        summary[mId].rewards.push(`[${c.title}] +${rewVal}`);
+                    } else if (isGu || cFinished) {
+                        summary[mId].penalties.push(`[${c.title}] -${penVal}`);
+                    }
+                });
+            });
+
+            appData.members.forEach(m => {
+                const activePersonal = (appData.personalHabits[m.id] || []).filter(h => !h.archived);
+                activePersonal.forEach(h => {
+                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                    const tot = h.totalDays || sysCfg.defaultTotalDays;
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const cnt = (h.days || []).filter(x => x && x.completed).length;
+                    const isGu = h.status === 'given_up';
+                    
+                    if (cnt >= tgt) {
+                        summary[m.id].selfRewards.push(`[${h.text}] 🎁 ${h.selfReward || '---'}`);
+                    } else if (isGu || cFinished) {
+                        summary[m.id].selfPenalties.push(`[${h.text}] 💸 ${h.selfPenalty || '---'}`);
+                    }
+                });
+            });
+
+            let html = '';
+            appData.members.forEach(m => {
+                const s = summary[m.id];
+                const hasGrp = s.rewards.length > 0 || s.penalties.length > 0;
+                const hasPer = s.selfRewards.length > 0 || s.selfPenalties.length > 0;
+                
+                if (!hasGrp && !hasPer) return;
+
+                html += `<div id="rewards-user-card-${m.id}" class="bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-slide-up space-y-2">`;
+                html += `<div class="font-bold text-xs flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-2">${getMemberAvatarHTML(m.id, "w-5 h-5")} <span class="text-slate-800 dark:text-slate-100">${m.name}</span></div>`;
+                
+                if (hasGrp) {
+                    html += `<div class="space-y-1">`;
+                    html += `<div class="text-[10px] font-bold text-slate-500 uppercase">🎯 ${t('groupLabel')}</div>`;
+                    s.rewards.forEach(r => html += `<div class="text-[11px] text-emerald-600 font-medium flex items-center gap-1.5"><span class="w-3 shrink-0">🎁</span> <span class="truncate">${r}</span></div>`);
+                    s.penalties.forEach(p => html += `<div class="text-[11px] text-rose-500 font-medium flex items-center gap-1.5"><span class="w-3 shrink-0">💸</span> <span class="truncate">${p}</span></div>`);
+                    html += `</div>`;
+                }
+
+                if (hasPer) {
+                    html += `<div class="space-y-1 ${hasGrp ? 'pt-2 mt-2 border-t border-slate-50 dark:border-slate-700/50' : ''}">`;
+                    html += `<div class="text-[10px] font-bold text-slate-500 uppercase">📌 ${t('personalLabel')}</div>`;
+                    s.selfRewards.forEach(r => html += `<div class="text-[11px] text-emerald-600 font-medium truncate">${r}</div>`);
+                    s.selfPenalties.forEach(p => html += `<div class="text-[11px] text-rose-500 font-medium truncate">${p}</div>`);
+                    html += `</div>`;
+                }
+                
+                html += `</div>`;
+            });
+
+            if (!html) {
+                html = `<p class="text-[11px] text-slate-400 italic text-center py-4 bg-white dark:bg-slate-800 rounded-2xl">${t('noRewardRecord')}</p>`;
+            }
+
+            container.innerHTML = html;
+        }
+
     </script>
 </body>
 </html>
