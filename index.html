@@ -1,5 +1,6 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="vi" class="light">
+<html lang="vi" class="light" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +31,7 @@
             overflow: hidden;
         }
         
+        /* Typography System */
         body.font-small { font-size: 13px; }
         body.font-small .text-xs { font-size: 11px !important; }
         body.font-small .text-sm { font-size: 13px !important; }
@@ -48,6 +50,24 @@
         body.font-large .text-sm { font-size: 18px !important; }
         body.font-large .text-base { font-size: 21px !important; }
         body.font-large .text-2xl { font-size: 30px !important; }
+
+        /* Animations for UI/UX Optimization */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
+        .animate-scale-in { animation: scaleIn 0.2s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
@@ -56,69 +76,69 @@
     <audio id="bg-music"></audio>
 
     <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700 animate-scale-in">
             <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEXT PEAK TEAM</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
-                <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover">
+                <img src="https://i.postimg.cc/XYf3bPDg/cover.png" alt="BVGP Team Cover" class="w-full h-full object-cover" loading="lazy">
             </div>
             
             <div id="login-step-1" class="space-y-3">
                 <p id="l-select-name" class="text-xs text-slate-500 dark:text-slate-400">Chọn đúng tên của bạn để tiếp tục.</p>
-                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100"></select>
-                <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
-                <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center">✨ Đăng ký tài khoản mới</button>
+                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100 transition"></select>
+                <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200">Tiếp tục</button>
+                <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center transition">✨ Đăng ký tài khoản mới</button>
             </div>
 
-            <div id="register-step-view" class="space-y-3 hidden">
+            <div id="register-step-view" class="space-y-3 hidden animate-scale-in">
                 <p id="l-reg-title" class="text-xs font-bold text-emerald-600">✨ Đăng ký thành viên mới</p>
-                <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
-                <input type="password" id="reg-pin-input" placeholder="Tạo mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100">
+                <input type="text" id="reg-name-input" placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100 transition">
+                <input type="password" id="reg-pin-input" placeholder="Tạo mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700 dark:text-slate-100 transition">
                 <div class="flex gap-2">
-                    <button onclick="closeRegisterView()" id="l-reg-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-semibold text-xs">Quay lại</button>
-                    <button onclick="submitNewRegistration()" id="l-reg-submit-btn" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Gửi yêu cầu</button>
+                    <button onclick="closeRegisterView()" id="l-reg-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 py-2.5 rounded-xl font-semibold text-xs transition-all duration-200">Quay lại</button>
+                    <button onclick="submitNewRegistration()" id="l-reg-submit-btn" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white active:scale-95 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200">Gửi yêu cầu</button>
                 </div>
             </div>
 
-            <div id="login-step-2" class="space-y-3 hidden">
+            <div id="login-step-2" class="space-y-3 hidden animate-scale-in">
                 <p id="login-pin-title" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">🔒 Nhập mã PIN bảo mật</p>
-                <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100">
+                <input type="password" id="login-pin-input" placeholder="Nhập mã PIN 4 số..." maxlength="4" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-slate-100 transition">
                 <div class="flex gap-2">
-                    <button onclick="handleLoginBack()" id="l-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-semibold text-xs transition">Quay lại</button>
-                    <button id="login-pin-btn" onclick="handlePinSubmit()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Xác nhận</button>
+                    <button onclick="handleLoginBack()" id="l-back-btn" class="w-1/3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 active:scale-95 py-2.5 rounded-xl font-semibold text-xs transition-all duration-200">Quay lại</button>
+                    <button id="login-pin-btn" onclick="handlePinSubmit()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200">Xác nhận</button>
                 </div>
                 <div class="text-right">
-                    <button onclick="handleForgotPin()" id="l-forgot-pin" class="text-[11px] text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800">Quên mã PIN?</button>
+                    <button onclick="handleForgotPin()" id="l-forgot-pin" class="text-[11px] text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800 transition">Quên mã PIN?</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- MODAL MENU USER -->
-    <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeUserMenu()">
-        <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
-            <button onclick="openProfileModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <div id="user-menu-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden animate-fade-in" onclick="closeUserMenu()">
+        <div class="absolute top-24 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-52 space-y-1 border border-slate-100 dark:border-slate-700 text-xs font-semibold animate-scale-in" onclick="event.stopPropagation()">
+            <button onclick="openProfileModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 👤 <span id="m-profile">Hồ sơ cá nhân</span>
             </button>
-            <button onclick="openHistoryModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">⏱️ <span id="m-history">Lịch sử hoạt động</span></button>
-            <button id="btn-admin-tool" onclick="openAdminCenterModal()" class="hidden w-full text-left py-2 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 rounded-xl transition flex items-center gap-2">🛠️ <span id="m-admin-center">Trung tâm Quản trị</span></button>
+            <button onclick="openHistoryModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 flex items-center gap-2 text-slate-700 dark:text-slate-200">⏱️ <span id="m-history">Lịch sử hoạt động</span></button>
+            <button id="btn-admin-tool" onclick="openAdminCenterModal()" class="hidden w-full text-left py-2 px-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 rounded-xl transition-all duration-200 flex items-center gap-2">🛠️ <span id="m-admin-center">Trung tâm Quản trị</span></button>
             <hr class="border-slate-100 dark:border-slate-700 my-1">
-            <button onclick="switchUser()" class="w-full text-left py-2 px-3 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded-xl transition flex items-center gap-2">🚪 <span id="m-logout">Thoát</span></button>
+            <button onclick="switchUser()" class="w-full text-left py-2 px-3 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded-xl transition-all duration-200 flex items-center gap-2">🚪 <span id="m-logout">Thoát</span></button>
         </div>
     </div>
 
     <!-- MODAL HỒ SƠ CÁ NHÂN -->
-    <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
+    <div id="profile-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 id="profile-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">👤 Hồ sơ cá nhân</h3>
-                <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold transition">✕</button>
             </div>
             <div class="flex flex-col items-center justify-center space-y-2 pt-1">
                 <label id="profile-avatar-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-start">🖼️ Ảnh đại diện:</label>
                 <div class="relative cursor-pointer group">
-                    <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition group-hover:brightness-95">👤</div>
-                    <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform group-hover:scale-110 flex items-center justify-center text-xs">📷</label>
+                    <div id="profile-preview-avatar" class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden border-2 border-indigo-100 dark:border-slate-600 flex items-center justify-center font-bold text-2xl text-slate-400 shadow-sm transition-all duration-300 group-hover:brightness-95">👤</div>
+                    <label for="profile-avatar-input" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white w-7 h-7 rounded-full shadow-md border-2 border-white dark:border-slate-800 cursor-pointer transition-transform duration-300 group-hover:scale-110 flex items-center justify-center text-xs">📷</label>
                     <input type="file" id="profile-avatar-input" accept="image/*" onchange="previewProfileAvatar(event)" class="hidden">
                 </div>
                 <div id="profile-avatar-filename" class="text-[10px] text-slate-400 italic text-center truncate max-w-[200px]">Chưa chọn tệp</div>
@@ -126,7 +146,7 @@
             <hr class="border-slate-100 dark:border-slate-700 my-2">
             <div class="space-y-1.5">
                 <label id="profile-name-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">✏️ Tên hiển thị:</label>
-                <input type="text" id="profile-name-input" placeholder="Nhập tên mới..." class="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="text" id="profile-name-input" placeholder="Nhập tên mới..." class="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
             </div>
             <hr class="border-slate-100 dark:border-slate-700 my-2">
             <div class="space-y-2">
@@ -134,26 +154,25 @@
                     <label id="profile-pin-label" class="text-[11px] font-bold text-slate-500 dark:text-slate-400">🔒 Đổi mã PIN:</label>
                     <span id="profile-pin-note" class="text-[9px] text-slate-400 italic">(Bỏ trống nếu không đổi)</span>
                 </div>
-                <input type="password" id="profile-old-pin" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <input type="password" id="profile-new-pin" placeholder="Mã PIN mới (4 số)" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="password" id="profile-old-pin" placeholder="Mã PIN hiện tại" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                <input type="password" id="profile-new-pin" placeholder="Mã PIN mới (4 số)" maxlength="4" class="w-full px-3.5 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
             </div>
             <div class="flex gap-2 pt-2">
-                <button id="s-close-profile-btn" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-semibold">Đóng</button>
-                <button onclick="saveProfileChanges()" id="profile-save-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold transition">Lưu thay đổi</button>
+                <button id="s-close-profile-btn" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200">Đóng</button>
+                <button onclick="saveProfileChanges()" id="profile-save-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 py-2.5 rounded-xl text-xs font-bold transition-all duration-200">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL TRUNG TÂM QUẢN TRỊ (ADMIN CENTER UI) -->
-    <div id="admin-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl shadow-2xl max-w-lg w-full space-y-4 border border-slate-200/80 dark:border-slate-700 max-h-[88vh] flex flex-col">
+    <div id="admin-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl shadow-2xl max-w-lg w-full space-y-4 border border-slate-200/80 dark:border-slate-700 max-h-[88vh] flex flex-col animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 id="admin-modal-title" class="font-extrabold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🛠️ Trung tâm Quản trị</h3>
-                <button onclick="closeAdminCenterModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+                <button onclick="closeAdminCenterModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg transition">✕</button>
             </div>
             
             <div class="space-y-3 text-xs overflow-y-auto pr-1 flex-1 no-scrollbar">
-                
                 <!-- ACCORDION 1: ⚙️ Cấu hình Tham số -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('config')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
@@ -164,28 +183,28 @@
                         <div class="space-y-2">
                             <div>
                                 <label id="adm-cfg-reward-label" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 block mb-1">🎁 Thưởng mặc định:</label>
-                                <input type="text" id="cfg-reward-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500">
+                                <input type="text" id="cfg-reward-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 transition">
                             </div>
                             <div>
                                 <label id="adm-cfg-penalty-label" class="text-[11px] font-bold text-rose-600 dark:text-rose-400 block mb-1">💸 Phạt mặc định (k):</label>
-                                <input type="number" id="cfg-penalty-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500">
+                                <input type="number" id="cfg-penalty-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 transition">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label id="adm-cfg-target-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">🎯 Mục tiêu (ngày):</label>
-                                <input type="number" id="cfg-target-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                <input type="number" id="cfg-target-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 transition">
                             </div>
                             <div>
                                 <label id="adm-cfg-total-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">📅 Tổng số ngày:</label>
-                                <input type="number" id="cfg-total-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                                <input type="number" id="cfg-total-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 transition">
                             </div>
                         </div>
                         <div>
                             <label id="adm-cfg-masterpin-label" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">🔑 Mã Master PIN Quản trị:</label>
-                            <input type="password" id="cfg-masterpin-input" maxlength="4" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                            <input type="password" id="cfg-masterpin-input" maxlength="4" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 transition">
                         </div>
-                        <button onclick="saveSystemConfig()" id="adm-cfg-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold transition text-xs shadow-sm">💾 Lưu Cấu Hình Mặc Định</button>
+                        <button onclick="saveSystemConfig()" id="adm-cfg-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 py-2.5 rounded-xl font-bold transition-all duration-200 text-xs shadow-sm">💾 Lưu Cấu Hình Mặc Định</button>
                     </div>
                 </div>
 
@@ -198,8 +217,8 @@
                     <div id="adm-sec-slogan" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div class="space-y-2">
                             <p id="adm-slogan-hint" class="text-[10px] text-slate-400 italic">💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.</p>
-                            <textarea id="admin-slogan-text-input" rows="3" placeholder="Ví dụ: Kỷ luật là cầu nối... - Jim Rohn" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            <button onclick="addAdminSlogan()" id="adm-slogan-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition">Thêm Slogan Mới</button>
+                            <textarea id="admin-slogan-text-input" rows="3" placeholder="Ví dụ: Kỷ luật là cầu nối... - Jim Rohn" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></textarea>
+                            <button onclick="addAdminSlogan()" id="adm-slogan-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2 rounded-xl font-bold transition-all duration-200">Thêm Slogan Mới</button>
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
                             <h5 id="adm-slogan-list-title" class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Slogan hiện tại:</h5>
@@ -217,13 +236,13 @@
                     <div id="adm-sec-hint" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div class="space-y-2.5 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-200/80 dark:border-slate-700">
                             <p id="adm-hint-bulk-note" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-medium">💡 Thêm nhiều dòng cùng lúc dạng: <code class="bg-indigo-50 dark:bg-slate-800 px-1 rounded">Tiêu đề | Mô tả</code></p>
-                            <textarea id="admin-hint-bulk-input" rows="3" placeholder="Đọc sách | Đọc 20 trang sách mỗi ngày..." class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <textarea id="admin-hint-bulk-input" rows="3" placeholder="Đọc sách | Đọc 20 trang sách mỗi ngày..." class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></textarea>
                             <div class="flex justify-between items-center pt-1">
                                 <label class="flex items-center gap-1.5 font-bold text-[11px] text-slate-600 dark:text-slate-300 cursor-pointer">
-                                    <input type="checkbox" id="admin-hint-isp-checkbox" class="w-3.5 h-3.5 text-indigo-600 rounded">
+                                    <input type="checkbox" id="admin-hint-isp-checkbox" class="w-3.5 h-3.5 text-indigo-600 rounded transition">
                                     <span id="adm-hint-is-personal-label">Dành cho Thử thách Cá nhân</span>
                                 </label>
-                                <button onclick="addAdminHint()" id="adm-hint-add-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm">Thêm Ý Tưởng</button>
+                                <button onclick="addAdminHint()" id="adm-hint-add-btn" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-3.5 py-1.5 rounded-xl font-bold transition-all duration-200 shadow-sm">Thêm Ý Tưởng</button>
                             </div>
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
@@ -242,8 +261,8 @@
                     <div id="adm-sec-music" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div class="space-y-2">
                             <p id="adm-music-hint" class="text-[10px] text-slate-400 italic">💡 Có thể dán nhiều link MP3 (mỗi dòng 1 link).</p>
-                            <textarea id="admin-music-url-input" rows="2" placeholder="Dán link MP3..." class="w-full p-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
-                            <button onclick="addMusicUrl()" id="adm-music-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 rounded-xl font-bold transition">Thêm Link Nhạc</button>
+                            <textarea id="admin-music-url-input" rows="2" placeholder="Dán link MP3..." class="w-full p-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono transition"></textarea>
+                            <button onclick="addMusicUrl()" id="adm-music-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-1.5 rounded-xl font-bold transition-all duration-200">Thêm Link Nhạc</button>
                         </div>
                         <div id="admin-music-list" class="space-y-1.5 max-h-32 overflow-y-auto pr-1 pt-1"></div>
                     </div>
@@ -276,19 +295,19 @@
                     </button>
                     <div id="adm-sec-reset" class="p-4 space-y-2.5 border-t border-rose-200 dark:border-rose-900/40 bg-white dark:bg-slate-800/80 hidden">
                         <p id="admin-system-desc" class="text-[11px] text-slate-500 dark:text-slate-400">Xóa toàn bộ dữ liệu thử thách test, đưa ứng dụng về trạng thái ban đầu.</p>
-                        <button onclick="handleResetTestData()" id="admin-reset-btn" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-bold transition text-xs shadow-xs">Admin Reset</button>
+                        <button onclick="handleResetTestData()" id="admin-reset-btn" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all duration-200 text-xs shadow-xs">Admin Reset</button>
                     </div>
                 </div>
 
             </div>
 
-            <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold transition mt-2">Đóng</button>
+            <button onclick="closeAdminCenterModal()" id="admin-close-btn" class="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 mt-2">Đóng</button>
         </div>
     </div>
 
     <!-- MODAL MENU SETTINGS -->
-    <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden" onclick="closeSettingsMenu()">
-        <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[230px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
+    <div id="settings-dropdown-modal" class="fixed inset-0 bg-slate-900/10 z-50 hidden animate-fade-in" onclick="closeSettingsMenu()">
+        <div class="absolute top-16 right-4 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl w-[230px] space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold animate-scale-in" onclick="event.stopPropagation()">
             <button onclick="toggleTheme()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <span id="theme-status-icon" class="text-base">🌙</span>
                 <span id="m-theme">Chế độ tối</span>
@@ -296,9 +315,9 @@
             <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
                 <span class="flex items-center gap-2 shrink-0">🎵 <span id="m-music">Nhạc nền</span></span>
                 <div class="flex items-center gap-2 shrink-0">
-                    <button onclick="prevMusic()" class="hover:text-indigo-600 transition scale-110 px-0.5">⏮</button>
-                    <button onclick="toggleMusicPlay()" id="music-play-btn" class="hover:text-indigo-600 transition scale-125 px-0.5">▶️</button>
-                    <button onclick="nextMusic()" class="hover:text-indigo-600 transition scale-110 px-0.5">⏭</button>
+                    <button onclick="prevMusic()" class="hover:text-indigo-600 transition active:scale-95 scale-110 px-0.5">⏮</button>
+                    <button onclick="toggleMusicPlay()" id="music-play-btn" class="hover:text-indigo-600 transition active:scale-95 scale-125 px-0.5">▶️</button>
+                    <button onclick="nextMusic()" class="hover:text-indigo-600 transition active:scale-95 scale-110 px-0.5">⏭</button>
                 </div>
             </div>
             <button onclick="toggleLanguage()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
@@ -308,21 +327,21 @@
             <hr class="border-slate-100 dark:border-slate-700 my-1">
             <div class="px-3 py-1 text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase" id="m-font-size">Cỡ chữ</div>
             <div class="flex gap-1 px-1">
-                <button onclick="setFontSize('small')" id="font-btn-small" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300">A-</button>
-                <button onclick="setFontSize('normal')" id="font-btn-normal" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300">A</button>
-                <button onclick="setFontSize('large')" id="font-btn-large" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300">A+</button>
+                <button onclick="setFontSize('small')" id="font-btn-small" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300 transition active:scale-95">A-</button>
+                <button onclick="setFontSize('normal')" id="font-btn-normal" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300 transition active:scale-95">A</button>
+                <button onclick="setFontSize('large')" id="font-btn-large" class="flex-1 py-1.5 rounded-lg border text-slate-600 dark:text-slate-300 transition active:scale-95">A+</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL CHI TIẾT TỔNG QUAN -->
-    <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
+    <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] overflow-y-auto animate-scale-in">
             <div class="flex justify-between items-start border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 id="desc-modal-header" class="font-bold text-slate-800 dark:text-slate-100 text-base pr-4 leading-tight flex items-center gap-2">
                     <span id="desc-modal-title-text">Chi tiết</span>
                 </h3>
-                <button onclick="closeDescriptionModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <button onclick="closeDescriptionModal()" class="text-slate-400 hover:text-slate-600 font-bold transition">✕</button>
             </div>
             <div class="space-y-3 text-xs sm:text-sm">
                 <div id="desc-reward-frame" class="p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-2xl border border-indigo-100 dark:border-slate-600"></div>
@@ -332,54 +351,54 @@
                     <div class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap py-2 leading-relaxed bg-slate-50 dark:bg-slate-900/50 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 min-h-[60px]" id="desc-modal-content"></div>
                 </div>
             </div>
-            <button onclick="closeDescriptionModal()" id="desc-modal-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Đóng</button>
+            <button onclick="closeDescriptionModal()" id="desc-modal-close-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm">Đóng</button>
         </div>
     </div>
 
     <!-- MODAL LỊCH SỬ -->
-    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4">
+    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[55] hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl w-full max-w-sm border border-slate-100 dark:border-slate-700 space-y-4 animate-scale-in">
             <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">⏱️ <span id="s-history-title">Lịch sử hoạt động</span></h3>
             <div id="pin-history-list" class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 h-48 overflow-y-auto space-y-2"></div>
-            <button id="s-close-history-btn" onclick="document.getElementById('history-modal').classList.add('hidden')" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+            <button id="s-close-history-btn" onclick="document.getElementById('history-modal').classList.add('hidden')" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 py-2 rounded-xl text-xs font-semibold transition-all duration-200">Đóng</button>
         </div>
     </div>
 
     <!-- MODAL LEADERBOARD -->
-    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
+    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-1.5">🏆 <span id="leaderboard-modal-title">---</span></h3>
-                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">✕</button>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none transition">✕</button>
             </div>
             <div id="leaderboard-list-container" class="space-y-3 overflow-y-auto flex-1 py-1 pr-1"></div>
-            <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm">Đóng</button>
+            <button onclick="closeLeaderboardModal()" id="lb-close-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm transition-all duration-200">Đóng</button>
         </div>
     </div>
 
     <!-- MODAL THÔNG BÁO -->
-    <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col">
+    <div id="notification-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-md w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[85vh] flex flex-col animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">🔔 <span id="notif-title">Thông báo</span></h3>
                 <div class="flex items-center gap-2">
-                    <button onclick="markAllNotificationsRead()" id="notif-read-btn" class="text-[11px] text-indigo-600 hover:underline font-bold">Đánh dấu đã đọc</button>
-                    <button onclick="closeNotificationModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+                    <button onclick="markAllNotificationsRead()" id="notif-read-btn" class="text-[11px] text-indigo-600 hover:underline font-bold transition">Đánh dấu đã đọc</button>
+                    <button onclick="closeNotificationModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg transition">✕</button>
                 </div>
             </div>
             <div id="notification-list" class="space-y-2 overflow-y-auto flex-1 text-xs pr-1"></div>
-            <button id="notif-close-btn" onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-xs font-semibold">Đóng</button>
+            <button id="notif-close-btn" onclick="closeNotificationModal()" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 active:scale-95 py-2 rounded-xl text-xs font-semibold transition-all duration-200">Đóng</button>
         </div>
     </div>
 
     <!-- MODAL GỢI Ý -->
-    <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-700">
+    <div id="hint-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-700 animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">💡 <span id="hint-modal-title">Kho ý tưởng</span></h3>
                 <div class="flex items-center gap-2">
-                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">🔄</button>
-                    <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                    <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 active:scale-95 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-all duration-200">🔄</button>
+                    <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold transition">✕</button>
                 </div>
             </div>
             <div id="hints-list-container" class="space-y-2 text-xs max-h-[60vh] overflow-y-auto pr-1"></div>
@@ -387,24 +406,24 @@
     </div>
 
     <!-- MODAL REPORT -->
-    <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col">
+    <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-lg w-full space-y-4 border border-slate-100 dark:border-slate-700 max-h-[90vh] flex flex-col animate-scale-in">
             <div class="flex justify-between items-center">
                 <h3 id="report-modal-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">📋 Kết quả thử thách</h3>
-                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg transition">✕</button>
             </div>
             <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold gap-1">
-                <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition">Hoạt động</button>
-                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition">Thưởng/ Phạt</button>
+                <button onclick="switchReportTab('active')" id="btn-report-active" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95">Hoạt động</button>
+                <button onclick="switchReportTab('rewards')" id="btn-report-rewards" class="flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition active:scale-95">Thưởng/ Phạt</button>
             </div>
 
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
                 <div class="flex justify-end relative">
-                    <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold"></button>
-                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
-                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
+                    <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition-all duration-200 items-center gap-1">📷</button>
+                    <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs animate-scale-in">
+                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition"></button>
+                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
+                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
                     </div>
                 </div>
                 <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
@@ -414,10 +433,10 @@
 
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
                 <div class="flex justify-end relative">
-                    <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold"></button>
-                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
+                    <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition-all duration-200 items-center gap-1">📷</button>
+                    <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs animate-scale-in">
+                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold transition"></button>
+                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t transition"></button>
                     </div>
                 </div>
                 <div id="rewards-capture-wrapper" class="space-y-3">
@@ -439,8 +458,8 @@
     </div>
 
     <!-- MODAL MENU 3 CHẤM -->
-    <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
+    <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-fade-in" onclick="closeActionMenuModal()">
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold animate-scale-in" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 pb-2 border-b text-center uppercase text-[10px]">Tùy chọn</h4>
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
@@ -455,14 +474,14 @@
     </div>
 
     <!-- MODAL CHECK-IN NGÀY -->
-    <div id="day-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700">
+    <div id="day-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden animate-fade-in">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-md w-full space-y-4 max-h-[90vh] overflow-y-auto border border-slate-100 dark:border-slate-700 animate-scale-in">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
                     <span id="modal-title-icon" class="shrink-0">🎯</span>
                     <span id="modal-day-title">Chi tiết ngày</span>
                 </h3>
-                <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-600 font-bold transition">✕</button>
             </div>
             
             <div id="modal-read-only-notice" class="hidden p-2 bg-amber-100 text-amber-800 text-[11px] rounded-lg font-bold text-center"></div>
@@ -472,7 +491,7 @@
                 <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                     <div id="modal-view-header" class="flex justify-between items-center">
                         <div id="view-status"></div>
-                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm hidden">✏️</button>
+                        <button id="modal-edit-btn" onclick="toggleModalEdit()" class="p-1 text-slate-500 hover:text-indigo-600 transition text-sm hidden active:scale-95">✏️</button>
                     </div>
                     <div id="modal-view-section" class="space-y-2">
                         <div id="view-timestamp" class="text-[10px] text-slate-400 font-medium"></div>
@@ -481,17 +500,17 @@
                     </div>
                     <div id="modal-edit-section" class="space-y-3 hidden">
                         <div id="status-selection-box" class="flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700">
-                            <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600">
-                                <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-emerald-600 transition hover:opacity-80">
+                                <input type="checkbox" id="modal-chk-completed" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 transition">
                                 <span id="m-completed-label">Hoàn thành</span>
                             </label>
                         </div>
                         <div class="space-y-1">
                             <label id="m-note-label" class="text-[11px] font-semibold text-slate-500">Ghi chú/ Cảm xúc:</label>
-                            <div class="relative border rounded-2xl bg-white dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                            <div class="relative border rounded-2xl bg-white dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 transition">
                                 <textarea id="modal-note" rows="3" class="w-full p-3 text-xs border-0 outline-none resize-none bg-transparent" placeholder="Hôm nay bạn đã làm điều đó như thế nào? Đọng lại bên trong bạn những gì?..."></textarea>
                                 <div class="flex justify-between items-center px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100">
-                                    <label for="modal-image-file" id="modal-image-label" class="cursor-pointer inline-flex items-center gap-1.5 bg-white border px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600">
+                                    <label for="modal-image-file" id="modal-image-label" class="cursor-pointer inline-flex items-center gap-1.5 bg-white border px-2.5 py-1 rounded-xl text-[11px] font-semibold text-slate-600 hover:bg-slate-50 transition active:scale-95">
                                         📷 <span>Tải ảnh</span>
                                     </label>
                                     <span id="day-file-name" class="text-[10px] text-slate-400 truncate max-w-[150px]">Chưa chọn tệp</span>
@@ -499,19 +518,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="modal-image-preview-container" class="mt-2 hidden space-y-1">
+                        <div id="modal-image-preview-container" class="mt-2 hidden space-y-1 animate-scale-in">
                             <div class="w-full rounded-2xl overflow-hidden bg-slate-900/5 flex justify-center p-1">
-                                <img id="modal-image-preview" class="w-full max-h-[350px] object-contain rounded-xl">
+                                <img id="modal-image-preview" class="w-full max-h-[350px] object-contain rounded-xl" loading="lazy">
                             </div>
-                            <button type="button" onclick="removeDayImage()" id="m-remove-img" class="text-[10px] text-rose-500 underline block text-right">Xóa ảnh này</button>
+                            <button type="button" onclick="removeDayImage()" id="m-remove-img" class="text-[10px] text-rose-500 underline block text-right hover:text-rose-600 transition">Xóa ảnh này</button>
                         </div>
-                        <button onclick="saveDayDetail()" id="m-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs">Lưu</button>
+                        <button onclick="saveDayDetail()" id="m-save-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs transition-all duration-200 shadow-sm">Lưu</button>
                     </div>
                 </div>
 
                 <div id="group-day-status-container" class="space-y-2 hidden">
-                    <div class="flex justify-between items-center cursor-pointer bg-slate-100 dark:bg-slate-700/60 p-2.5 rounded-xl font-bold text-xs" onclick="toggleDayModalProgressAccordion()">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full border border-indigo-300"><span id="m-team-progress">Thành viên khác:</span> <span id="completed-ratio-text" class="text-indigo-600">0/0</span></span>
+                    <div class="flex justify-between items-center cursor-pointer bg-slate-100 dark:bg-slate-700/60 p-2.5 rounded-xl font-bold text-xs transition hover:bg-slate-200 dark:hover:bg-slate-700" onclick="toggleDayModalProgressAccordion()">
+                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full border border-indigo-300" loading="lazy"><span id="m-team-progress">Thành viên khác:</span> <span id="completed-ratio-text" class="text-indigo-600">0/0</span></span>
                         <span id="day-modal-progress-arrow" class="text-xs transition-transform duration-200">▼</span>
                     </div>
                     <div id="group-members-status-list" class="space-y-2 hidden pt-1"></div>
@@ -524,27 +543,27 @@
     <div class="max-w-2xl mx-auto space-y-6 pb-20">
         
         <!-- HEADER -->
-        <header class="relative w-full rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-slate-900/40"></div>
+        <header class="relative w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between animate-fade-in" style="background-image: url('https://i.postimg.cc/XYf3bPDg/cover.png'); min-height: 180px;">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/40"></div>
             
             <div class="relative z-10 flex items-start justify-between w-full">
                 <div class="flex flex-col items-center gap-1 cursor-pointer group" onclick="document.getElementById('user-menu-modal').classList.remove('hidden')">
-                    <div id="current-user-avatar" class="w-12 h-12 rounded-full border-[2.5px] border-white overflow-hidden shadow-md flex items-center justify-center bg-white text-indigo-600 font-bold text-lg group-hover:scale-105 transition-transform">👤</div>
-                    <span id="current-user-label" class="text-[11px] font-black text-white bg-slate-900/70 px-2.5 py-0.5 rounded-full shadow-sm">---</span>
+                    <div id="current-user-avatar" class="w-12 h-12 rounded-full border-[2.5px] border-white overflow-hidden shadow-md flex items-center justify-center bg-white text-indigo-600 font-bold text-lg group-hover:scale-105 transition-transform duration-300">👤</div>
+                    <span id="current-user-label" class="text-[11px] font-black text-white bg-slate-900/70 px-2.5 py-0.5 rounded-full shadow-sm transition group-hover:bg-indigo-600">---</span>
                 </div>
                 
                 <div class="flex items-center gap-2 mt-1">
-                    <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl font-bold transition shadow-sm flex items-center gap-1.5">Kết quả</button>
-                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
-                    <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">
+                    <button onclick="openReportModal()" id="btn-report" class="text-xs bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-3.5 py-1.5 rounded-xl font-bold transition-all duration-200 shadow-sm flex items-center gap-1.5">Kết quả</button>
+                    <button onclick="window.location.reload()" id="btn-refresh-title" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100" title="Tải lại trang">🔄</button>
+                    <button onclick="openNotificationModal()" class="relative text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100">
                         🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </button>
-                    <button onclick="document.getElementById('settings-dropdown-modal').classList.remove('hidden')" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition text-slate-800 dark:text-slate-100">⚙️</button>
+                    <button onclick="document.getElementById('settings-dropdown-modal').classList.remove('hidden')" class="text-sm bg-white/90 dark:bg-slate-800/90 hover:bg-white active:scale-95 w-8 h-8 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 text-slate-800 dark:text-slate-100">⚙️</button>
                 </div>
             </div>
 
             <div class="relative z-10 text-center space-y-1 mt-4">
-                <h1 id="t-app-title" class="text-2xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEXT PEAK</h1>
+                <h1 id="t-app-title" class="text-3xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">NEXT PEAK</h1>
                 <div id="slogan-container" class="px-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] min-h-[36px] flex items-center justify-center">
                     <p id="slogan-text" class="text-xs sm:text-sm text-slate-100 font-medium italic leading-snug"></p>
                 </div>
@@ -552,67 +571,67 @@
         </header>
 
         <!-- TABS THỬ THÁCH -->
-        <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
-                <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full border border-white/40 shadow-sm">
+        <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-slide-up">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-[0.98]">
+                <img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full border border-white/40 shadow-sm" loading="lazy">
                 <span>Thử thách nhóm</span>
             </button>
-            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center gap-2">
+            <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition-all duration-300 flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98]">
                 <span id="tab-personal-avatar-icon" class="inline-flex items-center justify-center"></span>
                 <span>Thử thách cá nhân</span>
             </button>
         </div>
 
         <!-- BỘ LỌC VÀ NÚT TẠO -->
-        <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm animate-slide-up">
             <div class="flex items-center gap-2 text-xs">
                 <span id="t-filter-label" class="font-bold text-slate-600 dark:text-slate-300 pl-1">👁️ Hiển thị:</span>
-                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer text-slate-700 dark:text-slate-100"></select>
+                <select id="main-filter-select" onchange="setFilter(this.value)" class="px-2 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-xs bg-slate-50 dark:bg-slate-700 font-semibold focus:outline-none cursor-pointer text-slate-700 dark:text-slate-100 transition hover:bg-slate-100 dark:hover:bg-slate-600"></select>
             </div>
-            <button onclick="toggleCreatePanel()" id="btn-create-toggle" class="bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm text-lg shrink-0">+</button>
+            <button onclick="toggleCreatePanel()" id="btn-create-toggle" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm text-lg shrink-0 transition-all duration-200">+</button>
         </div>
 
         <!-- KHUNG TẠO THỬ THÁCH -->
-        <div id="master-create-panel" class="hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border p-5 space-y-4">
+        <div id="master-create-panel" class="hidden bg-white dark:bg-slate-800 rounded-3xl shadow-md border p-5 space-y-4 animate-scale-in origin-top">
             <div class="flex justify-between items-center border-b border-slate-100 pb-2">
                 <h3 id="form-create-title" class="font-bold text-sm text-indigo-800 dark:text-indigo-300">Tạo thử thách</h3>
-                <button onclick="toggleCreatePanel()" class="text-slate-400 font-bold text-lg hover:text-slate-600">✕</button>
+                <button onclick="toggleCreatePanel()" class="text-slate-400 font-bold text-lg hover:text-slate-600 transition">✕</button>
             </div>
             <form id="master-create-form" class="space-y-3">
                 <div class="flex gap-2">
-                    <input type="text" id="create-title-input" class="flex-1 px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2 dark:text-slate-100" required>
-                    <button type="button" onclick="openHintModal()" id="btn-hint" class="bg-amber-100 text-amber-600 w-10 h-10 rounded-xl font-bold flex items-center justify-center shrink-0">💡</button>
+                    <input type="text" id="create-title-input" class="flex-1 px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 dark:text-slate-100 transition" required>
+                    <button type="button" onclick="openHintModal()" id="btn-hint" class="bg-amber-100 text-amber-600 hover:bg-amber-200 active:scale-95 w-10 h-10 rounded-xl font-bold flex items-center justify-center shrink-0 transition-all duration-200">💡</button>
                 </div>
-                <textarea id="create-desc-input" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2 dark:text-slate-100"></textarea>
+                <textarea id="create-desc-input" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 dark:text-slate-100 transition"></textarea>
                 
                 <div class="grid grid-cols-4 gap-2">
                     <div class="col-span-2">
                         <label id="t-start-date" class="text-[10px] font-bold text-slate-500 block mb-1">Ngày bắt đầu:</label>
-                        <input type="date" id="create-date-input" class="w-full px-2 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 dark:text-slate-100" required>
+                        <input type="date" id="create-date-input" class="w-full px-2 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 dark:text-slate-100 transition" required>
                     </div>
                     <div class="col-span-1">
                         <label id="t-target-days" class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu:</label>
-                        <input type="number" id="create-target-input" value="14" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
+                        <input type="number" id="create-target-input" value="14" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 text-center dark:text-slate-100 transition" required>
                     </div>
                     <div class="col-span-1">
                         <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng ngày:</label>
-                        <input type="number" id="create-days-input" value="16" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
+                        <input type="number" id="create-days-input" value="16" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 text-center dark:text-slate-100 transition" required>
                     </div>
                 </div>
 
                 <div id="form-group-rules" class="space-y-2 pt-1 border-t">
-                    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
-                        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
+                    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600 hover:opacity-80 transition">
+                        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded transition">
                         <span id="t-bigplay-label">🔥 Chơi lớn</span>
                     </label>
-                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700">
+                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700 animate-scale-in origin-top">
                         <div>
                             <label id="t-reward-label" class="text-[10px] font-bold text-slate-600 dark:text-slate-300 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
-                            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 transition focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div>
                             <label id="t-penalty-label" class="text-[10px] font-bold text-slate-600 dark:text-slate-300 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
-                            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+                            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 transition focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
                 </div>
@@ -621,16 +640,16 @@
                     <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
                         <div>
                             <label id="t-self-reward-label" class="text-[10px] font-bold text-slate-600 dark:text-slate-300 block mb-1 flex items-center gap-1">🎁 Thưởng:</label>
-                            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
                         </div>
                         <div>
                             <label id="t-self-penalty-label" class="text-[10px] font-bold text-slate-600 dark:text-slate-300 block mb-1 flex items-center gap-1">💸 Phạt:</label>
-                            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="t-create-submit-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2">Tạo mới</button>
+                <button type="submit" id="t-create-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition-all duration-200">Tạo mới</button>
             </form>
         </div>
 
@@ -850,7 +869,6 @@
                 saveChanges: "Lưu thay đổi",
                 profileSuccess: "Cập nhật hồ sơ thành công!",
 
-                // Bổ sung đầy đủ cho các thành phần động
                 capAll: "Tất cả",
                 capGroup: "Nhóm",
                 capPersonal: "Cá nhân",
@@ -1046,7 +1064,6 @@
                 registerSubmitBtn: "Submit Request",
                 registerSuccess: "Registration submitted! Waiting for Admin approval.",
 
-                // Admin Center
                 admAccConfigTitle: "⚙️ System Configuration",
                 admCfgRewardLabel: "🎁 Default Reward:",
                 admCfgPenaltyLabel: "💸 Default Penalty (k):",
@@ -1091,7 +1108,6 @@
                 saveChanges: "Save Changes",
                 profileSuccess: "Profile updated successfully!",
 
-                // Complete Dynamic Translations
                 capAll: "All",
                 capGroup: "Group",
                 capPersonal: "Personal",
@@ -1185,7 +1201,7 @@
 
         function getCompletedBadgeHTML() {
             return `
-            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5">
+            <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5 transition">
                 <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
                 ${t('completed')}
             </span>`;
@@ -1208,7 +1224,7 @@
             document.body.classList.add(`font-${size}`);
             ['small', 'normal', 'large'].forEach(s => {
                 const btn = document.getElementById(`font-btn-${s}`);
-                if (btn) btn.className = (s === size) ? "flex-1 py-1.5 rounded-lg border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold" : "flex-1 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition";
+                if (btn) btn.className = (s === size) ? "flex-1 py-1.5 rounded-lg border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold transition active:scale-95" : "flex-1 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition active:scale-95";
             });
         }
 
@@ -1312,7 +1328,7 @@
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`;
+            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm" loading="lazy"><span>${t('tabDashboard')}</span>`;
             
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
             document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
@@ -1413,7 +1429,6 @@
             document.getElementById('rule-desc-bigplay-text').innerText = t('ruleDescBigPlay');
             document.getElementById('rule-desc-personal-text').innerText = t('ruleDescPersonal');
 
-            // Update Capture Dropdown Items
             const updateCapButtons = (id) => {
                 const btns = document.querySelectorAll(`#${id} button`);
                 if(btns.length >= 3) {
@@ -1428,7 +1443,6 @@
             updateCapButtons('capture-menu-active');
             updateCapButtons('capture-menu-rewards');
 
-            // Dynamic Song ngữ Admin Center
             document.getElementById('admin-modal-title').innerHTML = t('adminToolTitle');
             if (document.getElementById('adm-acc-config-title')) document.getElementById('adm-acc-config-title').innerHTML = t('admAccConfigTitle');
             if (document.getElementById('adm-cfg-reward-label')) document.getElementById('adm-cfg-reward-label').innerText = t('admCfgRewardLabel');
@@ -1486,13 +1500,13 @@
             const panel = document.getElementById('master-create-panel');
             const togglePlusBtn = document.getElementById('btn-create-toggle');
             if(isGrp) {
-                submitBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-indigo-200 dark:border-indigo-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+                submitBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition-all duration-200";
+                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-indigo-200 dark:border-indigo-900/50 p-5 space-y-4 animate-scale-in origin-top";
+                togglePlusBtn.className = "bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition-all duration-200 text-lg shrink-0";
             } else {
-                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition-all duration-200";
+                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-emerald-200 dark:border-emerald-900/50 p-5 space-y-4 animate-scale-in origin-top";
+                togglePlusBtn.className = "bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition-all duration-200 text-lg shrink-0";
             }
 
             document.getElementById('form-group-rules').classList.toggle('hidden', !isGrp);
@@ -1521,7 +1535,7 @@
             
             const sloganEl = document.getElementById('slogan-text');
             if (sloganEl) {
-                sloganEl.innerHTML = `<span>"${quote}"</span>${author ? `<span class="block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
+                sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
             }
         }
 
@@ -1611,7 +1625,7 @@
             document.getElementById('profile-name-input').value = m.name;
             tempAvatarBase64 = m.avatar || '';
             document.getElementById('profile-preview-avatar').innerHTML = m.avatar 
-                ? `<img src="${m.avatar}" class="w-full h-full object-cover">` 
+                ? `<img src="${m.avatar}" class="w-full h-full object-cover" loading="lazy">` 
                 : `<span class="text-2xl">${m.name.charAt(0)}</span>`;
             document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
 
@@ -1627,7 +1641,7 @@
                 document.getElementById('profile-avatar-filename').innerText = f.name;
                 compressImage(f, b => {
                     tempAvatarBase64 = b;
-                    document.getElementById('profile-preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover">`;
+                    document.getElementById('profile-preview-avatar').innerHTML = `<img src="${b}" class="w-full h-full object-cover animate-fade-in" loading="lazy">`;
                 });
             } else {
                 document.getElementById('profile-avatar-filename').innerText = t('noFileSelected');
@@ -1686,7 +1700,7 @@
             document.getElementById('profile-modal').classList.add('hidden');
         }
 
-        function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
+        function openHistoryModal() { closeUserMenu(); const m=appData.members.find(x=>x.id===loggedInUserId); const hl=document.getElementById('pin-history-list'); hl.innerHTML = (m.pinHistory && m.pinHistory.length) ? m.pinHistory.map(l => `<div class="flex justify-between py-1 border-b border-slate-200/50 animate-slide-up"><span>🔑 ${l.note}</span><span class="text-[10px] opacity-70">${l.time}</span></div>`).join('') : `<p class="italic text-center py-4">${t('noHistory')}</p>`; document.getElementById('history-modal').classList.remove('hidden'); }
         
         function toggleAdminAccordion(secId) {
             const sec = document.getElementById(`adm-sec-${secId}`);
@@ -1856,9 +1870,9 @@
             const slogans = Array.isArray(rawSlogans) ? rawSlogans : (typeof rawSlogans === 'object' && rawSlogans !== null ? Object.values(rawSlogans) : []);
 
             sloganContainer.innerHTML = slogans.map((s, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs animate-slide-up">
                     <span class="truncate max-w-[280px] font-medium text-slate-700 dark:text-slate-200">"${s}"</span>
-                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
+                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -1867,21 +1881,21 @@
             const hints = Array.isArray(rawHints) ? rawHints : (typeof rawHints === 'object' && rawHints !== null ? Object.values(rawHints) : []);
 
             hintContainer.innerHTML = hints.map((h, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs animate-slide-up">
                     <div class="min-w-0 pr-2">
                         <strong class="text-slate-800 dark:text-slate-100 block truncate">${h.isP ? '📌 ' + t('personalLabel') : '🎯 ' + t('groupLabel')}: ${h.title}</strong>
                         <span class="text-[10px] text-slate-400 truncate block">${h.desc || t('noDescInfo')}</span>
                     </div>
-                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 text-[11px]">${t('delete')}</button>
+                    <button onclick="deleteAdminHint(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
             const musicContainer = document.getElementById('admin-music-list');
             const listM = getPlaylist();
             musicContainer.innerHTML = listM.map((u, i) => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200/80 dark:border-slate-600 text-[11px]">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2 rounded-xl border border-slate-200/80 dark:border-slate-600 text-[11px] animate-slide-up">
                     <span class="truncate max-w-[280px] font-mono text-slate-600 dark:text-slate-300">${u}</span>
-                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
+                    <button onclick="removeMusicUrl(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px] transition">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -1891,11 +1905,11 @@
                 pendingContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic">${t('noPendingReq')}</p>`;
             } else {
                 pendingContainer.innerHTML = pendingArr.map(p => `
-                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600">
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 animate-slide-up">
                         <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">👤 ${p.name}</span>
                         <div class="flex gap-1.5">
-                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition">${t('approve')}</button>
-                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition">${t('reject')}</button>
+                            <button onclick="approveMember('${p.id}')" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all duration-200">${t('approve')}</button>
+                            <button onclick="rejectMember('${p.id}')" class="bg-rose-500 hover:bg-rose-600 active:scale-95 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all duration-200">${t('reject')}</button>
                         </div>
                     </div>
                 `).join('');
@@ -1903,12 +1917,12 @@
 
             const membersContainer = document.getElementById('admin-members-list');
             membersContainer.innerHTML = appData.members.map(m => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600">
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 animate-slide-up">
                     <div class="flex items-center gap-2">
                         ${getMemberAvatarHTML(m.id, "w-6 h-6")}
                         <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${m.name} ${m.id === 'member_1' ? '👑' : ''}</span>
                     </div>
-                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold transition">🗑️ ${t('delete')}</button>` : ''}
+                    ${m.id !== 'member_1' ? `<button onclick="deleteMember('${m.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold transition active:scale-95">🗑️ ${t('delete')}</button>` : ''}
                 </div>
             `).join('');
         }
@@ -1950,13 +1964,13 @@
             activeTab = tab;
             const db = document.getElementById('btn-dashboard'), ub = document.getElementById('btn-update'), tb = document.getElementById('btn-create-toggle');
             if(tab === 'dashboard') {
-                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-                tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition-all duration-300 shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]";
+                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2 active:scale-[0.98]";
+                tb.className = "bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition-all duration-200 text-lg shrink-0";
             } else {
-                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-                tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition-all duration-300 shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]";
+                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2 active:scale-[0.98]";
+                tb.className = "bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition-all duration-200 text-lg shrink-0";
             }
             renderFilterOptions();
             updateCreateFormLabels(); document.getElementById('master-create-panel').classList.add('hidden');
@@ -1974,7 +1988,7 @@
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
             const u = appData.members.find(x => x.id === mId);
             if (!u) return `<div class="${sizeClass} rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 leading-none">?</div>`;
-            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
+            return u.avatar ? `<img src="${u.avatar}" class="${sizeClass} rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm shrink-0" loading="lazy">` : `<div class="${sizeClass} rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shrink-0 leading-none">${u.name.charAt(0)}</div>`;
         }
 
         function getStreakInfo(prog) {
@@ -2018,7 +2032,7 @@
                     return true;
                 }).sort(sortByStartDate);
 
-                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
+                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 animate-slide-up">${t('noChallenges')}</p>`;
                 
                 list.forEach((c, idx) => {
                     const tot=c.totalDays||sysCfg.defaultTotalDays, tgt=c.targetDays||sysCfg.defaultTargetDays, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
@@ -2043,13 +2057,13 @@
                             <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
                                 <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
                             </div>`;
-                        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+                        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
                             <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                                 <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
                             </div>`;
-                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
                             <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit max-w-full">
@@ -2060,7 +2074,7 @@
                     }
 
                     let content = "";
-                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
+                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 active:scale-95 transition-all duration-200">${t('joinChallenge')}</button></div>`;
                     else if (j) {
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
@@ -2077,31 +2091,31 @@
                                 s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                                 lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                             } else if(it) {
-                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; 
+                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold shadow-sm"; 
                             } else if(ifu) {
                                 s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
                             } else {
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition-all duration-200 active:scale-[0.9] ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 active:scale-95 transition-all duration-200 flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
                                     ${statusBadgeHTML}
                                 </div>
-                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-indigo-400 dark:bg-indigo-500 h-full rounded-full transition-all duration-700 ease-out" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${grid}
                             </div>`;
                     }
 
                     container.innerHTML += `
-                        <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
+                        <div id="challenge-card-${c.id}" class="animate-slide-up bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
                                     <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
@@ -2113,7 +2127,7 @@
                                     </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
+                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 active:scale-90 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8 transition-all duration-200">⋮</button>` : ''}
                             </div>
                             ${j ? avs : ''}
                             ${content}
@@ -2127,7 +2141,7 @@
                     return true;
                 }).sort(sortByStartDate);
 
-                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
+                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 animate-slide-up">${t('noHabits')}</p>`;
                 
                 list.forEach((h, idx) => {
                     const tot=h.totalDays||sysCfg.defaultTotalDays, tgt=h.targetDays||sysCfg.defaultTargetDays, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
@@ -2147,14 +2161,14 @@
                                 <span class="shrink-0">🎁</span>
                                 <span class="truncate">${h.selfReward||'---'}</span>
                             </div>`;
-                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('completed')}</span>`;
                     } else if (isFailed) {
                         rewardPenaltyBoxHTML = `
                             <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                                 <span class="shrink-0">💸</span>
                                 <span class="truncate">${h.selfPenalty||'---'}</span>
                             </div>`;
-                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none shadow-sm">${t('incomplete')}</span>`;
                     } else {
                         rewardPenaltyBoxHTML = `
                             <div class="px-3 py-2 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-fit max-w-full">
@@ -2184,18 +2198,18 @@
                             s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
                             lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
                         } else if(it) {
-                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; 
+                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold shadow-sm"; 
                         } else if(ifu) {
                             s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
                         } else {
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition-all duration-200 active:scale-[0.9] ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
 
                     container.innerHTML += `
-                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
+                        <div id="challenge-card-${h.id}" class="animate-slide-up bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1.5 w-full">
                                     <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
@@ -2207,15 +2221,15 @@
                                     </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
+                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 active:scale-90 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8 transition-all duration-200">⋮</button>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
                                     <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
                                     ${statusBadgeHTML}
                                 </div>
-                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-emerald-400 dark:bg-emerald-500 h-full rounded-full transition-all duration-700 ease-out" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${grid}
                             </div>
@@ -2234,7 +2248,7 @@
             const pool = list.filter(x => activeTab === 'dashboard' ? !x.isP : x.isP);
             const btnColor = activeTab === 'dashboard' ? 'bg-indigo-600' : 'bg-emerald-600';
             const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5); 
-            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
+            document.getElementById('hints-list-container').innerHTML = shuffled.map(i => `<div class="animate-slide-up p-3 bg-slate-50 dark:bg-slate-700/60 rounded-xl border border-slate-200 dark:border-slate-600 flex justify-between items-center gap-2"><div><strong class="text-slate-800 dark:text-slate-100 block">${activeTab==='dashboard'?'🎯':'📌'} ${i.title}</strong><p class="text-[10px] text-slate-500 dark:text-slate-300 mt-0.5">${i.desc}</p></div><button type="button" onclick="applyHint('${i.title}', '${i.desc}')" class="${btnColor} hover:opacity-90 active:scale-95 transition-all duration-200 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">${t('useTemplate')}</button></div>`).join('');
         }
         function applyHint(title, desc) {
             closeHintModal();
@@ -2350,7 +2364,7 @@
             if (m) { 
                 const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
-                document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
+                document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover" loading="lazy">` : m.name.charAt(0); 
                 document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
                 document.getElementById('btn-cap-rew').classList.toggle('hidden', !isAdmin);
             } 
@@ -2430,13 +2444,13 @@
                 const isClickable = n.type === 'pending_approval';
 
                 container.innerHTML += `
-                    <div onclick="handleNotificationClick(${n.id}, '${n.type}')" class="p-3 rounded-2xl border transition ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2 ${isClickable ? 'cursor-pointer hover:border-indigo-400 hover:shadow-xs' : ''}">
+                    <div onclick="handleNotificationClick(${n.id}, '${n.type}')" class="animate-slide-up p-3 rounded-2xl border transition-all duration-200 ${n.read ? 'bg-slate-50 dark:bg-slate-800/60 border-slate-200' : 'bg-indigo-50/80 dark:bg-indigo-950/50 border-indigo-200 font-medium'} flex items-start justify-between gap-2 ${isClickable ? 'cursor-pointer hover:border-indigo-400 hover:shadow-xs active:scale-[0.98]' : ''}">
                         <div class="space-y-1">
                             <p class="text-slate-800 dark:text-slate-100"><strong>${icon} ${n.senderName}</strong> ${n.type !== 'system' && n.type !== 'pending_approval' ? act : ''}</p>
                             ${(n.type === 'tag' || n.type === 'reply' || n.type === 'system' || n.type === 'pending_approval') && n.text ? `<p class="text-slate-500 text-[11px] bg-white/60 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">${n.text}</p>` : ''}
                             <span class="text-[10px] text-slate-400 block">${n.timestamp}</span>
                         </div>
-                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1"></span>` : ''}
+                        ${!n.read ? `<span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0 mt-1 shadow-sm"></span>` : ''}
                     </div>`;
             });
         }
@@ -2690,11 +2704,11 @@
             
             if (isFinished && !c.archived) {
                 ln.innerText = t('endedNotice');
-                ln.className = "p-2 bg-slate-100 text-slate-800 text-[11px] rounded-lg font-bold text-center";
+                ln.className = "p-2 bg-slate-100 text-slate-800 text-[11px] rounded-lg font-bold text-center animate-scale-in";
                 ln.classList.remove('hidden');
             } else if (dayLocked && !c.archived && !isFinished) {
                 ln.innerText = t('lockNotice');
-                ln.className = "p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center";
+                ln.className = "p-2 bg-rose-100 text-rose-800 text-[11px] rounded-lg font-bold text-center animate-scale-in";
                 ln.classList.remove('hidden');
             } else {
                 ln.classList.add('hidden');
@@ -2729,7 +2743,7 @@
                         statusLabel = `<span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2 rounded-md text-xs font-semibold inline-flex items-center justify-center h-5 leading-none">❌ ${t('incomplete')}</span>`;
                     }
 
-                    return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1"></div>`:''}</div>`;
+                    return `<div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-2 animate-slide-up"><div class="flex justify-between items-center font-semibold"><div class="flex items-center gap-2">${avHTML}<span class="text-slate-700 dark:text-slate-200">${u?u.name:mId} ${tm?`<span class="text-[10px] text-slate-400 font-normal">(${tm})</span>`:''}</span></div>${statusLabel}</div>${n?`<p class="italic bg-slate-50 dark:bg-slate-900/50 p-2 rounded-lg border">💬 "${n}"</p>`:''}${i?`<div class="w-full rounded-xl overflow-hidden bg-slate-900/5 border border-slate-200 flex justify-center items-center p-1"><img src="${i}" class="w-full max-h-[300px] object-contain rounded-lg mt-1" loading="lazy"></div>`:''}</div>`;
                 }).join('') : `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noOtherMembers')}</p>`;
             } else { 
                 gsc.classList.add('hidden'); 
@@ -2773,7 +2787,7 @@
             document.getElementById('view-timestamp').classList.toggle('hidden', !item.timestamp);
             document.getElementById('view-note').innerHTML = item.note ? `<p class="italic bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border dark:border-slate-700 text-xs">💬 "${item.note}"</p>` : ''; 
             document.getElementById('view-note').classList.toggle('hidden', !item.note);
-            document.getElementById('view-image').innerHTML = item.image ? `<div class="w-full rounded-2xl overflow-hidden bg-slate-900/5 border border-slate-200 dark:border-slate-700 flex justify-center items-center p-1 mt-2"><img src="${item.image}" class="w-full max-h-[350px] object-contain rounded-xl"></div>` : ''; 
+            document.getElementById('view-image').innerHTML = item.image ? `<div class="w-full rounded-2xl overflow-hidden bg-slate-900/5 border border-slate-200 dark:border-slate-700 flex justify-center items-center p-1 mt-2 animate-scale-in"><img src="${item.image}" class="w-full max-h-[350px] object-contain rounded-xl" loading="lazy"></div>` : ''; 
             document.getElementById('view-image').classList.toggle('hidden', !item.image);
         }
 
@@ -2824,6 +2838,7 @@
             dbRef.set(appData); 
             updateModalView(updated); 
             setModalMode(false);
+            renderList(); // Re-render to update badges immediately
         }
 
         function toggleDayModalProgressAccordion() {
@@ -2880,35 +2895,36 @@
                 if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
                 appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
                 cancelReplyToComment(cId); dbRef.set(appData);
+                renderList();
             };
             f ? compressImage(f, save) : save();
         }
-        function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); }
+        function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); renderList(); }
 
         function renderCommentSectionHTML(cId, cms=[], isP=false) {
             let lst = cms.length ? cms.map(c => `
-                <div class="p-2.5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xs space-y-1.5 border border-slate-100 dark:border-slate-700">
+                <div class="p-2.5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xs space-y-1.5 border border-slate-100 dark:border-slate-700 animate-slide-up">
                     <div class="flex justify-between">
-                        <div class="flex items-center gap-1.5 font-bold">${c.memberAvatar?`<img src="${c.memberAvatar}" class="w-5 h-5 rounded-full object-cover">`:`<div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px]">${c.memberName.charAt(0)}</div>`}<span class="text-slate-700 dark:text-slate-200">${c.memberName}</span><span class="text-[9px] text-slate-400 font-normal">(${c.timestamp})</span></div>
-                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold">↩️</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-bold">✕</button>`:''}</div>
+                        <div class="flex items-center gap-1.5 font-bold">${c.memberAvatar?`<img src="${c.memberAvatar}" class="w-5 h-5 rounded-full object-cover" loading="lazy">`:`<div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px]">${c.memberName.charAt(0)}</div>`}<span class="text-slate-700 dark:text-slate-200">${c.memberName}</span><span class="text-[9px] text-slate-400 font-normal">(${c.timestamp})</span></div>
+                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold transition">↩️</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-bold transition">✕</button>`:''}</div>
                     </div>
                     ${c.replyTo?`<div class="text-[9px] text-indigo-600 font-bold bg-indigo-50 dark:bg-indigo-900/40 px-2 py-0.5 rounded-lg w-fit">↩️ ${t('replyingTo')} @${c.replyTo.authorName}</div>`:''}
                     ${c.text?`<p class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">${highlightTags(c.text)}</p>`:''}
-                    ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border dark:border-slate-700 object-cover mt-1">`:''}
+                    ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border dark:border-slate-700 object-cover mt-1" loading="lazy">`:''}
                 </div>`).join('') : `<p class="text-slate-400 italic text-[11px] text-center py-2">${t('noComments')}</p>`;
-            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + appData.members.map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300">@${m.name}</button>`).join('') + `</div>`;
+            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + appData.members.map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300 transition active:scale-95">@${m.name}</button>`).join('') + `</div>`;
             return `
                 <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
                     <button type="button" onclick="toggleCommentSection(${cId})" class="flex justify-between w-full text-xs font-bold text-slate-500 hover:text-indigo-600 transition"><span class="flex gap-1.5">${t('commentCount')} (${cms.length})</span><span class="text-[10px]">▼</span></button>
-                    <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-700">
+                    <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-700 animate-scale-in origin-top">
                         <div class="space-y-2 max-h-52 overflow-y-auto pr-1">${lst}</div>
                         <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                            <div id="reply-banner-${cId}" class="hidden flex justify-between items-center bg-indigo-100 dark:bg-indigo-900/40 px-2.5 py-1 rounded-xl text-[11px] text-indigo-700 dark:text-indigo-300 font-bold"><span>↩️ ${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm">✕</button></div>
+                            <div id="reply-banner-${cId}" class="hidden flex justify-between items-center bg-indigo-100 dark:bg-indigo-900/40 px-2.5 py-1 rounded-xl text-[11px] text-indigo-700 dark:text-indigo-300 font-bold animate-fade-in"><span>↩️ ${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm hover:scale-110 transition">✕</button></div>
                             ${tags}
-                            <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100"></textarea>
+                            <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 transition"></textarea>
                             <div class="flex justify-between gap-2">
-                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 dark:bg-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-700 dark:text-slate-200">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[9px] text-slate-400 truncate max-w-[100px]"></span></div>
-                                <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm">${t('send')}</button>
+                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 transition px-2.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-700 dark:text-slate-200 active:scale-95">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[9px] text-slate-400 truncate max-w-[100px]"></span></div>
+                                <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm transition-all duration-200">${t('send')}</button>
                             </div>
                         </div>
                     </div>
@@ -3015,7 +3031,7 @@
             });
             const activeBtn = document.getElementById(`btn-report-${tab}`);
             const activeView = document.getElementById(`report-${tab}-view`);
-            if(activeBtn) activeBtn.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition"; 
+            if(activeBtn) activeBtn.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95"; 
             if(activeView) activeView.classList.remove('hidden');
             if (tab === 'active') renderReportPreview();
             else if (tab === 'rewards') renderRewardsSummary();
@@ -3032,17 +3048,17 @@
 
         function renderReportPreview() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 ${t('completionProgress')}</h2>`;
+            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2 animate-fade-in">🏆 ${t('completionProgress')}</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
             htmlTxt += `
-                <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
+                <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs animate-slide-up">
                     <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> ${t('groupTabReport')} (${grps.length})</span>
+                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm" loading="lazy"> ${t('groupTabReport')} (${grps.length})</span>
                         <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
+                    <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
 
             if(grps.length){
                 grps.forEach((c,i) => {
@@ -3080,7 +3096,7 @@
                                     <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
                                 </div>
                                 <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                    <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
+                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">${t('txtReason')}: ${m.rsn}</p>` : ''}
                             </div>`;
@@ -3096,12 +3112,12 @@
             const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
 
             htmlTxt += `
-                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2">
+                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2 animate-slide-up">
                     <button onclick="toggleActivityAccordion('per')" class="w-full p-3 bg-emerald-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition">
                         <span class="flex items-center gap-1.5">${userAv} ${currentMemberName.toUpperCase()} (${myH.length})</span>
                         <span id="act-arrow-per" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
+                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
 
             if(myH.length){
                 myH.forEach((h,i) => {
@@ -3114,203 +3130,4 @@
                     const pct = Math.round((cnt / tgt) * 100);
                     
                     let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
-                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : ''));
-
-                    htmlTxt += `
-                        <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1.5">
-                            <div class="flex justify-between items-center text-xs w-full overflow-hidden gap-2">
-                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 min-w-0 shrink">
-                                    <span class="shrink-0 leading-none">${userAv}</span>
-                                    <span class="truncate">${h.text}</span>
-                                    <sup class="text-emerald-500 font-bold text-[10px] shrink-0">${i+1}</sup>
-                                    <span class="text-[10px] text-slate-400 font-normal shrink-0">[${getDateString(h.startDate, 0)}]</span>
-                                </div>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px] shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
-                            </div>
-                            <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
-                            </div>
-                            ${h.reason ? `<p class="text-[10px] text-slate-400 italic">${t('txtReason')}: ${h.reason}</p>` : ''}
-                        </div>`;
-                });
-            } else {
-                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noHabits')}</p>`;
-            }
-            htmlTxt += `</div></div>`;
-            
-            document.getElementById('report-html-preview').innerHTML = htmlTxt;
-        }
-
-        function toggleRewardRulesAccordion() {
-            const ruleBox = document.getElementById('reward-rule-box');
-            const arrow = document.getElementById('reward-rules-arrow');
-            if(ruleBox) {
-                ruleBox.classList.toggle('hidden');
-                if(arrow) arrow.style.transform = ruleBox.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            }
-        }
-
-        function renderRewardsSummary() {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
-            appData.members.forEach(m => {
-                let bookCount = 0, rew = 0, pen = 0;
-                let groupLogs = [], personalLogs = [];
-
-                const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
-                sortedGroup.forEach(c => {
-                    const tgt = c.targetDays||sysCfg.defaultTargetDays, tot = c.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
-                    const icon = c.isBigPlay ? '🔥' : '🎯';
-                    const cFinished = isChallengeFinished(c.startDate, tot);
-                    
-                    if(stat === true || stat === 'given_up') {
-                        const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        const isFailed = (stat === 'given_up') || (done < tgt && cFinished);
-
-                        if (isFailed) {
-                            const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
-                        } else if (done >= tgt) {
-                            if(c.isBigPlay){ 
-                                rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
-                            }
-                            else { 
-                                bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
-                            }
-                        }
-                    }
-                });
-                
-                if(m.id === loggedInUserId) {
-                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
-                    const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
-                    sortedPersonal.forEach(h => {
-                        const tgt = h.targetDays||sysCfg.defaultTargetDays, tot = h.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        const cFinished = isChallengeFinished(h.startDate, tot);
-                        const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
-
-                        if(isFailed) {
-                            personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
-                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
-                                        <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
-                                        <span class="shrink-0">➔ 💸</span>
-                                        <span class="truncate">${h.selfPenalty||''}</span>
-                                        <span class="shrink-0">❌</span>
-                                    </div>
-                                </div>`);
-                        } else if(done >= tgt) {
-                            personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
-                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
-                                        <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
-                                        <span class="shrink-0">➔ 🎁</span>
-                                        <span class="truncate">${h.selfReward||''}</span>
-                                        <span class="shrink-0">✅</span>
-                                    </div>
-                                </div>`);
-                        }
-                    });
-                }
-                
-                const badges = [];
-                if(bookCount>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${bookCount} ${sysCfg.defaultReward}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${rew}k</span>`);
-                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">0 ${t('book')}</span>`);
-                
-                let detailsHTML = "";
-                if (groupLogs.length || personalLogs.length) {
-                    detailsHTML = `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
-                    if (groupLogs.length) detailsHTML += groupLogs.join('');
-                    if (groupLogs.length && personalLogs.length) {
-                        detailsHTML += `<hr class="border-slate-200 dark:border-slate-700/80 my-1.5 opacity-60 personal-reward-line">`;
-                    }
-                    if (personalLogs.length) detailsHTML += personalLogs.join('');
-                    detailsHTML += `</div>`;
-                } else {
-                    detailsHTML = `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
-                }
-
-                container.innerHTML += `
-                    <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center gap-2 w-full overflow-hidden">
-                            <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200 shrink min-w-0">
-                                ${getMemberAvatarHTML(m.id, "w-6 h-6")} <span class="truncate">${m.name}</span>
-                            </span>
-                            <div class="flex gap-1.5 items-center shrink-0 flex-wrap justify-end">
-                                ${badges.join('')} 
-                                <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">-${pen}k</span>
-                            </div>
-                        </div>
-                        ${detailsHTML}
-                    </div>`;
-            });
-        }
-
-        function openLeaderboardModal(id) {
-            const c = appData.sharedChallenges.find(x=>x.id===id); if(!c)return;
-            document.getElementById('leaderboard-modal-title').innerText = c.title; 
-            renderLeaderboardList(c);
-            document.getElementById('leaderboard-modal').classList.remove('hidden');
-        }
-        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
-        
-        function renderLeaderboardList(c) {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            const container = document.getElementById('leaderboard-list-container');
-            if(!container) return;
-            const tgt = c.targetDays || sysCfg.defaultTargetDays;
-            
-            const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
-                const u = appData.members.find(x => x.id === mId);
-                const prog = (c.progress && c.progress[mId]) ? c.progress[mId] : [];
-                const cnt = prog.filter(x => x && x.completed).length;
-                const pct = Math.round((cnt / tgt) * 100);
-                const streak = getStreakInfo(prog);
-                return { id: mId, name: u ? u.name : mId, cnt, pct, streak: streak.active, isGivenUp: c.participants[mId] === 'given_up' };
-            }).sort((a, b) => b.cnt - a.cnt);
-
-            if(!mems.length) {
-                container.innerHTML = `<p class="text-center text-slate-400 italic py-6 text-xs">${t('notJoined')}</p>`;
-                return;
-            }
-
-            container.innerHTML = mems.map(m => {
-                const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
-                const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                const textColor = m.isGivenUp ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400';
-                
-                return `
-                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center w-full overflow-hidden gap-2">
-                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm min-w-0 shrink">
-                                ${avHTML}
-                                <span class="truncate">${m.name}</span>
-                            </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${m.streak}</span>
-                                <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
-                            </div>
-                        </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
-                            <div class="${progressBg} h-full rounded-full transition-all duration-300" style="width: ${Math.min(m.pct, 100)}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        displayRandomSlogan();
-    </script>
-</body>
-</html>
+                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-Tôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
