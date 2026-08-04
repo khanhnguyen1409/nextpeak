@@ -1306,36 +1306,36 @@
         }
 
         function renderFilterOptions() {
-    const sel = document.getElementById('main-filter-select');
-    if (!sel) return;
-    const oldVal = sel.value;
-    if (activeTab === 'dashboard') {
-        sel.innerHTML = `
-            <option value="my">${t('optMy')}</option>
-            <option value="new">${t('optNew')}</option>
-            <option value="archived">${t('optArchived')}</option>
-        `;
-        if (['my', 'new', 'archived'].includes(oldVal)) {
-            sel.value = oldVal;
-            currentFilter = oldVal;
-        } else { 
-            sel.value = 'my'; 
-            currentFilter = 'my'; 
+            const sel = document.getElementById('main-filter-select');
+            if (!sel) return;
+            const oldVal = sel.value;
+            if (activeTab === 'dashboard') {
+                sel.innerHTML = `
+                    <option value="my">${t('optMy')}</option>
+                    <option value="new">${t('optNew')}</option>
+                    <option value="archived">${t('optArchived')}</option>
+                `;
+                if (['my', 'new', 'archived'].includes(oldVal)) {
+                    sel.value = oldVal;
+                    currentFilter = oldVal;
+                } else { 
+                    sel.value = 'my'; 
+                    currentFilter = 'my'; 
+                }
+            } else {
+                sel.innerHTML = `
+                    <option value="active">${t('optActive')}</option>
+                    <option value="archived">${t('optArchived')}</option>
+                `;
+                if (['active', 'archived'].includes(oldVal)) {
+                    sel.value = oldVal;
+                    currentFilter = oldVal;
+                } else { 
+                    sel.value = 'active'; 
+                    currentFilter = 'active'; 
+                }
+            }
         }
-    } else {
-        sel.innerHTML = `
-            <option value="active">${t('optActive')}</option>
-            <option value="archived">${t('optArchived')}</option>
-        `;
-        if (['active', 'archived'].includes(oldVal)) {
-            sel.value = oldVal;
-            currentFilter = oldVal;
-        } else { 
-            sel.value = 'active'; 
-            currentFilter = 'active'; 
-        }
-    }
-}
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
@@ -1347,7 +1347,11 @@
 
             document.getElementById('report-modal-title').innerText = t('reportModalTitle');
             document.getElementById('btn-report').innerText = t('reportBtnText');
-            document.getElementById('btn-refresh-title').title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
+            
+            const refreshBtn = document.getElementById('btn-refresh-title');
+            if (refreshBtn) {
+                refreshBtn.title = currentLang === 'vi' ? 'Tải lại trang' : 'Reload page';
+            }
             
             document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
             renderFilterOptions();
@@ -1525,30 +1529,30 @@
         }
 
         function displayRandomSlogan() {
-    let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
-    
-    if (appData && appData.slogansPool) {
-        let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
-        if (Array.isArray(currentPool) && currentPool.length > 0) {
-            list = currentPool;
-        } else if (typeof currentPool === 'object' && currentPool !== null) {
-            const arr = Object.values(currentPool);
-            if (arr.length > 0) list = arr;
+            let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
+            
+            if (appData && appData.slogansPool) {
+                let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
+                if (Array.isArray(currentPool) && currentPool.length > 0) {
+                    list = currentPool;
+                } else if (typeof currentPool === 'object' && currentPool !== null) {
+                    const arr = Object.values(currentPool);
+                    if (arr.length > 0) list = arr;
+                }
+            }
+
+            if (!list || !list.length) list = defaultSlogans['vi'];
+
+            const fullText = list[Math.floor(Math.random() * list.length)] || "";
+            const parts = fullText.split(' - ');
+            const quote = parts[0] || fullText;
+            const author = parts[1] ? parts[1] : '';
+            
+            const sloganEl = document.getElementById('slogan-text');
+            if (sloganEl) {
+                sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
+            }
         }
-    }
-
-    if (!list || !list.length) list = defaultSlogans['vi'];
-
-    const fullText = list[Math.floor(Math.random() * list.length)] || "";
-    const parts = fullText.split(' - ');
-    const quote = parts[0] || fullText;
-    const author = parts[1] ? parts[1] : '';
-    
-    const sloganEl = document.getElementById('slogan-text');
-    if (sloganEl) {
-        sloganEl.innerHTML = `<span class="animate-fade-in block">"${quote}"</span>${author ? `<span class="animate-fade-in block text-[10px] sm:text-[11px] font-normal text-slate-200 mt-0.5 not-italic">- ${author}</span>` : ''}`;
-    }
-}
 
         const firebaseConfig = {
             apiKey: "AIzaSyBAY8N4lKXlLexdcEoEuE6DdyVVcA0cDs",
@@ -1673,7 +1677,7 @@
             if (newName && newName !== m.name) {
                 const newNameLower = newName.toLowerCase();
                 const isExist = appData.members.some(x => x.id !== loggedInUserId && x.name.toLowerCase() === newNameLower) ||
-                                (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
+                                        (appData.pendingMembers || []).some(p => p.name.toLowerCase() === newNameLower);
                 if (isExist) {
                     return alert(t('errNameExist'));
                 }
@@ -2849,7 +2853,7 @@
             dbRef.set(appData); 
             updateModalView(updated); 
             setModalMode(false);
-            renderList(); // Re-render to update badges immediately
+            renderList();
         }
 
         function toggleDayModalProgressAccordion() {
@@ -2993,260 +2997,234 @@
             } else {
                 frameEl.className = "p-3 bg-emerald-50/70 dark:bg-slate-700/50 rounded-2xl border border-emerald-100 dark:border-slate-600 space-y-2";
                 frameEl.innerHTML = `
-                    <div class="flex items-center gap-2 font-normal">
+                    <div class="flex items-center gap-2 text-xs sm:text-sm font-normal">
                         <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎁</span>
-                        <span class="text-emerald-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sR}</span>
+                        <div class="flex items-center gap-1.5 truncate">
+                            <span class="text-emerald-600 font-bold truncate">${sR}</span>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 font-normal">
+                    <div class="flex items-center gap-2 text-xs sm:text-sm font-normal">
                         <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">💸</span>
-                        <span class="text-rose-600 text-[11px] sm:text-xs leading-snug break-words max-w-[calc(100%-2rem)] font-bold">${sP}</span>
+                        <div class="flex items-center gap-1.5 truncate">
+                            <span class="text-rose-600 font-bold truncate">${sP}</span>
+                        </div>
                     </div>`;
             }
-            
+
             document.getElementById('desc-modal-info').innerHTML = `
-                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                <div class="flex items-center gap-2">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">📅</span>
-                    <span class="text-slate-500">${t('startDateLabel')}</span>
-                    <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
-                    <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
+                    <span>${t('startDateLabel')} <strong>${formatDateString(s)}</strong></span>
                 </div>
-                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                <div class="flex items-center gap-2">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">🎯</span>
-                    <span class="text-slate-500">${t('targetTotalDays')}</span>
-                    <strong class="text-slate-700 dark:text-slate-200">${tgt}/${tot}</strong>
+                    <span>${t('targetTotalDays')} <strong>${tgt}/${tot} ${t('book')}</strong></span>
                 </div>
-                <div class="flex items-center gap-2 text-xs sm:text-sm">
-                    <span class="w-6 flex justify-center shrink-0">${creatorAvatarHTML}</span>
-                    <span class="text-slate-400 font-normal">${t('createdBy')}</span>
-                    <strong class="font-bold text-slate-700 dark:text-slate-200">${creatorNameDisplay}</strong>
+                <div class="flex items-center gap-2">
+                    <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">👤</span>
+                    <span class="flex items-center gap-1.5">${t('createdBy')} <strong class="flex items-center gap-1">${creatorAvatarHTML} ${creatorNameDisplay}</strong></span>
                 </div>
             `;
-            
-            document.getElementById('desc-modal-content').innerText = d||t('noDescription');
+
+            document.getElementById('desc-modal-content').innerText = d || t('noDescription');
             document.getElementById('description-modal').classList.remove('hidden');
         }
-        function closeDescriptionModal() { document.getElementById('description-modal').classList.add('hidden'); }
 
-        function openReportModal() { 
-            switchReportTab('active'); 
-            document.getElementById('report-modal').classList.remove('hidden'); 
-        }
-        function closeReportModal() { document.getElementById('report-modal').classList.add('hidden'); }
-        
-        function switchReportTab(tab) {
-            ['active', 'rewards'].forEach(tKey => { 
-                const btn = document.getElementById(`btn-report-${tKey}`);
-                const view = document.getElementById(`report-${tKey}-view`);
-                if(btn) btn.className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 font-normal transition"; 
-                if(view) view.classList.add('hidden'); 
-            });
-            const activeBtn = document.getElementById(`btn-report-${tab}`);
-            const activeView = document.getElementById(`report-${tab}-view`);
-            if(activeBtn) activeBtn.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95"; 
-            if(activeView) activeView.classList.remove('hidden');
-            if (tab === 'active') renderReportPreview();
-            else if (tab === 'rewards') renderRewardsSummary();
-        }
-
-        function toggleActivityAccordion(type) {
-            const content = document.getElementById(`act-content-${type}`);
-            const arrow = document.getElementById(`act-arrow-${type}`);
-            if(content) {
-                content.classList.toggle('hidden');
-                if(arrow) arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            }
-        }
-
-        function renderReportPreview() {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2 animate-fade-in">🏆 ${t('completionProgress')}</h2>`;
-            const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
-
-            const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
-            htmlTxt += `
-                <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs animate-slide-up">
-                    <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/x8XnVTWz/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm" loading="lazy"> ${t('groupTabReport')} (${grps.length})</span>
-                        <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
-                    </button>
-                    <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
-
-            if(grps.length){
-                grps.forEach((c,i) => {
-                    htmlTxt += `
-                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
-                            <div class="flex justify-between items-center w-full overflow-hidden gap-2">
-                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs min-w-0 shrink">
-                                    <span class="shrink-0">${c.isBigPlay ? '🔥' : '🎯'}</span>
-                                    <span class="truncate">${c.title}</span>
-                                    <sup class="text-indigo-500 font-bold text-[10px] shrink-0">${i+1}</sup>
-                                </div>
-                                <span class="text-[10px] text-slate-400 font-medium shrink-0">[${getDateString(c.startDate, 0)}]</span>
-                            </div>
-                            <div class="space-y-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/80">`;
-                    
-                    const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                    acts.map(mId => { 
-                        const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
-                        return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
-                    }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
-                        const tot = c.totalDays || sysCfg.defaultTotalDays;
-                        const isD = m.cnt >= tgt;
-                        const cFinished = isChallengeFinished(c.startDate, tot);
-                        const isF = m.st==='given_up' || (!isD && cFinished);
-                        const pct = Math.round((m.cnt / tgt) * 100);
-                        
-                        let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                        let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : '');
-                        
-                        htmlTxt += `
-                            <div class="space-y-1 text-[11px]">
-                                <div class="flex justify-between items-center gap-2">
-                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate">${getMemberAvatarHTML(m.mId, "w-4 h-4")} <span class="truncate">${m.n}</span></span>
-                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
-                                </div>
-                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                                ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">${t('txtReason')}: ${m.rsn}</p>` : ''}
-                            </div>`;
-                    });
-                    htmlTxt += `</div></div>`;
-                });
-            } else {
-                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noChallenges')}</p>`;
-            }
-            htmlTxt += `</div></div>`;
-
-            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
-            const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
-
-            htmlTxt += `
-                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2 animate-slide-up">
-                    <button onclick="toggleActivityAccordion('per')" class="w-full p-3 bg-emerald-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition">
-                        <span class="flex items-center gap-1.5">${userAv} ${currentMemberName.toUpperCase()} (${myH.length})</span>
-                        <span id="act-arrow-per" class="text-xs transition-transform duration-200">▼</span>
-                    </button>
-                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 animate-scale-in origin-top">`;
-
-            if(myH.length){
-                myH.forEach((h,i) => {
-                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
-                    const tot = h.totalDays || sysCfg.defaultTotalDays;
-                    const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
-                    const isD = cnt >= tgt;
-                    const cFinished = isChallengeFinished(h.startDate, tot);
-                    const isF = h.status==='given_up' || (!isD && cFinished);
-                    const pct = Math.round((cnt / tgt) * 100);
-                    
-                    let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
-                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-Tôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : ''));
-                        
-                        htmlTxt += `
-                            <div class="space-y-1 text-[11px]">
-                                <div class="flex justify-between items-center gap-2">
-                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate"><span class="truncate">${h.text}</span></span>
-                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
-                                </div>
-                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                            </div>`;
-                });
-                htmlTxt += `</div></div>`;
-            } else {
-                htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noHabits')}</p></div></div>`;
-            }
-
-            document.getElementById('report-html-preview').innerHTML = htmlTxt;
-        }
-
-        function renderRewardsSummary() {
-            const container = document.getElementById('rewards-summary-list');
-            // Logic hiển thị phần Thưởng/Phạt
-            container.innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">${t('noRewardRecord')}</p>`;
-        }
-
-        function toggleRewardRulesAccordion() {
-            const box = document.getElementById('reward-rule-box');
-            const arrow = document.getElementById('reward-rules-arrow');
-            if (box) {
-                box.classList.toggle('hidden');
-                arrow.style.transform = box.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            }
+        function closeDescriptionModal() {
+            document.getElementById('description-modal').classList.add('hidden');
         }
 
         function openLeaderboardModal(id) {
-    const c = appData.sharedChallenges.find(x => x.id === id);
-    if (!c) return;
+            const c = appData.sharedChallenges.find(x => x.id === id);
+            if(!c) return;
+            document.getElementById('leaderboard-modal-title').innerText = `${t('leaderboard')}: ${c.title}`;
+            
+            const participants = Object.keys(c.participants || {}).filter(mId => c.participants[mId] === true || c.participants[mId] === 'given_up');
+            const tgt = c.targetDays || (appData.systemConfig || defaultSystemConfig).defaultTargetDays;
 
-    document.getElementById('leaderboard-modal-title').innerText = t('leaderboard');
-    const container = document.getElementById('leaderboard-list-container');
-    const sysCfg = appData.systemConfig || defaultSystemConfig;
-    const tgt = c.targetDays || sysCfg.defaultTargetDays;
+            participants.sort((a, b) => {
+                const progA = c.progress && c.progress[a] ? c.progress[a] : [];
+                const progB = c.progress && c.progress[b] ? c.progress[b] : [];
+                const cntA = progA.filter(x => x && x.completed).length;
+                const cntB = progB.filter(x => x && x.completed).length;
+                if (cntA !== cntB) return cntB - cntA;
+                return a.localeCompare(b);
+            });
 
-    const participants = Object.keys(c.participants || {}).filter(mId => c.participants[mId] === true || c.participants[mId] === 'given_up');
+            const container = document.getElementById('leaderboard-list-container');
+            container.innerHTML = participants.map((mId, index) => {
+                const u = appData.members.find(x => x.id === mId);
+                const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
+                const cnt = prog.filter(x => x && x.completed).length;
+                const pct = Math.round((cnt / tgt) * 100);
+                const isGu = c.participants[mId] === 'given_up';
 
-    const rankedList = participants.map(mId => {
-        const memberInfo = appData.members.find(x => x.id === mId);
-        const prog = (c.progress && c.progress[mId]) ? c.progress[mId] : [];
-        const completedCount = prog.filter(x => x && x.completed).length;
-        const isGivenUp = c.participants[mId] === 'given_up';
-        return {
-            id: mId,
-            name: memberInfo ? memberInfo.name : mId,
-            completedCount,
-            isGivenUp
-        };
-    });
+                let medal = '';
+                if (index === 0) medal = '🥇';
+                else if (index === 1) medal = '🥈';
+                else if (index === 2) medal = '🥉';
+                else medal = `#${index + 1}`;
 
-    rankedList.sort((a, b) => b.completedCount - a.completedCount);
-
-    if (!rankedList.length) {
-        container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">${t('noOtherMembers')}</p>`;
-    } else {
-        let currentRank = 1;
-        container.innerHTML = rankedList.map((item, index, arr) => {
-            if (index > 0 && item.completedCount < arr[index - 1].completedCount) {
-                currentRank = index + 1;
-            }
-
-            let medal = `<span class="w-6 text-center font-bold text-slate-500">${currentRank}</span>`;
-            if (currentRank === 1) medal = `<span class="w-6 text-center text-base">🥇</span>`;
-            else if (currentRank === 2) medal = `<span class="w-6 text-center text-base">🥈</span>`;
-            else if (currentRank === 3) medal = `<span class="w-6 text-center text-base">🥉</span>`;
-
-            const isDone = item.completedCount >= tgt;
-            const percent = Math.round((item.completedCount / tgt) * 100);
-
-            return `
-                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200 dark:border-slate-600 text-xs animate-slide-up">
-                    <div class="flex items-center gap-2.5">
-                        ${medal}
-                        ${getMemberAvatarHTML(item.id, "w-8 h-8")}
-                        <div>
-                            <strong class="text-slate-800 dark:text-slate-100 block">${item.name}</strong>
-                            <span class="text-[10px] text-slate-400">${item.isGivenUp ? t('giveUpChallenge') : (isDone ? t('completed') : t('progress'))}</span>
+                return `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 animate-slide-up">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <span class="w-7 font-bold text-center text-sm shrink-0">${medal}</span>
+                            ${getMemberAvatarHTML(mId, "w-8 h-8")}
+                            <div class="min-w-0">
+                                <h5 class="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 truncate">${u ? u.name : mId} ${mId === loggedInUserId ? '(Bạn)' : ''}</h5>
+                                <p class="text-[10px] text-slate-400">${cnt}/${tgt} ngày (${pct}%) ${isGu ? '<span class="text-rose-500 font-bold">(Đã bỏ cuộc)</span>' : ''}</p>
+                            </div>
+                        </div>
+                        <div class="font-extrabold text-xs text-indigo-600 dark:text-indigo-400 shrink-0">
+                            ${pct}%
                         </div>
                     </div>
-                    <div class="font-extrabold text-indigo-600 dark:text-indigo-400 text-sm">
-                        ${item.completedCount}/${tgt} <span class="text-[11px] font-semibold text-slate-400">(${percent}%)</span>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
+                `;
+            }).join('');
 
-    document.getElementById('leaderboard-modal').classList.remove('hidden');
-}
+            document.getElementById('leaderboard-modal').classList.remove('hidden');
+        }
 
         function closeLeaderboardModal() {
             document.getElementById('leaderboard-modal').classList.add('hidden');
         }
 
+        function switchReportTab(tab) {
+            const btnAct = document.getElementById('btn-report-active');
+            const btnRew = document.getElementById('btn-report-rewards');
+            const viewAct = document.getElementById('report-active-view');
+            const viewRew = document.getElementById('report-rewards-view');
+
+            if(tab === 'active') {
+                btnAct.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95";
+                btnRew.className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition active:scale-95";
+                viewAct.classList.remove('hidden');
+                viewRew.classList.add('hidden');
+            } else {
+                btnRew.className = "flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-indigo-400 font-bold transition active:scale-95";
+                btnAct.className = "flex-1 py-1.5 rounded-lg text-slate-500 dark:text-slate-300 transition active:scale-95";
+                viewRew.classList.remove('hidden');
+                viewAct.classList.add('hidden');
+            }
+        }
+
+        function toggleRewardRulesAccordion() {
+            const box = document.getElementById('reward-rule-box');
+            const arrow = document.getElementById('reward-rules-arrow');
+            box.classList.toggle('hidden');
+            arrow.style.transform = box.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        function openReportModal() {
+            renderReportContent();
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        function renderReportContent() {
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            
+            const activePreview = document.getElementById('report-html-preview');
+            let grpHTML = `<div id="act-box-grp" class="space-y-2"><h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-xs uppercase tracking-wider">🎯 ${t('tabDashboard')}</h4><div id="act-content-grp" class="space-y-2">`;
+            
+            const shared = appData.sharedChallenges || [];
+            if (!shared.length) {
+                grpHTML += `<p class="text-xs text-slate-400 italic">Không có thử thách nhóm.</p>`;
+            } else {
+                shared.forEach(c => {
+                    grpHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><strong class="text-xs text-slate-800 dark:text-slate-100 block">${c.title}</strong><div class="space-y-1 text-[11px]">`;
+                    const participants = Object.keys(c.participants || {}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up');
+                    participants.forEach(mId => {
+                        const u = appData.members.find(x => x.id === mId);
+                        const prog = c.progress && c.progress[mId] ? c.progress[mId] : [];
+                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                        const cnt = prog.filter(x => x && x.completed).length;
+                        const pct = Math.round((cnt / tgt) * 100);
+                        const isGu = c.participants[mId] === 'given_up';
+                        grpHTML += `<div class="flex justify-between items-center"><span class="flex items-center gap-1.5">${getMemberAvatarHTML(mId, "w-4 h-4")} ${u ? u.name : mId}</span><span class="font-bold ${isGu ? 'text-rose-500' : 'text-indigo-600'}">${cnt}/${tgt} (${pct}%) ${isGu ? '[Bỏ cuộc]' : ''}</span></div>`;
+                    });
+                    grpHTML += `</div></div>`;
+                });
+            }
+            grpHTML += `</div></div>`;
+
+            let perHTML = `<div id="act-box-per" class="space-y-2 pt-2"><h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider">📌 ${t('tabUpdate')}</h4><div id="act-content-per" class="space-y-2">`;
+            let hasPersonal = false;
+            appData.members.forEach(m => {
+                const habits = appData.personalHabits[m.id] || [];
+                if (habits.length) {
+                    hasPersonal = true;
+                    perHTML += `<div class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5"><div class="flex items-center gap-1.5 font-bold text-xs text-slate-700 dark:text-slate-200">${getMemberAvatarHTML(m.id, "w-5 h-5")} ${m.name}</div><div class="space-y-1 text-[11px]">`;
+                    habits.forEach(h => {
+                        const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                        const cnt = (h.days || []).filter(x => x && x.completed).length;
+                        const pct = Math.round((cnt / tgt) * 100);
+                        perHTML += `<div class="flex justify-between items-center"><span>• ${h.text}</span><span class="font-bold text-emerald-600">${cnt}/${tgt} (${pct}%)</span></div>`;
+                    });
+                    perHTML += `</div></div>`;
+                }
+            });
+            if (!hasPersonal) perHTML += `<p class="text-xs text-slate-400 italic">Không có thử thách cá nhân.</p>`;
+            perHTML += `</div></div>`;
+
+            activePreview.innerHTML = grpHTML + perHTML;
+
+            const rewardsContainer = document.getElementById('rewards-summary-list');
+            rewardsContainer.innerHTML = appData.members.map(m => {
+                let userRewardsHTML = '';
+                
+                shared.forEach(c => {
+                    const st = c.participants ? c.participants[m.id] : null;
+                    if (st === true || st === 'given_up') {
+                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                        const prog = c.progress && c.progress[m.id] ? c.progress[m.id] : [];
+                        const cnt = prog.filter(x => x && x.completed).length;
+                        const isCompleted = cnt >= tgt;
+                        const cFinished = isChallengeFinished(c.startDate, c.totalDays || sysCfg.defaultTotalDays);
+                        const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
+
+                        if (isCompleted) {
+                            const rew = c.isBigPlay ? `${c.customReward || 0}k` : sysCfg.defaultReward;
+                            userRewardsHTML += `<div class="text-xs text-emerald-600 font-semibold flex items-center gap-1">🎁 Thử thách "${c.title}": +${rew}</div>`;
+                        } else if (isFailed) {
+                            const pen = c.isBigPlay ? `${c.customPenalty || 0}k` : `${sysCfg.defaultPenalty}k`;
+                            userRewardsHTML += `<div class="text-xs text-rose-600 font-semibold flex items-center gap-1">💸 Thử thách "${c.title}": -${pen}</div>`;
+                        }
+                    }
+                });
+
+                const habits = appData.personalHabits[m.id] || [];
+                habits.forEach(h => {
+                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                    const cnt = (h.days || []).filter(x => x && x.completed).length;
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(h.startDate, h.totalDays || sysCfg.defaultTotalDays);
+                    const isFailed = (h.status === 'given_up') || (!isCompleted && cFinished);
+
+                    if (isCompleted) {
+                        userRewardsHTML += `<div class="text-xs text-emerald-600 font-semibold flex items-center gap-1">🎁 Cá nhân "${h.text}": +${h.selfReward || '---'}</div>`;
+                    } else if (isFailed) {
+                        userRewardsHTML += `<div class="text-xs text-rose-600 font-semibold flex items-center gap-1">💸 Cá nhân "${h.text}": -${h.selfPenalty || '---'}</div>`;
+                    }
+                });
+
+                if (!userRewardsHTML) userRewardsHTML = `<div class="text-xs text-slate-400 italic">${t('noRewardRecord')}</div>`;
+
+                return `
+                    <div id="rewards-user-card-${m.id}" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 animate-slide-up">
+                        <div class="flex items-center gap-2 font-bold text-xs text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-1.5">
+                            ${getMemberAvatarHTML(m.id, "w-6 h-6")} ${m.name}
+                        </div>
+                        <div class="space-y-1 pl-2">
+                            ${userRewardsHTML}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
     </script>
 </body>
 </html>
-<!-- đã đầy đủ -->
