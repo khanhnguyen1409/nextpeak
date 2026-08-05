@@ -1728,9 +1728,6 @@ async function uploadToImgbb(base64Str) {
         document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0];
 
         dbRef.on('value', (snapshot) => {
-            // 🛑 KIỂM TRA AN TOÀN: Nếu HTML chưa load xong thì không chạy code giao diện để tránh crash app
-            if (!document.getElementById('btn-dashboard')) return;
-
             if (snapshot.val()) {
                 const sVal = snapshot.val();
                 appData.members = defaultMembers.map(def => { const found = (sVal.members || []).find(m => m.id === def.id); return found ? { ...def, ...found } : def; });
@@ -1758,20 +1755,10 @@ async function uploadToImgbb(base64Str) {
 
             updateUserLabel();
             updateNotificationBadge();
-            
-            const langStatus = document.getElementById('lang-status-text');
-            if (langStatus) langStatus.innerText = currentLang.toUpperCase();
-            
+            document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
             updateStaticTexts(); 
             displayRandomSlogan();
-            
-            // 👉 Chỉ gọi chuyển tab nhóm 1 lần duy nhất khi khởi động xong xuôi
-            if (!window.hasInitializedApp) {
-                window.hasInitializedApp = true;
-                switchTab('dashboard');
-            } else {
-                renderList();
-            }
+            renderList();
         });
 
         function toggleUserMenu() { document.getElementById('user-menu-modal').classList.remove('hidden'); }
