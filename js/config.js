@@ -1,3 +1,4 @@
+let loggedInUserId = null;
 const translations = { /* Toàn bộ object translations vi/en của bạn */ };
 const defaultSlogans = { /* Dữ liệu defaultSlogans */ };
 const defaultHints = { /* Dữ liệu defaultHints */ };
@@ -31,3 +32,20 @@ let appData = {
     slogansPool: defaultSlogans,
     hintsPool: defaultHints
 };
+function initAppAfterLogin() {
+    // Ẩn modal đăng nhập nếu có
+    const authModal = document.getElementById('auth-modal');
+    if (authModal) authModal.classList.add('hidden');
+    
+    // Tải dữ liệu từ Firebase về giao diện chính
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            appData = Object.assign(appData, data);
+        }
+        // Gọi hàm render giao diện chính của bạn ở đây
+        if (typeof renderCurrentView === 'function') {
+            renderCurrentView();
+        }
+    });
+}
