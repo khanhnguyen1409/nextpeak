@@ -1564,6 +1564,11 @@
         let tempDayImageBase64 = '';
         let selectedMenuChallenge = null;
         let activeReplyTo = {};
+        let expandedGrids = {}; // Lưu trạng thái bật/tắt hiển thị full ngày
+        function toggleGrid(gridId) {
+            expandedGrids[gridId] = !expandedGrids[gridId];
+            renderList(); // Render lại danh sách để cập nhật UI
+        }
 
         document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0];
 
@@ -2065,6 +2070,20 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
+                        // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
+                        const isExpanded = !!expandedGrids['grp_' + c.id];
+                        let startD = 0, endD = tot - 1;
+                        if (!isExpanded && tot > 14) {
+                            startD = Math.max(0, tIdx - 7); // Lùi lại 7 ngày trước hôm nay
+                            endD = startD + 13; // Lấy tổng 14 ngày
+                            if (endD >= tot) {
+                                endD = tot - 1;
+                                startD = Math.max(0, endD - 13);
+                            }
+                        }
+                        let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('grp_${c.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-indigo-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
+                        // ===============================
+
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                             let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
@@ -2087,7 +2106,10 @@
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                            // Thêm logic ẩn hiện (hidden)
+                            let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
+
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
@@ -2100,6 +2122,7 @@
                                     <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${grid}
+                                ${toggleGridBtn}
                             </div>`;
                     }
 
@@ -2172,6 +2195,20 @@
                             </div>`;
                     }
 
+                    // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
+                    const isExpanded = !!expandedGrids['per_' + h.id];
+                    let startD = 0, endD = tot - 1;
+                    if (!isExpanded && tot > 14) {
+                        startD = Math.max(0, tIdx - 7);
+                        endD = startD + 13;
+                        if (endD >= tot) {
+                            endD = tot - 1;
+                            startD = Math.max(0, endD - 13);
+                        }
+                    }
+                    let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('per_${h.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-emerald-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
+                    // ===============================
+
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
                         let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
@@ -2194,8 +2231,14 @@
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold flex flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                        // Thêm logic ẩn hiện (hidden)
+                        let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
+
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
+
+                    // Tìm thẻ HTML nối ${grid} bên dưới đoạn code trên và thêm ${toggleGridBtn} vào:
+                    // ... (đoạn bên dưới không cần sửa, chỉ tìm <div class="space-y-2"> và thêm ${toggleGridBtn} như sau)
 
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
@@ -2221,6 +2264,7 @@
                                     <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                                 </div>
                                 ${grid}
+                                ${toggleGridBtn}
                             </div>
                             ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
                         </div>`;
