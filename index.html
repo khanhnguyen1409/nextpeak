@@ -646,6 +646,9 @@
 // Khai báo API Key của ImgBB (Bạn có thể thay key của bạn vào đây)
 const IMGBB_API_KEY = "bd0a030a81f4c79ab3b1184011f1bd99";
 
+// Khai báo âm thanh check-in thành công
+const successCheckinSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+        
 // Hàm gửi ảnh lên ImgBB
 async function uploadToImgbb(base64Str) {
     try {
@@ -2589,16 +2592,35 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             if (mp === (sysCfg.masterPin || "0000")) { const idx = appData.members.findIndex(m => m.id === selectedLoginMemberId); if (idx > -1) { appData.members[idx].pin = ""; addPinHistoryLog(idx, "Reset PIN (Master)"); dbRef.set(appData); alert(t('resetPinSuccess')); handleLoginNext(); } } else if (mp !== null) alert(t('wrongMasterPin'));
         }
         function finishLogin(id) { 
-            loggedInUserId = id; 
-            localStorage.setItem('bvgpOfficialLoggedInUserId', id); 
-            document.getElementById('login-modal').classList.add('hidden'); 
-            updateUserLabel(); 
-            updateNotificationBadge(); 
-            document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
-            document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
-            document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
-            renderList(); 
+    loggedInUserId = id; 
+    localStorage.setItem('bvgpOfficialLoggedInUserId', id); 
+    document.getElementById('login-modal').classList.add('hidden'); 
+    updateUserLabel(); 
+    updateNotificationBadge(); 
+    document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
+    document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
+    document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
+    renderList(); 
+
+    // === THÊM ĐOẠN CODE NÀY ĐỂ TỰ ĐỘNG PHÁT NHẠC KHI VÀO APP ===
+    setTimeout(() => {
+        if (!isMusicPlaying) {
+            playCurrentMusic(); // Thử phát nhạc ngay khi đăng nhập xong
         }
+    }, 500);
+
+    // Bẫy sự kiện tương tác đầu tiên (click/touch) để vượt qua bộ chặn autoplay của trình duyệt nếu bị block
+    const triggerAutoplay = () => {
+        if (!isMusicPlaying) {
+            playCurrentMusic();
+        }
+        document.removeEventListener('click', triggerAutoplay);
+        document.removeEventListener('touchstart', triggerAutoplay);
+    };
+    document.addEventListener('click', triggerAutoplay, { once: true });
+    document.addEventListener('touchstart', triggerAutoplay, { once: true });
+    // ============================================================
+}
         function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
 
         function updateUserLabel() { 
@@ -3056,9 +3078,16 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
     const sysCfg = appData.systemConfig || defaultSystemConfig;
     if(!currentEditingDay || currentEditingDay.isReadOnly) return;
     const isComp = document.getElementById('modal-chk-completed').checked;
+    
+    // === THÊM ĐOẠN NÀY ĐỂ PHÁT ÂM THANH KHI CHECK-IN THÀNH CÔNG ===
+    if (isComp) {
+        successCheckinSound.currentTime = 0; // Tua lại từ đầu để có thể phát liên tiếp
+        successCheckinSound.play().catch(err => console.log("Audio play blocked:", err));
+    }
+    // ================================================================
+
     const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date();
 
-    // 1. Xử lý upload ảnh lên ImgBB trước khi lưu
     let finalImageUrl = tempDayImageBase64;
     if (tempDayImageBase64 && tempDayImageBase64.startsWith('data:image')) {
         const btn = document.getElementById('m-save-btn');
@@ -3080,7 +3109,6 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         }
     }
 
-    // 2. Tạo object updated với link ảnh ImgBB vừa nhận được
     const updated = { 
         completed: isComp, 
         note: document.getElementById('modal-note').value.trim(), 
