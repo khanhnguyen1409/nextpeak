@@ -68,7 +68,7 @@
             
             <div id="login-step-1" class="space-y-3">
                 <p id="l-select-name" class="text-xs text-slate-500 dark:text-slate-400">Chọn đúng tên của bạn để tiếp tục.</p>
-                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white dark:bg-slate-700 dark:text-slate-100"></select>
+                <select id="login-select" class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-50 text-sm bg-white dark:bg-slate-700 dark:text-slate-100"></select>
                 <button onclick="handleLoginNext()" id="l-continue-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Tiếp tục</button>
                 <button onclick="openRegisterView()" id="l-register-tab-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-1 block w-full text-center">✨ Đăng ký tài khoản mới</button>
             </div>
@@ -402,27 +402,12 @@
             </div>
 
             <div id="report-active-view" class="space-y-3 overflow-y-auto flex-1 flex flex-col">
-                <div class="flex justify-end relative">
-                    <button id="btn-cap-act" onclick="toggleCaptureDropdown('active')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-active" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('active', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold"></button>
-                        <button onclick="executeCapture('active', 'group')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
-                        <button onclick="executeCapture('active', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
-                    </div>
-                </div>
                 <div id="report-active-container" class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                     <div id="report-html-preview" class="text-xs text-slate-700 dark:text-slate-300 space-y-3 font-sans leading-relaxed"></div>
                 </div>
             </div>
 
             <div id="report-rewards-view" class="space-y-3 hidden overflow-y-auto flex-1 text-xs">
-                <div class="flex justify-end relative">
-                    <button id="btn-cap-rew" onclick="toggleCaptureDropdown('rewards')" class="hidden bg-slate-500 hover:bg-slate-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition items-center gap-1">📷</button>
-                    <div id="capture-menu-rewards" class="hidden absolute right-0 top-8 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 py-1 text-xs">
-                        <button onclick="executeCapture('rewards', 'all')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold"></button>
-                        <button onclick="executeCapture('rewards', 'personal')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold border-t"></button>
-                    </div>
-                </div>
                 <div id="rewards-capture-wrapper" class="space-y-3">
                     <div id="reward-rules-accordion" class="bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-2xs">
                         <button onclick="toggleRewardRulesAccordion()" class="w-full p-3 flex justify-between items-center font-bold text-xs text-slate-800 dark:text-slate-100 bg-slate-200/50 hover:bg-slate-200 transition">
@@ -445,10 +430,8 @@
     <div id="action-menu-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden" onclick="closeActionMenuModal()">
         <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl max-w-xs w-full space-y-2 border border-slate-100 dark:border-slate-700 text-xs font-semibold" onclick="event.stopPropagation()">
             <h4 id="action-menu-title" class="text-slate-500 pb-2 border-b text-center uppercase text-[10px]">Tùy chọn</h4>
-            <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
-            <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
             <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ <span id="m-restore">Khôi phục</span></button>
@@ -669,7 +652,6 @@
                 pauseChallenge: "Tạm dừng",
                 pausedStatus: "Tạm dừng",
                 giveUpChallenge: "Bỏ cuộc",
-                rejoinChallenge: "Tham gia trở lại",
                 givenUpStatus: "Bỏ cuộc",
                 resumeChallenge: "Tiếp tục",
                 resumeHabit: "Tiếp tục",
@@ -724,6 +706,7 @@
                 optMy: "Thử thách của tôi",
                 optNew: "Thử thách mới",
                 optActive: "Đang diễn ra",
+                optEnded: "Đã kết thúc",
                 optArchived: "Đã lưu trữ",
                 selfRewardLabel: "🎁 Thưởng:",
                 selfRewardPh: "VD: Một chuyến đi du lịch đâu đó...",
@@ -797,7 +780,6 @@
                 changeAvatar: "Đổi Avatar",
                 history: "Lịch sử hoạt động",
                 copyReportContent: "📄 Chép nội dung",
-                shareAchievement: "Chia sẻ thành tích",
                 lockNotice: "Rất tiếc. Đã quá thời hạn check-in.",
                 endedNotice: "✅ Thử thách đã kết thúc.",
                 noOtherMembers: "Không có thành viên khác.",
@@ -853,7 +835,7 @@
                 saveChanges: "Lưu thay đổi",
                 profileSuccess: "Cập nhật hồ sơ thành công!",
 
-                // Bổ sung đầy đủ cho các thành phần động
+                // Complete Dynamic Translations
                 capAll: "Tất cả",
                 capGroup: "Nhóm",
                 capPersonal: "Cá nhân",
@@ -910,7 +892,6 @@
                 pauseChallenge: "Pause",
                 pausedStatus: "Paused",
                 giveUpChallenge: "Give Up",
-                rejoinChallenge: "Rejoin",
                 givenUpStatus: "Given up",
                 resumeChallenge: "Resume",
                 resumeHabit: "Resume",
@@ -965,6 +946,7 @@
                 optMy: "My Challenges",
                 optNew: "New",
                 optActive: "Active",
+                optEnded: "Ended",
                 optArchived: "Archived",
                 selfRewardLabel: "🎁 Reward:",
                 selfRewardPh: "E.g., A trip to somewhere...",
@@ -1038,7 +1020,6 @@
                 changeAvatar: "Change Avatar",
                 history: "History",
                 copyReportContent: "📄 Copy Report",
-                shareAchievement: "Share achievement",
                 lockNotice: "Sorry. Check-in time has expired.",
                 endedNotice: "✅ Challenge ended.",
                 noOtherMembers: "No other members.",
@@ -1299,16 +1280,18 @@
                 sel.innerHTML = `
                     <option value="my">${t('optMy')}</option>
                     <option value="new">${t('optNew')}</option>
+                    <option value="ended">${t('optEnded')}</option>
                     <option value="archived">${t('optArchived')}</option>
                 `;
-                if (['my', 'new', 'archived'].includes(oldVal)) sel.value = oldVal;
+                if (['my', 'new', 'ended', 'archived'].includes(oldVal)) sel.value = oldVal;
                 else { sel.value = 'my'; currentFilter = 'my'; }
             } else {
                 sel.innerHTML = `
                     <option value="active">${t('optActive')}</option>
+                    <option value="ended">${t('optEnded')}</option>
                     <option value="archived">${t('optArchived')}</option>
                 `;
-                if (['active', 'archived'].includes(oldVal)) sel.value = oldVal;
+                if (['active', 'ended', 'archived'].includes(oldVal)) sel.value = oldVal;
                 else { sel.value = 'active'; currentFilter = 'active'; }
             }
         }
@@ -1394,14 +1377,12 @@
             document.getElementById('btn-report-rewards').innerText = t('reportRewards');
             
             document.getElementById('action-menu-title').innerText = t('actionMenu');
-            document.getElementById('m-share-text').innerText = t('shareAchievement');
             document.getElementById('m-pause').innerText = t('pauseChallenge');
             document.getElementById('m-resume').innerText = t('resumeChallenge');
             document.getElementById('m-giveup').innerText = t('giveUpChallenge');
             document.getElementById('m-archive').innerText = t('archive');
             document.getElementById('m-restore').innerText = t('restore');
             document.getElementById('m-delete').innerText = t('deletePerm');
-            document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
             
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
             document.getElementById('s-close-history-btn').innerText = t('closeBtn');
@@ -1415,21 +1396,6 @@
             document.getElementById('rule-desc-group-text').innerText = `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`;
             document.getElementById('rule-desc-bigplay-text').innerText = t('ruleDescBigPlay');
             document.getElementById('rule-desc-personal-text').innerText = t('ruleDescPersonal');
-
-            // Update Capture Dropdown Items
-            const updateCapButtons = (id) => {
-                const btns = document.querySelectorAll(`#${id} button`);
-                if(btns.length >= 3) {
-                    btns[0].innerText = t('capAll');
-                    btns[1].innerText = t('capGroup');
-                    btns[2].innerText = t('capPersonal');
-                } else if(btns.length === 2) {
-                    btns[0].innerText = t('capAll');
-                    btns[1].innerText = t('capPersonal');
-                }
-            };
-            updateCapButtons('capture-menu-active');
-            updateCapButtons('capture-menu-rewards');
 
             // Dynamic Song ngữ Admin Center
             document.getElementById('admin-modal-title').innerHTML = t('adminToolTitle');
@@ -1563,11 +1529,10 @@
         let tempAvatarBase64 = '';
         let tempDayImageBase64 = '';
         let selectedMenuChallenge = null;
-        let activeReplyTo = {};
-        let expandedGrids = {}; // Lưu trạng thái bật/tắt hiển thị full ngày
+        let expandedGrids = {}; 
         function toggleGrid(gridId) {
             expandedGrids[gridId] = !expandedGrids[gridId];
-            renderList(); // Render lại danh sách để cập nhật UI
+            renderList();
         }
 
         document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0];
@@ -2019,9 +1984,20 @@
             if (activeTab === 'dashboard') {
                 list = (appData.sharedChallenges||[]).filter(c => {
                     const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
+                    
+                    const tot = c.totalDays || sysCfg.defaultTotalDays;
+                    const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                    const prog = c.progress && c.progress[loggedInUserId] ? c.progress[loggedInUserId] : [];
+                    const cnt = prog.filter(x => x && x.completed).length;
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(c.startDate, tot);
+                    const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
+                    const isEnded = isCompleted || isFailed;
+
                     if (currentFilter === 'archived') return c.archived;
                     if (c.archived) return false;
-                    if (currentFilter === 'my') return j;
+                    if (currentFilter === 'ended') return j && isEnded;
+                    if (currentFilter === 'my') return j && !isEnded;
                     if (currentFilter === 'new') return !j;
                     return true;
                 }).sort(sortByStartDate);
@@ -2070,19 +2046,17 @@
                     let content = "";
                     if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
                     else if (j) {
-                        // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
                         const isExpanded = !!expandedGrids['grp_' + c.id];
                         let startD = 0, endD = tot - 1;
                         if (!isExpanded && tot > 14) {
-                            startD = Math.max(0, tIdx - 7); // Lùi lại 7 ngày trước hôm nay
-                            endD = startD + 13; // Lấy tổng 14 ngày
+                            startD = Math.max(0, tIdx - 7);
+                            endD = startD + 13;
                             if (endD >= tot) {
                                 endD = tot - 1;
                                 startD = Math.max(0, endD - 13);
                             }
                         }
                         let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('grp_${c.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-indigo-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
-                        // ===============================
 
                         let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                             const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
@@ -2106,7 +2080,6 @@
                                 s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                             }
 
-                            // Thêm logic ẩn hiện (hidden)
                             let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
 
                             return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
@@ -2126,6 +2099,8 @@
                             </div>`;
                     }
 
+                    const showActionMenu = j;
+
                     container.innerHTML += `
                         <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
                             <div class="flex justify-between items-start">
@@ -2139,17 +2114,28 @@
                                     </div>
                                     ${rewardPenaltyBoxHTML}
                                 </div>
-                                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
+                                ${showActionMenu ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
                             </div>
                             ${j ? avs : ''}
                             ${content}
-                            ${(j || ro) && loggedInUserId === 'member_1' ? renderCommentSectionHTML(c.id, c.comments||[], false) : ''}
                         </div>`;
                 });
             } else {
                 list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
+                    const st = h.status || 'active';
+                    const tot = h.totalDays || sysCfg.defaultTotalDays;
+                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
+                    const prog = h.days || [];
+                    const cnt = prog.filter(x => x && x.completed).length;
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
+                    const isEnded = isCompleted || isFailed;
+
                     if (currentFilter === 'archived') return h.archived === true;
-                    if (currentFilter === 'active') return !h.archived;
+                    if (h.archived) return false;
+                    if (currentFilter === 'ended') return isEnded;
+                    if (currentFilter === 'active') return !isEnded;
                     return true;
                 }).sort(sortByStartDate);
 
@@ -2195,7 +2181,6 @@
                             </div>`;
                     }
 
-                    // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
                     const isExpanded = !!expandedGrids['per_' + h.id];
                     let startD = 0, endD = tot - 1;
                     if (!isExpanded && tot > 14) {
@@ -2207,7 +2192,6 @@
                         }
                     }
                     let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('per_${h.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-emerald-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
-                    // ===============================
 
                     let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
                         const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
@@ -2231,14 +2215,10 @@
                             s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
                         }
 
-                        // Thêm logic ẩn hiện (hidden)
                         let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
 
                         return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                     }).join('') + `</div>`;
-
-                    // Tìm thẻ HTML nối ${grid} bên dưới đoạn code trên và thêm ${toggleGridBtn} vào:
-                    // ... (đoạn bên dưới không cần sửa, chỉ tìm <div class="space-y-2"> và thêm ${toggleGridBtn} như sau)
 
                     container.innerHTML += `
                         <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
@@ -2266,7 +2246,6 @@
                                 ${grid}
                                 ${toggleGridBtn}
                             </div>
-                            ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
                         </div>`;
                 });
             }
@@ -2386,8 +2365,6 @@
             updateUserLabel(); 
             updateNotificationBadge(); 
             document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
-            document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
-            document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
             renderList(); 
         }
         function switchUser() { localStorage.removeItem('bvgpOfficialLoggedInUserId'); loggedInUserId = null; closeUserMenu(); checkLogin(); }
@@ -2398,8 +2375,6 @@
                 const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
-                document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
-                document.getElementById('btn-cap-rew').classList.toggle('hidden', !isAdmin);
             } 
         }
         function handleResetTestData() {
@@ -2508,27 +2483,22 @@
                 if(h){ isArch=h.archived; st=h.status||'active'; } 
             }
             
-            document.getElementById('action-btn-archive').classList.toggle('hidden', isArch);
-            document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch);
-            document.getElementById('action-btn-share').classList.toggle('hidden', loggedInUserId !== 'member_1');
+            const isAdmin = loggedInUserId === 'member_1';
+            const isGivenUp = (st === 'given_up');
+
+            document.getElementById('action-btn-archive').classList.toggle('hidden', isArch || (isGivenUp && !isAdmin));
+            document.getElementById('action-btn-restore').classList.toggle('hidden', !isArch || (isGivenUp && !isAdmin));
+            document.getElementById('action-btn-delete').classList.toggle('hidden', (isGivenUp && !isAdmin));
             
             const btnP = document.getElementById('action-btn-pause'), btnR = document.getElementById('action-btn-resume');
             btnP.classList.add('hidden');
             btnR.classList.add('hidden');
             
             const btnGiveUp = document.getElementById('action-btn-giveup');
-            const btnRejoin = document.getElementById('action-btn-rejoin');
-            if (isArch) {
+            if (isArch || isGivenUp) {
                 btnGiveUp.classList.add('hidden');
-                btnRejoin.classList.add('hidden');
             } else {
-                if (st === 'given_up') {
-                    btnGiveUp.classList.add('hidden');
-                    btnRejoin.classList.remove('hidden');
-                } else {
-                    btnGiveUp.classList.remove('hidden');
-                    btnRejoin.classList.add('hidden');
-                }
+                btnGiveUp.classList.remove('hidden');
             }
 
             m.classList.remove('hidden');
@@ -2537,127 +2507,10 @@
         
         function triggerMenuAction(act) {
             if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
-            if(act==='share') captureChallengeCard(id);
-            else if(act==='giveup') giveUpChallenge(id, isPersonal);
-            else if(act==='rejoin') rejoinChallenge(id, isPersonal);
+            if(act==='giveup') giveUpChallenge(id, isPersonal);
             else if(act==='archive') archiveChallenge(id, isPersonal, true);
             else if(act==='restore') archiveChallenge(id, isPersonal, false);
             else if(act==='delete') deleteChallenge(id, isPersonal);
-        }
-
-        async function captureChallengeCard(id) {
-            const cardEl = document.getElementById(`challenge-card-${id}`);
-            if(!cardEl) return;
-            
-            const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
-            const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
-            
-            if(commentsContainer) commentsContainer.style.display = 'none';
-            if(actionBtn) actionBtn.style.display = 'none';
-
-            try {
-                const canvas = await html2canvas(cardEl, {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: false,
-                    logging: false,
-                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-                });
-
-                const link = document.createElement('a');
-                link.download = `BVGP-Challenge-${id}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            } catch(err) {
-                console.error("Capture Error:", err);
-                alert(t('errCapture'));
-            } finally {
-                if(commentsContainer) commentsContainer.style.display = '';
-                if(actionBtn) actionBtn.style.display = '';
-            }
-        }
-
-        function toggleCaptureDropdown(tab) {
-            const m = document.getElementById(`capture-menu-${tab}`);
-            if(m) m.classList.toggle('hidden');
-        }
-
-        async function executeCapture(tab, option) {
-            document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
-            const isDark = document.documentElement.classList.contains('dark');
-            const bgColor = isDark ? '#0f172a' : '#ffffff';
-
-            if(tab === 'active') {
-                const container = document.getElementById('report-active-container');
-                const grpBox = document.getElementById('act-box-grp');
-                const perBox = document.getElementById('act-box-per');
-                
-                const grpContent = document.getElementById('act-content-grp');
-                const perContent = document.getElementById('act-content-per');
-                const wasGrpHidden = grpContent?.classList.contains('hidden');
-                const wasPerHidden = perContent?.classList.contains('hidden');
-
-                if(grpContent) grpContent.classList.remove('hidden');
-                if(perContent) perContent.classList.remove('hidden');
-
-                if(option === 'personal') {
-                    if(grpBox) grpBox.style.display = 'none';
-                } else if (option === 'group') {
-                    if(perBox) perBox.style.display = 'none';
-                }
-
-                try {
-                    const canvas = await html2canvas(container, {
-                        scale: 3,
-                        useCORS: true,
-                        allowTaint: false,
-                        backgroundColor: bgColor
-                    });
-                    const link = document.createElement('a');
-                    link.download = `BVGP-Report-${option}-${Date.now()}.jpg`;
-                    link.href = canvas.toDataURL('image/jpeg', 0.95);
-                    link.click();
-                } catch(e) {
-                    alert(t('errCapture'));
-                } finally {
-                    if(grpBox) grpBox.style.display = '';
-                    if(perBox) perBox.style.display = '';
-                    if(wasGrpHidden && grpContent) grpContent.classList.add('hidden');
-                    if(wasPerHidden && perContent) perContent.classList.add('hidden');
-                }
-            } else if(tab === 'rewards') {
-                const wrapperEl = document.getElementById('rewards-capture-wrapper');
-                const rulesAccordion = document.getElementById('reward-rules-accordion');
-                const allUserCards = wrapperEl.querySelectorAll('[id^="rewards-user-card-"]');
-                
-                if(rulesAccordion) rulesAccordion.style.display = 'none';
-
-                if(option === 'personal') {
-                    allUserCards.forEach(card => {
-                        if(card.id !== `rewards-user-card-${loggedInUserId}`) {
-                            card.style.display = 'none';
-                        }
-                    });
-                }
-
-                try {
-                    const canvas = await html2canvas(wrapperEl, {
-                        scale: 3,
-                        useCORS: true,
-                        allowTaint: false,
-                        backgroundColor: bgColor
-                    });
-                    const link = document.createElement('a');
-                    link.download = `BVGP-Rewards-${option}-${Date.now()}.jpg`;
-                    link.href = canvas.toDataURL('image/jpeg', 0.95);
-                    link.click();
-                } catch(e) {
-                    alert(t('errCapture'));
-                } finally {
-                    if(rulesAccordion) rulesAccordion.style.display = '';
-                    allUserCards.forEach(card => card.style.display = '');
-                }
-            }
         }
 
         function giveUpChallenge(id, isP) {
@@ -2673,16 +2526,7 @@
             }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
         }
-        function rejoinChallenge(id, isP) {
-            if(!isP){ 
-                const c=appData.sharedChallenges.find(x=>x.id===id); 
-                if(c&&c.participants){ 
-                    c.participants[loggedInUserId]=true; 
-                    notifyAllChallengeMembers(c, 'rejoin', `${t('ntfRejoin')} "${c.title}".`);
-                } 
-            }
-            else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
-        }
+
         function archiveChallenge(id, isP, toArchive) {
             const arr = isP ? (appData.personalHabits[loggedInUserId]||[]) : appData.sharedChallenges;
             const x = arr.find(i=>i.id===id); if(x) x.archived = toArchive;
@@ -2907,61 +2751,6 @@
             document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
         };
 
-        function toggleCommentSection(id) { const el = document.getElementById(`comment-section-${id}`); if (el) el.classList.toggle('hidden'); }
-        function insertTagToComment(cId, name) { const i=document.getElementById(`comment-text-${cId}`); if(i){ i.value = `@${name} ` + i.value.replace(`@${name} `, ''); i.focus(); } }
-        function setReplyToComment(cId, cmId, aName, aId) { activeReplyTo[cId]={cmId, aName, aId}; const rb=document.getElementById(`reply-banner-${cId}`); if(rb){ document.getElementById(`reply-name-${cId}`).innerText=`@${aName}`; rb.classList.remove('hidden'); insertTagToComment(cId, aName); } }
-        function cancelReplyToComment(cId) { delete activeReplyTo[cId]; const rb=document.getElementById(`reply-banner-${cId}`); if(rb) rb.classList.add('hidden'); }
-        function previewCommentImage(cId, e) { const f=e.target.files[0], n=document.getElementById(`comment-filename-${cId}`); if(n) n.innerText=f?f.name:''; }
-        function highlightTags(txt) { let f=txt||''; appData.members.forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5 shadow-sm">@${m.name}</span>`)); return f; }
-        
-        function addComment(cId, isP) {
-            const txt = document.getElementById(`comment-text-${cId}`)?.value.trim()||'', f = document.getElementById(`comment-file-${cId}`)?.files[0];
-            if(!txt && !f) return alert(t('requireContent'));
-            const m = appData.members.find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
-            let cTitle = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)?.text : appData.sharedChallenges.find(x=>x.id===cId)?.title;
-            
-            const save = (img='') => {
-                const obj = { id: Date.now(), memberId: loggedInUserId, memberName: m?m.name:'User', memberAvatar: m?m.avatar:'', text: txt, image: img, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, replyTo: rp?{commentId:rp.cmId, authorName:rp.aName}:null };
-                const arr = isP ? ((appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)) : appData.sharedChallenges.find(x=>x.id===cId);
-                if(arr){ arr.comments = arr.comments||[]; arr.comments.push(obj); }
-                if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
-                appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
-                cancelReplyToComment(cId); dbRef.set(appData);
-            };
-            f ? compressImage(f, save) : save();
-        }
-        function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); }
-
-        function renderCommentSectionHTML(cId, cms=[], isP=false) {
-            let lst = cms.length ? cms.map(c => `
-                <div class="p-2.5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xs space-y-1.5 border border-slate-100 dark:border-slate-700">
-                    <div class="flex justify-between">
-                        <div class="flex items-center gap-1.5 font-bold">${c.memberAvatar?`<img src="${c.memberAvatar}" class="w-5 h-5 rounded-full object-cover">`:`<div class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px]">${c.memberName.charAt(0)}</div>`}<span class="text-slate-700 dark:text-slate-200">${c.memberName}</span><span class="text-[9px] text-slate-400 font-normal">(${c.timestamp})</span></div>
-                        <div class="flex gap-2"><button onclick="setReplyToComment(${cId}, ${c.id}, '${c.memberName}', '${c.memberId}')" class="text-indigo-600 hover:underline text-[10px] font-bold">↩️</button>${c.memberId===loggedInUserId?`<button onclick="deleteComment(${cId}, ${c.id}, ${isP})" class="text-rose-500 hover:underline text-[10px] font-bold">✕</button>`:''}</div>
-                    </div>
-                    ${c.replyTo?`<div class="text-[9px] text-indigo-600 font-bold bg-indigo-50 dark:bg-indigo-900/40 px-2 py-0.5 rounded-lg w-fit">↩️ ${t('replyingTo')} @${c.replyTo.authorName}</div>`:''}
-                    ${c.text?`<p class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">${highlightTags(c.text)}</p>`:''}
-                    ${c.image?`<img src="${c.image}" class="max-h-40 rounded-xl border dark:border-slate-700 object-cover mt-1">`:''}
-                </div>`).join('') : `<p class="text-slate-400 italic text-[11px] text-center py-2">${t('noComments')}</p>`;
-            let tags = `<div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px]"><span class="text-slate-400 font-bold shrink-0">${t('quickTag')}</span>` + appData.members.map(m=>`<button type="button" onclick="insertTagToComment(${cId}, '${m.name}')" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded-full font-bold shrink-0 hover:bg-slate-300">@${m.name}</button>`).join('') + `</div>`;
-            return `
-                <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
-                    <button type="button" onclick="toggleCommentSection(${cId})" class="flex justify-between w-full text-xs font-bold text-slate-500 hover:text-indigo-600 transition"><span class="flex gap-1.5">${t('commentCount')} (${cms.length})</span><span class="text-[10px]">▼</span></button>
-                    <div id="comment-section-${cId}" class="space-y-3 hidden bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-700">
-                        <div class="space-y-2 max-h-52 overflow-y-auto pr-1">${lst}</div>
-                        <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                            <div id="reply-banner-${cId}" class="hidden flex justify-between items-center bg-indigo-100 dark:bg-indigo-900/40 px-2.5 py-1 rounded-xl text-[11px] text-indigo-700 dark:text-indigo-300 font-bold"><span>↩️ ${t('replyingTo')} <span id="reply-name-${cId}"></span></span><button type="button" onclick="cancelReplyToComment(${cId})" class="text-rose-500 font-extrabold text-sm">✕</button></div>
-                            ${tags}
-                            <textarea id="comment-text-${cId}" rows="2" placeholder="${t('writeComment')}" class="w-full px-3 py-1.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100"></textarea>
-                            <div class="flex justify-between gap-2">
-                                <div class="flex gap-1.5 items-center"><label for="comment-file-${cId}" class="cursor-pointer bg-slate-200 dark:bg-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-700 dark:text-slate-200">🖼️ ${t('image')}</label><input type="file" id="comment-file-${cId}" accept="image/*" onchange="previewCommentImage(${cId}, event)" class="hidden"><span id="comment-filename-${cId}" class="text-[9px] text-slate-400 truncate max-w-[100px]"></span></div>
-                                <button type="button" onclick="addComment(${cId}, ${isP})" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm">${t('send')}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
         function showDescriptionModalById(id, isP) {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
             let tT="", d="", s="", tgt=sysCfg.defaultTargetDays, tot=sysCfg.defaultTotalDays, isB=false, cR=0, cP=0, sR='', sP='', cnt=0, creatorNameDisplay="", creatorAvatarHTML="", modalTitleIconHTML="";
@@ -3095,43 +2884,26 @@
                 grps.forEach((c,i) => {
                     htmlTxt += `
                         <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
-                            <div class="flex justify-between items-center w-full overflow-hidden gap-2">
-                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 text-xs min-w-0 shrink">
-                                    <span class="shrink-0">${c.isBigPlay ? '🔥' : '🎯'}</span>
-                                    <span class="truncate">${c.title}</span>
-                                    <sup class="text-indigo-500 font-bold text-[10px] shrink-0">${i+1}</sup>
-                                </div>
-                                <span class="text-[10px] text-slate-400 font-medium shrink-0">[${getDateString(c.startDate, 0)}]</span>
+                            <div class="flex justify-between items-start gap-2">
+                                <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-100">${c.isBigPlay?'🔥':'🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[9px] ml-0.5">${i+1}</sup></h4>
                             </div>
-                            <div class="space-y-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/80">`;
+                            <div class="space-y-1.5 pt-1">
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 flex justify-between"><span>👤 ${currentMemberName}:</span>`;
                     
-                    const acts = Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up');
-                    acts.map(mId => { 
-                        const st=c.participants[mId], cnt=((c.progress&&c.progress[mId])?c.progress[mId].filter(x=>x&&x.completed).length:0), rsn=(c.participantReasons&&c.participantReasons[mId])||''; 
-                        return {mId, n:appData.members.find(x=>x.id===mId)?.name||mId, cnt, st, rsn}; 
-                    }).sort((a,b)=>b.cnt-a.cnt).forEach(m => {
-                        const tgt = c.targetDays || sysCfg.defaultTargetDays;
-                        const tot = c.totalDays || sysCfg.defaultTotalDays;
-                        const isD = m.cnt >= tgt;
-                        const cFinished = isChallengeFinished(c.startDate, tot);
-                        const isF = m.st==='given_up' || (!isD && cFinished);
-                        const pct = Math.round((m.cnt / tgt) * 100);
-                        
-                        let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                        let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : '');
-                        
-                        htmlTxt += `
-                            <div class="space-y-1 text-[11px]">
-                                <div class="flex justify-between items-center gap-2">
-                                    <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 min-w-0 shrink truncate">${getMemberAvatarHTML(m.mId, "w-4 h-4")} <span class="truncate">${m.n}</span></span>
-                                    <span class="font-bold text-slate-600 dark:text-slate-300 shrink-0 flex items-center gap-1">${m.cnt}/${tgt} (${pct}%) ${statusBadge}</span>
-                                </div>
-                                <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                    <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                                ${m.rsn ? `<p class="text-[10px] text-rose-500 italic">${t('txtReason')}: ${m.rsn}</p>` : ''}
+                    const pStatus = c.participants ? c.participants[loggedInUserId] : null;
+                    if (!pStatus) {
+                        htmlTxt += `<span class="font-bold text-slate-400 italic">Chưa tham gia</span></p>`;
+                    } else if (pStatus === 'given_up') {
+                        htmlTxt += `<span class="font-bold text-rose-500">${t('givenUpStatus')}</span></p>`;
+                    } else {
+                        const tgt = c.targetDays||sysCfg.defaultTargetDays;
+                        const p = (c.progress&&c.progress[loggedInUserId]) ? c.progress[loggedInUserId].filter(x=>x&&x.completed).length : 0;
+                        const pct = Math.round((p/tgt)*100);
+                        htmlTxt += `<span class="font-bold text-indigo-600 dark:text-indigo-400">${p}/${tgt} (${pct}%)</span></p>
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-indigo-400 dark:bg-indigo-500 h-full rounded-full" style="width: ${Math.min(pct, 100)}%"></div>
                             </div>`;
-                    });
+                    }
                     htmlTxt += `</div></div>`;
                 });
             } else {
@@ -3139,224 +2911,186 @@
             }
             htmlTxt += `</div></div>`;
 
-            const myH = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
-            const userAv = getMemberAvatarHTML(loggedInUserId, "w-4 h-4");
-
+            const pers = (appData.personalHabits[loggedInUserId]||[]).filter(h=>!h.archived).sort(sortByStartDate);
             htmlTxt += `
-                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-2">
+                <div id="act-box-per" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs mt-3">
                     <button onclick="toggleActivityAccordion('per')" class="w-full p-3 bg-emerald-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition">
-                        <span class="flex items-center gap-1.5">${userAv} ${currentMemberName.toUpperCase()} (${myH.length})</span>
+                        <span class="flex items-center gap-1.5">${getMemberAvatarHTML(loggedInUserId, "w-4 h-4")} ${t('personal').toUpperCase()} (${pers.length})</span>
                         <span id="act-arrow-per" class="text-xs transition-transform duration-200">▼</span>
                     </button>
-                    <div id="act-content-per" class="p-3 space-y-2 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
+                    <div id="act-content-per" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
 
-            if(myH.length){
-                myH.forEach((h,i) => {
-                    const tgt = h.targetDays || sysCfg.defaultTargetDays;
-                    const tot = h.totalDays || sysCfg.defaultTotalDays;
-                    const cnt = (h.days||[]).filter(x=>x&&x.completed).length;
-                    const isD = cnt >= tgt;
-                    const cFinished = isChallengeFinished(h.startDate, tot);
-                    const isF = h.status==='given_up' || (!isD && cFinished);
-                    const pct = Math.round((cnt / tgt) * 100);
-                    
-                    let barColor = isF ? 'bg-rose-300 dark:bg-rose-900/60' : (h.status==='paused' ? 'bg-amber-300' : 'bg-emerald-300 dark:bg-emerald-400/80');
-                    let statusBadge = isF ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` : (h.status==='paused' ? `<span class="text-amber-600 font-bold text-[13px] leading-none shrink-0" title="${t('pauseChallenge')}">⏸️</span>` : (isD ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` : ''));
-
+            if(pers.length){
+                pers.forEach((h,i) => {
                     htmlTxt += `
-                        <div class="p-2.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1.5">
-                            <div class="flex justify-between items-center text-xs w-full overflow-hidden gap-2">
-                                <div class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1 min-w-0 shrink">
-                                    <span class="shrink-0 leading-none">${userAv}</span>
-                                    <span class="truncate">${h.text}</span>
-                                    <sup class="text-emerald-500 font-bold text-[10px] shrink-0">${i+1}</sup>
-                                    <span class="text-[10px] text-slate-400 font-normal shrink-0">[${getDateString(h.startDate, 0)}]</span>
-                                </div>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 text-[11px] shrink-0 flex items-center gap-1">${cnt}/${tgt} (${pct}%) ${statusBadge}</span>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2">
+                            <div class="flex justify-between items-start gap-2">
+                                <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-100">📌 ${h.text}<sup class="text-emerald-500 font-bold text-[9px] ml-0.5">${i+1}</sup></h4>
                             </div>
-                            <div class="w-full bg-slate-200/70 dark:bg-slate-700/60 rounded-full h-1.5 overflow-hidden">
-                                <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(pct, 100)}%"></div>
-                            </div>
-                            ${h.reason ? `<p class="text-[10px] text-slate-400 italic">${t('txtReason')}: ${h.reason}</p>` : ''}
-                        </div>`;
+                            <div class="space-y-1.5 pt-1">
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 flex justify-between"><span>👤 ${currentMemberName}:</span>`;
+                    
+                    if (h.status === 'given_up') {
+                        htmlTxt += `<span class="font-bold text-rose-500">${t('givenUpStatus')}</span></p>`;
+                    } else {
+                        const tgt = h.targetDays||sysCfg.defaultTargetDays;
+                        const p = (h.days||[]).filter(x=>x&&x.completed).length;
+                        const pct = Math.round((p/tgt)*100);
+                        htmlTxt += `<span class="font-bold text-emerald-600 dark:text-emerald-400">${p}/${tgt} (${pct}%)</span></p>
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-emerald-400 dark:bg-emerald-500 h-full rounded-full" style="width: ${Math.min(pct, 100)}%"></div>
+                            </div>`;
+                    }
+                    htmlTxt += `</div></div>`;
                 });
             } else {
                 htmlTxt += `<p class="text-[11px] text-slate-400 italic text-center py-2">${t('noHabits')}</p>`;
             }
             htmlTxt += `</div></div>`;
-            
+
             document.getElementById('report-html-preview').innerHTML = htmlTxt;
         }
 
         function toggleRewardRulesAccordion() {
-            const ruleBox = document.getElementById('reward-rule-box');
+            const box = document.getElementById('reward-rule-box');
             const arrow = document.getElementById('reward-rules-arrow');
-            if(ruleBox) {
-                ruleBox.classList.toggle('hidden');
-                if(arrow) arrow.style.transform = ruleBox.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            }
+            box.classList.toggle('hidden');
+            arrow.style.transform = box.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        function parseRewardString(str) {
+            if (!str) return { total: 0, items: [] };
+            const parts = str.split('+');
+            let totalMoney = 0;
+            let items = [];
+            
+            parts.forEach(p => {
+                const pt = p.trim();
+                if (!pt) return;
+                
+                const matchK = pt.match(/^(\d+)k$/i);
+                if (matchK) {
+                    totalMoney += parseInt(matchK[1]);
+                    return;
+                }
+                
+                const matchNumText = pt.match(/^(\d+)\s+(.+)$/);
+                if (matchNumText) {
+                    items.push({ num: parseInt(matchNumText[1]), text: matchNumText[2].trim() });
+                    return;
+                }
+                
+                items.push({ num: 1, text: pt });
+            });
+            
+            return { total: totalMoney, items };
+        }
+
+        function combineRewards(rewardsArr) {
+            let totalMoney = 0;
+            let itemMap = {};
+            
+            rewardsArr.forEach(r => {
+                const parsed = parseRewardString(r);
+totalMoney += parsed.total;
+                parsed.items.forEach(item => {
+                    const key = item.text.toLowerCase();
+                    if (itemMap[key]) {
+                        itemMap[key].num += item.num;
+                        itemMap[key].text = item.text; // Giữ lại chữ hoa chữ thường nguyên bản
+                    } else {
+                        itemMap[key] = { num: item.num, text: item.text };
+                    }
+                });
+            });
+            
+            let resultParts = [];
+            if (totalMoney > 0) resultParts.push(`${totalMoney}k`);
+            Object.values(itemMap).forEach(item => {
+                resultParts.push(`${item.num} ${item.text}`);
+            });
+            
+            return resultParts.join(' + ');
         }
 
         function renderRewardsSummary() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            const container = document.getElementById('rewards-summary-list'); container.innerHTML = '';
-            appData.members.forEach(m => {
-                let bookCount = 0, rew = 0, pen = 0;
-                let groupLogs = [], personalLogs = [];
-
-                const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
-                sortedGroup.forEach(c => {
-                    const tgt = c.targetDays||sysCfg.defaultTargetDays, tot = c.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
-                    const icon = c.isBigPlay ? '🔥' : '🎯';
-                    const cFinished = isChallengeFinished(c.startDate, tot);
-                    
-                    if(stat === true || stat === 'given_up') {
-                        const done = (c.progress&&c.progress[m.id]) ? c.progress[m.id].filter(i=>i&&i.completed).length : 0;
-                        const isFailed = (stat === 'given_up') || (done < tgt && cFinished);
-
-                        if (isFailed) {
-                            const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
-                        } else if (done >= tgt) {
-                            if(c.isBigPlay){ 
-                                rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
-                            }
-                            else { 
-                                bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
-                            }
-                        }
-                    }
-                });
-                
-                if(m.id === loggedInUserId) {
-                    const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
-                    const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
-                    sortedPersonal.forEach(h => {
-                        const tgt = h.targetDays||sysCfg.defaultTargetDays, tot = h.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
-                        const cFinished = isChallengeFinished(h.startDate, tot);
-                        const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
-
-                        if(isFailed) {
-                            personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
-                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
-                                        <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
-                                        <span class="shrink-0">➔ 💸</span>
-                                        <span class="truncate">${h.selfPenalty||''}</span>
-                                        <span class="shrink-0">❌</span>
-                                    </div>
-                                </div>`);
-                        } else if(done >= tgt) {
-                            personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
-                                    <div class="flex items-center gap-1.5 min-w-0 shrink">
-                                        <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
-                                        <span class="shrink-0">➔ 🎁</span>
-                                        <span class="truncate">${h.selfReward||''}</span>
-                                        <span class="shrink-0">✅</span>
-                                    </div>
-                                </div>`);
-                        }
-                    });
-                }
-                
-                const badges = [];
-                if(bookCount>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${bookCount} ${sysCfg.defaultReward}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${rew}k</span>`);
-                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">0 ${t('book')}</span>`);
-                
-                let detailsHTML = "";
-                if (groupLogs.length || personalLogs.length) {
-                    detailsHTML = `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
-                    if (groupLogs.length) detailsHTML += groupLogs.join('');
-                    if (groupLogs.length && personalLogs.length) {
-                        detailsHTML += `<hr class="border-slate-200 dark:border-slate-700/80 my-1.5 opacity-60 personal-reward-line">`;
-                    }
-                    if (personalLogs.length) detailsHTML += personalLogs.join('');
-                    detailsHTML += `</div>`;
-                } else {
-                    detailsHTML = `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
-                }
-
-                container.innerHTML += `
-                    <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center gap-2 w-full overflow-hidden">
-                            <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200 shrink min-w-0">
-                                ${getMemberAvatarHTML(m.id, "w-6 h-6")} <span class="truncate">${m.name}</span>
-                            </span>
-                            <div class="flex gap-1.5 items-center shrink-0 flex-wrap justify-end">
-                                ${badges.join('')} 
-                                <span class="text-rose-600 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">-${pen}k</span>
-                            </div>
-                        </div>
-                        ${detailsHTML}
-                    </div>`;
-            });
-        }
-
-        function openLeaderboardModal(id) {
-            const c = appData.sharedChallenges.find(x=>x.id===id); if(!c)return;
-            document.getElementById('leaderboard-modal-title').innerText = c.title; 
-            renderLeaderboardList(c);
-            document.getElementById('leaderboard-modal').classList.remove('hidden');
-        }
-        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
-        
-        function renderLeaderboardList(c) {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            const container = document.getElementById('leaderboard-list-container');
-            if(!container) return;
-            const tgt = c.targetDays || sysCfg.defaultTargetDays;
+            let combinedRewardStrs = [];
+            let totalPenalty = 0;
             
-            const mems = Object.keys(c.participants||{}).filter(m => c.participants[m] === true || c.participants[m] === 'given_up').map(mId => {
-                const u = appData.members.find(x => x.id === mId);
-                const prog = (c.progress && c.progress[mId]) ? c.progress[mId] : [];
-                const cnt = prog.filter(x => x && x.completed).length;
-                const pct = Math.round((cnt / tgt) * 100);
-                const streak = getStreakInfo(prog);
-                return { id: mId, name: u ? u.name : mId, cnt, pct, streak: streak.active, isGivenUp: c.participants[mId] === 'given_up' };
-            }).sort((a, b) => b.cnt - a.cnt);
+            let summaryHTML = "";
 
-            if(!mems.length) {
-                container.innerHTML = `<p class="text-center text-slate-400 italic py-6 text-xs">${t('notJoined')}</p>`;
-                return;
-            }
-
-            container.innerHTML = mems.map(m => {
-                const avHTML = getMemberAvatarHTML(m.id, "w-8 h-8");
-                const progressBg = m.isGivenUp ? 'bg-rose-400' : 'bg-indigo-300 dark:bg-indigo-400/80';
-                const textColor = m.isGivenUp ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400';
+            const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
+            grps.forEach((c, idx) => {
+                const tot = c.totalDays || sysCfg.defaultTotalDays;
+                const tgt = c.targetDays || sysCfg.defaultTargetDays;
+                const pStatus = c.participants ? c.participants[loggedInUserId] : null;
                 
-                return `
-                    <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-2">
-                        <div class="flex justify-between items-center w-full overflow-hidden gap-2">
-                            <div class="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-100 text-sm min-w-0 shrink">
-                                ${avHTML}
-                                <span class="truncate">${m.name}</span>
+                if (pStatus) {
+                    const prog = c.progress && c.progress[loggedInUserId] ? c.progress[loggedInUserId] : [];
+                    const cnt = prog.filter(x => x && x.completed).length;
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(c.startDate, tot);
+                    const isFailed = (pStatus === 'given_up') || (!isCompleted && cFinished);
+
+                    let resStr = "";
+                    let resClass = "";
+                    let icon = "";
+
+                    if (isCompleted) {
+                        const rw = c.isBigPlay ? `${c.customReward||0}k` : sysCfg.defaultReward;
+                        combinedRewardStrs.push(rw);
+                        resStr = `+${rw}`;
+                        resClass = "text-emerald-600 bg-emerald-50 border-emerald-200 dark:bg-emerald-950/50 dark:border-emerald-800";
+                        icon = "🎁";
+                    } else if (isFailed) {
+                        const pen = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty;
+                        totalPenalty += pen;
+                        resStr = `-${pen}k`;
+                        resClass = "text-rose-600 bg-rose-50 border-rose-200 dark:bg-rose-950/50 dark:border-rose-800";
+                        icon = "💸";
+                    } else {
+                        return; // Chưa kết thúc
+                    }
+
+                    summaryHTML += `
+                        <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs">
+                            <div class="truncate pr-2 w-2/3">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">${c.isBigPlay?'🔥':'🎯'} ${c.title}</span>
+                                <span class="text-[9px] text-slate-400 block mt-0.5">${formatDateString(c.startDate)}</span>
                             </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${m.streak}</span>
-                                <span class="text-xs font-bold ${textColor}">${m.cnt}/${tgt} (${m.pct}%)</span>
+                            <div class="${resClass} px-2 py-1 rounded-lg border font-bold flex items-center gap-1 shrink-0">
+                                <span>${icon}</span> <span>${resStr}</span>
                             </div>
-                        </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700/60 rounded-full h-2 overflow-hidden">
-                            <div class="${progressBg} h-full rounded-full transition-all duration-300" style="width: ${Math.min(m.pct, 100)}%"></div>
-                        </div>
+                        </div>`;
+                }
+            });
+
+            const combinedRewardFinal = combineRewards(combinedRewardStrs);
+
+            let headerHTML = `
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div class="bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-2xl border border-emerald-200 dark:border-emerald-800 flex flex-col items-center justify-center text-center">
+                        <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Tổng nhận</span>
+                        <span class="text-sm font-black text-emerald-700 dark:text-emerald-300 mt-1">${combinedRewardFinal || '0'}</span>
                     </div>
-                `;
-            }).join('');
+                    <div class="bg-rose-50 dark:bg-rose-950/40 p-3 rounded-2xl border border-rose-200 dark:border-rose-800 flex flex-col items-center justify-center text-center">
+                        <span class="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase">Tổng nộp</span>
+                        <span class="text-sm font-black text-rose-700 dark:text-rose-300 mt-1">${totalPenalty}k</span>
+                    </div>
+                </div>
+            `;
+
+            const listContainer = document.getElementById('rewards-summary-list');
+            if (summaryHTML === "") {
+                listContainer.innerHTML = headerHTML + `<p class="text-[11px] text-slate-400 italic text-center py-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700">${t('noRewardRecord')}</p>`;
+            } else {
+                listContainer.innerHTML = headerHTML + summaryHTML;
+            }
         }
 
+        // INIT
+        updateStaticTexts();
         displayRandomSlogan();
     </script>
 </body>
