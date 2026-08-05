@@ -448,6 +448,7 @@
             <button id="action-btn-share" onclick="triggerMenuAction('share')" class="hidden w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition items-center gap-2">📷 <span id="m-share-text">Chia sẻ thành tích</span></button>
             <button id="action-btn-pause" onclick="triggerMenuAction('pause')" class="w-full text-left py-2.5 px-3 hover:bg-amber-50 text-amber-600 rounded-xl transition items-center gap-2 hidden">⏸️ <span id="m-pause">Tạm dừng</span></button>
             <button id="action-btn-resume" onclick="triggerMenuAction('resume')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition items-center gap-2 hidden">▶️ <span id="m-resume">Tiếp tục</span></button>
+            <button id="action-btn-rejoin" onclick="triggerMenuAction('rejoin')" class="w-full text-left py-2.5 px-3 hover:bg-emerald-50 text-emerald-600 rounded-xl transition flex items-center gap-2 hidden">🚀 <span id="m-rejoin">Tham gia trở lại</span></button>
             <button id="action-btn-giveup" onclick="triggerMenuAction('giveup')" class="w-full text-left py-2.5 px-3 hover:bg-rose-50 text-rose-600 rounded-xl transition flex items-center gap-2">🏳️ <span id="m-giveup">Bỏ cuộc</span></button>
             <button id="action-btn-archive" onclick="triggerMenuAction('archive')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-slate-600 rounded-xl transition flex items-center gap-2">📦 <span id="m-archive">Lưu trữ</span></button>
             <button id="action-btn-restore" onclick="triggerMenuAction('restore')" class="w-full text-left py-2.5 px-3 hover:bg-slate-100 text-indigo-600 rounded-xl transition flex items-center gap-2 hidden">♻️ <span id="m-restore">Khôi phục</span></button>
@@ -668,6 +669,7 @@
                 pauseChallenge: "Tạm dừng",
                 pausedStatus: "Tạm dừng",
                 giveUpChallenge: "Bỏ cuộc",
+                rejoinChallenge: "Tham gia trở lại",
                 givenUpStatus: "Bỏ cuộc",
                 resumeChallenge: "Tiếp tục",
                 resumeHabit: "Tiếp tục",
@@ -876,6 +878,7 @@
                 sysNewReg: "Đăng ký mới",
                 sysWaitApprove: "đang chờ bạn phê duyệt.",
                 ntfGiveUp: "đã bỏ cuộc thử thách",
+                ntfRejoin: "đã tham gia trở lại thử thách",
                 ntfJoin: "đã tham gia thử thách",
                 ntfComplete: "đã hoàn thành mục tiêu thử thách",
                 ntfCheckin: "đã Check-in ngày",
@@ -907,6 +910,7 @@
                 pauseChallenge: "Pause",
                 pausedStatus: "Paused",
                 giveUpChallenge: "Give Up",
+                rejoinChallenge: "Rejoin",
                 givenUpStatus: "Given up",
                 resumeChallenge: "Resume",
                 resumeHabit: "Resume",
@@ -1115,6 +1119,7 @@
                 sysNewReg: "New Registration",
                 sysWaitApprove: "is waiting for your approval.",
                 ntfGiveUp: "gave up the challenge",
+                ntfRejoin: "rejoined the challenge",
                 ntfJoin: "joined the challenge",
                 ntfComplete: "completed the challenge goal",
                 ntfCheckin: "checked-in on",
@@ -1396,6 +1401,7 @@
             document.getElementById('m-archive').innerText = t('archive');
             document.getElementById('m-restore').innerText = t('restore');
             document.getElementById('m-delete').innerText = t('deletePerm');
+            document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
             
             document.getElementById('lb-close-btn').innerText = t('closeBtn');
             document.getElementById('s-close-history-btn').innerText = t('closeBtn');
@@ -2467,13 +2473,17 @@
             btnR.classList.add('hidden');
             
             const btnGiveUp = document.getElementById('action-btn-giveup');
+            const btnRejoin = document.getElementById('action-btn-rejoin');
             if (isArch) {
                 btnGiveUp.classList.add('hidden');
+                btnRejoin.classList.add('hidden');
             } else {
                 if (st === 'given_up') {
                     btnGiveUp.classList.add('hidden');
+                    btnRejoin.classList.remove('hidden');
                 } else {
                     btnGiveUp.classList.remove('hidden');
+                    btnRejoin.classList.add('hidden');
                 }
             }
 
@@ -2485,6 +2495,7 @@
             if(!selectedMenuChallenge) return; const { id, isPersonal } = selectedMenuChallenge; closeActionMenuModal();
             if(act==='share') captureChallengeCard(id);
             else if(act==='giveup') giveUpChallenge(id, isPersonal);
+            else if(act==='rejoin') rejoinChallenge(id, isPersonal);
             else if(act==='archive') archiveChallenge(id, isPersonal, true);
             else if(act==='restore') archiveChallenge(id, isPersonal, false);
             else if(act==='delete') deleteChallenge(id, isPersonal);
@@ -2618,7 +2629,14 @@
             }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='given_up'; h.reason=r;} } dbRef.set(appData);
         }
-    
+        function rejoinChallenge(id, isP) {
+            if(!isP){ 
+                const c=appData.sharedChallenges.find(x=>x.id===id); 
+                if(c&&c.participants){ 
+                    c.participants[loggedInUserId]=true; 
+                    notifyAllChallengeMembers(c, 'rejoin', `${t('ntfRejoin')} "${c.title}".`);
+                } 
+            }
             else { const h=(appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===id); if(h){h.status='active';} } dbRef.set(appData);
         }
         function archiveChallenge(id, isP, toArchive) {
