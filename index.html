@@ -381,9 +381,11 @@
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">💡 <span id="hint-modal-title">Kho ý tưởng</span></h3>
-                <div class="flex items-center gap-2">
+                
+                <!-- Tăng khoảng cách lên gap-3 và thiết kế lại nút X thành một ô bấm thân thiện với mobile -->
+                <div class="flex items-center gap-3">
                     <button onclick="renderHintList()" id="hint-refresh-btn" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">🔄</button>
-                    <button onclick="closeHintModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                    <button onclick="closeHintModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 w-7 h-7 rounded-lg font-bold flex items-center justify-center transition">✕</button>
                 </div>
             </div>
             <div id="hints-list-container" class="space-y-2 text-xs max-h-[60vh] overflow-y-auto pr-1"></div>
