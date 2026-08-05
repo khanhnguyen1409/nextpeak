@@ -110,3 +110,24 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+<!-- Script khởi chạy tự động -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy dữ liệu từ Firebase để khởi tạo giao diện đăng nhập
+            dbRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    appData = Object.assign(appData, data);
+                }
+                renderUserSelect();
+            });
+
+            const savedUser = localStorage.getItem('nextPeak_loggedInUser');
+            if (savedUser) {
+                loggedInUserId = savedUser;
+                document.getElementById('auth-modal').classList.add('hidden');
+            } else {
+                document.getElementById('auth-modal').classList.remove('hidden');
+            }
+        });
+    </script>
