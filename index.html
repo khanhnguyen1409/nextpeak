@@ -2456,15 +2456,49 @@
         }
 
         async function compressImage(file, cb) {
-            let f = file;
-            if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
-                try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
-                catch (e) { return alert(t('heicError')); }
-            }
-            const r = new FileReader();
-            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
-            r.readAsDataURL(f);
-        }
+    let f = file;
+    // Xử lý ảnh HEIC của iOS (nâng chất lượng lên 0.9)
+    if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
+        try { 
+            const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.9 }); 
+            f = Array.isArray(c) ? c[0] : c; 
+        } 
+        catch (e) { return alert(t('heicError')); }
+    }
+    
+    const r = new FileReader();
+    r.onload = e => { 
+        const i = new Image(); 
+        i.onload = () => { 
+            const cv = document.createElement('canvas'); 
+            let w = i.width, h = i.height; 
+            
+            // Giới hạn kích thước tối đa là 1600px để đọc rõ chữ
+            const MAX_SIZE = 1600; 
+
+            if(w > h){
+                if(w > MAX_SIZE){
+                    h *= MAX_SIZE / w;
+                    w = MAX_SIZE;
+                }
+            } else {
+                if(h > MAX_SIZE){
+                    w *= MAX_SIZE / h;
+                    h = MAX_SIZE;
+                }
+            } 
+            
+            cv.width = w; 
+            cv.height = h; 
+            cv.getContext('2d').drawImage(i, 0, 0, w, h); 
+            
+            // Xuất ảnh với chất lượng 90% (0.9)
+            cb(cv.toDataURL('image/jpeg', 0.9)); 
+        }; 
+        i.src = e.target.result; 
+    };
+    r.readAsDataURL(f);
+}
         
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
