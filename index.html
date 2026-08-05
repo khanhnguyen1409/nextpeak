@@ -1443,26 +1443,24 @@ async function uploadToImgbb(base64Str) {
 
         function renderFilterOptions() {
             const sel = document.getElementById('main-filter-select');
-    const oldVal = sel.value;
-    if (activeTab === 'dashboard') {
-        sel.innerHTML = `
-            <option value="my">${t('optMy')}</option>
-            <option value="new">${t('optNew')}</option>
-            <option value="archived">${t('optArchived')}</option>
-        `;
-        if (['my', 'new', 'archived'].includes(oldVal)) sel.value = oldVal;
-        else { sel.value = 'my'; currentFilter = 'my'; }
-    } else {
-        sel.innerHTML = `
-            <option value="active">${t('optActive')}</option>
-            <option value="archived">${t('optArchived')}</option>
-        `;
-        if (['active', 'archived'].includes(oldVal)) sel.value = oldVal;
-        else { sel.value = 'active'; currentFilter = 'active'; }
-    }
-
-    // GỌI HÀM NÀY ĐỂ KÍCH HOẠT LỌC VÀ HIỂN THỊ LẠI DANH SÁCH THỬ THÁCH
-    setFilter(sel.value);
+            const oldVal = sel.value;
+            if (activeTab === 'dashboard') {
+                sel.innerHTML = `
+                    <option value="my">${t('optMy')}</option>
+                    <option value="new">${t('optNew')}</option>
+                    <option value="archived">${t('optArchived')}</option>
+                `;
+                if (['my', 'new', 'archived'].includes(oldVal)) sel.value = oldVal;
+                else { sel.value = 'my'; currentFilter = 'my'; }
+            } else {
+                sel.innerHTML = `
+                    <option value="active">${t('optActive')}</option>
+                    <option value="archived">${t('optArchived')}</option>
+                `;
+                if (['active', 'archived'].includes(oldVal)) sel.value = oldVal;
+                else { sel.value = 'active'; currentFilter = 'active'; }
+            }
+        }
 
         function updateStaticTexts() {
             document.getElementById('t-app-title').innerText = t('appTitle');
