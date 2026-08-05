@@ -643,6 +643,34 @@
 
     <!-- MAIN SCRIPT -->
     <script>
+// Khai báo API Key của ImgBB (Bạn có thể thay key của bạn vào đây)
+const IMGBB_API_KEY = "bd0a030a81f4c79ab3b1184011f1bd99";
+
+// Hàm gửi ảnh lên ImgBB
+async function uploadToImgbb(base64Str) {
+    try {
+        const base64Data = base64Str.includes(',') ? base64Str.split(',')[1] : base64Str;
+        const formData = new FormData();
+        formData.append("key", IMGBB_API_KEY);
+        formData.append("image", base64Data);
+
+        const response = await fetch("https://api.imgbb.com/1/upload", {
+            method: "POST",
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            return data.data.url; // Trả về link ảnh trực tiếp
+        } else {
+            console.error("Imgbb upload error:", data);
+            return null;
+        }
+    } catch (error) {
+        console.error("Imgbb request failed:", error);
+        return null;
+    }
+}
+        
         const translations = {
             vi: {
                 appTitle: "NEXT PEAK",
@@ -1790,10 +1818,34 @@
                 hasChanged = true;
             }
 
-            if (tempAvatarBase64 !== (m.avatar || '')) {
-                appData.members[mIdx].avatar = tempAvatarBase64;
-                hasChanged = true;
-            }
+            // Tìm đoạn này trong saveProfileChanges():
+if (tempAvatarBase64 !== (m.avatar || '')) {
+    let finalAvatarUrl = tempAvatarBase64;
+    
+    // THÊM ĐOẠN NÀY ĐỂ UPLOAD LÊN IMGBB NẾU LÀ ẢNH MỚI CHỌN
+    if (tempAvatarBase64.startsWith('data:image')) {
+        const btn = document.getElementById('profile-save-btn');
+        const oldText = btn.innerText;
+        btn.innerText = "Đang tải ảnh...";
+        btn.disabled = true;
+        
+        const url = await uploadToImgbb(tempAvatarBase64);
+        
+        btn.innerText = oldText;
+        btn.disabled = false;
+        
+        if (url) {
+            finalAvatarUrl = url;
+            tempAvatarBase64 = url;
+        } else {
+            alert("Lỗi tải ảnh lên ImgBB, vui lòng thử lại.");
+            return;
+        }
+    }
+    
+    appData.members[mIdx].avatar = finalAvatarUrl; // Lưu link thay vì Base64
+    hasChanged = true;
+}
 
             if (newPin) {
                 if (m.pin && m.pin !== oldPin) {
@@ -2413,15 +2465,49 @@
         }
 
         async function compressImage(file, cb) {
-            let f = file;
-            if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
-                try { const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.8 }); f = Array.isArray(c) ? c[0] : c; } 
-                catch (e) { return alert(t('heicError')); }
-            }
-            const r = new FileReader();
-            r.onload = e => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); let w = i.width, h = i.height; if(w>h){if(w>800){h*=800/w;w=800;}}else{if(h>800){w*=800/h;h=800;}} cv.width=w; cv.height=h; cv.getContext('2d').drawImage(i,0,0,w,h); cb(cv.toDataURL('image/jpeg', 0.7)); }; i.src = e.target.result; };
-            r.readAsDataURL(f);
-        }
+    let f = file;
+    // Xử lý ảnh định dạng HEIC trên iPhone/iOS
+    if (f.name.match(/\.(heic|heif)$/i) || f.type.match(/heic|heif/i)) {
+        try { 
+            const c = await heic2any({ blob: f, toType: 'image/jpeg', quality: 0.9 }); 
+            f = Array.isArray(c) ? c[0] : c; 
+        } 
+        catch (e) { return alert(t('heicError')); }
+    }
+    
+    const r = new FileReader();
+    r.onload = e => { 
+        const i = new Image(); 
+        i.onload = () => { 
+            const cv = document.createElement('canvas'); 
+            let w = i.width, h = i.height; 
+            
+            // Giới hạn tối đa 1600px để zoom đọc rõ chữ trang sách
+            const MAX_SIZE = 1600; 
+
+            if(w > h){
+                if(w > MAX_SIZE){
+                    h *= MAX_SIZE / w;
+                    w = MAX_SIZE;
+                }
+            } else {
+                if(h > MAX_SIZE){
+                    w *= MAX_SIZE / h;
+                    h = MAX_SIZE;
+                }
+            } 
+            
+            cv.width = w; 
+            cv.height = h; 
+            cv.getContext('2d').drawImage(i, 0, 0, w, h); 
+            
+            // Xuất file JPEG với chất lượng 90%
+            cb(cv.toDataURL('image/jpeg', 0.9)); 
+        }; 
+        i.src = e.target.result; 
+    };
+    r.readAsDataURL(f);
+}
         
         function previewDayImage(e) { const f = e.target.files[0]; if (f) { document.getElementById('day-file-name').innerText = f.name; compressImage(f, b => { tempDayImageBase64 = b; document.getElementById('modal-image-preview').src = b; document.getElementById('modal-image-preview-container').classList.remove('hidden'); }); } else document.getElementById('day-file-name').innerText = t('noFileSelected'); }
         function removeDayImage() { tempDayImageBase64 = ''; document.getElementById('modal-image-file').value = ''; document.getElementById('day-file-name').innerText = t('noFileSelected'); document.getElementById('modal-image-preview-container').classList.add('hidden'); }
@@ -2966,35 +3052,65 @@
             currentEditingDay = null; 
         }
 
-        function saveDayDetail() {
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            if(!currentEditingDay || currentEditingDay.isReadOnly) return;
-            const isComp = document.getElementById('modal-chk-completed').checked;
-            const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date(), updated = { completed: isComp, note: document.getElementById('modal-note').value.trim(), image: tempDayImageBase64, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` };
-            
-            if(!isPersonal){ 
-                const c = appData.sharedChallenges.find(x=>x.id===id); 
-                if(c){ 
-                    c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({})); 
-                    c.progress[loggedInUserId][dayIndex] = updated; 
-                    if(updated.completed) {
-                        const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
-                        const dateStr = getDateString(c.startDate, dayIndex);
-                        if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) {
-                            notifyAllChallengeMembers(c, 'complete', `${t('ntfComplete')} "${c.title}"! 🎉`);
-                        } else {
-                            notifyAllChallengeMembers(c, 'checkin', `${t('ntfCheckin')} ${dateStr} - ${c.title}`);
-                        }
-                    }
-                } 
-            } 
-            else { 
-                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
-            }
-            dbRef.set(appData); 
-            updateModalView(updated); 
-            setModalMode(false);
+        async function saveDayDetail() {
+    const sysCfg = appData.systemConfig || defaultSystemConfig;
+    if(!currentEditingDay || currentEditingDay.isReadOnly) return;
+    const isComp = document.getElementById('modal-chk-completed').checked;
+    const {id, dayIndex, isPersonal} = currentEditingDay, now = new Date();
+
+    // 1. Xử lý upload ảnh lên ImgBB trước khi lưu
+    let finalImageUrl = tempDayImageBase64;
+    if (tempDayImageBase64 && tempDayImageBase64.startsWith('data:image')) {
+        const btn = document.getElementById('m-save-btn');
+        const oldText = btn.innerText;
+        btn.innerText = "Đang tải ảnh...";
+        btn.disabled = true;
+        
+        const url = await uploadToImgbb(tempDayImageBase64);
+        
+        btn.innerText = oldText;
+        btn.disabled = false;
+        
+        if (url) {
+            finalImageUrl = url;
+            tempDayImageBase64 = url;
+        } else {
+            alert("Lỗi tải ảnh lên ImgBB, vui lòng thử lại.");
+            return;
         }
+    }
+
+    // 2. Tạo object updated với link ảnh ImgBB vừa nhận được
+    const updated = { 
+        completed: isComp, 
+        note: document.getElementById('modal-note').value.trim(), 
+        image: finalImageUrl, 
+        timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}` 
+    };
+    
+    if(!isPersonal){ 
+        const c = appData.sharedChallenges.find(x=>x.id===id); 
+        if(c){ 
+            c.progress[loggedInUserId] = c.progress[loggedInUserId]||Array(c.totalDays||sysCfg.defaultTotalDays).fill(null).map(()=>({})); 
+            c.progress[loggedInUserId][dayIndex] = updated; 
+            if(updated.completed) {
+                const cnt = c.progress[loggedInUserId].filter(x=>x&&x.completed).length;
+                const dateStr = getDateString(c.startDate, dayIndex);
+                if(cnt >= (c.targetDays||sysCfg.defaultTargetDays)) {
+                    notifyAllChallengeMembers(c, 'complete', `${t('ntfComplete')} "${c.title}"! 🎉`);
+                } else {
+                    notifyAllChallengeMembers(c, 'checkin', `${t('ntfCheckin')} ${dateStr} - ${c.title}`);
+                }
+            }
+        } 
+    } 
+    else { 
+        appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId].map(h => { if(h.id===id){ const d=h.days?[...h.days]:[]; d[dayIndex]=updated; return {...h, days:d}; } return h; }); 
+    }
+    dbRef.set(appData); 
+    updateModalView(updated); 
+    setModalMode(false);
+}
 
         function toggleDayModalProgressAccordion() {
             const list = document.getElementById('group-members-status-list');
@@ -3037,22 +3153,53 @@
         function previewCommentImage(cId, e) { const f=e.target.files[0], n=document.getElementById(`comment-filename-${cId}`); if(n) n.innerText=f?f.name:''; }
         function highlightTags(txt) { let f=txt||''; appData.members.forEach(m => f=f.replace(new RegExp(`@${m.name}`,'g'), `<span class="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded-md inline-block my-0.5 shadow-sm">@${m.name}</span>`)); return f; }
         
-        function addComment(cId, isP) {
-            const txt = document.getElementById(`comment-text-${cId}`)?.value.trim()||'', f = document.getElementById(`comment-file-${cId}`)?.files[0];
-            if(!txt && !f) return alert(t('requireContent'));
-            const m = appData.members.find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
-            let cTitle = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)?.text : appData.sharedChallenges.find(x=>x.id===cId)?.title;
-            
-            const save = (img='') => {
-                const obj = { id: Date.now(), memberId: loggedInUserId, memberName: m?m.name:'User', memberAvatar: m?m.avatar:'', text: txt, image: img, timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, replyTo: rp?{commentId:rp.cmId, authorName:rp.aName}:null };
-                const arr = isP ? ((appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)) : appData.sharedChallenges.find(x=>x.id===cId);
-                if(arr){ arr.comments = arr.comments||[]; arr.comments.push(obj); }
-                if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
-                appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
-                cancelReplyToComment(cId); dbRef.set(appData);
-            };
-            f ? compressImage(f, save) : save();
+        async function addComment(cId, isP) {
+    const txt = document.getElementById(`comment-text-${cId}`)?.value.trim()||'', f = document.getElementById(`comment-file-${cId}`)?.files[0];
+    if(!txt && !f) return alert(t('requireContent'));
+    const m = appData.members.find(x=>x.id===loggedInUserId), now = new Date(), rp = activeReplyTo[cId]||null;
+    let cTitle = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)?.text : appData.sharedChallenges.find(x=>x.id===cId)?.title;
+    
+    // Thêm async cho hàm save và tích hợp ImgBB ở đây
+    const save = async (img='') => {
+        let finalImgUrl = img;
+        
+        // Nếu có ảnh dạng base64 từ compressImage, đẩy lên ImgBB lấy link
+        if (img && img.startsWith('data:image')) {
+            const url = await uploadToImgbb(img);
+            if (url) {
+                finalImgUrl = url;
+            } else {
+                return alert("Lỗi tải ảnh lên ImgBB, vui lòng thử lại.");
+            }
         }
+
+        const obj = { 
+            id: Date.now(), 
+            memberId: loggedInUserId, 
+            memberName: m?m.name:'User', 
+            memberAvatar: m?m.avatar:'', 
+            text: txt, 
+            image: finalImgUrl, // Lưu link ImgBB vào object
+            timestamp: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} ${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}`, 
+            replyTo: rp?{commentId:rp.cmId, authorName:rp.aName}:null 
+        };
+        
+        const arr = isP ? ((appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId)) : appData.sharedChallenges.find(x=>x.id===cId);
+        if(arr){ arr.comments = arr.comments||[]; arr.comments.push(obj); }
+        if(rp&&rp.aId) sendNotification(rp.aId, 'reply', m.name, cTitle, txt);
+        appData.members.forEach(u => { if(txt.includes(`@${u.name}`) && (!rp||rp.aId!==u.id)) sendNotification(u.id, 'tag', m.name, cTitle, txt); });
+        cancelReplyToComment(cId); dbRef.set(appData);
+
+        const textInput = document.getElementById(`comment-text-${cId}`);
+        if(textInput) textInput.value = '';
+        const fileInput = document.getElementById(`comment-file-${cId}`);
+        if(fileInput) fileInput.value = '';
+        const filenameSpan = document.getElementById(`comment-filename-${cId}`);
+        if(filenameSpan) filenameSpan.innerText = '';
+    };
+    
+    f ? compressImage(f, save) : save();
+}
         function deleteComment(cId, cmId, isP) { if(!confirm(t('confirmDeleteCm'))) return; const arr = isP ? (appData.personalHabits[loggedInUserId]||[]).find(x=>x.id===cId) : appData.sharedChallenges.find(x=>x.id===cId); if(arr&&arr.comments) arr.comments = arr.comments.filter(x=>x.id!==cmId); dbRef.set(appData); }
 
         function renderCommentSectionHTML(cId, cms=[], isP=false) {
