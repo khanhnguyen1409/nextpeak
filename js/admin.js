@@ -98,3 +98,22 @@ function handleResetTestData() {
         });
     }
 }
+// --- KÍCH HOẠT ỨNG DỤNG KHI TẢI XONG TRANG ---
+document.addEventListener("DOMContentLoaded", function() {
+    // Kiểm tra xem user đã đăng nhập trước đó chưa
+    const savedUser = localStorage.getItem('nextPeak_loggedInUser');
+    if (savedUser) {
+        loggedInUserId = savedUser;
+        // Nếu đã đăng nhập, khởi động app chính
+        if (typeof initAppAfterLogin === 'function') {
+            initAppAfterLogin();
+        }
+    } else {
+        // Nếu chưa, hiển thị màn hình chọn tài khoản đăng nhập
+        const authModal = document.getElementById('auth-modal');
+        if (authModal) authModal.classList.remove('hidden');
+        if (typeof renderUserSelect === 'function') {
+            renderUserSelect();
+        }
+    }
+});
