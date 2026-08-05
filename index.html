@@ -192,20 +192,20 @@
                     </div>
                 </div>
 
-                <!-- ACCORDION 2: 💬 Quản lý Kho Slogan -->
+                <!-- ACCORDION 2: 💬 Quản lý Kho Quotes -->
                 <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 transition-all">
                     <button onclick="toggleAdminAccordion('slogan')" class="w-full p-3.5 flex justify-between items-center font-bold text-xs text-slate-700 dark:text-slate-200 hover:bg-indigo-50/50 dark:hover:bg-slate-800 transition">
-                        <span id="adm-acc-slogan-title" class="flex items-center gap-2">💬 Quản lý Kho Slogan Truyền Động Lực</span>
+                        <span id="adm-acc-slogan-title" class="flex items-center gap-2">💬 Quản lý Kho Quotes Truyền Động Lực</span>
                         <span id="adm-arrow-slogan" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="adm-sec-slogan" class="p-4 space-y-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hidden">
                         <div class="space-y-2">
                             <p id="adm-slogan-hint" class="text-[10px] text-slate-400 italic">💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.</p>
                             <textarea id="admin-slogan-text-input" rows="3" placeholder="Ví dụ: Kỷ luật là cầu nối... - Jim Rohn" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            <button onclick="addAdminSlogan()" id="adm-slogan-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition">Thêm Slogan Mới</button>
+                            <button onclick="addAdminQuotes()" id="adm-slogan-add-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition">Thêm Quotes Mới</button>
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
-                            <h5 id="adm-slogan-list-title" class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Slogan hiện tại:</h5>
+                            <h5 id="adm-slogan-list-title" class="font-bold text-[11px] text-slate-500 mb-2">Danh sách Quotes hiện tại:</h5>
                             <div id="admin-slogans-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                         </div>
                     </div>
@@ -818,11 +818,11 @@
                 admCfgMasterpinLabel: "🔑 Mã Master PIN Quản trị:",
                 admCfgSaveBtn: "💾 Lưu Cấu Hình Mặc Định",
 
-                admAccSloganTitle: "💬 Quản lý Kho Slogan Truyền Động Lực",
-                admSloganHint: "💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.",
-                admSloganPh: "Ví dụ: Kỷ luật là cầu nối... - Jim Rohn",
-                admSloganAddBtn: "Thêm Slogan Mới",
-                admSloganListTitle: "Danh sách Slogan hiện tại:",
+                admAccQuotesTitle: "💬 Quản lý Kho Quotes Truyền Động Lực",
+                admQuotesHint: "💡 Có thể dán nhiều dòng cùng lúc. Dùng ' - ' phân cách Tác giả.",
+                admQuotesPh: "Ví dụ: Kỷ luật là cầu nối... - Jim Rohn",
+                admQuotesAddBtn: "Thêm Quotes Mới",
+                admQuotesListTitle: "Danh sách Quotes hiện tại:",
 
                 admAccHintTitle: "💡 Quản lý Kho Ý Tưởng Thử Thách (Hints)",
                 admHintBulkNote: "💡 Thêm nhiều dòng cùng lúc dạng: Tiêu đề | Mô tả",
@@ -867,7 +867,7 @@
                 errFillAll: "⚠️ Vui lòng nhập đúng và đầy đủ thông tin!",
                 errMasterPin: "⚠️ Master PIN phải là 4 số!",
                 sysSaved: "✨ Đã lưu Cấu hình Hệ thống mới!",
-                errEnterSlogan: "Vui lòng nhập nội dung Slogan!",
+                errEnterQuotes: "Vui lòng nhập nội dung Quotes!",
                 errEnterHint: "Vui lòng nhập ít nhất một ý tưởng!",
                 errAdminOnly: "Chỉ Admin mới có quyền duyệt thành viên!",
                 errDeleteAdmin: "Không thể xóa tài khoản Admin gốc!",
@@ -1059,11 +1059,11 @@
                 admCfgMasterpinLabel: "🔑 Admin Master PIN:",
                 admCfgSaveBtn: "💾 Save System Config",
 
-                admAccSloganTitle: "💬 Motivation Slogan Management",
-                admSloganHint: "💡 Paste multiple lines at once. Use ' - ' for Author.",
-                admSloganPh: "E.g. Discipline is the bridge... - Jim Rohn",
-                admSloganAddBtn: "Add Slogan(s)",
-                admSloganListTitle: "Current Slogans:",
+                admAccQuotesTitle: "💬 Motivation Quotes Management",
+                admQuotesHint: "💡 Paste multiple lines at once. Use ' - ' for Author.",
+                admQuotesPh: "E.g. Discipline is the bridge... - Jim Rohn",
+                admQuotesAddBtn: "Add Quotes(s)",
+                admQuotesListTitle: "Current Quotess:",
 
                 admAccHintTitle: "💡 Challenge Hints Management",
                 admHintBulkNote: "💡 Add multiple lines format: Title | Description",
@@ -1108,7 +1108,7 @@
                 errFillAll: "⚠️ Please fill in all information correctly!",
                 errMasterPin: "⚠️ Master PIN must be 4 digits!",
                 sysSaved: "✨ System Configuration saved!",
-                errEnterSlogan: "Please enter Slogan content!",
+                errEnterQuotes: "Please enter Quotes content!",
                 errEnterHint: "Please enter at least one idea!",
                 errAdminOnly: "Only Admin can approve members!",
                 errDeleteAdmin: "Cannot delete the root Admin account!",
@@ -1128,7 +1128,7 @@
             }
         };
 
-        const defaultSlogans = {
+        const defaultQuotess = {
             vi: [
                 "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
                 "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
@@ -1290,7 +1290,7 @@
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             localStorage.setItem('bvgpLang', currentLang);
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
-            updateStaticTexts(); displayRandomSlogan(); renderList();
+            updateStaticTexts(); displayRandomQuotes(); renderList();
         }
 
         function renderFilterOptions() {
@@ -1442,11 +1442,11 @@
             if (document.getElementById('adm-cfg-masterpin-label')) document.getElementById('adm-cfg-masterpin-label').innerText = t('admCfgMasterpinLabel');
             if (document.getElementById('adm-cfg-save-btn')) document.getElementById('adm-cfg-save-btn').innerText = t('admCfgSaveBtn');
 
-            if (document.getElementById('adm-acc-slogan-title')) document.getElementById('adm-acc-slogan-title').innerHTML = t('admAccSloganTitle');
-            if (document.getElementById('adm-slogan-hint')) document.getElementById('adm-slogan-hint').innerText = t('admSloganHint');
-            if (document.getElementById('admin-slogan-text-input')) document.getElementById('admin-slogan-text-input').placeholder = t('admSloganPh');
-            if (document.getElementById('adm-slogan-add-btn')) document.getElementById('adm-slogan-add-btn').innerText = t('admSloganAddBtn');
-            if (document.getElementById('adm-slogan-list-title')) document.getElementById('adm-slogan-list-title').innerText = t('admSloganListTitle');
+            if (document.getElementById('adm-acc-slogan-title')) document.getElementById('adm-acc-slogan-title').innerHTML = t('admAccQuotesTitle');
+            if (document.getElementById('adm-slogan-hint')) document.getElementById('adm-slogan-hint').innerText = t('admQuotesHint');
+            if (document.getElementById('admin-slogan-text-input')) document.getElementById('admin-slogan-text-input').placeholder = t('admQuotesPh');
+            if (document.getElementById('adm-slogan-add-btn')) document.getElementById('adm-slogan-add-btn').innerText = t('admQuotesAddBtn');
+            if (document.getElementById('adm-slogan-list-title')) document.getElementById('adm-slogan-list-title').innerText = t('admQuotesListTitle');
 
             if (document.getElementById('adm-acc-hint-title')) document.getElementById('adm-acc-hint-title').innerHTML = t('admAccHintTitle');
             if (document.getElementById('adm-hint-bulk-note')) document.getElementById('adm-hint-bulk-note').innerHTML = t('admHintBulkNote');
@@ -1511,8 +1511,8 @@
     document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
 }
 
-        function displayRandomSlogan() {
-            let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
+        function displayRandomQuotes() {
+            let list = defaultQuotess[currentLang] || defaultQuotess['vi'];
             
             if (appData && appData.slogansPool) {
                 let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
@@ -1524,7 +1524,7 @@
                 }
             }
 
-            if (!list || !list.length) list = defaultSlogans['vi'];
+            if (!list || !list.length) list = defaultQuotess['vi'];
 
             const fullText = list[Math.floor(Math.random() * list.length)] || "";
             const parts = fullText.split(' - ');
@@ -1561,7 +1561,7 @@
             notifications: {},
             systemConfig: defaultSystemConfig,
             playlist: defaultPlaylist,
-            slogansPool: defaultSlogans,
+            slogansPool: defaultQuotess,
             hintsPool: defaultHints
         };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
@@ -1598,7 +1598,7 @@
                 appData.notifications = sVal.notifications || {};
                 appData.systemConfig = sVal.systemConfig || defaultSystemConfig;
                 appData.playlist = sVal.playlist || defaultPlaylist;
-                appData.slogansPool = sVal.slogansPool || defaultSlogans;
+                appData.slogansPool = sVal.slogansPool || defaultQuotess;
                 appData.hintsPool = sVal.hintsPool || defaultHints;
             } else {
                 dbRef.set(appData);
@@ -1611,7 +1611,7 @@
             updateNotificationBadge();
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
             updateStaticTexts(); 
-            displayRandomSlogan();
+            displayRandomQuotes();
             renderList();
         });
 
@@ -1751,20 +1751,20 @@
             renderList();
         }
 
-        function addAdminSlogan() {
+        function addAdminQuotes() {
             const val = document.getElementById('admin-slogan-text-input').value.trim();
-            if(!val) return alert(t('errEnterSlogan'));
+            if(!val) return alert(t('errEnterQuotes'));
             
             const lines = val.split('\n').map(l => l.trim()).filter(l => l.length > 0);
             if (!lines.length) return;
 
             if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
-                appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
+                appData.slogansPool = { vi: [...defaultQuotess.vi], en: [...defaultQuotess.en] };
             }
             
             let pool = appData.slogansPool[currentLang];
             if (!Array.isArray(pool)) {
-                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultSlogans[currentLang]];
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultQuotess[currentLang]];
             }
             
             pool.push(...lines);
@@ -1773,10 +1773,10 @@
             document.getElementById('admin-slogan-text-input').value = '';
             dbRef.set(appData);
             renderAdminCenterContent();
-            displayRandomSlogan();
+            displayRandomQuotes();
         }
 
-        function deleteAdminSlogan(idx) {
+        function deleteAdminQuotes(idx) {
             if (!appData.slogansPool || !appData.slogansPool[currentLang]) return;
             let pool = appData.slogansPool[currentLang];
             if (!Array.isArray(pool)) {
@@ -1786,7 +1786,7 @@
             appData.slogansPool[currentLang] = pool;
             dbRef.set(appData);
             renderAdminCenterContent();
-            displayRandomSlogan();
+            displayRandomQuotes();
         }
 
         function addAdminHint() {
@@ -1869,13 +1869,13 @@
             document.getElementById('cfg-masterpin-input').value = sysCfg.masterPin || "0000";
 
             const sloganContainer = document.getElementById('admin-slogans-list');
-            let rawSlogans = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultSlogans[currentLang];
-            const slogans = Array.isArray(rawSlogans) ? rawSlogans : (typeof rawSlogans === 'object' && rawSlogans !== null ? Object.values(rawSlogans) : []);
+            let rawQuotess = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultQuotess[currentLang];
+            const slogans = Array.isArray(rawQuotess) ? rawQuotess : (typeof rawQuotess === 'object' && rawQuotess !== null ? Object.values(rawQuotess) : []);
 
             sloganContainer.innerHTML = slogans.map((s, i) => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
                     <span class="truncate max-w-[280px] font-medium text-slate-700 dark:text-slate-200">"${s}"</span>
-                    <button onclick="deleteAdminSlogan(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
+                    <button onclick="deleteAdminQuotes(${i})" class="text-rose-500 hover:text-rose-600 font-bold hover:underline shrink-0 ml-2 text-[11px]">${t('delete')}</button>
                 </div>
             `).join('');
 
@@ -2424,7 +2424,7 @@
                 appData.personalHabits = { 'member_1': [] };
                 appData.systemConfig = defaultSystemConfig;
                 appData.playlist = defaultPlaylist;
-                appData.slogansPool = defaultSlogans;
+                appData.slogansPool = defaultQuotess;
                 appData.hintsPool = defaultHints;
 
                 dbRef.set(appData); 
@@ -3369,7 +3369,7 @@
             }).join('');
         }
 
-        displayRandomSlogan();
+        displayRandomQuotes();
     </script>
 </body>
 </html>
