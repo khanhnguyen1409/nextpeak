@@ -1469,162 +1469,177 @@ async function uploadToImgbb(base64Str) {
 }
 
         function updateStaticTexts() {
-            document.getElementById('t-app-title').innerText = t('appTitle');
-            document.getElementById('btn-dashboard').innerHTML = `<img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`;
-            
-            const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
-            document.getElementById('tab-personal-avatar-icon').innerHTML = userAv;
-            document.getElementById('btn-update').querySelector('span:last-child').innerText = t('tabUpdate');
+    // 1. TẠO 3 HÀM RÚT GỌN ĐỂ CHỐNG LỖI KHI GÁN TEXT/HTML
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+    const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+    const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
 
-            document.getElementById('report-modal-title').innerText = t('reportModalTitle');
-            document.getElementById('btn-report').innerText = t('reportBtnText');            
-            document.getElementById('t-filter-label').innerHTML = `👁️ ${t('filterLabel')}`;
-            renderFilterOptions();
-            
-            document.getElementById('t-start-date').innerText = t('startDateLabel');
-            document.getElementById('t-target-days').innerText = t('targetDays');
-            document.getElementById('t-total-days').innerText = t('totalDays');
-            document.getElementById('t-bigplay-label').innerText = t('bigPlayLabel');
-            document.getElementById('t-reward-label').innerHTML = t('rewardLabel');
-            document.getElementById('t-penalty-label').innerHTML = t('penaltyLabel');
-            
-            document.getElementById('t-self-reward-label').innerHTML = t('selfRewardLabel');
-            document.getElementById('t-self-penalty-label').innerHTML = t('selfPenaltyLabel');
-            document.getElementById('create-self-reward-input').placeholder = t('selfRewardPh');
-            document.getElementById('create-self-penalty-input').placeholder = t('selfPenaltyPh');
+    // 2. GÁN DỮ LIỆU AN TOÀN
+    setText('t-app-title', t('appTitle'));
+    setHtml('btn-dashboard', `<img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`);
+    
+    const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
+    setHtml('tab-personal-avatar-icon', userAv);
+    
+    // Nút update có querySelector nên xử lý riêng
+    const btnUpdate = document.getElementById('btn-update');
+    if (btnUpdate) {
+        const span = btnUpdate.querySelector('span:last-child');
+        if (span) span.innerText = t('tabUpdate');
+    }
 
-            document.getElementById('l-welcome').innerText = t('welcome');
-            document.getElementById('l-select-name').innerText = t('selectName');
-            document.getElementById('l-continue-btn').innerText = t('continueBtn');
-            document.getElementById('l-back-btn').innerText = t('backBtn');
-            document.getElementById('l-forgot-pin').innerText = t('forgotPin');
-            document.getElementById('login-pin-input').placeholder = t('pinPh');
-            document.getElementById('l-register-tab-btn').innerText = t('registerTab');
-            document.getElementById('l-reg-title').innerText = t('registerTitle');
-            document.getElementById('reg-name-input').placeholder = t('registerPlaceholderName');
-            document.getElementById('reg-pin-input').placeholder = t('registerPlaceholderPin');
-            document.getElementById('l-reg-back-btn').innerText = t('backBtn');
-            document.getElementById('l-reg-submit-btn').innerText = t('registerSubmitBtn');
-            
-            if (document.getElementById('m-profile')) document.getElementById('m-profile').innerText = t('mProfile');
-            if (document.getElementById('profile-modal-title')) document.getElementById('profile-modal-title').innerText = t('profileTitle');
-            if (document.getElementById('profile-avatar-label')) document.getElementById('profile-avatar-label').innerText = t('avatarLabel');
-            if (document.getElementById('profile-name-label')) document.getElementById('profile-name-label').innerText = t('nameLabel');
-            if (document.getElementById('profile-name-input')) document.getElementById('profile-name-input').placeholder = t('profileNamePh');
-            if (document.getElementById('profile-pin-label')) document.getElementById('profile-pin-label').innerText = t('pinLabel');
-            if (document.getElementById('profile-pin-note')) document.getElementById('profile-pin-note').innerText = t('pinNote');
-            if (document.getElementById('profile-old-pin')) document.getElementById('profile-old-pin').placeholder = t('oldPinPh');
-            if (document.getElementById('profile-new-pin')) document.getElementById('profile-new-pin').placeholder = t('newPinPh');
-            if (document.getElementById('profile-save-btn')) document.getElementById('profile-save-btn').innerText = t('saveChanges');
-            if (document.getElementById('s-close-profile-btn')) document.getElementById('s-close-profile-btn').innerText = t('closeBtn');
+    setText('report-modal-title', t('reportModalTitle'));
+    setText('btn-report', t('reportBtnText'));            
+    setHtml('t-filter-label', `👁️ ${t('filterLabel')}`);
+    
+    renderFilterOptions();
+    
+    setText('t-start-date', t('startDateLabel'));
+    setText('t-target-days', t('targetDays'));
+    setText('t-total-days', t('totalDays'));
+    setText('t-bigplay-label', t('bigPlayLabel'));
+    setHtml('t-reward-label', t('rewardLabel'));
+    setHtml('t-penalty-label', t('penaltyLabel'));
+    
+    setHtml('t-self-reward-label', t('selfRewardLabel'));
+    setHtml('t-self-penalty-label', t('selfPenaltyLabel'));
+    setPlaceholder('create-self-reward-input', t('selfRewardPh'));
+    setPlaceholder('create-self-penalty-input', t('selfPenaltyPh'));
 
-            document.getElementById('m-theme').innerText = currentTheme === 'dark' ? t('themeLight') : t('themeDark');
-            document.getElementById('m-music').innerText = t('music');
-            document.getElementById('m-lang').innerText = t('lang');
-            document.getElementById('m-font-size').innerText = t('fontTitle');
-            document.getElementById('m-logout').innerText = t('logout');
-            document.getElementById('m-history').innerText = t('history');
-            document.getElementById('m-admin-center').innerText = t('adminToolTitle').replace('🛠️ ', '');
+    setText('l-welcome', t('welcome'));
+    setText('l-select-name', t('selectName'));
+    setText('l-continue-btn', t('continueBtn'));
+    setText('l-back-btn', t('backBtn'));
+    setText('l-forgot-pin', t('forgotPin'));
+    setPlaceholder('login-pin-input', t('pinPh'));
+    setText('l-register-tab-btn', t('registerTab'));
+    setText('l-reg-title', t('registerTitle'));
+    setPlaceholder('reg-name-input', t('registerPlaceholderName'));
+    setPlaceholder('reg-pin-input', t('registerPlaceholderPin'));
+    setText('l-reg-back-btn', t('backBtn'));
+    setText('l-reg-submit-btn', t('registerSubmitBtn'));
+    
+    setText('m-profile', t('mProfile'));
+    setText('profile-modal-title', t('profileTitle'));
+    setText('profile-avatar-label', t('avatarLabel'));
+    setText('profile-name-label', t('nameLabel'));
+    setPlaceholder('profile-name-input', t('profileNamePh'));
+    setText('profile-pin-label', t('pinLabel'));
+    setText('profile-pin-note', t('pinNote'));
+    setPlaceholder('profile-old-pin', t('oldPinPh'));
+    setPlaceholder('profile-new-pin', t('newPinPh'));
+    setText('profile-save-btn', t('saveChanges'));
+    setText('s-close-profile-btn', t('closeBtn'));
 
-            document.getElementById('hint-modal-title').innerText = t('hintTitle');
-            document.getElementById('notif-title').innerText = t('notifTitle');
-            document.getElementById('notif-read-btn').innerText = t('markRead');
-            document.getElementById('desc-rule-title').innerHTML = `📝 ${t('descRules')}`;
-            document.getElementById('desc-modal-close-btn').innerText = t('closeBtn');
+    setText('m-theme', currentTheme === 'dark' ? t('themeLight') : t('themeDark'));
+    setText('m-music', t('music'));
+    setText('m-lang', t('lang'));
+    setText('m-font-size', t('fontTitle'));
+    setText('m-logout', t('logout'));
+    setText('m-history', t('history'));
+    setText('m-admin-center', t('adminToolTitle').replace('🛠️ ', ''));
 
-            document.getElementById('m-completed-label').innerText = t('completed');
-            document.getElementById('m-note-label').innerText = t('noteLabel');
-            document.getElementById('modal-note').placeholder = t('notePh');
-            document.getElementById('m-remove-img').innerText = t('removeImg');
-            document.getElementById('m-save-btn').innerText = t('saveUpdate');
-            
-            document.getElementById('m-team-progress').innerText = t('teamProgress');
-            document.getElementById('modal-read-only-notice').innerText = t('restoredReadOnly');
+    setText('hint-modal-title', t('hintTitle'));
+    setText('notif-title', t('notifTitle'));
+    setText('notif-read-btn', t('markRead'));
+    setHtml('desc-rule-title', `📝 ${t('descRules')}`);
+    setText('desc-modal-close-btn', t('closeBtn'));
 
-            document.getElementById('s-history-title').innerText = t('historyTitle');
-            
-            document.getElementById('btn-report-active').innerText = t('reportActive');
-            document.getElementById('btn-report-rewards').innerText = t('reportRewards');
-            
-            document.getElementById('action-menu-title').innerText = t('actionMenu');
-            document.getElementById('m-share-text').innerText = t('shareAchievement');
-            document.getElementById('m-pause').innerText = t('pauseChallenge');
-            document.getElementById('m-resume').innerText = t('resumeChallenge');
-            document.getElementById('m-giveup').innerText = t('giveUpChallenge');
-            document.getElementById('m-archive').innerText = t('archive');
-            document.getElementById('m-restore').innerText = t('restore');
-            document.getElementById('m-delete').innerText = t('deletePerm');
-            document.getElementById('m-rejoin').innerText = t('rejoinChallenge');
-            
-            document.getElementById('lb-close-btn').innerText = t('closeBtn');
-            document.getElementById('s-close-history-btn').innerText = t('closeBtn');
-            document.getElementById('notif-close-btn').innerText = t('closeBtn');
+    setText('m-completed-label', t('completed'));
+    setText('m-note-label', t('noteLabel'));
+    setPlaceholder('modal-note', t('notePh'));
+    setText('m-remove-img', t('removeImg'));
+    setText('m-save-btn', t('saveUpdate'));
+    
+    setText('m-team-progress', t('teamProgress'));
+    setText('modal-read-only-notice', t('restoredReadOnly'));
 
-            document.getElementById('modal-image-label').innerHTML = `📷 <span>${t('chooseFileBtn')}</span>`;
-            document.getElementById('day-file-name').innerText = t('noFileSelected');
-            document.getElementById('reward-rules-title').innerText = t('rewardRuleTitle');
+    setText('s-history-title', t('historyTitle'));
+    
+    setText('btn-report-active', t('reportActive'));
+    setText('btn-report-rewards', t('reportRewards'));
+    
+    setText('action-menu-title', t('actionMenu'));
+    setText('m-share-text', t('shareAchievement'));
+    setText('m-pause', t('pauseChallenge'));
+    setText('m-resume', t('resumeChallenge'));
+    setText('m-giveup', t('giveUpChallenge'));
+    setText('m-archive', t('archive'));
+    setText('m-restore', t('restore'));
+    setText('m-delete', t('deletePerm'));
+    setText('m-rejoin', t('rejoinChallenge'));
+    
+    setText('lb-close-btn', t('closeBtn'));
+    setText('s-close-history-btn', t('closeBtn'));
+    setText('notif-close-btn', t('closeBtn'));
 
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            document.getElementById('rule-desc-group-text').innerText = `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`;
-            document.getElementById('rule-desc-bigplay-text').innerText = t('ruleDescBigPlay');
-            document.getElementById('rule-desc-personal-text').innerText = t('ruleDescPersonal');
+    setHtml('modal-image-label', `📷 <span>${t('chooseFileBtn')}</span>`);
+    setText('day-file-name', t('noFileSelected'));
+    setText('reward-rules-title', t('rewardRuleTitle'));
 
-            // Update Capture Dropdown Items
-            const updateCapButtons = (id) => {
-                const btns = document.querySelectorAll(`#${id} button`);
-                if(btns.length >= 3) {
-                    btns[0].innerText = t('capAll');
-                    btns[1].innerText = t('capGroup');
-                    btns[2].innerText = t('capPersonal');
-                } else if(btns.length === 2) {
-                    btns[0].innerText = t('capAll');
-                    btns[1].innerText = t('capPersonal');
-                }
-            };
-            updateCapButtons('capture-menu-active');
-            updateCapButtons('capture-menu-rewards');
+    const sysCfg = appData.systemConfig || defaultSystemConfig;
+    setText('rule-desc-group-text', `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`);
+    setText('rule-desc-bigplay-text', t('ruleDescBigPlay'));
+    setText('rule-desc-personal-text', t('ruleDescPersonal'));
 
-            // Dynamic Song ngữ Admin Center
-            document.getElementById('admin-modal-title').innerHTML = t('adminToolTitle');
-            if (document.getElementById('adm-acc-config-title')) document.getElementById('adm-acc-config-title').innerHTML = t('admAccConfigTitle');
-            if (document.getElementById('adm-cfg-reward-label')) document.getElementById('adm-cfg-reward-label').innerText = t('admCfgRewardLabel');
-            if (document.getElementById('adm-cfg-penalty-label')) document.getElementById('adm-cfg-penalty-label').innerText = t('admCfgPenaltyLabel');
-            if (document.getElementById('adm-cfg-target-label')) document.getElementById('adm-cfg-target-label').innerText = t('admCfgTargetLabel');
-            if (document.getElementById('adm-cfg-total-label')) document.getElementById('adm-cfg-total-label').innerText = t('admCfgTotalLabel');
-            if (document.getElementById('adm-cfg-masterpin-label')) document.getElementById('adm-cfg-masterpin-label').innerText = t('admCfgMasterpinLabel');
-            if (document.getElementById('adm-cfg-save-btn')) document.getElementById('adm-cfg-save-btn').innerText = t('admCfgSaveBtn');
-
-            if (document.getElementById('adm-acc-slogan-title')) document.getElementById('adm-acc-slogan-title').innerHTML = t('admAccSloganTitle');
-            if (document.getElementById('adm-slogan-hint')) document.getElementById('adm-slogan-hint').innerText = t('admSloganHint');
-            if (document.getElementById('admin-slogan-text-input')) document.getElementById('admin-slogan-text-input').placeholder = t('admSloganPh');
-            if (document.getElementById('adm-slogan-add-btn')) document.getElementById('adm-slogan-add-btn').innerText = t('admSloganAddBtn');
-            if (document.getElementById('adm-slogan-list-title')) document.getElementById('adm-slogan-list-title').innerText = t('admSloganListTitle');
-
-            if (document.getElementById('adm-acc-hint-title')) document.getElementById('adm-acc-hint-title').innerHTML = t('admAccHintTitle');
-            if (document.getElementById('adm-hint-bulk-note')) document.getElementById('adm-hint-bulk-note').innerHTML = t('admHintBulkNote');
-            if (document.getElementById('admin-hint-bulk-input')) document.getElementById('admin-hint-bulk-input').placeholder = t('admHintBulkPh');
-            if (document.getElementById('adm-hint-is-personal-label')) document.getElementById('adm-hint-is-personal-label').innerText = t('admHintIsPersonalLabel');
-            if (document.getElementById('adm-hint-add-btn')) document.getElementById('adm-hint-add-btn').innerText = t('admHintAddBtn');
-            if (document.getElementById('adm-hint-list-title')) document.getElementById('adm-hint-list-title').innerText = t('admHintListTitle');
-
-            if (document.getElementById('adm-acc-music-title')) document.getElementById('adm-acc-music-title').innerHTML = t('admAccMusicTitle');
-            if (document.getElementById('adm-music-hint')) document.getElementById('adm-music-hint').innerText = t('admMusicHint');
-            if (document.getElementById('admin-music-url-input')) document.getElementById('admin-music-url-input').placeholder = t('admMusicPh');
-            if (document.getElementById('adm-music-add-btn')) document.getElementById('adm-music-add-btn').innerText = t('admMusicAddBtn');
-
-            if (document.getElementById('adm-acc-members-title')) document.getElementById('adm-acc-members-title').innerHTML = t('admAccMembersTitle');
-            if (document.getElementById('admin-pending-title')) document.getElementById('admin-pending-title').innerText = t('adminPendingTitle');
-            if (document.getElementById('admin-members-title')) document.getElementById('admin-members-title').innerText = t('adminMembersTitle');
-
-            if (document.getElementById('adm-acc-reset-title')) document.getElementById('adm-acc-reset-title').innerHTML = t('admAccResetTitle');
-            if (document.getElementById('admin-system-desc')) document.getElementById('admin-system-desc').innerText = t('adminSystemDesc');
-            if (document.getElementById('admin-reset-btn')) document.getElementById('admin-reset-btn').innerText = t('adminResetBtn');
-            if (document.getElementById('admin-close-btn')) document.getElementById('admin-close-btn').innerText = t('closeBtn');
-
-            updateCreateFormLabels();
-            setFontSize(currentFontSize);
-            applyTheme(currentTheme);
+    // Update Capture Dropdown Items (Đã thêm cơ chế chống lỗi null container)
+    const updateCapButtons = (id) => {
+        const container = document.getElementById(id);
+        if (!container) return; // Bảo vệ: Nếu menu chưa có thì bỏ qua
+        const btns = container.querySelectorAll('button');
+        if(btns.length >= 3) {
+            btns[0].innerText = t('capAll');
+            btns[1].innerText = t('capGroup');
+            btns[2].innerText = t('capPersonal');
+        } else if(btns.length === 2) {
+            btns[0].innerText = t('capAll');
+            btns[1].innerText = t('capPersonal');
         }
+    };
+    updateCapButtons('capture-menu-active');
+    updateCapButtons('capture-menu-rewards');
+
+    // Dynamic Song ngữ Admin Center
+    setHtml('admin-modal-title', t('adminToolTitle'));
+    setHtml('adm-acc-config-title', t('admAccConfigTitle'));
+    setText('adm-cfg-reward-label', t('admCfgRewardLabel'));
+    setText('adm-cfg-penalty-label', t('admCfgPenaltyLabel'));
+    setText('adm-cfg-target-label', t('admCfgTargetLabel'));
+    setText('adm-cfg-total-label', t('admCfgTotalLabel'));
+    setText('adm-cfg-masterpin-label', t('admCfgMasterpinLabel'));
+    setText('adm-cfg-save-btn', t('admCfgSaveBtn'));
+
+    setHtml('adm-acc-slogan-title', t('admAccSloganTitle'));
+    setText('adm-slogan-hint', t('admSloganHint'));
+    setPlaceholder('admin-slogan-text-input', t('admSloganPh'));
+    setText('adm-slogan-add-btn', t('admSloganAddBtn'));
+    setText('adm-slogan-list-title', t('admSloganListTitle'));
+
+    setHtml('adm-acc-hint-title', t('admAccHintTitle'));
+    setHtml('adm-hint-bulk-note', t('admHintBulkNote'));
+    setPlaceholder('admin-hint-bulk-input', t('admHintBulkPh'));
+    setText('adm-hint-is-personal-label', t('admHintIsPersonalLabel'));
+    setText('adm-hint-add-btn', t('admHintAddBtn'));
+    setText('adm-hint-list-title', t('admHintListTitle'));
+
+    setHtml('adm-acc-music-title', t('admAccMusicTitle'));
+    setText('adm-music-hint', t('admMusicHint'));
+    setPlaceholder('admin-music-url-input', t('admMusicPh'));
+    setText('adm-music-add-btn', t('admMusicAddBtn'));
+
+    setHtml('adm-acc-members-title', t('admAccMembersTitle'));
+    setText('admin-pending-title', t('adminPendingTitle'));
+    setText('admin-members-title', t('adminMembersTitle'));
+
+    setHtml('adm-acc-reset-title', t('admAccResetTitle'));
+    setText('admin-system-desc', t('adminSystemDesc'));
+    setText('admin-reset-btn', t('adminResetBtn'));
+    setText('admin-close-btn', t('closeBtn'));
+
+    updateCreateFormLabels();
+    setFontSize(currentFontSize);
+    applyTheme(currentTheme);
+}
 
         function updateCreateFormLabels() {
     const isGrp = activeTab==='dashboard';
