@@ -2197,17 +2197,29 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         }
 
         function renderList() {
-    // --- THÊM ĐOẠN NÀY VÀO ĐẦU HÀM ---
+    // 1. CHẠY LOG ĐỂ KIỂM TRA LỖI
+    console.log("--- RENDER LIST ĐANG CHẠY ---");
+    console.log("1. Tab hiện tại:", activeTab);
+    console.log("2. Filter hiện tại:", document.getElementById('main-filter-select')?.value);
+    console.log("3. Dữ liệu appData có chưa?", appData);
+    console.log("4. Độ dài mảng sharedChallenges:", appData.sharedChallenges ? appData.sharedChallenges.length : 'Chưa có hoặc null');
+
+    // 2. ĐỒNG BỘ FILTER (đã sửa chuẩn dấu ngoặc)
     const sel = document.getElementById('main-filter-select');
     if (sel && sel.value) {
         currentFilter = sel.value;
-    }
-    // ---------------------------------
+    } // <-- Đây là dấu đóng của lệnh if
 
+    // 3. XỬ LÝ GIAO DIỆN VÀ DỮ LIỆU
     const container = document.getElementById('main-list-container'); 
     container.innerHTML = '';
+    
     let list = [];
     const sysCfg = appData.systemConfig || defaultSystemConfig;
+
+    // ... (Toàn bộ code xử lý logic if (activeTab === 'dashboard') và render HTML của bạn sẽ nằm tiếp ở ngay đây) ...
+
+// Lưu ý: Tít dưới cùng của hàm renderList này bắt buộc phải có một dấu } để đóng hàm lại nhé!
 
     if (activeTab === 'dashboard') {
         list = (appData.sharedChallenges||[]).filter(c => {
