@@ -1793,7 +1793,7 @@ async function uploadToImgbb(base64Str) {
             }
         }
 
-        function saveProfileChanges() {
+        async function saveProfileChanges() {
             const mIdx = appData.members.findIndex(x => x.id === loggedInUserId);
             if (mIdx === -1) return;
 
