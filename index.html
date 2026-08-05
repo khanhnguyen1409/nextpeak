@@ -1441,12 +1441,9 @@ async function uploadToImgbb(base64Str) {
             updateStaticTexts(); displayRandomSlogan(); renderList();
         }
 
-        // --- 3. Đồng bộ chính xác bộ lọc theo từng Tab ---
-function renderFilterOptions() {
+        function renderFilterOptions() {
     const sel = document.getElementById('main-filter-select');
-    if (!sel) return;
-    const oldVal = sel.value || currentFilter;
-
+    const oldVal = sel.value;
     if (activeTab === 'dashboard') {
         sel.innerHTML = `
             <option value="my">${t('optMy')}</option>
@@ -1455,11 +1452,9 @@ function renderFilterOptions() {
         `;
         if (['my', 'new', 'archived'].includes(oldVal)) {
             sel.value = oldVal;
-            currentFilter = oldVal;
-        } else {
-            sel.value = 'my';
-            currentFilter = 'my';
+            currentFilter = oldVal; // THÊM DÒNG NÀY ĐỂ ĐỒNG BỘ
         }
+        else { sel.value = 'my'; currentFilter = 'my'; }
     } else {
         sel.innerHTML = `
             <option value="active">${t('optActive')}</option>
@@ -1467,11 +1462,9 @@ function renderFilterOptions() {
         `;
         if (['active', 'archived'].includes(oldVal)) {
             sel.value = oldVal;
-            currentFilter = oldVal;
-        } else {
-            sel.value = 'active';
-            currentFilter = 'active';
+            currentFilter = oldVal; // THÊM DÒNG NÀY ĐỂ ĐỒNG BỘ
         }
+        else { sel.value = 'active'; currentFilter = 'active'; }
     }
 }
 
@@ -2147,52 +2140,28 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         function toggleBigPlayInputs() { document.getElementById(`create-bigplay-inputs`).classList.toggle('hidden', !document.getElementById(`create-bigplay-checkbox`).checked); }
         
         function switchTab(tab) {
-    activeTab = tab;
-    const db = document.getElementById('btn-dashboard');
-    const ub = document.getElementById('btn-update');
-    const tb = document.getElementById('btn-create-toggle');
-
-    if (tab === 'dashboard') {
-        db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-        ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-        tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-    } else {
-        ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-        db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-        tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-    }
-
-    renderFilterOptions();
-    updateCreateFormLabels();
-    document.getElementById('master-create-panel').classList.add('hidden');
-    renderList();
-}
+            activeTab = tab;
+            const db = document.getElementById('btn-dashboard'), ub = document.getElementById('btn-update'), tb = document.getElementById('btn-create-toggle');
+            if(tab === 'dashboard') {
+                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-2";
+                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
+                tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+            } else {
+                ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition shadow-sm flex items-center justify-center gap-2";
+                db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
+                tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+            }
+            renderFilterOptions();
+            updateCreateFormLabels(); document.getElementById('master-create-panel').classList.add('hidden');
+            renderList();
+        }
 
         function setFilter(val) { currentFilter = val; renderList(); }
 
         function getEndDate(start, total) { const d = new Date(start); d.setDate(d.getDate() + total - 1); return formatDateString(d); }
         function getDateString(start, idx) { const d = new Date(start||Date.now()); d.setDate(d.getDate()+idx); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`; }
         function formatDateString(date) { const d = new Date(date); return isNaN(d) ? date : `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
-        // --- 1. Hàm an toàn chống lỗi Firebase chuyển Array thành Object ---
-function safeArray(data) {
-    if (!data) return [];
-    return (Array.isArray(data) ? data : Object.values(data)).filter(Boolean);
-}
-
-// --- 2. Sửa hàm tính ngày hiện tại (Chuẩn hóa giờ địa phương, không bị lệch UTC) ---
-
-        
-        function getTodayIndex(start) {
-    if (!start) return 0;
-    const parts = String(start).split('-');
-    const s = (parts.length === 3) 
-        ? new Date(parts[0], parts[1] - 1, parts[2]) 
-        : new Date(start);
-    s.setHours(0, 0, 0, 0);
-    const tDate = new Date();
-    tDate.setHours(0, 0, 0, 0);
-    return Math.round((tDate - s) / 86400000);
-}
+        function getTodayIndex(start) { const s=new Date(start||Date.now()); s.setHours(0,0,0,0); const tDate=new Date(); tDate.setHours(0,0,0,0); return Math.round((tDate-s)/86400000); }
         function promptReason() { let r = prompt(t('requireReason')); while(r!==null && !r.trim()){ alert(t('reasonRequiredAlert')); r = prompt(t('requireReason')); } return r ? r.trim() : null; }
 
         function getMemberAvatarHTML(mId, sizeClass = "h-6 w-6") {
@@ -2227,293 +2196,280 @@ function safeArray(data) {
             return { active: activeStreak, max: maxStreak };
         }
 
-        // --- 4. Hàm renderList ổn định cho cả Nhóm & Cá nhân ---
-function renderList() {
-    const container = document.getElementById('main-list-container');
-    if (!container) return;
-    
-    let htmlContent = '';
+        function renderList() {
+    // --- THÊM ĐOẠN NÀY VÀO ĐẦU HÀM ---
+    const sel = document.getElementById('main-filter-select');
+    if (sel && sel.value) {
+        currentFilter = sel.value;
+    }
+    // ---------------------------------
+
+    const container = document.getElementById('main-list-container'); 
+    container.innerHTML = '';
+    let list = [];
     const sysCfg = appData.systemConfig || defaultSystemConfig;
 
     if (activeTab === 'dashboard') {
-        // Sử dụng safeArray chống lỗi Firebase RTDB Object
-        const allShared = safeArray(appData.sharedChallenges);
-        const list = allShared.filter(c => {
-            const st = c.participants ? c.participants[loggedInUserId] : null;
-            const j = (st === true || st === 'given_up');
-            if (currentFilter === 'archived') return c.archived === true;
-            if (c.archived) return false;
-            if (currentFilter === 'my') return j;
-            if (currentFilter === 'new') return !j;
-            return true;
-        }).sort(sortByStartDate);
+        list = (appData.sharedChallenges||[]).filter(c => {
+//... (giữ nguyên toàn bộ code bên dưới của bạn)
+                    const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
+                    if (currentFilter === 'archived') return c.archived;
+                    if (c.archived) return false;
+                    if (currentFilter === 'my') return j;
+                    if (currentFilter === 'new') return !j;
+                    return true;
+                }).sort(sortByStartDate);
 
-        if (!list.length) {
-            container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
-            return;
-        }
+                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
+                
+                list.forEach((c, idx) => {
+                    const tot=c.totalDays||sysCfg.defaultTotalDays, tgt=c.targetDays||sysCfg.defaultTargetDays, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
+                    let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + Object.keys(c.participants||{}).filter(m=>c.participants[m]===true||c.participants[m]==='given_up').map(mId => getMemberAvatarHTML(mId, "h-6 w-6")).join('') + `</div>`;
+                    
+                    const prog = c.progress&&c.progress[loggedInUserId] ? c.progress[loggedInUserId] : Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}));
+                    const cnt = prog.filter(x=>x&&x.completed).length, tIdx = getTodayIndex(c.startDate), pct = Math.round((cnt/tgt)*100);
+                    const streak = getStreakInfo(prog);
+                    
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(c.startDate, tot);
+                    const isFailed = gu || (!isCompleted && cFinished);
 
-        list.forEach((c, idx) => {
-            const tot = c.totalDays || sysCfg.defaultTotalDays;
-            const tgt = c.targetDays || sysCfg.defaultTargetDays;
-            const st = c.participants ? c.participants[loggedInUserId] : null;
-            const j = (st === true || st === 'given_up');
-            const gu = (st === 'given_up');
-            const ro = (c.archived === true);
+                    const defRewardText = sysCfg.defaultReward;
+                    const defPenaltyText = `${sysCfg.defaultPenalty}k`;
 
-            let avs = `<div class="flex -space-x-2 overflow-hidden my-1">` + 
-                Object.keys(c.participants || {})
-                    .filter(m => c.participants[m] === true || c.participants[m] === 'given_up')
-                    .map(mId => getMemberAvatarHTML(mId, "h-6 w-6"))
-                    .join('') + 
-                `</div>`;
+                    let rewardPenaltyBoxHTML = "";
+    let statusBadgeHTML = "";
 
-            const prog = (c.progress && c.progress[loggedInUserId]) ? c.progress[loggedInUserId] : Array(tot).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
-            const cnt = prog.filter(x => x && x.completed).length;
-            const tIdx = getTodayIndex(c.startDate);
-            const pct = Math.round((cnt / tgt) * 100);
-            const streak = getStreakInfo(prog);
-
-            const isCompleted = cnt >= tgt;
-            const cFinished = isChallengeFinished(c.startDate, tot);
-            const isFailed = gu || (!isCompleted && cFinished);
-
-            const defRewardText = sysCfg.defaultReward;
-            const defPenaltyText = `${sysCfg.defaultPenalty}k`;
-
-            let rewardPenaltyBoxHTML = "";
-            let statusBadgeHTML = "";
-
-            if (isCompleted) {
-                rewardPenaltyBoxHTML = `
-                    <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
-                        <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward || 0) + 'k' : defRewardText}</span>
-                    </div>`;
-                statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
-            } else if (isFailed) {
-                rewardPenaltyBoxHTML = `
-                    <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
-                        <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty || 0) + 'k' : defPenaltyText}</span>
-                    </div>`;
-                statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
-            }
-
-            let content = "";
-            if (!j && !ro) {
-                content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
-            } else if (j) {
-                const isExpanded = !!expandedGrids['grp_' + c.id];
-                let startD = 0, endD = tot - 1;
-                if (!isExpanded && tot > 14) {
-                    startD = Math.max(0, tIdx - 7);
-                    endD = startD + 13;
-                    if (endD >= tot) {
-                        endD = tot - 1;
-                        startD = Math.max(0, endD - 13);
-                    }
-                }
-                let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('grp_${c.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-indigo-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
-
-                let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
-                    const ic = item && item.completed;
-                    const hn = item && ((item.note && item.note.trim()) || (item.image && item.image.trim()));
-                    const it = (dIdx === tIdx);
-                    const ifu = (dIdx > tIdx);
-                    let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                    let lockBadge = "";
-
-                    const dayLocked = isDayLocked(c.startDate, dIdx);
-                    const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
-                    let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-indigo-400 dark:bg-indigo-300 z-20 pointer-events-none"></span>` : "";
-
-                    if (ic) {
-                        s = "bg-indigo-600 text-white border-indigo-600";
-                    } else if (dayLocked && !ic) {
-                        s = "bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                        lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
-                    } else if (it) {
-                        s = "bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold";
-                    } else if (ifu) {
-                        s = "bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700";
-                    } else {
-                        s = "bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
-                    }
-
-                    let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
-
-                    return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it ? `<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>` : ''}${lockBadge}${hn ? '<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>' : ''}${streakConnector}</button>`;
-                }).join('') + `</div>`;
-
-                content = `
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                            <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
-                            ${statusBadgeHTML}
-                        </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                            <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                        </div>
-                        ${grid}
-                        ${toggleGridBtn}
-                    </div>`;
-            }
-
-            htmlContent += `
-                <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="space-y-1.5 w-full">
-                            <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
-                                ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                            </h4>
-                            <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
-                                <span>${formatDateString(c.startDate)}</span>
-                                ${ro ? `<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>` : ''}
-                            </div>
-                            ${rewardPenaltyBoxHTML}
-                        </div>
-                        ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
-                    </div>
-                    ${j ? avs : ''}
-                    ${content}
-                </div>`;
-        });
+    if (isCompleted) {
+        rewardPenaltyBoxHTML = `
+            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
+            </div>`;
+        statusBadgeHTML = `<span class="bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+    } else if (isFailed) {
+        rewardPenaltyBoxHTML = `
+            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
+            </div>`;
+        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
     } else {
-        // Tab Cá nhân (Personal): Sử dụng safeArray
-        const userHabits = safeArray(appData.personalHabits ? appData.personalHabits[loggedInUserId] : null);
-        const list = userHabits.filter(h => {
-            if (currentFilter === 'archived') return h.archived === true;
-            if (currentFilter === 'active') return !h.archived;
-            return true;
-        }).sort(sortByStartDate);
+        // --- ĐOẠN CODE CŨ (ĐÃ VÔ HIỆU HÓA, KHI NÀO CẦN CHỈ CẦN XÓA DẤU /* VÀ */ LÀ DÙNG LẠI ĐƯỢC) ---
+        /*
+        rewardPenaltyBoxHTML = `
+            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-2xl text-xs font-semibold w-fit max-w-full">
+                <div class="text-emerald-600 truncate flex items-center gap-1">🎁 +${c.isBigPlay?(c.customReward||0)+'k':defRewardText}</div>
+                <div class="text-slate-300 shrink-0">|</div>
+                <div class="text-rose-600 truncate flex items-center gap-1">💸 -${c.isBigPlay?(c.customPenalty||0)+'k':defPenaltyText}</div>
+            </div>`;
+        */
 
-        if (!list.length) {
-            container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
-            return;
-        }
-
-        list.forEach((h, idx) => {
-            const tot = h.totalDays || sysCfg.defaultTotalDays;
-            const tgt = h.targetDays || sysCfg.defaultTargetDays;
-            const st = h.status || 'active';
-            const ro = (h.archived === true);
-            const tIdx = getTodayIndex(h.startDate);
-
-            const prog = h.days || Array(tot).fill(null).map(() => ({ completed: false, note: '', image: '', timestamp: '' }));
-            const cnt = prog.filter(x => x && x.completed).length;
-            const pct = Math.round((cnt / tgt) * 100);
-            const streak = getStreakInfo(prog);
-
-            const isCompleted = cnt >= tgt;
-            const cFinished = isChallengeFinished(h.startDate, tot);
-            const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
-
-            let rewardPenaltyBoxHTML = "";
-            let statusBadgeHTML = "";
-
-            if (isCompleted) {
-                rewardPenaltyBoxHTML = `
-                    <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
-                        <span class="shrink-0">🎁</span>
-                        <span class="truncate">${h.selfReward || '---'}</span>
-                    </div>`;
-                statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
-            } else if (isFailed) {
-                rewardPenaltyBoxHTML = `
-                    <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
-                        <span class="shrink-0">💸</span>
-                        <span class="truncate">${h.selfPenalty || '---'}</span>
-                    </div>`;
-                statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
-            } else {
-                rewardPenaltyBoxHTML = `
-                    <div class="px-3 py-2 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-fit max-w-full">
-                        <div class="flex items-center gap-1.5 text-emerald-600 min-w-0">
-                            <div class="shrink-0 leading-none">🎁</div>
-                            <div class="font-semibold truncate">${h.selfReward || '---'}</div>
-                        </div>
-                        <div class="flex items-center gap-1.5 text-rose-600 min-w-0">
-                            <div class="shrink-0 leading-none">💸</div>
-                            <div class="font-semibold truncate">${h.selfPenalty || '---'}</div>
-                        </div>
-                    </div>`;
-            }
-
-            const isExpanded = !!expandedGrids['per_' + h.id];
-            let startD = 0, endD = tot - 1;
-            if (!isExpanded && tot > 14) {
-                startD = Math.max(0, tIdx - 7);
-                endD = startD + 13;
-                if (endD >= tot) {
-                    endD = tot - 1;
-                    startD = Math.max(0, endD - 13);
-                }
-            }
-            let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('per_${h.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-emerald-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
-
-            let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
-                const ic = item && item.completed;
-                const hn = item && ((item.note && item.note.trim()) || (item.image && item.image.trim()));
-                const it = (dIdx === tIdx);
-                const ifu = (dIdx > tIdx);
-                let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
-                let lockBadge = "";
-
-                const dayLocked = isDayLocked(h.startDate, dIdx);
-                const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
-                let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-emerald-400 dark:bg-emerald-300 z-20 pointer-events-none"></span>` : "";
-
-                if (ic) {
-                    s = "bg-emerald-600 text-white border-emerald-600";
-                } else if (dayLocked && !ic) {
-                    s = "bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
-                    lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
-                } else if (it) {
-                    s = "bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold";
-                } else if (ifu) {
-                    s = "bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700";
-                } else {
-                    s = "bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
-                }
-
-                let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
-
-                return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it ? `<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>` : ''}${lockBadge}${hn ? '<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>' : ''}${streakConnector}</button>`;
-            }).join('') + `</div>`;
-
-            htmlContent += `
-                <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="space-y-1.5 w-full">
-                            <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
-                                ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                            </h4>
-                            <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
-                                <span>${formatDateString(h.startDate)}</span>
-                                ${ro ? `<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>` : ''}
-                            </div>
-                            ${rewardPenaltyBoxHTML}
-                        </div>
-                        <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                            <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
-                            ${statusBadgeHTML}
-                        </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                            <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                        </div>
-                        ${grid}
-                        ${toggleGridBtn}
-                    </div>
-                    ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments || [], true) : ''}
-                </div>`;
-        });
+        // Đoạn code hiện tại (đang ẩn đi):
+        rewardPenaltyBoxHTML = "";
     }
 
-    // Assign DOM một lần duy nhất để tối ưu hiệu năng
-    container.innerHTML = htmlContent;
-}
+                    let content = "";
+                    if(!j && !ro) content = `<div class="text-center py-5 space-y-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border"><p class="text-xs text-slate-500">${t('notJoined')}</p><button onclick="joinChallenge(${c.id})" class="bg-indigo-600 text-white text-xs font-bold py-2 px-6 rounded-xl shadow-sm hover:scale-105 transition">${t('joinChallenge')}</button></div>`;
+                    else if (j) {
+                        // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
+                        const isExpanded = !!expandedGrids['grp_' + c.id];
+                        let startD = 0, endD = tot - 1;
+                        if (!isExpanded && tot > 14) {
+                            startD = Math.max(0, tIdx - 7); // Lùi lại 7 ngày trước hôm nay
+                            endD = startD + 13; // Lấy tổng 14 ngày
+                            if (endD >= tot) {
+                                endD = tot - 1;
+                                startD = Math.max(0, endD - 13);
+                            }
+                        }
+                        let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('grp_${c.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-indigo-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
+                        // ===============================
+
+                        let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
+                            const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
+                            let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
+                            let lockBadge = "";
+
+                            const dayLocked = isDayLocked(c.startDate, dIdx);
+                            const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
+                            let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-indigo-400 dark:bg-indigo-300 z-20 pointer-events-none"></span>` : "";
+
+                            if(ic) {
+                                s="bg-indigo-600 text-white border-indigo-600"; 
+                            } else if(dayLocked && !ic) {
+                                s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                                lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
+                            } else if(it) {
+                                s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; 
+                            } else if(ifu) {
+                                s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                            } else {
+                                s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
+                            }
+
+                            // Thêm logic ẩn hiện (hidden)
+                            let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
+
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                        }).join('') + `</div>`;
+                        
+                        content = `
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                    ${statusBadgeHTML}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${grid}
+                                ${toggleGridBtn}
+                            </div>`;
+                    }
+
+                    container.innerHTML += `
+        <div id="challenge-card-${c.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-700 space-y-3">
+            <div class="flex justify-between items-start">
+                <div class="space-y-1.5 w-full">
+                    <h4 onclick="showDescriptionModalById(${c.id}, false)" class="font-extrabold text-base cursor-pointer hover:text-indigo-600 transition flex items-center gap-1">
+                        ${c.isBigPlay ? '🔥' : '🎯'} ${c.title}<sup class="text-indigo-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                    </h4>
+                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
+                        <span>${formatDateString(c.startDate)}</span>
+                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
+                    </div>
+                    ${rewardPenaltyBoxHTML}
+                </div>
+                ${j ? `<button onclick="openActionMenuModal(${c.id}, false)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>` : ''}
+            </div>
+            ${j ? avs : ''}
+            ${content}
+        </div>`;
+});
+            } else {
+                list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
+                    if (currentFilter === 'archived') return h.archived === true;
+                    if (currentFilter === 'active') return !h.archived;
+                    return true;
+                }).sort(sortByStartDate);
+
+                if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
+                
+                list.forEach((h, idx) => {
+                    const tot=h.totalDays||sysCfg.defaultTotalDays, tgt=h.targetDays||sysCfg.defaultTargetDays, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
+                    const prog = h.days||Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})), cnt=prog.filter(x=>x&&x.completed).length, pct=Math.round((cnt/tgt)*100);
+                    const streak = getStreakInfo(prog);
+                    
+                    const isCompleted = cnt >= tgt;
+                    const cFinished = isChallengeFinished(h.startDate, tot);
+                    const isFailed = (st === 'given_up') || (!isCompleted && cFinished);
+
+                    let rewardPenaltyBoxHTML = "";
+                    let statusBadgeHTML = "";
+
+                    if (isCompleted) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">🎁</span>
+                                <span class="truncate">${h.selfReward||'---'}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+                    } else if (isFailed) {
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
+                                <span class="shrink-0">💸</span>
+                                <span class="truncate">${h.selfPenalty||'---'}</span>
+                            </div>`;
+                        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+                    } else {
+                        rewardPenaltyBoxHTML = `
+                            <div class="px-3 py-2 bg-emerald-50/60 dark:bg-slate-900/50 border border-emerald-100 dark:border-slate-700 rounded-2xl space-y-1 text-xs font-normal w-fit max-w-full">
+                                <div class="flex items-center gap-1.5 text-emerald-600 min-w-0">
+                                    <div class="shrink-0 leading-none">🎁</div>
+                                    <div class="font-semibold truncate">${h.selfReward||'---'}</div>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-rose-600 min-w-0">
+                                    <div class="shrink-0 leading-none">💸</div>
+                                    <div class="font-semibold truncate">${h.selfPenalty||'---'}</div>
+                                </div>
+                            </div>`;
+                    }
+
+                    // === THÊM LOGIC 2 DÒNG Ở ĐÂY ===
+                    const isExpanded = !!expandedGrids['per_' + h.id];
+                    let startD = 0, endD = tot - 1;
+                    if (!isExpanded && tot > 14) {
+                        startD = Math.max(0, tIdx - 7);
+                        endD = startD + 13;
+                        if (endD >= tot) {
+                            endD = tot - 1;
+                            startD = Math.max(0, endD - 13);
+                        }
+                    }
+                    let toggleGridBtn = (tot > 14) ? `<button onclick="toggleGrid('per_${h.id}')" class="w-full text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 font-bold hover:text-emerald-600 transition">${isExpanded ? 'Thu gọn ▲' : `Xem tất cả (${tot} ngày) ▼`}</button>` : '';
+                    // ===============================
+
+                    let grid = `<div class="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mt-2">` + prog.map((item, dIdx) => {
+                        const ic=item&&item.completed, hn=item&&((item.note&&item.note.trim())||(item.image&&item.image.trim())), it=(dIdx===tIdx), ifu=(dIdx>tIdx);
+                        let s = "bg-white text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600";
+                        let lockBadge = "";
+
+                        const dayLocked = isDayLocked(h.startDate, dIdx);
+                        const nextCompleted = (dIdx + 1 < prog.length) && prog[dIdx + 1] && prog[dIdx + 1].completed;
+                        let streakConnector = (ic && nextCompleted) ? `<span class="absolute -right-2 top-1/2 -translate-y-1/2 w-2 h-1 bg-emerald-400 dark:bg-emerald-300 z-20 pointer-events-none"></span>` : "";
+
+                        if(ic) {
+                            s="bg-emerald-600 text-white border-emerald-600"; 
+                        } else if(dayLocked && !ic) {
+                            s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800";
+                            lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>';
+                        } else if(it) {
+                            s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; 
+                        } else if(ifu) {
+                            s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; 
+                        } else {
+                            s="bg-rose-50 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700";
+                        }
+
+                        // Thêm logic ẩn hiện (hidden)
+                        let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
+
+                        return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                    }).join('') + `</div>`;
+
+                    // Tìm thẻ HTML nối ${grid} bên dưới đoạn code trên và thêm ${toggleGridBtn} vào:
+                    // ... (đoạn bên dưới không cần sửa, chỉ tìm <div class="space-y-2"> và thêm ${toggleGridBtn} như sau)
+
+                    container.innerHTML += `
+                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div class="space-y-1.5 w-full">
+                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
+                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                                    </h4>
+                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
+                                        <span>${formatDateString(h.startDate)}</span>
+                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
+                                    </div>
+                                    ${rewardPenaltyBoxHTML}
+                                </div>
+                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
+                                    ${statusBadgeHTML}
+                                </div>
+                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                                </div>
+                                ${grid}
+                                ${toggleGridBtn}
+                            </div>
+                            ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
+                        </div>`;
+                });
+            }
+        }
 
         function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
