@@ -2458,36 +2458,35 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
                     // ... (đoạn bên dưới không cần sửa, chỉ tìm <div class="space-y-2"> và thêm ${toggleGridBtn} như sau)
 
                     container.innerHTML += `
-                        <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
-                            <div class="flex justify-between items-start">
-                                <div class="space-y-1.5 w-full">
-                                    <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
-                                        ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
-                                    </h4>
-                                    <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
-                                        <span>${formatDateString(h.startDate)}</span>
-                                        ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
-                                    </div>
-                                    ${rewardPenaltyBoxHTML}
-                                </div>
-                                <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
-                                    ${statusBadgeHTML}
-                                </div>
-                                <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
-                                </div>
-                                ${grid}
-                                ${toggleGridBtn}
-                            </div>
-                            ${loggedInUserId === 'member_1' ? renderCommentSectionHTML(h.id, h.comments||[], true) : ''}
-                        </div>`;
-                });
-            }
-        }
+    <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
+        <div class="flex justify-between items-start">
+            <div class="space-y-1.5 w-full">
+                <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">
+                    ${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-500 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                </h4>
+                <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
+                    <span>${formatDateString(h.startDate)}</span>
+                    ${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}
+                </div>
+                ${rewardPenaltyBoxHTML}
+            </div>
+            <button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button>
+        </div>
+        <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs flex-wrap gap-2">
+                <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>
+                ${statusBadgeHTML}
+            </div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
+                <div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+            </div>
+            ${grid}
+            ${toggleGridBtn}
+        </div>
+    </div>`;
+});
+}
+}
 
         function openHintModal() { renderHintList(); document.getElementById('hint-modal').classList.remove('hidden'); }
         function closeHintModal() { document.getElementById('hint-modal').classList.add('hidden'); }
