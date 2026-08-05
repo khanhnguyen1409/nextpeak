@@ -1474,33 +1474,41 @@
         }
 
         function updateCreateFormLabels() {
-            const isGrp = activeTab==='dashboard';
-            const sysCfg = appData.systemConfig || defaultSystemConfig;
-            
-            document.getElementById('form-create-title').innerText = isGrp ? t('createSharedTitle') : t('createPersonalTitle');
-            document.getElementById('create-title-input').placeholder = isGrp ? t('challengePh') : t('habitPh');
-            document.getElementById('create-desc-input').placeholder = isGrp ? t('descSharedPh') : t('descPersonalPh');
-            document.getElementById('t-create-submit-btn').innerText = isGrp ? t('createBtn') : t('addHabitBtn');
-            
-            document.getElementById('create-target-input').value = sysCfg.defaultTargetDays;
-            document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
+    const isGrp = activeTab==='dashboard';
+    const sysCfg = appData.systemConfig || defaultSystemConfig;
+    
+    // Đã thêm phần đổi màu chữ tiêu đề: Xanh tím cho Nhóm, Xanh lá cho Cá nhân
+    const titleEl = document.getElementById('form-create-title');
+    if (titleEl) {
+        titleEl.innerText = isGrp ? t('createSharedTitle') : t('createPersonalTitle');
+        titleEl.className = isGrp 
+            ? 'font-bold text-sm text-indigo-800 dark:text-indigo-300' 
+            : 'font-bold text-sm text-emerald-600 dark:text-emerald-400';
+    }
 
-            const submitBtn = document.getElementById('t-create-submit-btn');
-            const panel = document.getElementById('master-create-panel');
-            const togglePlusBtn = document.getElementById('btn-create-toggle');
-            if(isGrp) {
-                submitBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-indigo-200 dark:border-indigo-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            } else {
-                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
-                panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/50 p-5 space-y-4";
-                togglePlusBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
-            }
+    document.getElementById('create-title-input').placeholder = isGrp ? t('challengePh') : t('habitPh');
+    document.getElementById('create-desc-input').placeholder = isGrp ? t('descSharedPh') : t('descPersonalPh');
+    document.getElementById('t-create-submit-btn').innerText = isGrp ? t('createBtn') : t('addHabitBtn');
+    
+    document.getElementById('create-target-input').value = sysCfg.defaultTargetDays;
+    document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
 
-            document.getElementById('form-group-rules').classList.toggle('hidden', !isGrp);
-            document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
-        }
+    const submitBtn = document.getElementById('t-create-submit-btn');
+    const panel = document.getElementById('master-create-panel');
+    const togglePlusBtn = document.getElementById('btn-create-toggle');
+    if(isGrp) {
+        submitBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
+        panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-indigo-200 dark:border-indigo-900/50 p-5 space-y-4";
+        togglePlusBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+    } else {
+        submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2 transition";
+        panel.className = "hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-emerald-200 dark:border-emerald-900/50 p-5 space-y-4";
+        togglePlusBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+    }
+
+    document.getElementById('form-group-rules').classList.toggle('hidden', !isGrp);
+    document.getElementById('form-personal-rules').classList.toggle('hidden', isGrp);
+}
 
         function displayRandomSlogan() {
             let list = defaultSlogans[currentLang] || defaultSlogans['vi'];
