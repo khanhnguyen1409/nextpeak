@@ -3035,8 +3035,8 @@
                 <div class="flex items-center gap-2 text-xs sm:text-sm">
                     <span class="w-6 flex justify-center shrink-0 text-sm sm:text-base leading-none">📅</span>
                     <span class="text-slate-500 shrink-0">${t('startDateLabel')}</span>
-                    <!-- Cố định cỡ chữ ngày tháng nhỏ hơn (text-[11px]) và ép không bao giờ rớt dòng -->
-                    <div class="inline-flex items-center gap-1 text-[11px] whitespace-nowrap">
+                    <!-- Tăng size nhẹ lên text-xs (hoặc text-[12.5px]) và dính liền trên 1 hàng -->
+                    <div class="inline-flex items-center gap-1 text-xs sm:text-[13px] whitespace-nowrap">
                         <strong class="text-slate-700 dark:text-slate-200">${formatDateString(s)}</strong>
                         <span class="text-slate-400 font-normal">➔ ${getEndDate(s, tot)}</span>
                     </div>
