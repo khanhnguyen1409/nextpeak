@@ -589,19 +589,19 @@
                 <textarea id="create-desc-input" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-xl text-sm dark:bg-slate-700 focus:ring-2 dark:text-slate-100"></textarea>
                 
                 <div class="grid grid-cols-4 gap-2">
-                    <div class="col-span-2">
-                        <label id="t-start-date" class="text-[10px] font-bold text-slate-500 block mb-1">Ngày bắt đầu:</label>
-                        <input type="date" id="create-date-input" class="w-full px-2 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 dark:text-slate-100" required>
-                    </div>
-                    <div class="col-span-1">
-                        <label id="t-target-days" class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu:</label>
-                        <input type="number" id="create-target-input" value="14" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
-                    </div>
-                    <div class="col-span-1">
-                        <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng ngày:</label>
-                        <input type="number" id="create-days-input" value="16" min="1" class="w-full px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
-                    </div>
-                </div>
+    <div class="col-span-2 min-w-0">
+        <label id="t-start-date" class="text-[10px] font-bold text-slate-500 block mb-1">Ngày bắt đầu:</label>
+        <input type="date" id="create-date-input" class="w-full min-w-0 px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 dark:text-slate-100 appearance-none" required>
+    </div>
+    <div class="col-span-1 min-w-0">
+        <label id="t-target-days" class="text-[10px] font-bold text-slate-500 block mb-1">Mục tiêu:</label>
+        <input type="number" id="create-target-input" value="14" min="1" class="w-full min-w-0 px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
+    </div>
+    <div class="col-span-1 min-w-0">
+        <label id="t-total-days" class="text-[10px] font-bold text-slate-500 block mb-1">Tổng ngày:</label>
+        <input type="number" id="create-days-input" value="16" min="1" class="w-full min-w-0 px-1 py-1.5 border border-slate-300 rounded-xl text-xs dark:bg-slate-700 focus:ring-2 text-center dark:text-slate-100" required>
+    </div>
+</div>
 
                 <div id="form-group-rules" class="space-y-2 pt-1 border-t">
                     <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
