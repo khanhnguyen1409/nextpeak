@@ -22,7 +22,84 @@
 </head>
 <body id="main-cover-id" class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
 
-    <!-- [GIỮ NGUYÊN TOÀN BỘ CÁC KHUNG MODAL VÀ MAIN UI TỪ CODE GỐC Ở ĐÂY] -->
+    <!-- GIAO DIỆN CHÍNH & CÁC MODAL -->
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-6 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <h1 class="text-2xl font-black text-indigo-600 dark:text-indigo-400">NEXT PEAK</h1>
+            <div id="header-user-info" class="flex items-center space-x-3">
+                <!-- Thông tin user hiển thị sau khi đăng nhập -->
+            </div>
+        </header>
+
+        <main>
+            <!-- Nội dung ứng dụng -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                <p class="text-lg font-semibold mb-2">Ứng dụng đang tải dữ liệu...</p>
+                <p class="text-sm text-slate-400">Nếu màn hình không đổi, vui lòng kiểm tra đăng nhập.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL ĐĂNG NHẬP / CHỌN TÀI KHOẢN -->
+    <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+            <!-- Bước 1: Chọn tài khoản -->
+            <div id="step-select-user">
+                <h2 class="text-xl font-bold text-center mb-4">Chọn tài khoản của bạn</h2>
+                <div id="user-select-grid" class="grid grid-cols-2 gap-3 mb-4">
+                    <!-- Danh sách tài khoản render bằng JS -->
+                </div>
+                <button onclick="openRegisterView()" class="w-full py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 font-medium rounded-xl text-sm transition-colors">
+                    + Đăng ký tài khoản mới
+                </button>
+            </div>
+
+            <!-- Bước 2: Nhập mã PIN -->
+            <div id="step-enter-pin" class="hidden text-center">
+                <div class="w-20 h-20 rounded-full mx-auto mb-3 overflow-hidden border-2 border-indigo-600" id="pin-user-avatar"></div>
+                <h3 id="pin-user-name" class="font-bold text-lg mb-1"></h3>
+                <p class="text-xs text-slate-400 mb-6">Nhập mã PIN bảo mật của bạn</p>
+                
+                <div class="flex justify-center space-x-3 mb-6">
+                    <div id="pin-dot-1" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                    <div id="pin-dot-2" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                    <div id="pin-dot-3" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                    <div id="pin-dot-4" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                </div>
+
+                <!-- Bàn phím số PIN -->
+                <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mb-4">
+                    <button onclick="appendPin(1)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">1</button>
+                    <button onclick="appendPin(2)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">2</button>
+                    <button onclick="appendPin(3)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">3</button>
+                    <button onclick="appendPin(4)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">4</button>
+                    <button onclick="appendPin(5)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">5</button>
+                    <button onclick="appendPin(6)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">6</button>
+                    <button onclick="appendPin(7)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">7</button>
+                    <button onclick="appendPin(8)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">8</button>
+                    <button onclick="appendPin(9)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">9</button>
+                    <button onclick="handleLoginBack()" class="py-3 bg-slate-200 dark:bg-slate-600 rounded-xl text-xs font-semibold">Quay lại</button>
+                    <button onclick="appendPin(0)" class="py-3 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold text-lg hover:bg-indigo-50">0</button>
+                    <button onclick="clearPin()" class="py-3 bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold">Xóa</button>
+                </div>
+                <button onclick="handleForgotPin()" class="text-xs text-indigo-600 dark:text-indigo-400 underline">Quên mã PIN?</button>
+            </div>
+
+            <!-- Bước 3: Đăng ký thành viên mới -->
+            <div id="step-register-user" class="hidden">
+                <h3 class="font-bold text-lg mb-4 text-center">Đăng ký thành viên mới</h3>
+                <div class="space-y-3 mb-4">
+                    <input type="text" id="reg-name" placeholder="Tên của bạn" class="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 text-sm">
+                    <input type="password" id="reg-pin" placeholder="Mã PIN bảo mật (tùy chọn)" maxlength="6" class="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 text-sm">
+                    <input type="text" id="reg-avatar" placeholder="Link ảnh Avatar (URL)" class="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 text-sm">
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="closeRegisterView()" class="w-1/2 py-2.5 bg-slate-200 dark:bg-slate-700 rounded-xl font-medium text-sm">Hủy</button>
+                    <button onclick="submitNewRegistration()" class="w-1/2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium text-sm">Gửi đăng ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Khai báo các file Script tách rời ở cuối body -->
     <script src="js/config.js"></script>
@@ -30,5 +107,27 @@
     <script src="js/audio.js"></script>
     <script src="js/challenge.js"></script>
     <script src="js/admin.js"></script>
+    
+    <!-- Script khởi chạy tự động -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy dữ liệu từ Firebase để khởi tạo giao diện đăng nhập
+            dbRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    appData = Object.assign(appData, data);
+                }
+                renderUserSelect();
+            });
+
+            const savedUser = localStorage.getItem('nextPeak_loggedInUser');
+            if (savedUser) {
+                loggedInUserId = savedUser;
+                document.getElementById('auth-modal').classList.add('hidden');
+            } else {
+                document.getElementById('auth-modal').classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
