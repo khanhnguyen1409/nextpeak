@@ -1063,7 +1063,7 @@
                 admQuotesHint: "💡 Paste multiple lines at once. Use ' - ' for Author.",
                 admQuotesPh: "E.g. Discipline is the bridge... - Jim Rohn",
                 admQuotesAddBtn: "Add Quotes(s)",
-                admQuotesListTitle: "Current Quotess:",
+                admQuotesListTitle: "Current Quotes:",
 
                 admAccHintTitle: "💡 Challenge Hints",
                 admHintBulkNote: "💡 Add multiple lines format: Title | Description",
@@ -1128,7 +1128,7 @@
             }
         };
 
-        const defaultQuotess = {
+        const defaultQuotes = {
             vi: [
                 "Kỷ luật là cầu nối giữa mục tiêu và thành tựu. - Jim Rohn",
                 "Hành trình vạn dặm khởi đầu từ một bước chân. - Lão Tử",
@@ -1628,7 +1628,7 @@
 }
 
         function displayRandomQuotes() {
-            let list = defaultQuotess[currentLang] || defaultQuotess['vi'];
+            let list = defaultQuotes[currentLang] || defaultQuotes['vi'];
             
             if (appData && appData.slogansPool) {
                 let currentPool = appData.slogansPool[currentLang] || appData.slogansPool;
@@ -1640,7 +1640,7 @@
                 }
             }
 
-            if (!list || !list.length) list = defaultQuotess['vi'];
+            if (!list || !list.length) list = defaultQuotes['vi'];
 
             const fullText = list[Math.floor(Math.random() * list.length)] || "";
             const parts = fullText.split(' - ');
@@ -1677,7 +1677,7 @@
             notifications: {},
             systemConfig: defaultSystemConfig,
             playlist: defaultPlaylist,
-            slogansPool: defaultQuotess,
+            slogansPool: defaultQuotes,
             hintsPool: defaultHints
         };
         let loggedInUserId = localStorage.getItem('bvgpOfficialLoggedInUserId');
@@ -1714,7 +1714,7 @@
                 appData.notifications = sVal.notifications || {};
                 appData.systemConfig = sVal.systemConfig || defaultSystemConfig;
                 appData.playlist = sVal.playlist || defaultPlaylist;
-                appData.slogansPool = sVal.slogansPool || defaultQuotess;
+                appData.slogansPool = sVal.slogansPool || defaultQuotes;
                 appData.hintsPool = sVal.hintsPool || defaultHints;
             } else {
                 dbRef.set(appData);
@@ -1875,12 +1875,12 @@
             if (!lines.length) return;
 
             if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
-                appData.slogansPool = { vi: [...defaultQuotess.vi], en: [...defaultQuotess.en] };
+                appData.slogansPool = { vi: [...defaultQuotes.vi], en: [...defaultQuotes.en] };
             }
             
             let pool = appData.slogansPool[currentLang];
             if (!Array.isArray(pool)) {
-                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultQuotess[currentLang]];
+                pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultQuotes[currentLang]];
             }
             
             pool.push(...lines);
@@ -1985,8 +1985,8 @@
             document.getElementById('cfg-masterpin-input').value = sysCfg.masterPin || "0000";
 
             const sloganContainer = document.getElementById('admin-slogans-list');
-            let rawQuotess = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultQuotess[currentLang];
-            const slogans = Array.isArray(rawQuotess) ? rawQuotess : (typeof rawQuotess === 'object' && rawQuotess !== null ? Object.values(rawQuotess) : []);
+            let rawQuotes = (appData.slogansPool && appData.slogansPool[currentLang]) ? appData.slogansPool[currentLang] : defaultQuotes[currentLang];
+            const slogans = Array.isArray(rawQuotes) ? rawQuotes : (typeof rawQuotes === 'object' && rawQuotes !== null ? Object.values(rawQuotes) : []);
 
             sloganContainer.innerHTML = slogans.map((s, i) => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-600 text-xs">
@@ -2540,7 +2540,7 @@
                 appData.personalHabits = { 'member_1': [] };
                 appData.systemConfig = defaultSystemConfig;
                 appData.playlist = defaultPlaylist;
-                appData.slogansPool = defaultQuotess;
+                appData.slogansPool = defaultQuotes;
                 appData.hintsPool = defaultHints;
 
                 dbRef.set(appData); 
