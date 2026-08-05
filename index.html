@@ -1758,7 +1758,9 @@ async function uploadToImgbb(base64Str) {
             document.getElementById('lang-status-text').innerText = currentLang.toUpperCase();
             updateStaticTexts(); 
             displayRandomSlogan();
-            renderList();
+            
+            // 👉 THÊM DÒNG NÀY ĐỂ ÉP RENDER CHUẨN TAB NHÓM NGAY KHI VÀO APP
+            switchTab('dashboard'); 
         });
 
         function toggleUserMenu() { document.getElementById('user-menu-modal').classList.remove('hidden'); }
