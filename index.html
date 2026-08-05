@@ -1759,7 +1759,7 @@ async function uploadToImgbb(base64Str) {
             updateStaticTexts(); 
             displayRandomSlogan();
             
-            // 👉 THÊM DÒNG NÀY ĐỂ ÉP RENDER CHUẨN TAB NHÓM NGAY KHI VÀO APP
+            // 👉 Đoạn này đang gây lỗi vì chạy liên tục mỗi khi sync dữ liệu
             switchTab('dashboard'); 
         });
 
