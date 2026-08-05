@@ -30,24 +30,27 @@
             overflow: hidden;
         }
         
-        body.font-small { font-size: 13px; }
-        body.font-small .text-xs { font-size: 11px !important; }
-        body.font-small .text-sm { font-size: 13px !important; }
-        body.font-small .text-base { font-size: 15px !important; }
-        body.font-small .text-2xl { font-size: 20px !important; }
+        /* --- Mức NHỎ (small): Tăng nhẹ lên để dễ đọc hơn --- */
+        body.font-small { font-size: 15px; }
+        body.font-small .text-xs { font-size: 13px !important; }
+        body.font-small .text-sm { font-size: 15px !important; }
+        body.font-small .text-base { font-size: 17px !important; }
+        body.font-small .text-2xl { font-size: 22px !important; }
 
-        body.font-normal { font-size: 16px; }
-        body.font-normal .text-xs { font-size: 13px !important; }
-        body.font-normal .text-sm { font-size: 15px !important; }
-        body.font-normal .text-base { font-size: 17px !important; }
-        body.font-normal .text-2xl { font-size: 24px !important; }
+        /* --- Mức BÌNH THƯỜNG (normal): Tăng lên tầm 18px (mức chuẩn dễ nhìn) --- */
+        body.font-normal { font-size: 18px; }
+        body.font-normal .text-xs { font-size: 15px !important; }
+        body.font-normal .text-sm { font-size: 17px !important; }
+        body.font-normal .text-base { font-size: 19px !important; }
+        body.font-normal .text-2xl { font-size: 26px !important; }
 
-        body.font-large { font-size: 19px; line-height: 1.6; }
-        body.font-large .text-xs { font-size: 15px !important; }
-        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 13px !important; }
-        body.font-large .text-sm { font-size: 18px !important; }
-        body.font-large .text-base { font-size: 21px !important; }
-        body.font-large .text-2xl { font-size: 30px !important; }
+        /* --- Mức LỚN (large): Đẩy hẳn lên cho người thích chữ rất to --- */
+        body.font-large { font-size: 21px; line-height: 1.6; }
+        body.font-large .text-xs { font-size: 17px !important; }
+        body.font-large .text-[10px], body.font-large .text-[11px] { font-size: 15px !important; }
+        body.font-large .text-sm { font-size: 20px !important; }
+        body.font-large .text-base { font-size: 23px !important; }
+        body.font-large .text-2xl { font-size: 34px !important; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
