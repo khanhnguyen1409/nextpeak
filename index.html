@@ -2744,23 +2744,37 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
         
         function handleNotificationClick(nId, type) {
-            if (appData.notifications[loggedInUserId]) {
-                const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
-                if (notif) notif.read = true;
-                dbRef.set(appData);
-                updateNotificationBadge();
-            }
+    if (appData.notifications[loggedInUserId]) {
+        const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
+        if (notif) notif.read = true;
+        dbRef.set(appData);
+        updateNotificationBadge();
+    }
 
-            closeNotificationModal();
+    closeNotificationModal();
 
-            if (type === 'pending_approval') {
-                if (loggedInUserId === 'member_1') {
-                    openAdminCenterModal();
-                } else {
-                    alert(t('errAdminOnly'));
+    if (type === 'pending_approval') {
+        if (loggedInUserId === 'member_1') {
+            // 1. Mở Modal Admin Center lên trước
+            openAdminCenterModal();
+            
+            // 2. Tự động cuộn/chuyển đến khu vực duyệt thành viên ngay lập tức
+            setTimeout(() => {
+                // Thử tìm element chứa phần duyệt thành viên (bạn có thể thay ID của phần đó vào đây nếu có)
+                const pendingSection = document.getElementById('admin-pending-members-section') || document.querySelector('[id*="pending"]');
+                if (pendingSection) {
+                    pendingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Hiệu ứng nhấp nháy nhẹ để dễ nhận biết
+                    pendingSection.classList.add('ring-2', 'ring-indigo-500', 'transition-all', 'duration-500');
+                    setTimeout(() => pendingSection.classList.remove('ring-2', 'ring-indigo-500'), 2000);
                 }
-            }
+            }, 200); // Delay nhẹ 200ms để modal render xong rồi mới cuộn tới
+            
+        } else {
+            alert(t('errAdminOnly'));
         }
+    }
+}
 
         function renderNotificationList() {
             const container = document.getElementById('notification-list'); container.innerHTML = ''; const notifs = appData.notifications[loggedInUserId] || [];
