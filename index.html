@@ -560,13 +560,13 @@
 
         <!-- TABS THỬ THÁCH -->
         <div class="flex justify-center bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
-                <img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full border border-white/40 shadow-sm">
-                <span>Nhóm</span>
-            </button>
             <button onclick="switchTab('update')" id="btn-update" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center gap-2">
                 <span id="tab-personal-avatar-icon" class="inline-flex items-center justify-center"></span>
                 <span>Cá nhân</span>
+            </button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition flex items-center justify-center gap-2 shadow-sm">
+                <img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full border border-white/40 shadow-sm">
+                <span>Nhóm</span>
             </button>
         </div>
 
@@ -1323,7 +1323,7 @@ async function uploadToImgbb(base64Str) {
         let currentLang = localStorage.getItem('bvgpLang') || 'vi';
         let currentFontSize = localStorage.getItem('bvgpFontSize') || 'normal';
         let currentTheme = localStorage.getItem('bvgpTheme') || 'light';
-        let activeTab = 'dashboard';
+        let activeTab = 'update';
         let currentFilter = 'my';
 
         function t(key) { return translations[currentLang][key] || key; }
@@ -2638,7 +2638,9 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
     document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
     document.getElementById('btn-cap-act').classList.toggle('hidden', loggedInUserId !== 'member_1');
     document.getElementById('btn-cap-rew').classList.toggle('hidden', loggedInUserId !== 'member_1');
-    renderList(); 
+    
+    // ĐÃ SỬA Ở ĐÂY: Thay renderList() thành switchTab('update')
+    switchTab('update'); 
 
     // === THÊM ĐOẠN CODE NÀY ĐỂ TỰ ĐỘNG PHÁT NHẠC KHI VÀO APP ===
     setTimeout(() => {
@@ -2646,7 +2648,7 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             playCurrentMusic(); // Thử phát nhạc ngay khi đăng nhập xong
         }
     }, 500);
-
+    // ... (phần dưới giữ nguyên)
     // Bẫy sự kiện tương tác đầu tiên (click/touch) để vượt qua bộ chặn autoplay của trình duyệt nếu bị block
     const triggerAutoplay = () => {
         if (!isMusicPlaying) {
