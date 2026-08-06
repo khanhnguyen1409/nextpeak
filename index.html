@@ -2744,50 +2744,23 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
         
         function handleNotificationClick(nId, type) {
-    if (appData.notifications[loggedInUserId]) {
-        const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
-        if (notif) notif.read = true;
-        dbRef.set(appData);
-        updateNotificationBadge();
-    }
+            if (appData.notifications[loggedInUserId]) {
+                const notif = appData.notifications[loggedInUserId].find(n => n.id === nId);
+                if (notif) notif.read = true;
+                dbRef.set(appData);
+                updateNotificationBadge();
+            }
 
-    closeNotificationModal();
+            closeNotificationModal();
 
-    if (type === 'pending_approval') {
-        if (loggedInUserId === 'member_1') {
-            // 1. Mở bảng Admin Center lên
-            openAdminCenterModal();
-            
-            // 2. Tự động tìm, click và cuộn đến khu vực duyệt thành viên
-            setTimeout(() => {
-                const allElements = document.querySelectorAll('h2, h3, h4, div, span, button');
-                let targetElement = null;
-                
-                for (let el of allElements) {
-                    if (el.innerText.includes('Duyệt tài khoản thành viên mới') || el.innerText.includes('Pending Member')) {
-                        targetElement = el;
-                        break;
-                    }
+            if (type === 'pending_approval') {
+                if (loggedInUserId === 'member_1') {
+                    openAdminCenterModal();
+                } else {
+                    alert(t('errAdminOnly'));
                 }
-                
-                if (targetElement) {
-                    // Tự động click luôn (để mở rộng/kích hoạt nếu nó là nút bấm/tab)
-                    targetElement.click();
-                    
-                    // Cuộn màn hình đến vị trí đó một cách mượt mà
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Tạo hiệu ứng viền sáng nhẹ
-                    targetElement.classList.add('ring-2', 'ring-indigo-500', 'p-2', 'rounded-xl', 'transition-all', 'duration-500');
-                    setTimeout(() => targetElement.classList.remove('ring-2', 'ring-indigo-500'), 2000);
-                }
-            }, 300);
-            
-        } else {
-            alert(t('errAdminOnly'));
+            }
         }
-    }
-}
 
         function renderNotificationList() {
             const container = document.getElementById('notification-list'); container.innerHTML = ''; const notifs = appData.notifications[loggedInUserId] || [];
