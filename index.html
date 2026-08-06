@@ -922,11 +922,7 @@ async function uploadToImgbb(base64Str) {
                 ntfCheckin: "đã Check-in ngày",
                 txtReason: "Lý do"
                 // Thêm các từ khóa lọc hiển thị cho tiếng Việt
-                myChallenges: "Thử thách của tôi",
-                newChallenges: "Thử thách mới",
-                activeHabits: "Đang diễn ra",
                 ended: "Đã kết thúc",
-                archived: "Đã lưu trữ"
             },
             en: {
                 appTitle: "NEXT PEAK",
@@ -1169,11 +1165,7 @@ async function uploadToImgbb(base64Str) {
                 ntfCheckin: "checked-in on",
                 txtReason: "Reason"
                 // Thêm các từ khóa lọc hiển thị cho tiếng Anh
-                myChallenges: "My Challenges",
-                newChallenges: "New Challenges",
-                activeHabits: "Active",
                 ended: "Ended",
-                archived: "Archived"
             }
         };
 
@@ -1461,20 +1453,20 @@ async function uploadToImgbb(base64Str) {
     if (!sel) return;
     
     if (activeTab === 'dashboard') {
-        // Menu cho tab Nhóm (dùng hàm t() để tự động dịch theo ngôn ngữ đang chọn)
+        // Dùng các key có sẵn (optMy, optNew, optArchived) và key ended mới
         sel.innerHTML = `
-            <option value="my">${t('myChallenges')}</option>
-            <option value="new">${t('newChallenges')}</option>
-            <option value="ended">${t('ended')}</option>
-            <option value="archived">${t('archived')}</option>
+            <option value="my">${t('optMy')}</option>
+            <option value="new">${t('optNew')}</option>
+            <option value="ended">${t('ended') || 'Đã kết thúc'}</option>
+            <option value="archived">${t('optArchived')}</option>
         `;
         if (!['my', 'new', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'my';
     } else {
-        // Menu cho tab Cá nhân (dùng hàm t() để tự động dịch theo ngôn ngữ đang chọn)
+        // Dùng các key có sẵn (optActive, optArchived) và key ended mới
         sel.innerHTML = `
-            <option value="active">${t('activeHabits')}</option>
-            <option value="ended">${t('ended')}</option>
-            <option value="archived">${t('archived')}</option>
+            <option value="active">${t('optActive')}</option>
+            <option value="ended">${t('ended') || 'Đã kết thúc'}</option>
+            <option value="archived">${t('optArchived')}</option>
         `;
         if (!['active', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'active';
     }
