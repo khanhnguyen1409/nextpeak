@@ -921,6 +921,12 @@ async function uploadToImgbb(base64Str) {
                 ntfComplete: "đã hoàn thành mục tiêu thử thách",
                 ntfCheckin: "đã Check-in ngày",
                 txtReason: "Lý do"
+                // Thêm các từ khóa lọc hiển thị cho tiếng Việt
+                myChallenges: "Thử thách của tôi",
+                newChallenges: "Thử thách mới",
+                activeHabits: "Đang diễn ra",
+                ended: "Đã kết thúc",
+                archived: "Đã lưu trữ"
             },
             en: {
                 appTitle: "NEXT PEAK",
@@ -1162,6 +1168,12 @@ async function uploadToImgbb(base64Str) {
                 ntfComplete: "completed the challenge goal",
                 ntfCheckin: "checked-in on",
                 txtReason: "Reason"
+                // Thêm các từ khóa lọc hiển thị cho tiếng Anh
+                myChallenges: "My Challenges",
+                newChallenges: "New Challenges",
+                activeHabits: "Active",
+                ended: "Ended",
+                archived: "Archived"
             }
         };
 
@@ -1449,25 +1461,26 @@ async function uploadToImgbb(base64Str) {
     if (!sel) return;
     
     if (activeTab === 'dashboard') {
-        // Menu cho tab Nhóm
+        // Menu cho tab Nhóm (hỗ trợ đa ngôn ngữ qua hàm t())
         sel.innerHTML = `
             <option value="my">${t('myChallenges') || 'Thử thách của tôi'}</option>
             <option value="new">${t('newChallenges') || 'Thử thách mới'}</option>
-            <option value="ended">Đã kết thúc</option>
+            <option value="ended">${t('ended') || 'Đã kết thúc'}</option>
             <option value="archived">${t('archived') || 'Đã lưu trữ'}</option>
         `;
-        // Giữ lại filter cũ nếu có, nếu không mặc định là 'my'
         if (!['my', 'new', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'my';
     } else {
-        // Menu cho tab Cá nhân
+        // Menu cho tab Cá nhân (hỗ trợ đa ngôn ngữ qua hàm t())
         sel.innerHTML = `
             <option value="active">${t('activeHabits') || 'Đang diễn ra'}</option>
-            <option value="ended">Đã kết thúc</option>
+            <option value="ended">${t('ended') || 'Đã kết thúc'}</option>
             <option value="archived">${t('archived') || 'Đã lưu trữ'}</option>
         `;
-        // Giữ lại filter cũ nếu có, nếu không mặc định là 'active'
         if (!['active', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'active';
     }
+    
+    // Đồng bộ lại giá trị đang chọn cho thẻ select
+    sel.value = currentFilter;
 }
 
         function updateStaticTexts() {
