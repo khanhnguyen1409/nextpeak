@@ -1446,28 +1446,27 @@ async function uploadToImgbb(base64Str) {
 
         function renderFilterOptions() {
     const sel = document.getElementById('main-filter-select');
-    const oldVal = sel.value;
+    if (!sel) return;
+    
     if (activeTab === 'dashboard') {
+        // Menu cho tab Nhóm
         sel.innerHTML = `
-            <option value="my">${t('optMy')}</option>
-            <option value="new">${t('optNew')}</option>
-            <option value="archived">${t('optArchived')}</option>
+            <option value="my">${t('myChallenges') || 'Thử thách của tôi'}</option>
+            <option value="new">${t('newChallenges') || 'Thử thách mới'}</option>
+            <option value="ended">Đã kết thúc</option>
+            <option value="archived">${t('archived') || 'Đã lưu trữ'}</option>
         `;
-        if (['my', 'new', 'archived'].includes(oldVal)) {
-            sel.value = oldVal;
-            currentFilter = oldVal; // THÊM DÒNG NÀY ĐỂ ĐỒNG BỘ
-        }
-        else { sel.value = 'my'; currentFilter = 'my'; }
+        // Giữ lại filter cũ nếu có, nếu không mặc định là 'my'
+        if (!['my', 'new', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'my';
     } else {
+        // Menu cho tab Cá nhân
         sel.innerHTML = `
-            <option value="active">${t('optActive')}</option>
-            <option value="archived">${t('optArchived')}</option>
+            <option value="active">${t('activeHabits') || 'Đang diễn ra'}</option>
+            <option value="ended">Đã kết thúc</option>
+            <option value="archived">${t('archived') || 'Đã lưu trữ'}</option>
         `;
-        if (['active', 'archived'].includes(oldVal)) {
-            sel.value = oldVal;
-            currentFilter = oldVal; // THÊM DÒNG NÀY ĐỂ ĐỒNG BỘ
-        }
-        else { sel.value = 'active'; currentFilter = 'active'; }
+        // Giữ lại filter cũ nếu có, nếu không mặc định là 'active'
+        if (!['active', 'ended', 'archived'].includes(currentFilter)) currentFilter = 'active';
     }
 }
 
@@ -2241,14 +2240,24 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
 
     if (activeTab === 'dashboard') {
         list = (appData.sharedChallenges||[]).filter(c => {
-//... (giữ nguyên toàn bộ code bên dưới của bạn)
-                    const st = c.participants?c.participants[loggedInUserId]:null, j = (st===true||st==='given_up');
-                    if (currentFilter === 'archived') return c.archived;
-                    if (c.archived) return false;
-                    if (currentFilter === 'my') return j;
-                    if (currentFilter === 'new') return !j;
-                    return true;
-                }).sort(sortByStartDate);
+            const tot = c.totalDays || sysCfg.defaultTotalDays;
+            const cFinished = isChallengeFinished(c.startDate, tot); // Kiểm tra thời gian kết thúc
+            const st = c.participants ? c.participants[loggedInUserId] : null;
+            const j = (st === true || st === 'given_up');
+
+            // 1. Logic cho Đã lưu trữ
+            if (currentFilter === 'archived') return c.archived;
+            if (c.archived) return false; // Ẩn khỏi các tab khác
+            
+            // 2. Logic cho Đã kết thúc
+            if (currentFilter === 'ended') return cFinished;
+            if (cFinished) return false; // Nếu đã hết thời gian, không hiện ở Thử thách mới/Của tôi nữa
+
+            // 3. Logic cho Đang diễn ra
+            if (currentFilter === 'my') return j;
+            if (currentFilter === 'new') return !j;
+            return true;
+        }).sort(sortByStartDate);
 
                 if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
                 
@@ -2377,7 +2386,18 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
 });
             } else {
                 list = (appData.personalHabits[loggedInUserId]||[]).filter(h => {
+                    const tot = h.totalDays || sysCfg.defaultTotalDays;
+                    const cFinished = isChallengeFinished(h.startDate, tot); // Kiểm tra kết thúc
+
+                    // 1. Logic cho Đã lưu trữ
                     if (currentFilter === 'archived') return h.archived === true;
+                    if (h.archived) return false;
+                    
+                    // 2. Logic cho Đã kết thúc
+                    if (currentFilter === 'ended') return cFinished;
+                    if (cFinished) return false; // Tự động ẩn khỏi tab Đang diễn ra
+
+                    // 3. Logic cho Đang diễn ra
                     if (currentFilter === 'active') return !h.archived;
                     return true;
                 }).sort(sortByStartDate);
