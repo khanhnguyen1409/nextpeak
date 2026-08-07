@@ -3703,15 +3703,15 @@ let statusBadge = isF
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
                             }
                         }
                     }
@@ -3727,11 +3727,11 @@ let statusBadge = isF
 
                         if(isFailed) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[10px]">
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
                                         <span class="shrink-0">➔ 💸</span>
@@ -3741,11 +3741,11 @@ let statusBadge = isF
                                 </div>`);
                         } else if(done >= tgt) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[10px]">
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
+                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
                                         <span class="shrink-0">➔ 🎁</span>
@@ -3764,7 +3764,7 @@ let statusBadge = isF
                 
                 let detailsHTML = "";
                 if (groupLogs.length || personalLogs.length) {
-                    detailsHTML = `<div class="text-[10px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
+                    detailsHTML = `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
                     if (groupLogs.length) detailsHTML += groupLogs.join('');
                     if (groupLogs.length && personalLogs.length) {
                         detailsHTML += `<hr class="border-slate-200 dark:border-slate-700/80 my-1.5 opacity-60 personal-reward-line">`;
@@ -3772,7 +3772,7 @@ let statusBadge = isF
                     if (personalLogs.length) detailsHTML += personalLogs.join('');
                     detailsHTML += `</div>`;
                 } else {
-                    detailsHTML = `<p class="text-[9px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
+                    detailsHTML = `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
                 }
 
                 container.innerHTML += `
