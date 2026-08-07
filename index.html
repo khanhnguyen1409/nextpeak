@@ -1346,7 +1346,7 @@ async function uploadToImgbb(base64Str) {
         function getCompletedBadgeHTML() {
             return `
             <span class="text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-lg text-xs font-bold inline-flex items-center justify-center h-5 shrink-0 leading-none gap-1.5">
-                <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✓</span>
+                <span class="w-3.5 h-3.5 rounded bg-emerald-600 text-white flex items-center justify-center text-[9px] font-black shrink-0">✅</span>
                 ${t('completed')}
             </span>`;
         }
@@ -3599,7 +3599,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                     let statusBadge = isF 
                         ? `<span class="text-rose-500 font-bold text-[13px] leading-none shrink-0" title="${t('incomplete')}">❌</span>` 
                         : (isD 
-                            ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✓</span>` 
+                            ? `<span class="text-emerald-600 font-bold text-[13px] leading-none shrink-0" title="${t('completed')}">✅</span>` 
                             : `<span class="text-slate-400 font-bold text-[10px] leading-none shrink-0">⏳</span>`);
                         
                         htmlTxt += `
