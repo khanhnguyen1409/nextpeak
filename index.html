@@ -2286,18 +2286,27 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
                     let rewardPenaltyBoxHTML = "";
     let statusBadgeHTML = "";
 
+    // ==========================================
+    // 🌟 PHẦN NHÓM (GROUP CHALLENGE): TRẠNG THÁI HOÀN THÀNH & THẤT BẠI
+    // ==========================================
     if (isCompleted) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
             </div>`;
-        statusBadgeHTML = `<span class="bg-purple-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        
+        // [NHÓM - HOÀN THÀNH]: Trên web hiện nền tím chữ trắng. Khi chụp ảnh tự mất nền, chữ chuyển sang màu Tím.
+        statusBadgeHTML = `<span class="status-group-completed bg-purple-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        
     } else if (isFailed) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
             </div>`;
-        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+            
+        // [CHUNG - KHÔNG HOÀN THÀNH]: Trên web hiện nền đỏ chữ trắng. Khi chụp ảnh tự mất nền, chữ chuyển sang màu Đỏ.
+        statusBadgeHTML = `<span class="status-failed bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+        
     } else {
         // --- ĐOẠN CODE CŨ (ĐÃ VÔ HIỆU HÓA...) ---
         // --- ĐOẠN CODE CŨ (ĐÃ VÔ HIỆU HÓA, KHI NÀO CẦN CHỈ CẦN XÓA DẤU /* VÀ */ LÀ DÙNG LẠI ĐƯỢC) ---
@@ -2430,22 +2439,30 @@ return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative 
 
                     let rewardPenaltyBoxHTML = "";
     let statusBadgeHTML = "";
-
     
-                    if (isCompleted) {
+                    // ==========================================
+    // 👤 PHẦN CÁ NHÂN (PERSONAL HABIT): TRẠNG THÁI HOÀN THÀNH & THẤT BẠI
+    // ==========================================
+    if (isCompleted) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">🎁</span>
                 <span class="truncate">${h.selfReward||'---'}</span>
             </div>`;
-        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+            
+        // [CÁ NHÂN - HOÀN THÀNH]: Trên web hiện nền xanh lá chữ trắng. Khi chụp ảnh tự mất nền, chữ chuyển sang màu Xanh lá.
+        statusBadgeHTML = `<span class="status-personal-completed bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        
     } else if (isFailed) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">💸</span>
                 <span class="truncate">${h.selfPenalty||'---'}</span>
             </div>`;
-        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+            
+        // [CHUNG - KHÔNG HOÀN THÀNH]: Trên web hiện nền đỏ chữ trắng. Khi chụp ảnh tự mất nền, chữ chuyển sang màu Đỏ.
+        statusBadgeHTML = `<span class="status-failed bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+        
     } else {
         // Đã ẩn đi bằng cách để trống
         rewardPenaltyBoxHTML = "";
@@ -2865,17 +2882,22 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     const cleanBadges = cardEl.querySelectorAll('.clean-badge');
     const viewAllElement = cardEl.querySelector('button[onclick*="toggleGrid"]');
     
+    // Các nhãn trạng thái phục vụ cho việc đổi màu khi chụp
+    const groupCompletedBadges = cardEl.querySelectorAll('.status-group-completed');
+    const personalCompletedBadges = cardEl.querySelectorAll('.status-personal-completed');
+    const failedBadges = cardEl.querySelectorAll('.status-failed');
+    
     let wasCollapsed = false;
     const hiddenElements = cardEl.querySelectorAll('.hidden');
     let temporarilyShown = [];
 
-    // 1. Ẩn bình luận, nút menu, ẩn hẳn chiếc cúp và ẩn nút "Xem tất cả"
+    // 1. Ẩn các thành phần không cần thiết khi chụp
     if(commentsContainer) commentsContainer.style.display = 'none';
     if(actionBtn) actionBtn.style.display = 'none';
     if(trophyBtn) trophyBtn.style.display = 'none';
     if(viewAllElement) viewAllElement.style.display = 'none';
 
-    // 2. Làm sạch khung viền, nền và mở khóa toàn bộ thẻ con bên trong để không bị xén chữ p, g, y
+    // 2. Làm sạch khung viền/nền các badge thông thường
     cleanBadges.forEach(el => {
         el.style.border = 'none';
         el.style.background = 'transparent';
@@ -2892,7 +2914,24 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
         });
     });
 
-    // 3. Tự động bung full tất cả các ngày trong thử thách trước khi chụp
+    // 3. Xử lý riêng cho nhãn trạng thái lúc chụp: mất nền, đổi màu chữ theo yêu cầu
+    groupCompletedBadges.forEach(el => {
+        el.style.background = 'transparent';
+        el.style.border = 'none';
+        el.style.color = '#9333ea'; // Màu tím cho Nhóm hoàn thành
+    });
+    personalCompletedBadges.forEach(el => {
+        el.style.background = 'transparent';
+        el.style.border = 'none';
+        el.style.color = '#059669'; // Màu xanh lá cho Cá nhân hoàn thành
+    });
+    failedBadges.forEach(el => {
+        el.style.background = 'transparent';
+        el.style.border = 'none';
+        el.style.color = '#e11d48'; // Màu đỏ cho Không hoàn thành
+    });
+
+    // 4. Bung full tất cả các ngày
     hiddenElements.forEach(el => {
         if(!el.id.includes('comment') && !el.id.includes('modal')) {
             el.classList.remove('hidden');
@@ -2901,7 +2940,6 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
         }
     });
 
-    // Đợi 150ms để trình duyệt kịp vẽ lại giao diện
     await new Promise(resolve => setTimeout(resolve, 150));
 
     try {
@@ -2921,7 +2959,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
         console.error("Capture Error:", err);
         alert(t('errCapture'));
     } finally {
-        // 4. Khôi phục lại giao diện hiển thị ban đầu cho người dùng sau khi chụp xong
+        // 5. Khôi phục lại giao diện hiển thị ban đầu trên web
         if(commentsContainer) commentsContainer.style.display = '';
         if(actionBtn) actionBtn.style.display = '';
         if(trophyBtn) trophyBtn.style.display = '';
@@ -2942,6 +2980,11 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                 inner.style.whiteSpace = '';
             });
         });
+
+        // Khôi phục trạng thái ban đầu của nhãn trạng thái
+        groupCompletedBadges.forEach(el => { el.style.background = ''; el.style.border = ''; el.style.color = ''; });
+        personalCompletedBadges.forEach(el => { el.style.background = ''; el.style.border = ''; el.style.color = ''; });
+        failedBadges.forEach(el => { el.style.background = ''; el.style.border = ''; el.style.color = ''; });
 
         if(wasCollapsed) {
             temporarilyShown.forEach(el => {
