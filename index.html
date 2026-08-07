@@ -3703,15 +3703,16 @@ let statusBadge = isF
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
+                            // SỐ THỨ TỰ NHÓM: Dùng màu Indigo
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span><sup class="text-indigo-600 dark:text-indigo-400 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span><sup class="text-indigo-600 dark:text-indigo-400 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span><sup class="text-indigo-600 dark:text-indigo-400 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
                             }
                         }
                     }
@@ -3726,11 +3727,12 @@ let statusBadge = isF
                         const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
 
                         if(isFailed) {
+                            // SỐ THỨ TỰ CÁ NHÂN: Dùng màu Emerald
                             personalLogs.push(`
                                 <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 dark:text-emerald-400 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
                                         <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
@@ -3744,7 +3746,7 @@ let statusBadge = isF
                                 <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 dark:text-emerald-400 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
                                         <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
