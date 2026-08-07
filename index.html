@@ -2874,13 +2874,21 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     if(trophyBtn) trophyBtn.style.display = 'none';
     if(viewAllElement) viewAllElement.style.display = 'none';
 
-    // 2. Làm sạch khung viền, nền và chống xén chữ cho các badge
+    // 2. Làm sạch khung viền, nền và mở khóa toàn bộ thẻ con bên trong để không bị xén chữ p, g, y
     cleanBadges.forEach(el => {
         el.style.border = 'none';
         el.style.background = 'transparent';
         el.style.boxShadow = 'none';
         el.style.overflow = 'visible';
-        el.style.paddingBottom = '4px';
+        el.style.paddingBottom = '6px';
+        el.style.paddingTop = '4px';
+
+        const innerElements = el.querySelectorAll('*');
+        innerElements.forEach(inner => {
+            inner.style.overflow = 'visible';
+            inner.style.textOverflow = 'clip';
+            inner.style.whiteSpace = 'normal';
+        });
     });
 
     // 3. Tự động bung full tất cả các ngày trong thử thách trước khi chụp
@@ -2924,6 +2932,14 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
             el.style.boxShadow = '';
             el.style.overflow = '';
             el.style.paddingBottom = '';
+            el.style.paddingTop = '';
+
+            const innerElements = el.querySelectorAll('*');
+            innerElements.forEach(inner => {
+                inner.style.overflow = '';
+                inner.style.textOverflow = '';
+                inner.style.whiteSpace = '';
+            });
         });
 
         if(wasCollapsed) {
