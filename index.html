@@ -2361,7 +2361,15 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
+                                <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">
+    ${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> 
+    
+    <!-- Sửa thẻ Streak cho chuẩn -->
+    <span class="inline-flex items-center justify-center bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800 h-6">🔥${streak.active}</span> 
+    
+    <!-- Sửa nút Cúp cho chuẩn -->
+    <button onclick="openLeaderboardModal(${c.id})" class="inline-flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition w-6 h-6 p-0 leading-none">🏆</button>
+</span>
                                     ${statusBadgeHTML}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
@@ -2847,36 +2855,78 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
         }
 
         async function captureChallengeCard(id) {
-            const cardEl = document.getElementById(`challenge-card-${id}`);
-            if(!cardEl) return;
-            
-            const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
-            const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
-            
-            if(commentsContainer) commentsContainer.style.display = 'none';
-            if(actionBtn) actionBtn.style.display = 'none';
+    const cardEl = document.getElementById(`challenge-card-${id}`);
+    if(!cardEl) return;
+    
+    const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
+    const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
+    
+    // 1. Tìm phần lưới các ngày bị thu gọn (giả sử element chứa các ngày thu gọn có class hoặc cấu trúc grid của bạn)
+    // Hoặc tìm nút "Xem tất cả / Xem thêm" để tự động kích hoạt nó bung ra
+    const gridContainer = cardEl.querySelector('.grid'); // Tìm grid chứa các ngày
+    const viewMoreBtn = cardEl.querySelector('button[onclick*="toggleGrid"]'); // Tìm nút Xem tất cả dựa vào onclick toggleGrid của bạn ở Phần 2
+    
+    let wasCollapsed = false;
 
-            try {
-                const canvas = await html2canvas(cardEl, {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: false,
-                    logging: false,
-                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-                });
+    if(commentsContainer) commentsContainer.style.display = 'none';
+    if(actionBtn) actionBtn.style.display = 'none';
 
-                const link = document.createElement('a');
-                link.download = `BVGP-Challenge-${id}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            } catch(err) {
-                console.error("Capture Error:", err);
-                alert(t('errCapture'));
-            } finally {
-                if(commentsContainer) commentsContainer.style.display = '';
-                if(actionBtn) actionBtn.style.display = '';
-            }
+    // 2. TỰ ĐỘNG BUNG FULL SỐ NGÀY TRƯỚC KHI CHỤP
+    // Nếu trong thẻ card đang có nút xem thêm / hoặc grid đang giới hạn dòng, ta mở rộng nó ra
+    // (Dựa vào hàm toggleGrid trong source code của bạn, ta có thể tìm class thu gọn hoặc style max-height)
+    const dayBoxes = cardEl.querySelectorAll('.day-box-item'); // Hoặc các phần tử ngày của bạn
+    // Kiểm tra nếu có cơ chế thu gọn, ta tạm thời gỡ bỏ để hiện tất cả
+    const collapsedGrid = cardEl.querySelector('.overflow-hidden'); // Thường các lưới dài bị ẩn dòng có overflow-hidden hoặc giới hạn chiều cao
+    
+    // Mẹo đơn giản và hiệu quả nhất dựa trên cấu trúc app của bạn: 
+    // Nếu có nút "Xem tất cả" đang hiển thị, ta tự động bấm hoặc mở rộng phần tử ẩn của nó ra
+    const hiddenDaysWrapper = cardEl.querySelector('[id*="all-days"], .all-days-container, div:not(.hidden) + div.hidden'); // Tuỳ thuộc vào cách bạn ẩn ngày dài
+    
+    // Cách an toàn nhất: Tìm tất cả các khối ngày đang bị ẩn (nếu có class hidden) và tạm gỡ ra
+    const hiddenElements = cardEl.querySelectorAll('.hidden');
+    let temporarilyShown = [];
+    
+    hiddenElements.forEach(el => {
+        // Chỉ mở các phần tử liên quan đến danh sách ngày (tránh mở nhầm modal khác)
+        if(!el.id.includes('comment') && !el.id.includes('modal')) {
+            el.classList.remove('hidden');
+            temporarilyShown.push(el);
+            wasCollapsed = true;
         }
+    });
+
+    // 3. Đợi 150ms để DOM kịp vẽ lại giao diện đủ các ngày
+    await new Promise(resolve => setTimeout(resolve, 150));
+
+    try {
+        const canvas = await html2canvas(cardEl, {
+            scale: 3,
+            useCORS: true,
+            allowTaint: false,
+            logging: false,
+            backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+        });
+
+        const link = document.createElement('a');
+        link.download = `BVGP-Challenge-${id}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+    } catch(err) {
+        console.error("Capture Error:", err);
+        alert(t('errCapture'));
+    } finally {
+        // Khôi phục lại trạng thái giao diện ban đầu
+        if(commentsContainer) commentsContainer.style.display = '';
+        if(actionBtn) actionBtn.style.display = '';
+
+        // 4. Đóng các ngày đã tạm mở lại như cũ
+        if(wasCollapsed) {
+            temporarilyShown.forEach(el => {
+                el.classList.add('hidden');
+            });
+        }
+    }
+}
 
         function toggleCaptureDropdown(tab) {
             const m = document.getElementById(`capture-menu-${tab}`);
