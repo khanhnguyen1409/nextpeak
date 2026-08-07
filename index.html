@@ -3692,7 +3692,7 @@ let statusBadge = isF
                 let groupLogs = [], personalLogs = [];
 
                 const sortedGroup = [...(appData.sharedChallenges||[])].filter(c=>!c.archived).sort(sortByStartDate);
-                sortedGroup.forEach(c => {
+                sortedGroup.forEach((c, i) => {
                     const tgt = c.targetDays||sysCfg.defaultTargetDays, tot = c.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(c.startDate, 0)}]`, stat = c.participants ? c.participants[m.id] : null;
                     const icon = c.isBigPlay ? '🔥' : '🎯';
                     const cFinished = isChallengeFinished(c.startDate, tot);
@@ -3703,15 +3703,15 @@ let statusBadge = isF
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[11px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
                             }
                         }
                     }
@@ -3720,7 +3720,7 @@ let statusBadge = isF
                 if(m.id === loggedInUserId) {
                     const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
                     const userAv = getMemberAvatarHTML(m.id, "w-3.5 h-3.5");
-                    sortedPersonal.forEach(h => {
+                    sortedPersonal.forEach((h, i) => {
                         const tgt = h.targetDays||sysCfg.defaultTargetDays, tot = h.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
                         const cFinished = isChallengeFinished(h.startDate, tot);
                         const isFailed = (h.status === 'given_up') || (done < tgt && cFinished);
@@ -3730,7 +3730,7 @@ let statusBadge = isF
                                 <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
                                         <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
@@ -3744,7 +3744,7 @@ let statusBadge = isF
                                 <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[11px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
-                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
+                                        <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span><sup class="text-emerald-600 font-bold text-[9px] shrink-0 ml-0.5">${i+1}</sup>
                                         <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
