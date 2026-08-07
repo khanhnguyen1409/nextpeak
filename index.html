@@ -2291,13 +2291,13 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             <div class="clean-badge px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">🎁</span> <span class="truncate">+${c.isBigPlay ? (c.customReward||0)+'k' : defRewardText}</span>
             </div>`;
-        statusBadgeHTML = `<span class="clean-badge bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        statusBadgeHTML = `<span class="bg-purple-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
     } else if (isFailed) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">💸</span> <span class="truncate">-${c.isBigPlay ? (c.customPenalty||0)+'k' : defPenaltyText}</span>
             </div>`;
-        statusBadgeHTML = `<span class="clean-badge bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
     } else {
         // --- ĐOẠN CODE CŨ (ĐÃ VÔ HIỆU HÓA...) ---
         // --- ĐOẠN CODE CŨ (ĐÃ VÔ HIỆU HÓA, KHI NÀO CẦN CHỈ CẦN XÓA DẤU /* VÀ */ LÀ DÙNG LẠI ĐƯỢC) ---
@@ -2431,20 +2431,21 @@ return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative 
                     let rewardPenaltyBoxHTML = "";
     let statusBadgeHTML = "";
 
-    if (isCompleted) {
+    
+                    if (isCompleted) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">🎁</span>
                 <span class="truncate">${h.selfReward||'---'}</span>
             </div>`;
-        statusBadgeHTML = `<span class="clean-badge bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        statusBadgeHTML = `<span class="bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
     } else if (isFailed) {
         rewardPenaltyBoxHTML = `
             <div class="clean-badge px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 rounded-2xl w-fit max-w-full text-xs sm:text-sm font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 truncate">
                 <span class="shrink-0">💸</span>
                 <span class="truncate">${h.selfPenalty||'---'}</span>
             </div>`;
-        statusBadgeHTML = `<span class="clean-badge bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
+        statusBadgeHTML = `<span class="bg-rose-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('incomplete')}</span>`;
     } else {
         // Đã ẩn đi bằng cách để trống
         rewardPenaltyBoxHTML = "";
