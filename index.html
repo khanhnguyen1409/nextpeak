@@ -2354,22 +2354,14 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
 
                             // Thêm logic ẩn hiện (hidden)
                             let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
-                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="hide-on-capture absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
 
+                            return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                         }).join('') + `</div>`;
                         
                         content = `
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs flex-wrap gap-2">
-                                <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">
-    ${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> 
-    
-    <!-- Thêm class hide-on-capture để tự ẩn khi chụp -->
-    <span class="hide-on-capture bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> 
-    
-    <!-- Thêm class hide-on-capture để ẩn chiếc cúp khi chụp -->
-    <button onclick="openLeaderboardModal(${c.id})" class="hide-on-capture bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button>
-</span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>
                                     ${statusBadgeHTML}
                                 </div>
                                 <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden">
@@ -2854,67 +2846,37 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             else if(act==='delete') deleteChallenge(id, isPersonal);
         }
 
-        
         async function captureChallengeCard(id) {
-    const cardEl = document.getElementById(`challenge-card-${id}`);
-    if(!cardEl) return;
-    
-    const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
-    const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
-    
-    // Lấy tất cả các thành phần có gắn class hide-on-capture (Cúp, Streak, Today badge)
-    const captureHiddenElements = cardEl.querySelectorAll('.hide-on-capture');
-    
-    let wasCollapsed = false;
-    const hiddenElements = cardEl.querySelectorAll('.hidden');
-    let temporarilyShown = [];
+            const cardEl = document.getElementById(`challenge-card-${id}`);
+            if(!cardEl) return;
+            
+            const commentsContainer = cardEl.querySelector('[id^="comment-section-"]')?.parentElement;
+            const actionBtn = cardEl.querySelector('button[onclick*="openActionMenuModal"]');
+            
+            if(commentsContainer) commentsContainer.style.display = 'none';
+            if(actionBtn) actionBtn.style.display = 'none';
 
-    // Ẩn các thành phần phụ và các khung viền/icon cần giấu khi chụp
-    if(commentsContainer) commentsContainer.style.display = 'none';
-    if(actionBtn) actionBtn.style.display = 'none';
-    captureHiddenElements.forEach(el => el.style.display = 'none');
+            try {
+                const canvas = await html2canvas(cardEl, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
+                });
 
-    // Tự động bung full tất cả các ngày trong thử thách trước khi chụp
-    hiddenElements.forEach(el => {
-        if(!el.id.includes('comment') && !el.id.includes('modal')) {
-            el.classList.remove('hidden');
-            temporarilyShown.push(el);
-            wasCollapsed = true;
+                const link = document.createElement('a');
+                link.download = `BVGP-Challenge-${id}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            } catch(err) {
+                console.error("Capture Error:", err);
+                alert(t('errCapture'));
+            } finally {
+                if(commentsContainer) commentsContainer.style.display = '';
+                if(actionBtn) actionBtn.style.display = '';
+            }
         }
-    });
-
-    // Đợi 150ms để trình duyệt kịp vẽ lại giao diện đầy đủ ngày
-    await new Promise(resolve => setTimeout(resolve, 150));
-
-    try {
-        const canvas = await html2canvas(cardEl, {
-            scale: 3,
-            useCORS: true,
-            allowTaint: false,
-            logging: false,
-            backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-        });
-
-        const link = document.createElement('a');
-        link.download = `BVGP-Challenge-${id}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        link.click();
-    } catch(err) {
-        console.error("Capture Error:", err);
-        alert(t('errCapture'));
-    } finally {
-        // Khôi phục lại giao diện hiển thị cho người dùng sau khi chụp xong
-        if(commentsContainer) commentsContainer.style.display = '';
-        if(actionBtn) actionBtn.style.display = '';
-        captureHiddenElements.forEach(el => el.style.display = '');
-
-        if(wasCollapsed) {
-            temporarilyShown.forEach(el => {
-                el.classList.add('hidden');
-            });
-        }
-    }
-}
 
         function toggleCaptureDropdown(tab) {
             const m = document.getElementById(`capture-menu-${tab}`);
