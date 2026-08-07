@@ -2862,28 +2862,28 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     
     const trophyBtn = cardEl.querySelector('.hide-trophy');
     const cleanBadges = cardEl.querySelectorAll('.clean-badge');
-    
-    // Tìm nút "Xem tất cả" dựa vào thuộc tính onclick chứa hàm toggleGrid (Đảm bảo cân mọi ngôn ngữ Anh/Việt)
     const viewAllElement = cardEl.querySelector('button[onclick*="toggleGrid"]');
     
     let wasCollapsed = false;
     const hiddenElements = cardEl.querySelectorAll('.hidden');
     let temporarilyShown = [];
 
-    // Ẩn bình luận, nút menu, ẩn hẳn chiếc cúp và ẩn nút "Xem tất cả"
+    // 1. Ẩn bình luận, nút menu, ẩn hẳn chiếc cúp và ẩn nút "Xem tất cả"
     if(commentsContainer) commentsContainer.style.display = 'none';
     if(actionBtn) actionBtn.style.display = 'none';
     if(trophyBtn) trophyBtn.style.display = 'none';
     if(viewAllElement) viewAllElement.style.display = 'none';
 
-    // Làm sạch khung viền và màu nền của Streak & Hôm nay (giữ lại chữ/icon)
+    // 2. Làm sạch khung viền, nền và chống xén chữ cho các badge
     cleanBadges.forEach(el => {
         el.style.border = 'none';
         el.style.background = 'transparent';
         el.style.boxShadow = 'none';
+        el.style.overflow = 'visible';
+        el.style.paddingBottom = '4px';
     });
 
-    // Tự động bung full tất cả các ngày trong thử thách trước khi chụp
+    // 3. Tự động bung full tất cả các ngày trong thử thách trước khi chụp
     hiddenElements.forEach(el => {
         if(!el.id.includes('comment') && !el.id.includes('modal')) {
             el.classList.remove('hidden');
@@ -2912,7 +2912,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
         console.error("Capture Error:", err);
         alert(t('errCapture'));
     } finally {
-        // Khôi phục lại giao diện hiển thị ban đầu cho người dùng sau khi chụp xong
+        // 4. Khôi phục lại giao diện hiển thị ban đầu cho người dùng sau khi chụp xong
         if(commentsContainer) commentsContainer.style.display = '';
         if(actionBtn) actionBtn.style.display = '';
         if(trophyBtn) trophyBtn.style.display = '';
@@ -2922,6 +2922,8 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
             el.style.border = '';
             el.style.background = '';
             el.style.boxShadow = '';
+            el.style.overflow = '';
+            el.style.paddingBottom = '';
         });
 
         if(wasCollapsed) {
