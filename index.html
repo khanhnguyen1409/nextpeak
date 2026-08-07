@@ -3564,7 +3564,6 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
 
         function renderReportPreview() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let htmlTxt = `<h2 class="text-center font-black text-base text-indigo-700 dark:text-indigo-400 uppercase tracking-tight mb-2">🏆 ${t('completionProgress')}</h2>`;
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
