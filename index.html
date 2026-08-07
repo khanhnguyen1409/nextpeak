@@ -2514,10 +2514,10 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     <div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3">
         <div class="flex justify-between items-start">
             <div class="space-y-1.5 w-full">
-                <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1.5">
-                    <span class="inline-flex items-center shrink-0">${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")}</span>
-                    <span class="truncate">${h.text}</span>
-                    <sup class="text-emerald-600 font-bold text-[10px] ml-0.5">${idx + 1}</sup>
+                <h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1.5 min-w-0">
+                    <span class="inline-flex items-center shrink-0 relative top-[1px]">${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")}</span>
+                    <span class="truncate min-w-0">${h.text}</span>
+                    <sup class="text-emerald-600 font-bold text-[10px] ml-0.5 shrink-0">${idx + 1}</sup>
                 </h4>
                 <div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic">
                     <span>${formatDateString(h.startDate)}</span>
