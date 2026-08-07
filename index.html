@@ -2296,7 +2296,7 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             </div>`;
         
         // [NHÓM - HOÀN THÀNH]: Trên web hiện nền tím chữ trắng. Khi chụp ảnh tự mất nền, chữ chuyển sang màu Tím.
-        statusBadgeHTML = `<span class="status-group-completed bg-purple-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
+        statusBadgeHTML = `<span class="status-group-completed bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center justify-center shrink-0 leading-none">${t('completed')}</span>`;
         
     } else if (isFailed) {
         rewardPenaltyBoxHTML = `
@@ -2918,7 +2918,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     groupCompletedBadges.forEach(el => {
         el.style.background = 'transparent';
         el.style.border = 'none';
-        el.style.color = '#9333ea'; // Màu tím cho Nhóm hoàn thành
+        el.style.color = '#4f46e5'; // Màu tím cho Nhóm hoàn thành
     });
     personalCompletedBadges.forEach(el => {
         el.style.background = 'transparent';
