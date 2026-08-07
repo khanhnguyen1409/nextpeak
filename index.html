@@ -1427,10 +1427,14 @@ async function uploadToImgbb(base64Str) {
     if (audio.src !== list[currentMusicIndex]) {
         audio.src = list[currentMusicIndex];
     }
+    // Xóa alert ở phần catch, thay bằng hàm trống để trình duyệt chạy ngầm không làm phiền người dùng
     audio.play().then(() => { 
         isMusicPlaying = true; 
-        document.getElementById('music-play-btn').innerText = '⏸️'; 
-    }).catch(() => alert(t('clickToPlay')));
+        const playBtn = document.getElementById('music-play-btn');
+        if (playBtn) playBtn.innerText = '⏸️'; 
+    }).catch(() => {
+        // Không làm gì cả (silent fail), chờ người dùng tương tác click/touch đầu tiên để phát
+    });
 }
 
 function nextMusic() {
