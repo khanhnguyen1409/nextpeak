@@ -1421,30 +1421,39 @@ async function uploadToImgbb(base64Str) {
         }
 
         function playCurrentMusic() {
-            const list = getPlaylist();
-            if (currentMusicIndex >= list.length) currentMusicIndex = 0;
-            if (audio.src !== list[currentMusicIndex]) {
-                audio.src = list[currentMusicIndex];
-            }
-            audio.play().then(() => { 
-                isMusicPlaying = true; 
-                document.getElementById('music-play-btn').innerText = '⏸️'; 
-            }).catch(() => alert(t('clickToPlay')));
-        }
+    const list = getPlaylist();
+    if (list.length === 0) return;
+    if (currentMusicIndex >= list.length || currentMusicIndex < 0) currentMusicIndex = 0;
+    if (audio.src !== list[currentMusicIndex]) {
+        audio.src = list[currentMusicIndex];
+    }
+    audio.play().then(() => { 
+        isMusicPlaying = true; 
+        document.getElementById('music-play-btn').innerText = '⏸️'; 
+    }).catch(() => alert(t('clickToPlay')));
+}
 
-        function nextMusic() {
-            const list = getPlaylist();
-            currentMusicIndex = (currentMusicIndex + 1) % list.length;
-            if (isMusicPlaying) playCurrentMusic();
-            else audio.src = list[currentMusicIndex];
-        }
+function nextMusic() {
+    const list = getPlaylist();
+    if (list.length === 0) return;
+    if (list.length === 1) {
+        currentMusicIndex = 0;
+    } else {
+        let newIndex;
+        // Chọn ngẫu nhiên một index khác với bài hiện tại để không bị trùng liên tiếp
+        do {
+            newIndex = Math.floor(Math.random() * list.length);
+        } while (newIndex === currentMusicIndex);
+        currentMusicIndex = newIndex;
+    }
+    if (isMusicPlaying) playCurrentMusic();
+    else audio.src = list[currentMusicIndex];
+}
 
-        function prevMusic() {
-            const list = getPlaylist();
-            currentMusicIndex = (currentMusicIndex - 1 + list.length) % list.length;
-            if (isMusicPlaying) playCurrentMusic();
-            else audio.src = list[currentMusicIndex];
-        }
+function prevMusic() {
+    // Trong chế độ ngẫu nhiên, nút lùi (previous) cũng sẽ phát một bài ngẫu nhiên khác giống nút next
+    nextMusic();
+}
 
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
