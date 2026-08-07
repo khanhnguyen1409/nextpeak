@@ -2986,10 +2986,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     }
 }
 
-        function toggleCaptureDropdown(tab) {
-            const m = document.getElementById(`capture-menu-${tab}`);
-            if(m) m.classList.toggle('hidden');
-        }
+      
 
         async function executeCapture(tab, option) {
             document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
