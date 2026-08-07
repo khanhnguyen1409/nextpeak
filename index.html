@@ -2707,13 +2707,19 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     // ĐÃ SỬA Ở ĐÂY: Thay renderList() thành switchTab('update')
     switchTab('update'); 
 
-    // === THÊM ĐOẠN CODE NÀY ĐỂ TỰ ĐỘNG PHÁT NHẠC KHI VÀO APP ===
+    // === TỰ ĐỘNG PHÁT NHẠC NGẪU NHIÊN KHI VÀO APP ===
+    const playlistInit = getPlaylist();
+    if (playlistInit && playlistInit.length > 0) {
+        // Chọn ngẫu nhiên 1 bài ngay khi khởi tạo
+        currentMusicIndex = Math.floor(Math.random() * playlistInit.length);
+    }
+
     setTimeout(() => {
         if (!isMusicPlaying) {
             playCurrentMusic(); // Thử phát nhạc ngay khi đăng nhập xong
         }
     }, 500);
-    // ... (phần dưới giữ nguyên)
+
     // Bẫy sự kiện tương tác đầu tiên (click/touch) để vượt qua bộ chặn autoplay của trình duyệt nếu bị block
     const triggerAutoplay = () => {
         if (!isMusicPlaying) {
