@@ -2720,8 +2720,6 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                 const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
-                document.getElementById('btn-cap-act').classList.toggle('hidden', !isAdmin);
-                document.getElementById('btn-cap-rew').classList.toggle('hidden', !isAdmin);
             } 
         }
         function handleResetTestData() {
