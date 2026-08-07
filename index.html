@@ -3564,6 +3564,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
 
         function renderReportPreview() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
+            let htmlTxt = '';
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
