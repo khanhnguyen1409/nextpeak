@@ -612,26 +612,28 @@
 </div>
 
                 <div id="form-group-rules" class="space-y-2 pt-1 border-t">
-                    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
-                        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
-                        <span id="t-bigplay-label">🔥 Chơi lớn</span>
-                    </label>
-                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700">
-                        <div>
-                            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
-                            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                        </div>
-                        <div>
-                            <label id="t-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
-                            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                        </div>
-                    </div>
-                </div>
+    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
+        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
+        <span id="t-bigplay-label">🔥 Chơi lớn</span>
+    </label>
+    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700">
+        <div>
+            <!-- ID của nhóm giữ nguyên -->
+            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
+            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+        </div>
+        <div>
+            <label id="t-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
+            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+        </div>
+    </div>
+</div>
 
-                <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
+<div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
     <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
         <div>
-            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng trải nghiệm:</label>
+            <!-- ĐÃ ĐỔI ID THÀNH t-self-reward-label ĐỂ KHÔNG BỊ TRÙNG -->
+            <label id="t-self-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng trải nghiệm:</label>
             <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
@@ -1530,7 +1532,7 @@ function prevMusic() {
     setHtml('t-penalty-label', t('penaltyLabel'));
     
     setHtml('t-self-reward-label', t('selfRewardLabel'));
-    setHtml('t-self-penalty-label', `💸 ${t('penaltyExperience')}:`);        
+    setHtml('t-self-penalty-label', `💸 ${t('penaltyExperience')}`);        
 
     setPlaceholder('create-self-reward-input', t('selfRewardPh'));
     setPlaceholder('create-self-penalty-input', t('selfPenaltyPh'));
