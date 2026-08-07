@@ -1321,7 +1321,7 @@ async function uploadToImgbb(base64Str) {
         ];
 
         const defaultSystemConfig = {
-            defaultReward: "1 Sách",
+            defaultReward: "Sách",
             defaultPenalty: 100,
             defaultTargetDays: 14,
             defaultTotalDays: 16,
@@ -2690,6 +2690,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     updateNotificationBadge(); 
     document.getElementById('btn-admin-tool').classList.toggle('hidden', loggedInUserId !== 'member_1'); 
     
+    
     // ĐÃ SỬA Ở ĐÂY: Thay renderList() thành switchTab('update')
     switchTab('update'); 
 
@@ -2720,6 +2721,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                 const isAdmin = loggedInUserId === 'member_1';
                 document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
                 document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
+                
             } 
         }
         function handleResetTestData() {
@@ -2986,7 +2988,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
     }
 }
 
-      
+        
 
         async function executeCapture(tab, option) {
             document.getElementById(`capture-menu-${tab}`)?.classList.add('hidden');
@@ -3555,7 +3557,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
 
         function renderReportPreview() {
             const sysCfg = appData.systemConfig || defaultSystemConfig;
-            let htmlTxt = '';
+                        let htmlTxt = '';
             const currentMemberName = appData.members.find(x=>x.id===loggedInUserId)?.name || '';
 
             const grps = (appData.sharedChallenges||[]).filter(c=>!c.archived).sort(sortByStartDate);
@@ -3696,15 +3698,15 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
 
                         if (isFailed) {
                             const p = c.isBigPlay ? (c.customPenalty||0) : sysCfg.defaultPenalty; pen += p;
-                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
+                            groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">${icon}</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-rose-600 shrink-0 min-w-0">➔ -${p}k ❌</span></div>`);
                         } else if (done >= tgt) {
                             if(c.isBigPlay){ 
                                 rew += (c.customReward||0); 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🔥</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-amber-600 shrink-0 min-w-0">➔ +${c.customReward||0}k ✅</span></div>`); 
                             }
                             else { 
                                 bookCount++; 
-                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
+                                groupLogs.push(`<div class="flex items-center justify-between gap-1 w-full overflow-hidden text-[10px]"><div class="flex items-center gap-1 min-w-0 shrink"><span class="shrink-0 leading-none">🎯</span> <span class="truncate">${c.title}</span> <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span></div> <span class="font-bold text-emerald-600 shrink-0 min-w-0">➔ +${sysCfg.defaultReward} ✅</span></div>`); 
                             }
                         }
                     }
@@ -3712,7 +3714,7 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                 
                 if(m.id === loggedInUserId) {
                     const sortedPersonal = [...(appData.personalHabits[m.id]||[])].filter(h=>!h.archived).sort(sortByStartDate);
-                    const userAv = getMemberAvatarHTML(m.id, "w-4 h-4");
+                    const userAv = getMemberAvatarHTML(m.id, "w-3.5 h-3.5");
                     sortedPersonal.forEach(h => {
                         const tgt = h.targetDays||sysCfg.defaultTargetDays, tot = h.totalDays||sysCfg.defaultTotalDays, dateStr = `[${getDateString(h.startDate, 0)}]`, done = (h.days||[]).filter(i=>i&&i.completed).length;
                         const cFinished = isChallengeFinished(h.startDate, tot);
@@ -3720,11 +3722,11 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
 
                         if(isFailed) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[10px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
+                                        <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-rose-600 min-w-0 shrink-0 max-w-[45%] justify-end">
                                         <span class="shrink-0">➔ 💸</span>
@@ -3734,11 +3736,11 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                                 </div>`);
                         } else if(done >= tgt) {
                             personalLogs.push(`
-                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden">
+                                <div class="flex items-center justify-between gap-1.5 personal-reward-line w-full overflow-hidden text-[10px]">
                                     <div class="flex items-center gap-1.5 min-w-0 shrink">
                                         <span class="shrink-0 leading-none">${userAv}</span>
                                         <span class="font-medium text-slate-700 dark:text-slate-200 truncate">${h.text}</span>
-                                        <span class="text-[10px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
+                                        <span class="text-[9px] text-slate-400 shrink-0">${dateStr}</span><span class="shrink-0">:</span>
                                     </div>
                                     <div class="flex items-center gap-1 font-bold text-emerald-600 min-w-0 shrink-0 max-w-[45%] justify-end">
                                         <span class="shrink-0">➔ 🎁</span>
@@ -3751,13 +3753,13 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                 }
                 
                 const badges = [];
-                if(bookCount>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${bookCount} ${sysCfg.defaultReward}</span>`);
-                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">+${rew}k</span>`);
-                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none">0 ${t('book')}</span>`);
+                if(bookCount>0) badges.push(`<span class="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none shrink-0 text-[10px]">+${bookCount} ${sysCfg.defaultReward}</span>`);
+                if(rew>0) badges.push(`<span class="text-amber-600 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none shrink-0 text-[10px]">+${rew}k</span>`);
+                if(!badges.length) badges.push(`<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none shrink-0 text-[10px]">0 ${sysCfg.defaultReward}</span>`);
                 
                 let detailsHTML = "";
                 if (groupLogs.length || personalLogs.length) {
-                    detailsHTML = `<div class="text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
+                    detailsHTML = `<div class="text-[10px] bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/80 space-y-1.5 text-slate-700 dark:text-slate-300">`;
                     if (groupLogs.length) detailsHTML += groupLogs.join('');
                     if (groupLogs.length && personalLogs.length) {
                         detailsHTML += `<hr class="border-slate-200 dark:border-slate-700/80 my-1.5 opacity-60 personal-reward-line">`;
@@ -3765,26 +3767,25 @@ return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative o
                     if (personalLogs.length) detailsHTML += personalLogs.join('');
                     detailsHTML += `</div>`;
                 } else {
-                    detailsHTML = `<p class="text-[10px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
+                    detailsHTML = `<p class="text-[9px] italic text-slate-400 text-center py-1">${t('noRewardRecord')}</p>`;
                 }
 
                 container.innerHTML += `
                     <div id="rewards-user-card-${m.id}" class="p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
                         <div class="flex justify-between items-center gap-2 w-full">
                             <div class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200 min-w-0 shrink">
-                                <span class="shrink-0">${getMemberAvatarHTML(m.id, "w-6 h-6")}</span>
-                                <span class="truncate">${m.name}</span>
+                                <span class="shrink-0">${getMemberAvatarHTML(m.id, "w-5 h-5")}</span>
+                                <span class="truncate text-xs">${m.name}</span>
                             </div>
                             <div class="flex gap-1.5 items-center min-w-0 flex-wrap justify-end">
                                 ${badges.join('')} 
-                                <span class="text-rose-600 bg-rose-100/60 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none shrink-0">-${pen}k</span>
+                                <span class="text-rose-600 bg-rose-100/60 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-800 px-2.5 rounded-full font-bold inline-flex items-center justify-center h-5 leading-none shrink-0 text-[10px]">-${pen}k</span>
                             </div>
                         </div>
                         ${detailsHTML}
                     </div>`;
             });
         }
-
         function openLeaderboardModal(id) {
             const c = appData.sharedChallenges.find(x=>x.id===id); if(!c)return;
             document.getElementById('leaderboard-modal-title').innerText = c.title; 
