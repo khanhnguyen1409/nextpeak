@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXT PEAK</title>
+    
+    <!-- ÉP TẢI ẢNH NỘI BỘ NGAY LẬP TỨC -->
+    <link rel="preload" href="cover.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="logo.png" as="image" fetchpriority="high">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -63,7 +67,7 @@
         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl max-w-sm w-full space-y-4 text-center border border-slate-100 dark:border-slate-700">
             <h2 id="l-welcome" class="text-xl font-bold text-slate-700 dark:text-slate-200">👋 Chào mừng bạn đến với NEXT PEAK TEAM</h2>
             <div class="w-full h-28 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
-                <img src="https://i.postimg.cc/nVdbZbHJ/cover.jpg" alt="BVGP Team Cover" class="w-full h-full object-cover">
+               <img src="cover.jpg" alt="BVGP Team Cover" class="w-full h-full object-cover" fetchpriority="high" loading="eager" decoding="sync">
             </div>
             
             <div id="login-step-1" class="space-y-3">
@@ -518,7 +522,7 @@
 
                 <div id="group-day-status-container" class="space-y-2 hidden">
                     <div class="flex justify-between items-center cursor-pointer bg-slate-100 dark:bg-slate-700/60 p-2.5 rounded-xl font-bold text-xs" onclick="toggleDayModalProgressAccordion()">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-4 h-4 rounded-full border border-indigo-300"><span id="m-team-progress">Thành viên khác:</span> <span id="completed-ratio-text" class="text-indigo-600">0/0</span></span>
+                        <span class="flex items-center gap-1.5"><img src="logo.png" class="w-4 h-4 rounded-full border border-indigo-300"><span id="m-team-progress">Thành viên khác:</span> <span id="completed-ratio-text" class="text-indigo-600">0/0</span></span>
                         <span id="day-modal-progress-arrow" class="text-xs transition-transform duration-200">▼</span>
                     </div>
                     <div id="group-members-status-list" class="space-y-2 hidden pt-1"></div>
@@ -531,8 +535,7 @@
     <div class="max-w-2xl mx-auto space-y-6 pb-20">
         
         <!-- HEADER -->
-        <header class="relative w-full rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between" style="background-image: url('https://i.postimg.cc/nVdbZbHJ/cover.jpg'); min-height: 180px;">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-slate-900/40"></div>
+<header class="relative w-full rounded-3xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-cover bg-center p-6 flex flex-col justify-between" style="background-image: url('cover.jpg'); min-height: 180px;">            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-slate-900/40"></div>
             
             <div class="relative z-10 flex items-start justify-between w-full">
                 <div class="flex flex-col items-center gap-1 cursor-pointer group" onclick="document.getElementById('user-menu-modal').classList.remove('hidden')">
@@ -568,7 +571,7 @@
     
     <!-- Nút Nhóm (Đã được đổi về chữ xám, có hiệu ứng hover) -->
     <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2">
-        <img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full border border-slate-200 shadow-sm">
+        <img src="logo.png" class="w-5 h-5 rounded-full border border-slate-200 shadow-sm">
         <span>Nhóm</span>
     </button>
 </div>
@@ -1482,7 +1485,7 @@ async function uploadToImgbb(base64Str) {
 
     // 2. GÁN DỮ LIỆU AN TOÀN
     setText('t-app-title', t('appTitle'));
-    setHtml('btn-dashboard', `<img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`);
+    setHtml('btn-dashboard', `<img src="logo.png" class="w-5 h-5 rounded-full object-cover border border-white/40 shadow-sm"><span>${t('tabDashboard')}</span>`);
     
     const userAv = getMemberAvatarHTML(loggedInUserId, "w-5 h-5");
     setHtml('tab-personal-avatar-icon', userAv);
@@ -3454,7 +3457,7 @@ if (tempAvatarBase64 !== (m.avatar || '')) {
             htmlTxt += `
                 <div id="act-box-grp" class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-2xs">
                     <button onclick="toggleActivityAccordion('grp')" class="w-full p-3 bg-indigo-50/80 dark:bg-slate-800/80 flex justify-between items-center font-bold text-xs text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 transition">
-                        <span class="flex items-center gap-1.5"><img src="https://i.postimg.cc/HLWRFBfH/BVGP.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> ${t('groupTabReport')} (${grps.length})</span>
+                        <span class="flex items-center gap-1.5"><img src="logo.png" class="w-4 h-4 rounded-full object-cover border border-indigo-300 shadow-sm"> ${t('groupTabReport')} (${grps.length})</span>
                         <span id="act-arrow-grp" class="text-xs transition-transform duration-200">▼</span>
                     </button>
                     <div id="act-content-grp" class="p-3 space-y-3 hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">`;
