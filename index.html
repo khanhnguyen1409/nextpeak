@@ -43,7 +43,6 @@
 
     function closeGoalModal() {
         document.getElementById('goal-modal').classList.add('hidden');
-        // Ẩn form thêm mới khi đóng modal
         const formContainer = document.getElementById('goal-form-container');
         if (formContainer) formContainer.classList.add('hidden');
         
@@ -53,7 +52,6 @@
         }
     }
 
-    // Ẩn/Hiện khung điền mục tiêu khi bấm dấu +
     function toggleGoalForm() {
         const formContainer = document.getElementById('goal-form-container');
         if (formContainer) {
@@ -73,7 +71,6 @@
         localStorage.setItem('nextPeak_goals', JSON.stringify(goals));
     }
 
-    // Ghim hoặc Bỏ ghim mục tiêu thay thế tiêu đề
     function togglePinGoal(id) {
         let currentPinned = localStorage.getItem('nextPeak_pinnedGoalId');
         if (currentPinned == id) {
@@ -82,6 +79,7 @@
             localStorage.setItem('nextPeak_pinnedGoalId', id);
         }
         renderGoals();
+        updateMainAppLink(); // Cập nhật ngay ra ngoài menu
     }
 
     function addGoal() {
@@ -109,9 +107,9 @@
         nameInput.value = '';
         dateInput.value = '';
         
-        // Ẩn form sau khi thêm thành công
         toggleGoalForm();
         renderGoals();
+        updateMainAppLink();
     }
 
     function deleteGoal(id) {
@@ -120,12 +118,50 @@
             goals = goals.filter(g => g.id !== id);
             saveGoalsData(goals);
 
-            // Nếu mục tiêu bị xóa đang được ghim thì gỡ ghim luôn
             if (localStorage.getItem('nextPeak_pinnedGoalId') == id) {
                 localStorage.removeItem('nextPeak_pinnedGoalId');
             }
 
             renderGoals();
+            updateMainAppLink();
+        }
+    }
+
+    // Hàm cập nhật hiển thị trực tiếp ra ngoài Menu Cài đặt
+    function updateMainAppLink() {
+        const menuTextEl = document.getElementById('goal-menu-text');
+        const menuIconEl = document.getElementById('goal-menu-icon');
+        if (!menuTextEl) return;
+
+        const goals = getGoalsData();
+        const pinnedId = localStorage.getItem('nextPeak_pinnedGoalId');
+        const pinnedGoal = goals.find(g => g.id == pinnedId);
+        const now = new Date().getTime();
+
+        if (pinnedGoal) {
+            const targetTime = new Date(pinnedGoal.targetDate).getTime();
+            const diff = targetTime - now;
+            let timeStr = '';
+            if (diff <= 0) {
+                timeStr = 'Đã đến hạn! 🎉';
+            } else {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                timeStr = `${days}n ${hours}h ${minutes}p ${seconds}s`;
+            }
+
+            if (menuIconEl) menuIconEl.innerText = "📌";
+            menuTextEl.innerHTML = `
+                <div class="leading-tight truncate">
+                    <div class="font-bold truncate">${escapeHtml(pinnedGoal.name)}</div>
+                    <div class="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 font-semibold">${timeStr}</div>
+                </div>
+            `;
+        } else {
+            if (menuIconEl) menuIconEl.innerText = "🎯";
+            menuTextEl.innerText = "Đếm ngược mục tiêu";
         }
     }
 
@@ -138,7 +174,6 @@
         const pinnedId = localStorage.getItem('nextPeak_pinnedGoalId');
         const now = new Date().getTime();
 
-        // Xử lý hiển thị mục tiêu được ghim thay thế tiêu đề
         let pinnedGoal = goals.find(g => g.id == pinnedId);
         if (pinnedGoal) {
             const targetTime = new Date(pinnedGoal.targetDate).getTime();
@@ -171,7 +206,6 @@
             `;
         }
 
-        // Render danh sách mục tiêu
         if (goals.length === 0) {
             container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có mục tiêu nào. Hãy bấm dấu + để thêm mới!</p>`;
             return;
@@ -200,7 +234,7 @@
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${escapeHtml(goal.name)}</span>
                         <div class="flex items-center gap-1">
-                            <button onclick="togglePinGoal(${goal.id})" class="text-xs px-1.5 py-0.5 rounded transition ${isPinned ? 'text-indigo-600 font-bold bg-indigo-100 dark:bg-indigo-900' : 'text-slate-400 hover:text-indigo-600'}" title="${isPinned ? 'Bỏ ghim' : 'Ghim mục tiêu này lên tiêu đề'}">📌</button>
+                            <button onclick="togglePinGoal(${goal.id})" class="text-xs px-1.5 py-0.5 rounded transition ${isPinned ? 'text-indigo-600 font-bold bg-indigo-100 dark:bg-indigo-900' : 'text-slate-400 hover:text-indigo-600'}" title="${isPinned ? 'Bỏ ghim' : 'Ghim mục tiêu này lên menu'}">📌</button>
                             <button onclick="deleteGoal(${goal.id})" class="text-slate-400 hover:text-red-500 transition text-xs px-1" title="Xóa">🗑️</button>
                         </div>
                     </div>
@@ -216,6 +250,7 @@
     function startGoalTicker() {
         if (goalTimerInterval) clearInterval(goalTimerInterval);
         goalTimerInterval = setInterval(() => {
+            updateMainAppLink(); // Luôn chạy đồng hồ ngoài menu cài đặt
             const modal = document.getElementById('goal-modal');
             if (modal && !modal.classList.contains('hidden')) {
                 renderGoals();
@@ -226,6 +261,12 @@
     function escapeHtml(str) {
         return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
+
+    // Tự động kích hoạt cập nhật ngay khi vừa tải trang xong
+    document.addEventListener("DOMContentLoaded", () => {
+        updateMainAppLink();
+        startGoalTicker();
+    });
 </script>
 
     
@@ -1323,10 +1364,10 @@
         </div>
     </div>
 
-    <!-- NÚT MỞ GOAL COUNTDOWN TRONG MENU SETTINGS -->
-<button onclick="openGoalModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
-    <span class="text-base">🎯</span>
-    <span>Đếm ngược mục tiêu</span>
+    <!-- NÚT MỞ GOAL COUNTDOWN TRONG MENU SETTINGS (ĐÃ CÓ ID ĐỂ ĐỔI GIAO DIỆN) -->
+<button onclick="openGoalModal()" id="goal-menu-btn" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base" id="goal-menu-icon">🎯</span>
+    <span id="goal-menu-text" class="truncate flex-1">Đếm ngược mục tiêu</span>
 </button>
 
 
