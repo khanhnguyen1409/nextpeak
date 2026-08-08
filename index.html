@@ -209,13 +209,22 @@ function finishGoogleLogin(uid) {
     document.addEventListener('touchstart', triggerAutoplay, { once: true });
 }
 
-function updateUserLabel() { 
-    const m = appData.members.find(x => x.id === loggedInUserId); 
-    if (m) { 
-        const isAdmin = (m.email === ADMIN_EMAIL);
-        document.getElementById('current-user-label').innerHTML = isAdmin ? `${m.name} 👑` : m.name; 
-        document.getElementById('current-user-avatar').innerHTML = m.avatar ? `<img src="${m.avatar}" class="w-full h-full object-cover">` : m.name.charAt(0); 
-    } 
+function updateUserLabel() {
+    if (!loggedInUserId || !appData || !appData.members) return;
+    const currentUser = appData.members.find(m => m.id === loggedInUserId);
+    if (!currentUser) return;
+
+    // Tìm và cập nhật tên người dùng một cách an toàn
+    const nameEl = document.getElementById('user-name-display');
+    if (nameEl) {
+        nameEl.innerText = currentUser.name;
+    }
+
+    // Tìm và cập nhật ảnh đại diện một cách an toàn
+    const avatarEl = document.getElementById('user-avatar-display');
+    if (avatarEl) {
+        avatarEl.src = currentUser.avatar || '';
+    }
 }
 
 function previewProfileAvatar(e) {
