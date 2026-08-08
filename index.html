@@ -29,6 +29,105 @@
     </script>
 
     <script>
+    function getTodayKey() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function openHabitModal() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu();
+        }
+        document.getElementById('habit-modal').classList.remove('hidden');
+        renderHabits();
+    }
+
+    function closeHabitModal() {
+        document.getElementById('habit-modal').classList.add('hidden');
+    }
+
+    function getHabitsData() {
+        try {
+            return JSON.parse(localStorage.getItem('nextPeak_habits')) || [
+                { id: 1, name: 'Uống đủ 2L nước', history: {} },
+                { id: 2, name: 'Đọc sách 15 phút', history: {} },
+                { id: 3, name: 'Tập thể dục / Đi bộ', history: {} }
+            ];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveHabitsData(habits) {
+        localStorage.setItem('nextPeak_habits', JSON.stringify(habits));
+    }
+
+    function renderHabits() {
+        const habits = getHabitsData();
+        const container = document.getElementById('habit-list-container');
+        const todayKey = getTodayKey();
+        
+        if (!container) return;
+
+        if (habits.length === 0) {
+            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có thói quen nào. Hãy thêm mới bên dưới!</p>`;
+            return;
+        }
+
+        let html = '';
+        habits.forEach(habit => {
+            const isCompleted = habit.history && habit.history[todayKey] === true;
+            
+            html += `
+                <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 transition">
+                    <label class="flex items-center gap-2.5 cursor-pointer flex-1 select-none">
+                        <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleHabit(${habit.id})" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 dark:bg-slate-800">
+                        <span class="text-xs font-medium text-slate-800 dark:text-slate-200 ${isCompleted ? 'line-through opacity-60' : ''}">${habit.name}</span>
+                    </label>
+                    <button onclick="deleteHabit(${habit.id})" class="text-slate-400 hover:text-red-500 transition px-1.5 py-1 text-xs" title="Xóa">🗑️</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function toggleHabit(id) {
+        let habits = getHabitsData();
+        const todayKey = getTodayKey();
+        
+        habits = habits.map(habit => {
+            if (habit.id === id) {
+                if (!habit.history) habit.history = {};
+                habit.history[todayKey] = !habit.history[todayKey];
+            }
+            return habit;
+        });
+
+        saveHabitsData(habits);
+        renderHabits();
+    }
+
+    function addNewHabit() {
+        const input = document.getElementById('new-habit-input');
+        if (!input) return;
+        const name = input.value.trim();
+        if (!name) return;
+
+        let habits = getHabitsData();
+        const newHabit = {
+            id: Date.now(),
+            name: name,
+            history: {}
+        };
+
+        habits.push(newHabit);
+        saveHabitsData(habits);
+        input.value = '';
+        renderHabits();
+    }
+</script>
+
+    <script>
     function setAccentColor(colorName) {
         // Gán thuộc tính data-accent lên thẻ html gốc
         document.documentElement.setAttribute('data-accent', colorName);
@@ -729,6 +828,12 @@
         <button onclick="setAccentColor('violet')" class="w-6 h-6 rounded-full bg-violet-600 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-violet-500" title="Tím"></button>
     </div>
 </div>
+
+    <!-- NÚT MỞ HABIT TRACKER TRONG MENU SETTINGS -->
+<button onclick="openHabitModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">✅</span>
+    <span>Thói quen hàng ngày</span>
+</button>
 
     <!-- MODAL CHI TIẾT TỔNG QUAN -->
     <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
@@ -4373,6 +4478,33 @@ let statusBadge = isF
         </button>
     </div>
 </div>
+
+
+    <!-- MODAL HABIT TRACKER -->
+<div id="habit-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeHabitModal()">
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-sm space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
+        
+        <!-- Tiêu đề Modal -->
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                ✅ Thói quen hôm nay
+            </h3>
+            <button onclick="closeHabitModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+        </div>
+        
+        <!-- Danh sách thói quen -->
+        <div id="habit-list-container" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <!-- Dữ liệu render tự động -->
+        </div>
+
+        <!-- Thêm thói quen mới -->
+        <div class="flex gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+            <input type="text" id="new-habit-input" placeholder="Thêm thói quen mới..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="addNewHabit()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm</button>
+        </div>
+    </div>
+</div>
+    
     
 </body>
 </html>
