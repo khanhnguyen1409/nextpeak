@@ -50,6 +50,81 @@ const ADMIN_EMAIL = "klivefullynow@gmail.com"; // Thay bằng email admin của 
 // THÊM 2 DÒNG NÀY VÀO ĐÂY:
 let isMusicPlaying = false;
 let currentMusicIndex = 0;
+
+    // Khai báo các biến toàn cục bị thiếu
+let activeTab = 'dashboard';
+let currentFilter = 'all';
+
+// Hàm dịch thuật (Translation Helper) bắt buộc phải có để hiển thị giao diện
+function t(key) {
+    const dict = {
+        completed: "Đã hoàn thành",
+        incomplete: "Chưa hoàn thành",
+        noChallenges: "Chưa có thử thách nhóm nào",
+        noHabits: "Chưa có thói quen cá nhân nào",
+        progress: "Tiến độ",
+        todayBadge: "Hôm nay",
+        readOnlyMode: "Chỉ đọc",
+        noFileSelected: "Chưa chọn tệp",
+        errNameExist: "Tên hiển thị đã tồn tại",
+        profileSuccess: "Đã cập nhật hồ sơ thành công",
+        delete: "Xóa",
+        noDescInfo: "Không có thông tin mô tả",
+        noPendingReq: "Không có yêu cầu chờ duyệt",
+        approve: "Duyệt",
+        reject: "Từ chối",
+        confirmDelMember: "Bạn có chắc chắn muốn xóa thành viên này?",
+        notAdmin: "Bạn không có quyền quản trị",
+        adminConfirmTitle: "Xác nhận mã Master PIN",
+        adminConfirmWarn: "Hành động này sẽ đặt lại toàn bộ dữ liệu hệ thống!",
+        adminSuccess: "Đã thiết lập lại dữ liệu thành công",
+        wrongMasterPin: "Mã Master PIN không chính xác",
+        noNotif: "Không có thông báo mới",
+        taggedYou: "đã nhắc đến bạn trong",
+        repliedYou: "đã trả lời bình luận của bạn trong",
+        requireReason: "Vui lòng nhập lý do:",
+        reasonRequiredAlert: "Lý do không được để trống!",
+        joinChallenge: "Tham gia ngay",
+        notJoined: "Chưa tham gia",
+        useTemplate: "Sử dụng mẫu này",
+        heicError: "Không thể xử lý định dạng ảnh HEIC này",
+        errCapture: "Lỗi khi chụp màn hình",
+        archivedSuccess: "Đã đưa vào lưu trữ thành công",
+        confirmDelete: "Bạn có chắc chắn muốn xóa mục này?",
+        joinedSuccess: "Tham gia thử thách thành công!",
+        alertFuture: "Không thể check-in các ngày trong tương lai!",
+        endedNotice: "Thử thách này đã kết thúc",
+        lockNotice: "Ngày này đã bị khóa (quá hạn)",
+        noOtherMembers: "Chưa có thành viên nào khác tham gia",
+        updatedAt: "Cập nhật lúc",
+        notParticipant: "Bạn không phải là thành viên tham gia thử thách này",
+        errTotalTarget: "Tổng số ngày phải lớn hơn hoặc bằng số ngày mục tiêu",
+        bigPlayRequire: "Vui lòng nhập đầy đủ phần thưởng và hình phạt Big Play",
+        selfRuleRequire: "Vui lòng nhập phần thưởng và hình phạt cá nhân",
+        requireContent: "Vui lòng nhập nội dung bình luận hoặc tải ảnh lên",
+        replyingTo: "Đang trả lời",
+        noComments: "Chưa có bình luận nào",
+        quickTag: "Gắn thẻ:",
+        writeComment: "Viết bình luận của bạn...",
+        image: "Ảnh",
+        send: "Gửi",
+        confirmDeleteCm: "Bạn có chắc muốn xóa bình luận này?",
+        noDescription: "Chưa có mô tả chi tiết cho thử thách này",
+        startDateLabel: "Ngày bắt đầu:",
+        targetTotalDays: "Mục tiêu / Tổng số ngày:",
+        createdBy: "Tạo bởi:",
+        personal: "Cá nhân",
+        groupTabReport: "Thử thách nhóm",
+        txtReason: "Lý do",
+        pauseChallenge: "Tạm dừng",
+        noRewardRecord: "Chưa có lịch sử thưởng phạt nào được ghi nhận"
+    };
+    return dict[key] || key;
+}
+
+// Hàm phụ trợ UI an toàn tránh lỗi ReferenceError
+function renderFilterOptions() {}
+function updateCreateFormLabels() {}
     
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
