@@ -8,6 +8,18 @@
     <!-- ÉP TẢI ẢNH NỘI BỘ NGAY LẬP TỨC -->
     <link rel="preload" href="cover.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="logo.png" as="image" fetchpriority="high">
+
+    <!-- CẤU HÌNH PWA CHO NEXT PEAK -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+    </script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
