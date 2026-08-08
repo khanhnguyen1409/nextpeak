@@ -192,7 +192,19 @@ function processLoginState(user) {
     }
     isProcessingLogin = false;
 }
+// Danh sách nhạc mặc định
+const defaultPlaylist = [
+    'https://assets.mixkit.co/music/preview/mixkit-spirit-in-the-woods-139.mp3'
+];
 
+// Định nghĩa hàm getPlaylist để đoạn code kia có cái mà gọi
+function getPlaylist() {
+    if (!appData.playlist) {
+        appData.playlist = [...defaultPlaylist];
+    }
+    return Array.isArray(appData.playlist) ? appData.playlist : Object.values(appData.playlist);
+}
+    
 function loginWithGoogle() {
     auth.signInWithPopup(googleProvider).catch(error => {
         alert("Lỗi đăng nhập: " + error.message);
@@ -208,6 +220,7 @@ function switchUser() {
     }
 }
 
+    
 function finishGoogleLogin(uid) {  
     loggedInUserId = uid;  
     
