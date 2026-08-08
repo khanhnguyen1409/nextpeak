@@ -27,6 +27,125 @@
             darkMode: 'class'
         }
     </script>
+
+    <script>
+    let currentAudio = null;
+    let audioContext = null;
+    let noiseNode = null;
+    let noiseGain = null;
+    let activeSoundId = null;
+
+    function openAmbientModal() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu(); // Đóng menu settings nếu đang mở
+        }
+        document.getElementById('ambient-modal').classList.remove('hidden');
+    }
+
+    function closeAmbientModal() {
+        document.getElementById('ambient-modal').classList.add('hidden');
+    }
+
+    // Dừng tất cả âm thanh đang phát
+    function stopAllSounds() {
+        // Dừng HTML5 Audio (Mưa, Sóng biển...)
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+        // Dừng Web Audio API (White Noise)
+        if (noiseNode) {
+            noiseNode.stop();
+            noiseNode.disconnect();
+            noiseNode = null;
+        }
+        if (audioContext && audioContext.state !== 'closed') {
+            audioContext.close();
+            audioContext = null;
+        }
+        
+        // Reset trạng thái giao diện nút bấm
+        document.querySelectorAll('.ambient-btn').forEach(btn => {
+            btn.classList.remove('bg-indigo-600', 'text-white', 'border-transparent');
+            btn.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+        });
+        activeSoundId = null;
+    }
+
+    function toggleAmbientSound(soundType, btnElement) {
+        // Nếu đang bật đúng âm thanh đó thì bấm lần nữa sẽ tắt
+        if (activeSoundId === soundType) {
+            stopAllSounds();
+            return;
+        }
+
+        // Tắt âm thanh cũ trước khi bật mới
+        stopAllSounds();
+        activeSoundId = soundType;
+
+        // Đổi giao diện nút đang chọn
+        if (btnElement) {
+            btnElement.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+            btnElement.classList.add('bg-indigo-600', 'text-white', 'border-transparent');
+        }
+
+        if (soundType === 'whitenoise') {
+            playWhiteNoise();
+        } else if (soundType === 'rain') {
+            // Link âm thanh thiên nhiên công khai ổn định
+            playStreamAudio('https://cdn.pixabay.com/download/audio/2021/08/09/audio_4237d6e4b8.mp3?filename=light-rain-ambient-114354.mp3');
+        } else if (soundType === 'waves') {
+            playStreamAudio('https://cdn.pixabay.com/download/audio/2022/05/16/audio_db327e5a0e.mp3?filename=ocean-waves-112906.mp3');
+        }
+    }
+
+    function playStreamAudio(url) {
+        currentAudio = new Audio(url);
+        currentAudio.loop = true;
+        currentAudio.volume = 0.5;
+        currentAudio.play().catch(err => {
+            console.log("Không thể phát âm thanh:", err);
+            alert("Trình duyệt chặn tự động phát âm thanh, vui lòng thử lại!");
+            stopAllSounds();
+        });
+    }
+
+    // Tạo tiếng ồn trắng (White Noise) thông qua Web Audio API trình duyệt
+    function playWhiteNoise() {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const bufferSize = 2 * audioContext.sampleRate;
+            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noiseNode = audioContext.createBufferSource();
+            noiseNode.buffer = noiseBuffer;
+            noiseNode.loop = true;
+
+            // Bộ lọc âm thanh cho êm dịu (Lowpass filter)
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+
+            noiseGain = audioContext.createGain();
+            noiseGain.gain.value = 0.15; // Âm lượng vừa phải
+
+            noiseNode.connect(filter);
+            filter.connect(noiseGain);
+            noiseGain.connect(audioContext.destination);
+
+            noiseNode.start(0);
+        } catch (e) {
+            console.log("Web Audio API không được hỗ trợ", e);
+        }
+    }
+</script>
+
+    
 <script>
     let currentCalendarDate = new Date();
 
@@ -475,6 +594,12 @@
                     <button onclick="nextMusic()" class="hover:text-indigo-600 transition scale-110 px-0.5">⏭</button>
                 </div>
             </div>
+
+            <!-- NÚT MỞ AMBIENT SOUNDS TRONG MENU SETTINGS -->
+<button onclick="openAmbientModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">🌧️</span>
+    <span>Âm thanh thư giãn</span>
+</button>
 
             <button onclick="toggleLanguage()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
                 <span class="flex items-center gap-2">🌐 <span id="m-lang">Ngôn ngữ</span></span>
@@ -4107,6 +4232,43 @@ let statusBadge = isF
         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center font-medium text-xs">
             <!-- Dữ liệu được render tự động bằng JavaScript -->
         </div>
+    </div>
+</div>
+
+    <!-- MODAL AMBIENT SOUNDS -->
+<div id="ambient-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeAmbientModal()">
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-xs space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
+        
+        <!-- Tiêu đề Modal -->
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                🎵 Âm thanh thư giãn
+            </h3>
+            <button onclick="closeAmbientModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+        </div>
+        
+        <p class="text-[11px] text-slate-500 dark:text-slate-400">Chọn âm thanh nền giúp bạn tăng khả năng tập trung:</p>
+
+        <!-- Danh sách chọn âm thanh -->
+        <div class="grid grid-cols-2 gap-2 font-semibold">
+            <button onclick="toggleAmbientSound('rain', this)" class="ambient-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-500 transition flex flex-col items-center gap-1">
+                <span class="text-xl">🌧️</span>
+                <span>Tiếng mưa</span>
+            </button>
+            <button onclick="toggleAmbientSound('waves', this)" class="ambient-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-500 transition flex flex-col items-center gap-1">
+                <span class="text-xl">🌊</span>
+                <span>Sóng biển</span>
+            </button>
+            <button onclick="toggleAmbientSound('whitenoise', this)" class="ambient-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-500 transition flex flex-col items-center gap-1 col-span-2">
+                <span class="text-xl">📻</span>
+                <span>Tiếng ồn trắng (White Noise)</span>
+            </button>
+        </div>
+
+        <!-- Nút Tắt tất cả -->
+        <button onclick="stopAllSounds()" class="w-full py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition font-semibold">
+            Tắt âm thanh
+        </button>
     </div>
 </div>
     
