@@ -28,6 +28,112 @@
         }
     </script>
 
+<script>
+    let breathingTimer = null;
+    let isBreathingActive = false;
+
+    function openBreathingModal() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu();
+        }
+        document.getElementById('breathing-modal').classList.remove('hidden');
+        resetBreathingUI();
+    }
+
+    function closeBreathingModal() {
+        stopBreathing();
+        document.getElementById('breathing-modal').classList.add('hidden');
+    }
+
+    function resetBreathingUI() {
+        stopBreathing();
+        const textEl = document.getElementById('breathing-text');
+        const circleEl = document.getElementById('breathing-circle');
+        const btnEl = document.getElementById('breathing-toggle-btn');
+        if (textEl) textEl.innerText = "Sẵn sàng";
+        if (circleEl) circleEl.style.transform = "scale(1)";
+        if (btnEl) btnEl.innerText = "Bắt đầu";
+    }
+
+    function toggleBreathing() {
+        if (isBreathingActive) {
+            stopBreathing();
+        } else {
+            startBreathing();
+        }
+    }
+
+    function startBreathing() {
+        isBreathingActive = true;
+        const btnEl = document.getElementById('breathing-toggle-btn');
+        if (btnEl) btnEl.innerText = "Dừng lại";
+        runBreathingCycle();
+    }
+
+    function stopBreathing() {
+        isBreathingActive = false;
+        if (breathingTimer) {
+            clearTimeout(breathingTimer);
+            breathingTimer = null;
+        }
+        const btnEl = document.getElementById('breathing-toggle-btn');
+        if (btnEl) btnEl.innerText = "Bắt đầu";
+        const circleEl = document.getElementById('breathing-circle');
+        if (circleEl) circleEl.style.transform = "scale(1)";
+        const textEl = document.getElementById('breathing-text');
+        if (textEl) textEl.innerText = "Sẵn sàng";
+    }
+
+    function runBreathingCycle() {
+        if (!isBreathingActive) return;
+
+        const textEl = document.getElementById('breathing-text');
+        const circleEl = document.getElementById('breathing-circle');
+
+        // Giai đoạn 1: Hít vào (4 giây)
+        if (textEl) textEl.innerText = "Hít vào...";
+        if (circleEl) {
+            circleEl.style.transition = "transform 4s ease-in-out";
+            circleEl.style.transform = "scale(1.4)";
+        }
+
+        breathingTimer = setTimeout(() => {
+            if (!isBreathingActive) return;
+
+            // Giai đoạn 2: Giữ hơi (4 giây)
+            if (textEl) textEl.innerText = "Giữ hơi...";
+            
+            breathingTimer = setTimeout(() => {
+                if (!isBreathingActive) return;
+
+                // Giai đoạn 3: Thở ra (4 giây)
+                if (textEl) textEl.innerText = "Thở ra...";
+                if (circleEl) {
+                    circleEl.style.transition = "transform 4s ease-in-out";
+                    circleEl.style.transform = "scale(1)";
+                }
+
+                breathingTimer = setTimeout(() => {
+                    if (!isBreathingActive) return;
+
+                    // Giai đoạn 4: Giữ hơi (4 giây)
+                    if (textEl) textEl.innerText = "Giữ hơi...";
+
+                    breathingTimer = setTimeout(() => {
+                        if (isBreathingActive) {
+                            runBreathingCycle(); // Lặp lại chu kỳ
+                        }
+                    }, 4000);
+
+                }, 4000);
+
+            }, 4000);
+
+        }, 4000);
+    }
+</script>
+
+    
     <script>
     function getTodayKey() {
         const d = new Date();
@@ -801,6 +907,15 @@
                 <span id="lang-status-text" class="text-indigo-600 font-bold">VI</span>
             </button>
 
+
+            <!-- NÚT MỞ BREATHING EXERCISE TRONG MENU SETTINGS -->
+<button onclick="openBreathingModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">🫁</span>
+    <span>Hít thở thư giãn</span>
+</button>
+
+
+            
             <!-- BỔ SUNG NÚT MỞ SCRATCHPAD VÀO MENU SETTINGS -->
 <button onclick="openScratchpad()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
     <span class="text-base">📝</span>
@@ -4496,6 +4611,38 @@ let statusBadge = isF
         <div class="flex gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
             <input type="text" id="new-habit-input" placeholder="Thêm thói quen mới..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <button onclick="addNewHabit()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL BREATHING EXERCISE -->
+<div id="breathing-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeBreathingModal()">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-xs space-y-6 text-center border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
+        
+        <!-- Tiêu đề Modal -->
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                🫁 Hít thở thư giãn
+            </h3>
+            <button onclick="closeBreathingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+        </div>
+        
+        <!-- Vòng tròn chuyển động trực quan -->
+        <div class="relative w-40 h-40 mx-auto flex items-center justify-center my-2">
+            <div class="absolute inset-0 rounded-full bg-indigo-50 dark:bg-indigo-950/40"></div>
+            <div id="breathing-circle" class="w-24 h-24 rounded-full bg-indigo-600 shadow-md flex items-center justify-center text-white font-bold text-xs">
+                <span id="breathing-text" class="text-center px-2">Sẵn sàng</span>
+            </div>
+        </div>
+
+        <!-- Điều khiển -->
+        <div class="space-y-3">
+            <button id="breathing-toggle-btn" onclick="toggleBreathing()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold text-sm shadow-sm">
+                Bắt đầu
+            </button>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 italic leading-relaxed">
+                Kỹ thuật Box Breathing: Hít vào (4s) $\rightarrow$ Giữ (4s) $\rightarrow$ Thở ra (4s) $\rightarrow$ Giữ (4s)
+            </p>
         </div>
     </div>
 </div>
