@@ -1602,10 +1602,9 @@ function prevMusic() {
     setText('reward-rules-title', t('rewardRuleTitle'));
 
     const sysCfg = appData.systemConfig || defaultSystemConfig;
-    const sysCfg = appData.systemConfig || defaultSystemConfig;
-setHtml('rule-desc-group-text', `🎯 ${t('groupLabel')}: <span class="text-rose-600 dark:text-rose-400 font-semibold">💸 -${sysCfg.defaultPenalty}k</span> | <span class="text-emerald-600 dark:text-emerald-400 font-semibold">🎁 +${sysCfg.defaultReward}k</span>`);
-setText('rule-desc-bigplay-text', t('ruleDescBigPlay'));
-setText('rule-desc-personal-text', t('ruleDescPersonal'));
+    setText('rule-desc-group-text', `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`);
+    setText('rule-desc-bigplay-text', t('ruleDescBigPlay'));
+    setText('rule-desc-personal-text', t('ruleDescPersonal'));
 
     // Update Capture Dropdown Items (Đã thêm cơ chế chống lỗi null container)
     const updateCapButtons = (id) => {
