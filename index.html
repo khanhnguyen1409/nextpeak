@@ -28,7 +28,8 @@
         }
     </script>
 
-<script>
+
+    <script>
     let goalTimerInterval = null;
 
     function openGoalModal() {
@@ -42,9 +43,21 @@
 
     function closeGoalModal() {
         document.getElementById('goal-modal').classList.add('hidden');
+        // Ẩn form thêm mới khi đóng modal
+        const formContainer = document.getElementById('goal-form-container');
+        if (formContainer) formContainer.classList.add('hidden');
+        
         if (goalTimerInterval) {
             clearInterval(goalTimerInterval);
             goalTimerInterval = null;
+        }
+    }
+
+    // Ẩn/Hiện khung điền mục tiêu khi bấm dấu +
+    function toggleGoalForm() {
+        const formContainer = document.getElementById('goal-form-container');
+        if (formContainer) {
+            formContainer.classList.toggle('hidden');
         }
     }
 
@@ -58,6 +71,17 @@
 
     function saveGoalsData(goals) {
         localStorage.setItem('nextPeak_goals', JSON.stringify(goals));
+    }
+
+    // Ghim hoặc Bỏ ghim mục tiêu thay thế tiêu đề
+    function togglePinGoal(id) {
+        let currentPinned = localStorage.getItem('nextPeak_pinnedGoalId');
+        if (currentPinned == id) {
+            localStorage.removeItem('nextPeak_pinnedGoalId');
+        } else {
+            localStorage.setItem('nextPeak_pinnedGoalId', id);
+        }
+        renderGoals();
     }
 
     function addGoal() {
@@ -74,8 +98,9 @@
         }
 
         const goals = getGoalsData();
+        const newId = Date.now();
         goals.push({
-            id: Date.now(),
+            id: newId,
             name: name,
             targetDate: targetDate
         });
@@ -83,6 +108,9 @@
         saveGoalsData(goals);
         nameInput.value = '';
         dateInput.value = '';
+        
+        // Ẩn form sau khi thêm thành công
+        toggleGoalForm();
         renderGoals();
     }
 
@@ -91,23 +119,65 @@
             let goals = getGoalsData();
             goals = goals.filter(g => g.id !== id);
             saveGoalsData(goals);
+
+            // Nếu mục tiêu bị xóa đang được ghim thì gỡ ghim luôn
+            if (localStorage.getItem('nextPeak_pinnedGoalId') == id) {
+                localStorage.removeItem('nextPeak_pinnedGoalId');
+            }
+
             renderGoals();
         }
     }
 
     function renderGoals() {
         const container = document.getElementById('goal-list-container');
-        if (!container) return;
-        const goals = getGoalsData();
+        const headerContainer = document.getElementById('goal-main-header');
+        if (!container || !headerContainer) return;
 
+        const goals = getGoalsData();
+        const pinnedId = localStorage.getItem('nextPeak_pinnedGoalId');
+        const now = new Date().getTime();
+
+        // Xử lý hiển thị mục tiêu được ghim thay thế tiêu đề
+        let pinnedGoal = goals.find(g => g.id == pinnedId);
+        if (pinnedGoal) {
+            const targetTime = new Date(pinnedGoal.targetDate).getTime();
+            const diff = targetTime - now;
+            let timeStr = '';
+            if (diff <= 0) {
+                timeStr = 'Đã đến hạn! 🎉';
+            } else {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                timeStr = `${days}n ${hours}h ${minutes}p ${seconds}s`;
+            }
+
+            headerContainer.innerHTML = `
+                <div class="flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/60 p-2 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                    <div class="truncate pr-2">
+                        <div class="font-bold text-indigo-700 dark:text-indigo-300 truncate">📌 ${escapeHtml(pinnedGoal.name)}</div>
+                        <div class="font-mono text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold">${timeStr}</div>
+                    </div>
+                    <button onclick="togglePinGoal(${pinnedGoal.id})" class="text-[10px] text-indigo-600 dark:text-indigo-300 hover:underline font-bold px-1.5 py-0.5 bg-white dark:bg-slate-800 rounded shadow-2xs whitespace-nowrap">Bỏ ghim</button>
+                </div>
+            `;
+        } else {
+            headerContainer.innerHTML = `
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                    🎯 Đếm ngược mục tiêu
+                </h3>
+            `;
+        }
+
+        // Render danh sách mục tiêu
         if (goals.length === 0) {
-            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có mục tiêu nào. Hãy thiết lập đỉnh cao tiếp theo của bạn!</p>`;
+            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có mục tiêu nào. Hãy bấm dấu + để thêm mới!</p>`;
             return;
         }
 
         let html = '';
-        const now = new Date().getTime();
-
         goals.forEach(goal => {
             const targetTime = new Date(goal.targetDate).getTime();
             const diff = targetTime - now;
@@ -123,11 +193,16 @@
                 timeStr = `${days} ngày ${hours}h ${minutes}p ${seconds}s`;
             }
 
+            const isPinned = pinnedId == goal.id;
+
             html += `
-                <div class="p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 space-y-1">
+                <div class="p-2.5 rounded-xl border ${isPinned ? 'border-indigo-300 dark:border-indigo-700 bg-indigo-50/50 dark:bg-indigo-950/30' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900'} space-y-1">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${escapeHtml(goal.name)}</span>
-                        <button onclick="deleteGoal(${goal.id})" class="text-slate-400 hover:text-red-500 transition text-xs" title="Xóa">🗑️</button>
+                        <div class="flex items-center gap-1">
+                            <button onclick="togglePinGoal(${goal.id})" class="text-xs px-1.5 py-0.5 rounded transition ${isPinned ? 'text-indigo-600 font-bold bg-indigo-100 dark:bg-indigo-900' : 'text-slate-400 hover:text-indigo-600'}" title="${isPinned ? 'Bỏ ghim' : 'Ghim mục tiêu này lên tiêu đề'}">📌</button>
+                            <button onclick="deleteGoal(${goal.id})" class="text-slate-400 hover:text-red-500 transition text-xs px-1" title="Xóa">🗑️</button>
+                        </div>
                     </div>
                     <div class="text-[11px] font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
                         ⏳ ${timeStr}
@@ -138,7 +213,6 @@
         container.innerHTML = html;
     }
 
-    // Tự động cập nhật đồng hồ đếm ngược mỗi giây khi mở modal
     function startGoalTicker() {
         if (goalTimerInterval) clearInterval(goalTimerInterval);
         goalTimerInterval = setInterval(() => {
@@ -154,6 +228,7 @@
     }
 </script>
 
+    
 <script>
     let breathingTimer = null;
     let sessionInterval = null;
@@ -4981,31 +5056,38 @@ let statusBadge = isF
     </div>
 </div>
     
+
 <!-- MODAL GOAL COUNTDOWN -->
 <div id="goal-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeGoalModal()">
     <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-sm space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
-        <!-- Tiêu đề Modal -->
+        <!-- Tiêu đề Modal & Nút dấu cộng mở form -->
         <div class="flex items-center justify-between">
-            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
-                🎯 Đếm ngược mục tiêu
-            </h3>
-            <button onclick="closeGoalModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+            <div id="goal-main-header" class="flex-1 pr-2">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                    🎯 Đếm ngược mục tiêu
+                </h3>
+            </div>
+            <div class="flex items-center gap-1">
+                <button onclick="toggleGoalForm()" class="w-7 h-7 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center justify-center transition text-base shadow-xs" title="Thêm mục tiêu mới">+</button>
+                <button onclick="closeGoalModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+            </div>
         </div>
         
-        <!-- Danh sách mục tiêu -->
-        <div id="goal-list-container" class="space-y-2 max-h-48 overflow-y-auto pr-1">
-            <!-- Dữ liệu render tự động -->
-        </div>
-
-        <!-- Form thêm mục tiêu mới -->
-        <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+        <!-- Khung điền mục tiêu (Ẩn mặc định, chỉ hiện khi bấm dấu +) -->
+        <div id="goal-form-container" class="hidden space-y-2 pt-2 border-t border-slate-100 dark:border-slate-700">
             <input type="text" id="goal-name-input" placeholder="Tên mục tiêu (Ví dụ: Hoàn thành Next Peak...)" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <input type="datetime-local" id="goal-date-input" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <button onclick="addGoal()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm mục tiêu</button>
         </div>
+
+        <!-- Danh sách mục tiêu -->
+        <div id="goal-list-container" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+            <!-- Dữ liệu render tự động -->
+        </div>
     </div>
 </div>
+    
     
 </body>
 </html>
