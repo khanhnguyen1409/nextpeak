@@ -322,6 +322,18 @@
                     <button onclick="nextMusic()" class="hover:text-indigo-600 transition scale-110 px-0.5">⏭</button>
                 </div>
             </div>
+
+            <!-- TÍCH HỢP POMODORO MỚI -->
+        <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
+            <span class="flex items-center gap-2 shrink-0 pr-2">🍅 <span id="m-pomo">Pomodoro</span></span>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <span id="pomo-display" class="font-mono text-[11px] font-bold text-indigo-600 dark:text-indigo-400">25:00</span>
+                <button onclick="togglePomo()" id="pomo-toggle-btn" class="hover:text-indigo-600 transition scale-110 px-0.5">▶️</button>
+                <button onclick="resetPomo()" class="hover:text-indigo-600 transition scale-100 px-0.5" title="Đặt lại">🔄</button>
+            </div>
+        </div>
+
+            
             <button onclick="toggleLanguage()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
                 <span class="flex items-center gap-2">🌐 <span id="m-lang">Ngôn ngữ</span></span>
                 <span id="lang-status-text" class="text-indigo-600 font-bold">VI</span>
