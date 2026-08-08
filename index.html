@@ -370,9 +370,22 @@ function handleResetTestData() {
         alert(t('adminSuccess')); closeUserMenu(); closeAdminCenterModal();
     } else if (mp !== null) alert(t('wrongMasterPin'));
 }
+function updateNotificationBadge() { 
+    if (!loggedInUserId || !appData) return; 
+    
+    // Khởi tạo phòng hờ nếu chưa có
+    if (!appData.notifications) {
+        appData.notifications = {};
+    }
+    
+    const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; 
+    const b = document.getElementById('notif-badge'); 
+    if (b) { 
+        unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); 
+    } 
+}
 
-function updateNotificationBadge() { if (!loggedInUserId) return; const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; const b = document.getElementById('notif-badge'); if (b) { unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); } }
-function sendNotification(tId, type, sName, title, txt) { if (!tId || tId === loggedInUserId) return; if (!appData.notifications) appData.notifications = {}; if (!appData.notifications[tId]) appData.notifications[tId] = []; const now = new Date(); appData.notifications[tId].unshift({ id: Date.now(), type, senderName: sName, challengeTitle: title, text: txt, timestamp: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`, read: false }); }
+    function sendNotification(tId, type, sName, title, txt) { if (!tId || tId === loggedInUserId) return; if (!appData.notifications) appData.notifications = {}; if (!appData.notifications[tId]) appData.notifications[tId] = []; const now = new Date(); appData.notifications[tId].unshift({ id: Date.now(), type, senderName: sName, challengeTitle: title, text: txt, timestamp: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`, read: false }); }
 function notifyAllChallengeMembers(c, type, actionDesc) { if (!c || !c.participants) return; const actorName = appData.members.find(m => m.id === loggedInUserId)?.name || 'Member'; Object.keys(c.participants).forEach(mId => { if (mId !== loggedInUserId && (c.participants[mId] === true || c.participants[mId] === 'given_up')) { sendNotification(mId, type, actorName, c.title, actionDesc); } }); }
 function openNotificationModal() { renderNotificationList(); document.getElementById('notification-modal').classList.remove('hidden'); }
 function closeNotificationModal() { document.getElementById('notification-modal').classList.add('hidden'); }
