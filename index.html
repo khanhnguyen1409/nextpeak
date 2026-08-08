@@ -371,17 +371,24 @@ function handleResetTestData() {
     } else if (mp !== null) alert(t('wrongMasterPin'));
 }
 function updateNotificationBadge() { 
-    if (!loggedInUserId || !appData) return; 
+    // Kiểm tra an toàn đa lớp để không bao giờ bị crash app
+    if (!loggedInUserId || !window.appData) return; 
     
-    // Khởi tạo phòng hờ nếu chưa có
     if (!appData.notifications) {
         appData.notifications = {};
     }
     
-    const unread = (appData.notifications[loggedInUserId] || []).filter(n => !n.read).length; 
+    const userNotes = appData.notifications[loggedInUserId] || [];
+    const unread = Array.isArray(userNotes) ? userNotes.filter(n => n && !n.read).length : 0; 
+    
     const b = document.getElementById('notif-badge'); 
     if (b) { 
-        unread > 0 ? (b.innerText = unread > 9 ? '9+' : unread, b.classList.remove('hidden')) : b.classList.add('hidden'); 
+        if (unread > 0) {
+            b.innerText = unread > 9 ? '9+' : unread;
+            b.classList.remove('hidden');
+        } else {
+            b.classList.add('hidden');
+        }
     } 
 }
 
