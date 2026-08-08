@@ -26,6 +26,77 @@
         tailwind.config = {
             darkMode: 'class'
         }
+
+        
+<script>
+    function openScratchpad() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu(); // Tự động đóng menu settings nếu đang mở
+        }
+        document.getElementById('scratchpad-modal').classList.remove('hidden');
+        
+        // Load nội dung mới nhất từ localStorage khi mở modal
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            textarea.value = localStorage.getItem('nextPeak_scratchpad') || '';
+            textarea.focus();
+        }
+    }
+
+    function closeScratchpad() {
+        document.getElementById('scratchpad-modal').classList.add('hidden');
+    }
+
+    function clearScratchpad() {
+        if (confirm('Bạn có chắc muốn xóa sạch toàn bộ ghi chú này không?')) {
+            const textarea = document.getElementById('scratchpad-text');
+            if (textarea) textarea.value = '';
+            localStorage.removeItem('nextPeak_scratchpad');
+            showScratchpadStatus('Đã xóa sạch!');
+        }
+    }
+
+    function copyScratchpad() {
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                showScratchpadStatus('Đã sao chép vào bộ nhớ tạm!');
+            });
+        }
+    }
+
+    function showScratchpadStatus(msg) {
+        const statusEl = document.getElementById('scratchpad-status');
+        if (statusEl) {
+            statusEl.innerText = msg;
+            setTimeout(() => {
+                statusEl.innerText = 'Đã tự động lưu';
+            }, 2000);
+        }
+    }
+
+    // Tự động lưu (Auto-save) thời gian thực khi gõ phím
+    window.addEventListener('DOMContentLoaded', () => {
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            // Lấy dữ liệu cũ lúc vừa tải trang
+            textarea.value = localStorage.getItem('nextPeak_scratchpad') || '';
+            
+            // Lắng nghe sự kiện gõ chữ
+            textarea.addEventListener('input', () => {
+                localStorage.setItem('nextPeak_scratchpad', textarea.value);
+                const statusEl = document.getElementById('scratchpad-status');
+                if (statusEl) statusEl.innerText = 'Đang lưu...';
+                
+                clearTimeout(window.scratchpadTimeout);
+                window.scratchpadTimeout = setTimeout(() => {
+                    if (statusEl) statusEl.innerText = 'Đã tự động lưu';
+                }, 600);
+            });
+        }
+    });
+        </script>
+    
     </script>
     <!-- HTML2Canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -323,15 +394,11 @@
                 </div>
             </div>
 
-            <!-- TÍCH HỢP POMODORO MỚI -->
-        <div class="px-3 py-2 flex items-center justify-between text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
-            <span class="flex items-center gap-2 shrink-0 pr-2">🍅 <span id="m-pomo">Pomodoro</span></span>
-            <div class="flex items-center gap-1.5 shrink-0">
-                <span id="pomo-display" class="font-mono text-[11px] font-bold text-indigo-600 dark:text-indigo-400">25:00</span>
-                <button onclick="togglePomo()" id="pomo-toggle-btn" class="hover:text-indigo-600 transition scale-110 px-0.5">▶️</button>
-                <button onclick="resetPomo()" class="hover:text-indigo-600 transition scale-100 px-0.5" title="Đặt lại">🔄</button>
-            </div>
-        </div>
+            <!-- BỔ SUNG NÚT MỞ SCRATCHPAD VÀO MENU SETTINGS -->
+<button onclick="openScratchpad()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">📝</span>
+    <span>Ghi chú nhanh</span>
+</button>
 
             
             <button onclick="toggleLanguage()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center justify-between text-slate-700 dark:text-slate-200">
@@ -3902,5 +3969,26 @@ let statusBadge = isF
 
         displayRandomSlogan();
     </script>
+    <!-- MODAL QUICK SCRATCHPAD -->
+<div id="scratchpad-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeScratchpad()">
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-lg space-y-3 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                📝 Ghi chú nhanh (Next Peak)
+            </h3>
+            <button onclick="closeScratchpad()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+        </div>
+        
+        <textarea id="scratchpad-text" rows="8" placeholder="Nhập ý tưởng, việc cần làm ngay hoặc nội dung nháp tại đây..." class="w-full p-3 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none font-sans leading-relaxed"></textarea>
+        
+        <div class="flex items-center justify-between text-[11px]">
+            <span id="scratchpad-status" class="text-slate-400 dark:text-slate-500 italic">Đã tự động lưu</span>
+            <div class="space-x-2">
+                <button onclick="clearScratchpad()" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition font-semibold">Xóa hết</button>
+                <button onclick="copyScratchpad()" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition font-semibold">Sao chép</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
