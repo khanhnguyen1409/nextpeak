@@ -451,17 +451,27 @@ function toggleBigPlayInputs() { document.getElementById(`create-bigplay-inputs`
         
 function switchTab(tab) {
     activeTab = tab;
-    const db = document.getElementById('btn-dashboard'), ub = document.getElementById('btn-update'), tb = document.getElementById('btn-create-toggle');
+    const db = document.getElementById('btn-dashboard');
+    const ub = document.getElementById('btn-update');
+    const tb = document.getElementById('btn-create-toggle');
+    
     if(tab === 'dashboard') {
-        db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-        ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-        tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+        if(db) db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm flex items-center justify-center gap-2";
+        if(ub) ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
+        if(tb) tb.className = "bg-indigo-600 hover:bg-indigo-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
     } else {
-        ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition shadow-sm flex items-center justify-center gap-2";
-        db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
-        tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
+        if(ub) ub.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-emerald-600 text-white transition shadow-sm flex items-center justify-center gap-2";
+        if(db) db.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2";
+        if(tb) tb.className = "bg-emerald-600 hover:bg-emerald-700 text-white w-8 h-8 rounded-full font-bold flex items-center justify-center shadow-sm transition text-lg shrink-0";
     }
-    renderFilterOptions(); updateCreateFormLabels(); document.getElementById('master-create-panel').classList.add('hidden'); renderList();
+    
+    if (typeof renderFilterOptions === 'function') renderFilterOptions();
+    if (typeof updateCreateFormLabels === 'function') updateCreateFormLabels();
+    
+    const panel = document.getElementById('master-create-panel');
+    if(panel) panel.classList.add('hidden');
+    
+    if (typeof renderList === 'function') renderList();
 }
 
 function setFilter(val) { currentFilter = val; renderList(); }
