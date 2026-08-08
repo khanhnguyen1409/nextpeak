@@ -29,6 +29,27 @@
     </script>
 
     <script>
+    function setAccentColor(colorName) {
+        // Gán thuộc tính data-accent lên thẻ html gốc
+        document.documentElement.setAttribute('data-accent', colorName);
+        // Lưu vào localStorage
+        localStorage.setItem('nextPeak_accent', colorName);
+        
+        // Tự động đóng menu sau khi chọn màu
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu();
+        }
+    }
+
+    // Tự động khôi phục màu đã lưu khi vừa tải trang
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedAccent = localStorage.getItem('nextPeak_accent') || 'indigo'; // Mặc định là indigo
+        document.documentElement.setAttribute('data-accent', savedAccent);
+    });
+</script>
+
+    
+    <script>
     let audioCtx = null;
     let activeSoundNode = null;
     let activeGainNode = null;
@@ -387,6 +408,25 @@
         body.font-large .text-sm { font-size: 20px !important; }
         body.font-large .text-base { font-size: 23px !important; }
         body.font-large .text-2xl { font-size: 34px !important; }
+
+
+        <style>
+    /* Định nghĩa biến màu chủ đạo theo từng theme */
+    html[data-accent="indigo"] { --accent-primary: #4f46e5; --accent-hover: #4338ca; --accent-light: #e0e7ff; }
+    html[data-accent="emerald"] { --accent-primary: #059669; --accent-hover: #047857; --accent-light: #d1fae5; }
+    html[data-accent="rose"] { --accent-primary: #e11d48; --accent-hover: #be123c; --accent-light: #ffe4e6; }
+    html[data-accent="amber"] { --accent-primary: #d97706; --accent-hover: #b45309; --accent-light: #fef3c7; }
+    html[data-accent="violet"] { --accent-primary: #7c3aed; --accent-hover: #6d28d9; --accent-light: #ede9fe; }
+
+    /* Ghi đè tự động các thành phần dùng màu chủ đạo */
+    .accent-bg { background-color: var(--accent-primary) !important; }
+    .accent-bg:hover { background-color: var(--accent-hover) !important; }
+    .accent-text { color: var(--accent-primary) !important; }
+    .accent-border { border-color: var(--accent-primary) !important; }
+</style>
+
+
+        
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen py-6 px-3 transition-colors duration-300 font-normal">
@@ -675,6 +715,20 @@
             </div>
         </div>
     </div>
+
+    <!-- TÙY CHỈNH MÀU CHỦ ĐẠO TRONG MENU SETTINGS -->
+<div class="px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition">
+    <div class="flex items-center justify-between mb-2">
+        <span class="flex items-center gap-2">🎨 <span>Màu chủ đạo</span></span>
+    </div>
+    <div class="flex items-center justify-between gap-1 px-1">
+        <button onclick="setAccentColor('indigo')" class="w-6 h-6 rounded-full bg-indigo-600 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-indigo-500" title="Indigo"></button>
+        <button onclick="setAccentColor('emerald')" class="w-6 h-6 rounded-full bg-emerald-600 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-emerald-500" title="Xanh ngọc"></button>
+        <button onclick="setAccentColor('rose')" class="w-6 h-6 rounded-full bg-rose-600 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-rose-500" title="Hồng đỏ"></button>
+        <button onclick="setAccentColor('amber')" class="w-6 h-6 rounded-full bg-amber-500 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-amber-500" title="Vàng cam"></button>
+        <button onclick="setAccentColor('violet')" class="w-6 h-6 rounded-full bg-violet-600 hover:scale-110 transition ring-offset-2 focus:ring-2 ring-violet-500" title="Tím"></button>
+    </div>
+</div>
 
     <!-- MODAL CHI TIẾT TỔNG QUAN -->
     <div id="description-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
