@@ -590,30 +590,42 @@
         localStorage.setItem('nextPeak_peak3', JSON.stringify(tasks));
     }
 
-    // Đảm bảo luôn có cố định 3 ô cho ngày hiện tại
+    // Đảm bảo ngày hôm nay luôn có chính xác 3 ô cố định, tự động lọc bỏ dữ liệu dư thừa cũ
     function ensureTodaySlots() {
         const todayKey = getTodayKey();
         let allTasks = getPeak3Data();
         let todayTasks = allTasks.filter(t => t.date === todayKey);
 
-        if (todayTasks.length < 3) {
-            const defaultPriorities = ['red', 'yellow', 'green'];
-            for (let i = 0; i < 3; i++) {
-                if (!todayTasks.some(t => t.slotIndex === i)) {
-                    allTasks.push({
-                        id: Date.now() + i,
-                        slotIndex: i,
-                        name: '',
-                        date: todayKey,
-                        completed: false,
-                        priority: defaultPriorities[i],
-                        createdAt: null,
-                        completedAt: null
-                    });
-                }
-            }
-            savePeak3Data(allTasks);
+        // Nếu có nhiều hơn 3 task trong ngày, tự động cắt bỏ phần dư thừa
+        if (todayTasks.length > 3) {
+            todayTasks = todayTasks.slice(0, 3);
         }
+
+        let updatedTodayTasks = [];
+        const defaultPriorities = ['red', 'yellow', 'green'];
+
+        for (let i = 0; i < 3; i++) {
+            let existing = todayTasks[i];
+            if (existing) {
+                existing.slotIndex = i;
+                updatedTodayTasks.push(existing);
+            } else {
+                updatedTodayTasks.push({
+                    id: Date.now() + i,
+                    slotIndex: i,
+                    name: '',
+                    date: todayKey,
+                    completed: false,
+                    priority: defaultPriorities[i],
+                    createdAt: null,
+                    completedAt: null
+                });
+            }
+        }
+
+        // Lưu lại dữ liệu sạch sẽ (giữ lại các ngày khác + đúng 3 ô của ngày hôm nay)
+        const otherDaysTasks = allTasks.filter(t => t.date !== todayKey);
+        savePeak3Data([...otherDaysTasks, ...updatedTodayTasks]);
     }
 
     function renderPeak3() {
@@ -626,12 +638,10 @@
 
         let html = '';
         tasks.forEach(task => {
-            // Định nghĩa màu sắc cho chấm ưu tiên
             let dotColorClass = 'bg-red-500';
             if (task.priority === 'yellow') dotColorClass = 'bg-amber-500';
             if (task.priority === 'green') dotColorClass = 'bg-emerald-500';
 
-            // Hiển thị thời gian
             let timeInfoHtml = '';
             if (task.completed && task.createdAt && task.completedAt) {
                 const durationStr = formatDuration(task.createdAt, task.completedAt);
@@ -666,7 +676,7 @@
                                 ${timeInfoHtml}
                             </div>
                         </div>
-                        <!-- Chấm màu phân biệt mức độ ưu tiên (Bấm để đổi màu) -->
+                        <!-- Chấm màu phân biệt mức độ ưu tiên -->
                         <div onclick="cyclePriority(${task.id})" class="w-3.5 h-3.5 rounded-full ${dotColorClass} cursor-pointer shrink-0 shadow-xs hover:scale-110 transition" title="Đổi mức ưu tiên (Đỏ / Vàng / Xanh)"></div>
                     </div>
                 </div>
@@ -675,7 +685,6 @@
         container.innerHTML = html;
     }
 
-    // Thay đổi mức độ ưu tiên khi click vào chấm màu
     function cyclePriority(id) {
         let tasks = getPeak3Data();
         const priorities = ['red', 'yellow', 'green'];
@@ -690,7 +699,6 @@
         renderPeak3();
     }
 
-    // Chỉnh sửa tên task trực tiếp qua Prompt khi bấm nút Sửa
     function editTaskName(id) {
         let tasks = getPeak3Data();
         const task = tasks.find(t => t.id === id);
@@ -701,7 +709,7 @@
             const trimmed = newName.trim();
             task.name = trimmed;
             if (trimmed && !task.createdAt) {
-                task.createdAt = Date.now(); // Lưu thời gian tạo
+                task.createdAt = Date.now();
             } else if (!trimmed) {
                 task.createdAt = null;
                 task.completed = false;
@@ -712,7 +720,6 @@
         }
     }
 
-    // Xử lý cơ chế trượt sang trái để mở chế độ sửa
     let activeDragId = null;
     let startX = 0;
     let initialTranslate = 0;
