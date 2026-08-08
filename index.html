@@ -47,7 +47,10 @@ const defaultHints = { vi: [], en: [] };
 let loggedInUserId = null;
 let currentLang = 'vi';
 const ADMIN_EMAIL = "klivefullynow@gmail.com"; // Thay bằng email admin của bạn nếu cần
-
+// THÊM 2 DÒNG NÀY VÀO ĐÂY:
+let isMusicPlaying = false;
+let currentMusicIndex = 0;
+    
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const dbRef = database.ref('nextPeakAppData'); // Đã đổi tên thư mục thành Next Peak
