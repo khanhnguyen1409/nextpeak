@@ -611,35 +611,37 @@
     </div>
 </div>
 
-                <div id="form-group-rules" class="space-y-2 pt-1 border-t">
-                    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
-                        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
-                        <span id="t-bigplay-label">🔥 Chơi lớn</span>
-                    </label>
-                    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700">
-                        <div>
-                            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
-                            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                        </div>
-                        <div>
-                            <label id="t-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
-                            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
-                        </div>
-                    </div>
-                </div>
+                <!-- PHẦN QUY TẮC NHÓM (CHƠI LỚN) -->
+<div id="form-group-rules" class="space-y-2 pt-1 border-t">
+    <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-600">
+        <input type="checkbox" id="create-bigplay-checkbox" onchange="toggleBigPlayInputs()" class="w-4 h-4 text-rose-600 rounded">
+        <span id="t-bigplay-label">🔥 Chơi lớn</span>
+    </label>
+    <div id="create-bigplay-inputs" class="grid grid-cols-2 gap-2 hidden p-2 bg-indigo-50 dark:bg-slate-900/50 rounded-xl border border-indigo-200 dark:border-slate-700">
+        <div>
+            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
+            <input type="number" id="create-reward-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+        </div>
+        <div>
+            <label id="t-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt (k):</label>
+            <input type="number" id="create-penalty-input" min="0" class="w-full px-3 py-1.5 border rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100">
+        </div>
+    </div>
+</div>
 
-                <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
-                    <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
-                        <div>
-                            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
-                            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                        </div>
-                        <div>
-                            <label id="t-self-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt:</label>
-                            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                        </div>
-                    </div>
-                </div>
+<!-- PHẦN QUY TẮC CÁ NHÂN -->
+<div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
+    <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
+        <div>
+            <label id="t-self-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng trải nghiệm:</label>
+            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+            <label id="t-self-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt trải nghiệm:</label>
+            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+    </div>
+</div>
 
                 <button type="submit" id="t-create-submit-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2">Tạo mới</button>
             </form>
@@ -684,6 +686,8 @@ async function uploadToImgbb(base64Str) {
         const translations = {
             vi: {
                 appTitle: "NEXT PEAK",
+                rewardExperience: "🎁 Thưởng trải nghiệm:",
+        penaltyExperience: "💸 Phạt trải nghiệm:",
                 tabDashboard: "Nhóm",
                 tabUpdate: "Cá nhân",
                 reportBtnText: "Kết quả",
@@ -766,7 +770,6 @@ async function uploadToImgbb(base64Str) {
                 optArchived: "Đã lưu trữ",
                 selfRewardLabel: "🎁 Thưởng:",
                 selfRewardPh: "VD: Một chuyến đi du lịch đâu đó...",
-                selfPenaltyLabel: "💸 Phạt:",
                 selfPenaltyPh: "VD: Chống đẩy 100 cái...",
                 reportActive: "Hoạt động",
                 reportRewards: "Thưởng/ Phạt",
@@ -927,6 +930,8 @@ async function uploadToImgbb(base64Str) {
             },
             en: {
                 appTitle: "NEXT PEAK",
+                rewardExperience: "🎁 Experience Reward:",
+        penaltyExperience: "💸 Experience Penalty:",
                 tabDashboard: "Group",
                 tabUpdate: "Personal",
                 reportBtnText: "Results",
@@ -1009,7 +1014,6 @@ async function uploadToImgbb(base64Str) {
                 optArchived: "Archived",
                 selfRewardLabel: "🎁 Reward:",
                 selfRewardPh: "E.g., A trip to somewhere...",
-                selfPenaltyLabel: "💸 Penalty:",
                 selfPenaltyPh: "E.g., 100 pushups...",
                 reportActive: "Active",
                 reportRewards: "Rewards",
@@ -1524,9 +1528,10 @@ function prevMusic() {
     setText('t-bigplay-label', t('bigPlayLabel'));
     setHtml('t-reward-label', t('rewardLabel'));
     setHtml('t-penalty-label', t('penaltyLabel'));
-    
-    setHtml('t-self-reward-label', t('selfRewardLabel'));
-    setHtml('t-self-penalty-label', t('selfPenaltyLabel'));
+            
+setHtml('t-self-reward-label', t('rewardExperience'));
+    setHtml('t-self-penalty-label', t('penaltyExperience'));
+            
     setPlaceholder('create-self-reward-input', t('selfRewardPh'));
     setPlaceholder('create-self-penalty-input', t('selfPenaltyPh'));
 
