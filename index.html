@@ -566,127 +566,190 @@
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
-    function openHabitModal() {
+    function openPeak3Modal() {
         if (typeof closeSettingsMenu === 'function') {
             closeSettingsMenu();
         }
-        document.getElementById('habit-modal').classList.remove('hidden');
-        renderHabits();
+        document.getElementById('peak3-modal').classList.remove('hidden');
+        renderPeak3();
     }
 
-    function closeHabitModal() {
-        document.getElementById('habit-modal').classList.add('hidden');
+    function closePeak3Modal() {
+        document.getElementById('peak3-modal').classList.add('hidden');
+        const formContainer = document.getElementById('peak3-form-container');
+        if (formContainer) formContainer.classList.add('hidden');
     }
-        function deleteHabit(id) {
-        if (confirm('Bạn có chắc muốn xóa thói quen này không?')) {
-            let habits = getHabitsData();
-            habits = habits.filter(habit => habit.id !== id);
-            saveHabitsData(habits);
-            renderHabits();
+
+    function togglePeak3Form() {
+        const formContainer = document.getElementById('peak3-form-container');
+        if (formContainer) {
+            formContainer.classList.toggle('hidden');
         }
     }
 
-    function getHabitsData() {
+    function getPeak3Data() {
         try {
-            return JSON.parse(localStorage.getItem('nextPeak_habits')) || [
-                { id: 1, name: 'Uống đủ 2L nước', history: {} },
-                { id: 2, name: 'Đọc sách 15 phút', history: {} },
-                { id: 3, name: 'Tập thể dục / Đi bộ', history: {} }
+            return JSON.parse(localStorage.getItem('nextPeak_peak3')) || [
+                { id: 1, name: 'Hoàn thành báo cáo dự án', date: getTodayKey(), completed: false },
+                { id: 2, name: 'Tập thể dục 30 phút', date: getTodayKey(), completed: false },
+                { id: 3, name: 'Đọc 20 trang sách', date: getTodayKey(), completed: false }
             ];
         } catch (e) {
             return [];
         }
     }
 
-    function saveHabitsData(habits) {
-        localStorage.setItem('nextPeak_habits', JSON.stringify(habits));
+    function savePeak3Data(tasks) {
+        localStorage.setItem('nextPeak_peak3', JSON.stringify(tasks));
     }
 
-    function renderHabits() {
-        const habits = getHabitsData();
-        const container = document.getElementById('habit-list-container');
+    function renderPeak3() {
+        const tasks = getPeak3Data();
+        const container = document.getElementById('peak3-list-container');
         const todayKey = getTodayKey();
         
         if (!container) return;
 
-        if (habits.length === 0) {
-            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có thói quen nào. Hãy thêm mới bên dưới!</p>`;
+        const todayTasks = tasks.filter(t => t.date === todayKey);
+
+        if (todayTasks.length === 0) {
+            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có việc quan trọng nào hôm nay. Hãy bấm vào tiêu đề Peak 3 để thêm!</p>`;
             return;
         }
 
         let html = '';
-        habits.forEach(habit => {
-            const isCompleted = habit.history && habit.history[todayKey] === true;
-            
+        todayTasks.forEach(task => {
             html += `
-                <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 transition">
-                    <label class="flex items-center gap-2.5 cursor-pointer flex-1 select-none">
-                        <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleHabit(${habit.id})" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 dark:bg-slate-800">
-                        <span class="text-xs font-medium text-slate-800 dark:text-slate-200 ${isCompleted ? 'line-through opacity-60' : ''}">${habit.name}</span>
-                    </label>
-                    <button onclick="deleteHabit(${habit.id})" class="text-slate-400 hover:text-red-500 transition px-1.5 py-1 text-xs" title="Xóa">🗑️</button>
+                <div class="relative overflow-hidden rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                    <!-- Nút xóa ẩn bên dưới (Hiện ra khi trượt sang trái) -->
+                    <div class="absolute right-0 top-0 bottom-0 w-16 bg-red-500 flex items-center justify-center text-white font-bold cursor-pointer text-xs" onclick="deletePeak3Task(${task.id})">
+                        Xóa
+                    </div>
+                    <!-- Hàng chính có thể kéo/trượt -->
+                    <div id="peak3-row-${task.id}" 
+                         class="relative flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-900 transition-transform duration-200 select-none"
+                         style="touch-action: pan-y;"
+                         onmousedown="startDrag(event, ${task.id})"
+                         ontouchstart="startDrag(event, ${task.id})"
+                         ontouchmove="moveDrag(event, ${task.id})"
+                         ontouchend="endDrag(event, ${task.id})"
+                         onmousemove="moveDrag(event, ${task.id})"
+                         onmouseup="endDrag(event, ${task.id})"
+                         onmouseleave="endDrag(event, ${task.id})">
+                        <label class="flex items-center gap-2.5 cursor-pointer flex-1">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="togglePeak3Task(${task.id})" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 dark:bg-slate-800">
+                            <span class="text-xs font-medium text-slate-800 dark:text-slate-200 ${task.completed ? 'line-through opacity-60' : ''}">${escapeHtml(task.name)}</span>
+                        </label>
+                        <span class="text-[10px] text-slate-400 pr-1">← Trượt xóa</span>
+                    </div>
                 </div>
             `;
         });
         container.innerHTML = html;
     }
 
-    function toggleHabit(id) {
-        let habits = getHabitsData();
-        const todayKey = getTodayKey();
-        
-        habits = habits.map(habit => {
-            if (habit.id === id) {
-                if (!habit.history) habit.history = {};
-                habit.history[todayKey] = !habit.history[todayKey];
-            }
-            return habit;
-        });
+    // Xử lý cơ chế trượt (Swipe left) mượt mà cho cả chuột và cảm ứng
+    let activeDragId = null;
+    let startX = 0;
+    let initialTranslate = 0;
 
-        saveHabitsData(habits);
-        renderHabits();
+    function startDrag(e, id) {
+        activeDragId = id;
+        startX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+        const row = document.getElementById(`peak3-row-${id}`);
+        if (row) {
+            const transform = row.style.transform;
+            initialTranslate = transform.includes('-65px') ? -65 : 0;
+        }
     }
 
-    function addNewHabit() {
-        const input = document.getElementById('new-habit-input');
+    function moveDrag(e, id) {
+        if (activeDragId !== id) return;
+        const currentX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+        const diff = currentX - startX;
+        let newTranslate = initialTranslate + diff;
+        if (newTranslate > 0) newTranslate = 0;
+        if (newTranslate < -65) newTranslate = -65;
+        
+        const row = document.getElementById(`peak3-row-${id}`);
+        if (row) {
+            row.style.transition = 'none';
+            row.style.transform = `translateX(${newTranslate}px)`;
+        }
+    }
+
+    function endDrag(e, id) {
+        if (activeDragId !== id) return;
+        const row = document.getElementById(`peak3-row-${id}`);
+        if (row) {
+            row.style.transition = 'transform 0.2s ease';
+            const transform = row.style.transform;
+            const match = transform.match(/-?\d+/);
+            const currentTranslate = match ? parseInt(match[0]) : 0;
+            
+            if (currentTranslate < -30) {
+                row.style.transform = 'translateX(-65px)';
+            } else {
+                row.style.transform = 'translateX(0px)';
+            }
+        }
+        activeDragId = null;
+    }
+
+    function togglePeak3Task(id) {
+        let tasks = getPeak3Data();
+        tasks = tasks.map(t => {
+            if (t.id === id) {
+                t.completed = !t.completed;
+            }
+            return t;
+        });
+        savePeak3Data(tasks);
+        renderPeak3();
+    }
+
+    function addNewPeak3Task() {
+        const input = document.getElementById('peak3-habit-input');
         if (!input) return;
         const name = input.value.trim();
         if (!name) return;
 
-        let habits = getHabitsData();
-        const newHabit = {
+        let tasks = getPeak3Data();
+        const todayKey = getTodayKey();
+        const todayTasks = tasks.filter(t => t.date === todayKey);
+
+        if (todayTasks.length >= 3) {
+            alert('Peak 3 giới hạn tối đa 3 việc quan trọng mỗi ngày để bạn tập trung tuyệt đối!');
+            return;
+        }
+
+        const newTask = {
             id: Date.now(),
             name: name,
-            history: {}
+            date: todayKey,
+            completed: false
         };
 
-        habits.push(newHabit);
-        saveHabitsData(habits);
+        tasks.push(newTask);
+        savePeak3Data(tasks);
         input.value = '';
-        renderHabits();
+        togglePeak3Form();
+        renderPeak3();
+    }
+
+    function deletePeak3Task(id) {
+        let tasks = getPeak3Data();
+        tasks = tasks.filter(t => t.id !== id);
+        savePeak3Data(tasks);
+        renderPeak3();
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 </script>
 
-    <script>
-    function setAccentColor(colorName) {
-        // Gán thuộc tính data-accent lên thẻ html gốc
-        document.documentElement.setAttribute('data-accent', colorName);
-        // Lưu vào localStorage
-        localStorage.setItem('nextPeak_accent', colorName);
-        
-        // Tự động đóng menu sau khi chọn màu
-        if (typeof closeSettingsMenu === 'function') {
-            closeSettingsMenu();
-        }
-    }
-
-    // Tự động khôi phục màu đã lưu khi vừa tải trang
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedAccent = localStorage.getItem('nextPeak_accent') || 'indigo'; // Mặc định là indigo
-        document.documentElement.setAttribute('data-accent', savedAccent);
-    });
-</script>
-
+    
     
     <script>
     let audioCtx = null;
@@ -1371,10 +1434,10 @@
 </button>
 
 
-    <!-- NÚT MỞ HABIT TRACKER TRONG MENU SETTINGS -->
-<button onclick="openHabitModal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
-    <span class="text-base">✅</span>
-    <span>Thói quen hàng ngày</span>
+    <!-- NÚT MỞ PEAK 3 TRONG MENU SETTINGS -->
+<button onclick="openPeak3Modal()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">🔥</span>
+    <span>Peak 3</span>
 </button>
 
     <!-- MODAL CHI TIẾT TỔNG QUAN -->
@@ -5022,27 +5085,28 @@ let statusBadge = isF
 </div>
 
 
-    <!-- MODAL HABIT TRACKER -->
-<div id="habit-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeHabitModal()">
+    <!-- MODAL PEAK 3 -->
+<div id="peak3-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closePeak3Modal()">
     <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-sm space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
-        <!-- Tiêu đề Modal -->
+        <!-- Tiêu đề Modal (Bấm vào tiêu đề để ẩn/hiện form thêm đầu việc) -->
         <div class="flex items-center justify-between">
-            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
-                ✅ Thói quen hôm nay
+            <h3 onclick="togglePeak3Form()" class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm cursor-pointer hover:text-indigo-600 transition select-none" title="Bấm để thêm đầu việc">
+                🔥 Peak 3 (3 việc quan trọng)
+                <span class="text-[10px] text-indigo-500 underline font-normal">(+ Thêm)</span>
             </h3>
-            <button onclick="closeHabitModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+            <button onclick="closePeak3Modal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
         </div>
         
-        <!-- Danh sách thói quen -->
-        <div id="habit-list-container" class="space-y-2 max-h-56 overflow-y-auto pr-1">
-            <!-- Dữ liệu render tự động -->
+        <!-- Khung điền đầu việc mới (Ẩn mặc định, hiện khi bấm vào tiêu đề) -->
+        <div id="peak3-form-container" class="hidden flex gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+            <input type="text" id="peak3-habit-input" placeholder="Nhập việc quan trọng (tối đa 3)..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="addNewPeak3Task()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm</button>
         </div>
 
-        <!-- Thêm thói quen mới -->
-        <div class="flex gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
-            <input type="text" id="new-habit-input" placeholder="Thêm thói quen mới..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button onclick="addNewHabit()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm</button>
+        <!-- Danh sách đầu việc -->
+        <div id="peak3-list-container" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <!-- Dữ liệu render tự động -->
         </div>
     </div>
 </div>
