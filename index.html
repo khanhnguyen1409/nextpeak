@@ -4805,40 +4805,39 @@ let statusBadge = isF
 <div id="breathing-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeBreathingModal()">
     <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-2xl w-full max-w-xs space-y-3 text-center border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
-        <!-- Tiêu đề Modal (Bấm vào để ẩn/hiện hướng dẫn, loại bỏ chữ màu và chữ Hướng dẫn) -->
+        <!-- Tiêu đề Modal (Đã tích hợp thêm nút Toàn màn hình ⛶ bên cạnh nút đóng) -->
         <div class="flex items-center justify-between">
             <h3 onclick="toggleBreathingInfo()" class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 text-sm cursor-pointer hover:opacity-80 transition select-none">
-                <!-- SVG Icon thay thế emoji bị lỗi font trên Chrome Windows -->
                 <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                 <span>Hít thở thư giãn</span>
             </h3>
-            <button onclick="closeBreathingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+            <div class="flex items-center gap-1">
+                <button onclick="toggleFullScreen()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm" title="Toàn màn hình">⛶</button>
+                <button onclick="closeBreathingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+            </div>
         </div>
 
-        <!-- BẢNG HƯỚNG DẪN CHI TIẾT (Ẩn mặc định, hiện khi bấm tiêu đề) -->
+        <!-- BẢNG HƯỚNG DẪN CHI TIẾT (Giữ nguyên các phần bên dưới...) -->
         <div id="breathing-info-box" class="hidden text-left bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 space-y-2">
             <p><b>Box Breathing:</b> Hít vào (4s) → Giữ hơi (4s) → Thở ra (4s) → Giữ hơi (4s). Kỹ thuật này giúp cân bằng nhịp thở, tăng cường sự tập trung và giảm nhanh căng thẳng trong công việc.</p>
             <p><b>Thở 4-7-8:</b> Hít vào bằng mũi (4s) → Giữ hơi (7s) → Thở ra bằng miệng (8s). Kỹ thuật này kích hoạt hệ thần kinh phó giao cảm, giúp xả stress sâu và dễ đi vào giấc ngủ.</p>
         </div>
         
-        <!-- 1 Nút bấm chuyển đổi Kỹ thuật thở (Cỡ chữ to hơn thời gian) -->
+        <!-- Các phần lựa chọn, đồng hồ, vòng tròn, nút bắt đầu giữ nguyên như cũ -->
         <div class="flex justify-center pt-1">
             <button id="tech-toggle-btn" onclick="cycleTechnique()" class="px-4 py-2 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-bold text-sm shadow-sm transition">
                 Box Breathing
             </button>
         </div>
 
-        <!-- 1 Nút bấm chuyển đổi Thời gian -->
         <div class="flex justify-center">
             <button id="duration-toggle-btn" onclick="cycleDuration()" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold text-xs transition">
                 ⏱️ Thời gian: 2 phút
             </button>
         </div>
 
-        <!-- Đồng hồ đếm ngược (Cỡ chữ nhỏ hơn tên kiểu thở) -->
         <div id="breathing-countdown" class="font-mono text-xs text-slate-500 dark:text-slate-400 pt-0.5">02:00</div>
 
-        <!-- Vòng tròn chuyển động tích hợp nút Bắt đầu / Dừng -->
         <div class="relative w-36 h-36 mx-auto flex items-center justify-center cursor-pointer group" onclick="toggleBreathing()" title="Bấm để Bắt đầu / Dừng">
             <div id="breathing-bg-ring" class="absolute inset-0 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 transition-colors"></div>
             <div id="breathing-circle" class="w-24 h-24 rounded-full bg-emerald-600 shadow-lg flex items-center justify-center text-white font-bold text-xs transition-all group-hover:scale-105">
