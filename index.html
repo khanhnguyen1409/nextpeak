@@ -238,7 +238,10 @@ function playCurrentMusic() {
     backgroundAudio.play().then(() => {
         isMusicPlaying = true;
     }).catch(err => {
-        console.log("Trình duyệt chặn autoplay nhạc:", err);
+        // Chỉ ghi log nếu đó không phải là lỗi bị trình duyệt chặn autoplay
+        if (err.name !== 'NotAllowedError') {
+            console.log("Lỗi phát nhạc:", err);
+        }
         isMusicPlaying = false;
     });
 }
