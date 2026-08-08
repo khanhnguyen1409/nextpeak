@@ -560,7 +560,7 @@
 </script>
 
     
-    <script>
+   <script>
     function getTodayKey() {
         const d = new Date();
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -576,24 +576,11 @@
 
     function closePeak3Modal() {
         document.getElementById('peak3-modal').classList.add('hidden');
-        const formContainer = document.getElementById('peak3-form-container');
-        if (formContainer) formContainer.classList.add('hidden');
-    }
-
-    function togglePeak3Form() {
-        const formContainer = document.getElementById('peak3-form-container');
-        if (formContainer) {
-            formContainer.classList.toggle('hidden');
-        }
     }
 
     function getPeak3Data() {
         try {
-            return JSON.parse(localStorage.getItem('nextPeak_peak3')) || [
-                { id: 1, name: 'Hoàn thành báo cáo dự án', date: getTodayKey(), completed: false },
-                { id: 2, name: 'Tập thể dục 30 phút', date: getTodayKey(), completed: false },
-                { id: 3, name: 'Đọc 20 trang sách', date: getTodayKey(), completed: false }
-            ];
+            return JSON.parse(localStorage.getItem('nextPeak_peak3')) || [];
         } catch (e) {
             return [];
         }
@@ -603,29 +590,65 @@
         localStorage.setItem('nextPeak_peak3', JSON.stringify(tasks));
     }
 
-    function renderPeak3() {
-        const tasks = getPeak3Data();
-        const container = document.getElementById('peak3-list-container');
+    // Đảm bảo luôn có cố định 3 ô cho ngày hiện tại
+    function ensureTodaySlots() {
         const todayKey = getTodayKey();
+        let allTasks = getPeak3Data();
+        let todayTasks = allTasks.filter(t => t.date === todayKey);
+
+        if (todayTasks.length < 3) {
+            const defaultPriorities = ['red', 'yellow', 'green'];
+            for (let i = 0; i < 3; i++) {
+                if (!todayTasks.some(t => t.slotIndex === i)) {
+                    allTasks.push({
+                        id: Date.now() + i,
+                        slotIndex: i,
+                        name: '',
+                        date: todayKey,
+                        completed: false,
+                        priority: defaultPriorities[i],
+                        createdAt: null,
+                        completedAt: null
+                    });
+                }
+            }
+            savePeak3Data(allTasks);
+        }
+    }
+
+    function renderPeak3() {
+        ensureTodaySlots();
+        const todayKey = getTodayKey();
+        const tasks = getPeak3Data().filter(t => t.date === todayKey).sort((a, b) => a.slotIndex - b.slotIndex);
+        const container = document.getElementById('peak3-list-container');
         
         if (!container) return;
 
-        const todayTasks = tasks.filter(t => t.date === todayKey);
-
-        if (todayTasks.length === 0) {
-            container.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Chưa có việc quan trọng nào hôm nay. Hãy bấm vào tiêu đề Peak 3 để thêm!</p>`;
-            return;
-        }
-
         let html = '';
-        todayTasks.forEach(task => {
+        tasks.forEach(task => {
+            // Định nghĩa màu sắc cho chấm ưu tiên
+            let dotColorClass = 'bg-red-500';
+            if (task.priority === 'yellow') dotColorClass = 'bg-amber-500';
+            if (task.priority === 'green') dotColorClass = 'bg-emerald-500';
+
+            // Hiển thị thời gian
+            let timeInfoHtml = '';
+            if (task.completed && task.createdAt && task.completedAt) {
+                const durationStr = formatDuration(task.createdAt, task.completedAt);
+                timeInfoHtml = `<span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Hoàn thành: ${formatTime(task.completedAt)} (${durationStr})</span>`;
+            } else if (task.createdAt) {
+                timeInfoHtml = `<span class="text-[10px] text-slate-400 font-mono">Tạo: ${formatTime(task.createdAt)}</span>`;
+            }
+
+            const displayName = task.name ? escapeHtml(task.name) : `<span class="italic text-slate-400">Trống (Vuốt trái để Sửa)</span>`;
+
             html += `
                 <div class="relative overflow-hidden rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-                    <!-- Nút xóa ẩn bên dưới (Hiện ra khi trượt sang trái) -->
-                    <div class="absolute right-0 top-0 bottom-0 w-16 bg-red-500 flex items-center justify-center text-white font-bold cursor-pointer text-xs" onclick="deletePeak3Task(${task.id})">
-                        Xóa
+                    <!-- Nút Sửa ẩn bên dưới (Hiện ra khi trượt sang trái) -->
+                    <div class="absolute right-0 top-0 bottom-0 w-16 bg-indigo-600 flex items-center justify-center text-white font-bold cursor-pointer text-xs" onclick="editTaskName(${task.id})">
+                        Sửa
                     </div>
-                    <!-- Hàng chính có thể kéo/trượt -->
+                    <!-- Hàng chính kéo/trượt -->
                     <div id="peak3-row-${task.id}" 
                          class="relative flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-900 transition-transform duration-200 select-none"
                          style="touch-action: pan-y;"
@@ -636,11 +659,15 @@
                          onmousemove="moveDrag(event, ${task.id})"
                          onmouseup="endDrag(event, ${task.id})"
                          onmouseleave="endDrag(event, ${task.id})">
-                        <label class="flex items-center gap-2.5 cursor-pointer flex-1">
-                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="togglePeak3Task(${task.id})" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 dark:bg-slate-800">
-                            <span class="text-xs font-medium text-slate-800 dark:text-slate-200 ${task.completed ? 'line-through opacity-60' : ''}">${escapeHtml(task.name)}</span>
-                        </label>
-                        <span class="text-[10px] text-slate-400 pr-1">← Trượt xóa</span>
+                        <div class="flex items-center gap-2.5 flex-1 min-w-0 pr-2">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="togglePeak3Task(${task.id})" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 dark:bg-slate-800 shrink-0">
+                            <div class="flex flex-col flex-1 min-w-0 cursor-pointer" onclick="editTaskName(${task.id})" title="Bấm để sửa">
+                                <span class="text-xs font-medium text-slate-800 dark:text-slate-200 truncate ${task.completed ? 'line-through opacity-60' : ''}">${displayName}</span>
+                                ${timeInfoHtml}
+                            </div>
+                        </div>
+                        <!-- Chấm màu phân biệt mức độ ưu tiên (Bấm để đổi màu) -->
+                        <div onclick="cyclePriority(${task.id})" class="w-3.5 h-3.5 rounded-full ${dotColorClass} cursor-pointer shrink-0 shadow-xs hover:scale-110 transition" title="Đổi mức ưu tiên (Đỏ / Vàng / Xanh)"></div>
                     </div>
                 </div>
             `;
@@ -648,7 +675,44 @@
         container.innerHTML = html;
     }
 
-    // Xử lý cơ chế trượt (Swipe left) mượt mà cho cả chuột và cảm ứng
+    // Thay đổi mức độ ưu tiên khi click vào chấm màu
+    function cyclePriority(id) {
+        let tasks = getPeak3Data();
+        const priorities = ['red', 'yellow', 'green'];
+        tasks = tasks.map(t => {
+            if (t.id === id) {
+                const currentIndex = priorities.indexOf(t.priority);
+                t.priority = priorities[(currentIndex + 1) % priorities.length];
+            }
+            return t;
+        });
+        savePeak3Data(tasks);
+        renderPeak3();
+    }
+
+    // Chỉnh sửa tên task trực tiếp qua Prompt khi bấm nút Sửa
+    function editTaskName(id) {
+        let tasks = getPeak3Data();
+        const task = tasks.find(t => t.id === id);
+        if (!task) return;
+
+        const newName = prompt('Nhập nội dung việc quan trọng:', task.name);
+        if (newName !== null) {
+            const trimmed = newName.trim();
+            task.name = trimmed;
+            if (trimmed && !task.createdAt) {
+                task.createdAt = Date.now(); // Lưu thời gian tạo
+            } else if (!trimmed) {
+                task.createdAt = null;
+                task.completed = false;
+                task.completedAt = null;
+            }
+            savePeak3Data(tasks);
+            renderPeak3();
+        }
+    }
+
+    // Xử lý cơ chế trượt sang trái để mở chế độ sửa
     let activeDragId = null;
     let startX = 0;
     let initialTranslate = 0;
@@ -700,7 +764,17 @@
         let tasks = getPeak3Data();
         tasks = tasks.map(t => {
             if (t.id === id) {
+                if (!t.name.trim()) {
+                    alert('Vui lòng nhập nội dung nhiệm vụ trước khi tích hoàn thành!');
+                    return t;
+                }
                 t.completed = !t.completed;
+                if (t.completed) {
+                    t.completedAt = Date.now();
+                    if (!t.createdAt) t.createdAt = Date.now();
+                } else {
+                    t.completedAt = null;
+                }
             }
             return t;
         });
@@ -708,40 +782,23 @@
         renderPeak3();
     }
 
-    function addNewPeak3Task() {
-        const input = document.getElementById('peak3-habit-input');
-        if (!input) return;
-        const name = input.value.trim();
-        if (!name) return;
-
-        let tasks = getPeak3Data();
-        const todayKey = getTodayKey();
-        const todayTasks = tasks.filter(t => t.date === todayKey);
-
-        if (todayTasks.length >= 3) {
-            alert('Peak 3 giới hạn tối đa 3 việc quan trọng mỗi ngày để bạn tập trung tuyệt đối!');
-            return;
-        }
-
-        const newTask = {
-            id: Date.now(),
-            name: name,
-            date: todayKey,
-            completed: false
-        };
-
-        tasks.push(newTask);
-        savePeak3Data(tasks);
-        input.value = '';
-        togglePeak3Form();
-        renderPeak3();
+    function formatTime(timestamp) {
+        if (!timestamp) return '';
+        const d = new Date(timestamp);
+        return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     }
 
-    function deletePeak3Task(id) {
-        let tasks = getPeak3Data();
-        tasks = tasks.filter(t => t.id !== id);
-        savePeak3Data(tasks);
-        renderPeak3();
+    function formatDuration(start, end) {
+        if (!start || !end) return '';
+        const diffMs = end - start;
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        if (diffMins < 1) return '< 1 phút';
+        const hours = Math.floor(diffMins / 60);
+        const mins = diffMins % 60;
+        if (hours > 0) {
+            return `${hours}h ${mins}p`;
+        }
+        return `${mins} phút`;
     }
 
     function escapeHtml(str) {
@@ -5089,28 +5146,20 @@ let statusBadge = isF
 <div id="peak3-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closePeak3Modal()">
     <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-sm space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
-        <!-- Tiêu đề Modal (Bấm vào tiêu đề để ẩn/hiện form thêm đầu việc) -->
+        <!-- Tiêu đề Modal đơn giản, không bấm bật form -->
         <div class="flex items-center justify-between">
-            <h3 onclick="togglePeak3Form()" class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm cursor-pointer hover:text-indigo-600 transition select-none" title="Bấm để thêm đầu việc">
-                🔥 Peak 3 (3 việc quan trọng)
-                <span class="text-[10px] text-indigo-500 underline font-normal">(+ Thêm)</span>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                🔥 Peak 3
             </h3>
             <button onclick="closePeak3Modal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
         </div>
-        
-        <!-- Khung điền đầu việc mới (Ẩn mặc định, hiện khi bấm vào tiêu đề) -->
-        <div id="peak3-form-container" class="hidden flex gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
-            <input type="text" id="peak3-habit-input" placeholder="Nhập việc quan trọng (tối đa 3)..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button onclick="addNewPeak3Task()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold">Thêm</button>
-        </div>
 
-        <!-- Danh sách đầu việc -->
-        <div id="peak3-list-container" class="space-y-2 max-h-56 overflow-y-auto pr-1">
-            <!-- Dữ liệu render tự động -->
+        <!-- Cố định danh sách 3 ô đầu việc mỗi ngày -->
+        <div id="peak3-list-container" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+            <!-- Dữ liệu render tự động cố định 3 ô -->
         </div>
     </div>
 </div>
-
 
 
 <!-- MODAL BREATHING EXERCISE -->
