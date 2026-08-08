@@ -284,7 +284,7 @@ function finishGoogleLogin(uid) {
     if (playlistInit && playlistInit.length > 0) {
         currentMusicIndex = Math.floor(Math.random() * playlistInit.length);
     }
-    setTimeout(() => { if (!isMusicPlaying) playCurrentMusic(); }, 500);
+   
     const triggerAutoplay = () => { if (!isMusicPlaying) playCurrentMusic(); document.removeEventListener('click', triggerAutoplay); document.removeEventListener('touchstart', triggerAutoplay); };
     document.addEventListener('click', triggerAutoplay, { once: true });
     document.addEventListener('touchstart', triggerAutoplay, { once: true });
