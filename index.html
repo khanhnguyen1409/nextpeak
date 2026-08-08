@@ -31,10 +31,17 @@
 <script>
     let breathingTimer = null;
     let sessionInterval = null;
+    let prepTimer = null;
     let isBreathingActive = false;
+    let isPreparing = false;
     let breathingAudioCtx = null;
-    let selectedDuration = 120; // Mặc định 2 phút
-    let sessionTimeLeft = 120;
+    
+    // Cấu hình thời gian và kiểu thở
+    const durations = [120, 300, 600]; // 2 phút, 5 phút, 10 phút
+    const durationLabels = ["2 phút", "5 phút", "10 phút"];
+    let durationIndex = 0;
+    let selectedDuration = durations[0];
+    let sessionTimeLeft = selectedDuration;
     let selectedTechnique = 'box'; // 'box' (Emerald) hoặc '478' (Indigo)
 
     function openBreathingModal() {
@@ -59,50 +66,44 @@
         }
     }
 
-    function setBreathingDuration(seconds, btnElement) {
-        if (isBreathingActive) return;
-        selectedDuration = seconds;
-        sessionTimeLeft = seconds;
+    // Chuyển đổi thời gian qua 1 nút bấm duy nhất
+    function cycleDuration() {
+        if (isBreathingActive || isPreparing) return;
+        durationIndex = (durationIndex + 1) % durations.length;
+        selectedDuration = durations[durationIndex];
+        sessionTimeLeft = selectedDuration;
         updateTimerDisplay();
 
-        document.querySelectorAll('.duration-btn').forEach(btn => {
-            btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600', 'bg-indigo-600', 'border-indigo-600');
-            btn.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
-        });
-        if (btnElement) {
-            btnElement.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
-            const activeColorClass = selectedTechnique === 'box' ? 'bg-emerald-600 border-emerald-600' : 'bg-indigo-600 border-indigo-600';
-            btnElement.className += ` ${activeColorClass} text-white font-bold`;
+        const btn = document.getElementById('duration-toggle-btn');
+        if (btn) {
+            btn.innerText = `⏱️ Thời gian: ${durationLabels[durationIndex]}`;
         }
     }
 
-    function setTechnique(tech, btnElement) {
-        if (isBreathingActive) return;
-        selectedTechnique = tech;
-
-        document.querySelectorAll('.tech-btn').forEach(btn => {
-            btn.className = "tech-btn px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition";
-        });
-
-        const circleEl = document.getElementById('breathing-circle');
-        const toggleBtnEl = document.getElementById('breathing-toggle-btn');
-        const countdownEl = document.getElementById('breathing-countdown');
+    // Chuyển đổi kỹ thuật thở qua 1 nút bấm duy nhất
+    function cycleTechnique() {
+        if (isBreathingActive || isPreparing) return;
         
-        if (tech === 'box') {
-            btnElement.className = "tech-btn px-3 py-1 rounded-lg border border-emerald-600 bg-emerald-600 text-white font-bold text-[11px] transition";
-            if (circleEl) circleEl.className = "w-18 h-18 rounded-full bg-emerald-600 shadow-md flex items-center justify-center text-white font-bold text-[11px]";
-            if (toggleBtnEl && !isBreathingActive) toggleBtnEl.className = "w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition font-bold text-xs shadow-sm";
-            if (countdownEl) countdownEl.className = "font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400";
+        const btn = document.getElementById('tech-toggle-btn');
+        const circleEl = document.getElementById('breathing-circle');
+        const ringEl = document.getElementById('breathing-bg-ring');
+        
+        if (selectedTechnique === 'box') {
+            selectedTechnique = '478';
+            if (btn) {
+                btn.innerText = "Thở 4-7-8";
+                btn.className = "px-4 py-2 rounded-xl border border-indigo-600 bg-indigo-600 text-white font-bold text-sm shadow-sm transition";
+            }
+            if (circleEl) circleEl.className = "w-24 h-24 rounded-full bg-indigo-600 shadow-lg flex items-center justify-center text-white font-bold text-xs transition-all group-hover:scale-105";
+            if (ringEl) ringEl.className = "absolute inset-0 rounded-full bg-indigo-100 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 transition-colors";
         } else {
-            btnElement.className = "tech-btn px-3 py-1 rounded-lg border border-indigo-600 bg-indigo-600 text-white font-bold text-[11px] transition";
-            if (circleEl) circleEl.className = "w-18 h-18 rounded-full bg-indigo-600 shadow-md flex items-center justify-center text-white font-bold text-[11px]";
-            if (toggleBtnEl && !isBreathingActive) toggleBtnEl.className = "w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold text-xs shadow-sm";
-            if (countdownEl) countdownEl.className = "font-mono text-sm font-bold text-indigo-600 dark:text-indigo-400";
-        }
-
-        const activeDurationBtn = document.querySelector('.duration-btn.bg-emerald-600, .duration-btn.bg-indigo-600');
-        if (activeDurationBtn) {
-            activeDurationBtn.className = `duration-btn px-2.5 py-1 rounded-lg border font-bold text-[11px] transition text-white ${tech === 'box' ? 'bg-emerald-600 border-emerald-600' : 'bg-indigo-600 border-indigo-600'}`;
+            selectedTechnique = 'box';
+            if (btn) {
+                btn.innerText = "Box Breathing";
+                btn.className = "px-4 py-2 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-bold text-sm shadow-sm transition";
+            }
+            if (circleEl) circleEl.className = "w-24 h-24 rounded-full bg-emerald-600 shadow-lg flex items-center justify-center text-white font-bold text-xs transition-all group-hover:scale-105";
+            if (ringEl) ringEl.className = "absolute inset-0 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 transition-colors";
         }
     }
 
@@ -121,22 +122,21 @@
         
         const textEl = document.getElementById('breathing-text');
         const circleEl = document.getElementById('breathing-circle');
-        const btnEl = document.getElementById('breathing-toggle-btn');
-        if (textEl) textEl.innerText = "Sẵn sàng";
+        if (textEl) textEl.innerText = "Bấm để Bắt đầu";
         if (circleEl) circleEl.style.transform = "scale(1)";
-        if (btnEl) btnEl.innerText = "Bắt đầu";
     }
 
     function toggleBreathing() {
-        if (isBreathingActive) {
+        if (isBreathingActive || isPreparing) {
             stopBreathing();
         } else {
-            startBreathing();
+            startPreparation();
         }
     }
 
-    function startBreathing() {
-        isBreathingActive = true;
+    // Đếm ngược 5 giây chuẩn bị trước khi vào bài thở
+    function startPreparation() {
+        isPreparing = true;
         
         if (!breathingAudioCtx || breathingAudioCtx.state === 'closed') {
             breathingAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -145,8 +145,27 @@
             breathingAudioCtx.resume();
         }
 
-        const btnEl = document.getElementById('breathing-toggle-btn');
-        if (btnEl) btnEl.innerText = "Dừng lại";
+        let prepCount = 5;
+        const textEl = document.getElementById('breathing-text');
+        if (textEl) textEl.innerText = `Chuẩn bị: ${prepCount}s`;
+        playBeep(440, 0.15);
+
+        prepTimer = setInterval(() => {
+            prepCount--;
+            if (prepCount > 0) {
+                if (textEl) textEl.innerText = `Chuẩn bị: ${prepCount}s`;
+                playBeep(440, 0.15);
+            } else {
+                clearInterval(prepTimer);
+                prepTimer = null;
+                isPreparing = false;
+                startActualSession();
+            }
+        }, 1000);
+    }
+
+    function startActualSession() {
+        isBreathingActive = true;
 
         sessionInterval = setInterval(() => {
             if (sessionTimeLeft > 0) {
@@ -162,6 +181,11 @@
 
     function stopBreathing() {
         isBreathingActive = false;
+        isPreparing = false;
+        if (prepTimer) {
+            clearInterval(prepTimer);
+            prepTimer = null;
+        }
         if (breathingTimer) {
             clearTimeout(breathingTimer);
             breathingTimer = null;
@@ -170,12 +194,10 @@
             clearInterval(sessionInterval);
             sessionInterval = null;
         }
-        const btnEl = document.getElementById('breathing-toggle-btn');
-        if (btnEl) btnEl.innerText = "Bắt đầu";
         const circleEl = document.getElementById('breathing-circle');
         if (circleEl) circleEl.style.transform = "scale(1)";
         const textEl = document.getElementById('breathing-text');
-        if (textEl) textEl.innerText = "Sẵn sàng";
+        if (textEl) textEl.innerText = "Bấm để Bắt đầu";
     }
 
     function finishBreathingSession() {
@@ -4779,55 +4801,51 @@ let statusBadge = isF
 
 
 
-  <!-- MODAL BREATHING EXERCISE -->
+<!-- MODAL BREATHING EXERCISE -->
 <div id="breathing-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeBreathingModal()">
     <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-2xl w-full max-w-xs space-y-3 text-center border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
-        <!-- Tiêu đề Modal (Bấm vào để mở bảng hướng dẫn chi tiết) -->
+        <!-- Tiêu đề Modal (Bấm vào để ẩn/hiện hướng dẫn, loại bỏ chữ màu và chữ Hướng dẫn) -->
         <div class="flex items-center justify-between">
-            <h3 onclick="toggleBreathingInfo()" class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 text-sm cursor-pointer hover:text-emerald-600 transition select-none" title="Bấm để xem hướng dẫn">
-                <span>🫁 Hít thở thư giãn</span>
-                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 underline font-normal">(Hướng dẫn)</span>
+            <h3 onclick="toggleBreathingInfo()" class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 text-sm cursor-pointer hover:opacity-80 transition select-none">
+                <!-- SVG Icon thay thế emoji bị lỗi font trên Chrome Windows -->
+                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <span>Hít thở thư giãn</span>
             </h3>
             <button onclick="closeBreathingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
         </div>
 
-        <!-- BẢNG HƯỚNG DẪN CHI TIẾT (Ẩn mặc định) -->
+        <!-- BẢNG HƯỚNG DẪN CHI TIẾT (Ẩn mặc định, hiện khi bấm tiêu đề) -->
         <div id="breathing-info-box" class="hidden text-left bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 space-y-2">
-            <p>🔹 <b class="text-emerald-600 dark:text-emerald-400">Box Breathing:</b> Hít vào (4s) → Giữ hơi (4s) → Thở ra (4s) → Giữ hơi (4s). Kỹ thuật này giúp cân bằng nhịp thở, tăng cường sự tập trung và giảm nhanh căng thẳng trong công việc.</p>
-            <p>🟣 <b class="text-indigo-600 dark:text-indigo-400">Thở 4-7-8:</b> Hít vào bằng mũi (4s) → Giữ hơi (7s) → Thở ra bằng miệng (8s). Kỹ thuật này kích hoạt hệ thần kinh phó giao cảm, giúp xả stress sâu và dễ đi vào giấc ngủ.</p>
+            <p><b>Box Breathing:</b> Hít vào (4s) → Giữ hơi (4s) → Thở ra (4s) → Giữ hơi (4s). Kỹ thuật này giúp cân bằng nhịp thở, tăng cường sự tập trung và giảm nhanh căng thẳng trong công việc.</p>
+            <p><b>Thở 4-7-8:</b> Hít vào bằng mũi (4s) → Giữ hơi (7s) → Thở ra bằng miệng (8s). Kỹ thuật này kích hoạt hệ thần kinh phó giao cảm, giúp xả stress sâu và dễ đi vào giấc ngủ.</p>
         </div>
         
-        <!-- Chọn kỹ thuật thở (Emerald cho Box, Indigo cho 4-7-8) -->
-        <div class="flex justify-center gap-1.5">
-            <button onclick="setTechnique('box', this)" class="tech-btn px-3 py-1 rounded-lg border border-emerald-600 bg-emerald-600 text-white font-bold text-[11px] transition">Box Breathing</button>
-            <button onclick="setTechnique('478', this)" class="tech-btn px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">Thở 4-7-8</button>
+        <!-- 1 Nút bấm chuyển đổi Kỹ thuật thở (Cỡ chữ to hơn thời gian) -->
+        <div class="flex justify-center pt-1">
+            <button id="tech-toggle-btn" onclick="cycleTechnique()" class="px-4 py-2 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-bold text-sm shadow-sm transition">
+                Box Breathing
+            </button>
         </div>
 
-        <!-- Chọn thời gian phiên tập -->
-        <div id="breathing-options" class="flex justify-center gap-1.5">
-            <button onclick="setBreathingDuration(120, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-emerald-600 bg-emerald-600 text-white font-bold text-[11px] transition">2 phút</button>
-            <button onclick="setBreathingDuration(300, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">5 phút</button>
-            <button onclick="setBreathingDuration(600, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">10 phút</button>
+        <!-- 1 Nút bấm chuyển đổi Thời gian -->
+        <div class="flex justify-center">
+            <button id="duration-toggle-btn" onclick="cycleDuration()" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold text-xs transition">
+                ⏱️ Thời gian: 2 phút
+            </button>
         </div>
 
-        <!-- Đồng hồ đếm ngược -->
-        <div id="breathing-countdown" class="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400">02:00</div>
+        <!-- Đồng hồ đếm ngược (Cỡ chữ nhỏ hơn tên kiểu thở) -->
+        <div id="breathing-countdown" class="font-mono text-xs text-slate-500 dark:text-slate-400 pt-0.5">02:00</div>
 
-        <!-- Vòng tròn chuyển động -->
-        <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full bg-emerald-50 dark:bg-emerald-950/40"></div>
-            <div id="breathing-circle" class="w-18 h-18 rounded-full bg-emerald-600 shadow-md flex items-center justify-center text-white font-bold text-[11px]">
-                <span id="breathing-text" class="text-center px-1">Sẵn sàng</span>
+        <!-- Vòng tròn chuyển động tích hợp nút Bắt đầu / Dừng -->
+        <div class="relative w-36 h-36 mx-auto flex items-center justify-center cursor-pointer group" onclick="toggleBreathing()" title="Bấm để Bắt đầu / Dừng">
+            <div id="breathing-bg-ring" class="absolute inset-0 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 transition-colors"></div>
+            <div id="breathing-circle" class="w-24 h-24 rounded-full bg-emerald-600 shadow-lg flex items-center justify-center text-white font-bold text-xs transition-all group-hover:scale-105">
+                <span id="breathing-text" class="text-center px-2">Bấm để Bắt đầu</span>
             </div>
         </div>
 
-        <!-- Điều khiển -->
-        <div class="space-y-2">
-            <button id="breathing-toggle-btn" onclick="toggleBreathing()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition font-bold text-xs shadow-sm">
-                Bắt đầu
-            </button>
-        </div>
     </div>
 </div>
     
