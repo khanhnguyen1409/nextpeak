@@ -256,7 +256,30 @@ function saveSystemConfig() {
     dbRef.set(appData); alert(t('sysSaved')); updateStaticTexts(); renderList();
 }
 
-function addAdminSlogan() {
+// ĐỊNH NGHĨA HÀM HIỂN THỊ KHẨU HIỆU
+function displayRandomSlogan() {
+    const el = document.getElementById('random-slogan-text');
+    if (!el) return;
+    
+    // Nếu chưa có dữ liệu slogans, dùng mặc định
+    if (!appData.slogansPool || Array.isArray(appData.slogansPool)) {
+        appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
+    }
+    
+    let pool = appData.slogansPool[currentLang];
+    if (!Array.isArray(pool)) {
+        pool = (typeof pool === 'object' && pool !== null) ? Object.values(pool) : [...defaultSlogans[currentLang]];
+    }
+    
+    if (pool && pool.length > 0) {
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        el.innerText = `"${randomItem}"`;
+    } else {
+        el.innerText = `"Hành trình vạn dặm khởi đầu từ một bước chân."`;
+    }
+}
+    
+    function addAdminSlogan() {
     const val = document.getElementById('admin-slogan-text-input').value.trim(); if(!val) return alert(t('errEnterSlogan'));
     const lines = val.split('\n').map(l => l.trim()).filter(l => l.length > 0); if (!lines.length) return;
     if (!appData.slogansPool || Array.isArray(appData.slogansPool)) appData.slogansPool = { vi: [...defaultSlogans.vi], en: [...defaultSlogans.en] };
