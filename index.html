@@ -30,8 +30,12 @@
 
 <script>
     let breathingTimer = null;
+    let sessionInterval = null;
     let isBreathingActive = false;
     let breathingAudioCtx = null;
+    let selectedDuration = 120; // Mặc định 2 phút
+    let sessionTimeLeft = 120;
+    let selectedTechnique = 'box'; // 'box' (Box Breathing) hoặc '478' (Thở 4-7-8)
 
     function openBreathingModal() {
         if (typeof closeSettingsMenu === 'function') {
@@ -46,8 +50,49 @@
         document.getElementById('breathing-modal').classList.add('hidden');
     }
 
+    function setBreathingDuration(seconds, btnElement) {
+        if (isBreathingActive) return;
+        selectedDuration = seconds;
+        sessionTimeLeft = seconds;
+        updateTimerDisplay();
+
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+            btn.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+        });
+        if (btnElement) {
+            btnElement.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+            btnElement.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+        }
+    }
+
+    function setTechnique(tech, btnElement) {
+        if (isBreathingActive) return;
+        selectedTechnique = tech;
+
+        document.querySelectorAll('.tech-btn').forEach(btn => {
+            btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+            btn.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+        });
+        if (btnElement) {
+            btnElement.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
+            btnElement.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+        }
+    }
+
+    function updateTimerDisplay() {
+        const mins = Math.floor(sessionTimeLeft / 60);
+        const secs = sessionTimeLeft % 60;
+        const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        const timerEl = document.getElementById('breathing-countdown');
+        if (timerEl) timerEl.innerText = timeStr;
+    }
+
     function resetBreathingUI() {
         stopBreathing();
+        sessionTimeLeft = selectedDuration;
+        updateTimerDisplay();
+        
         const textEl = document.getElementById('breathing-text');
         const circleEl = document.getElementById('breathing-circle');
         const btnEl = document.getElementById('breathing-toggle-btn');
@@ -67,7 +112,6 @@
     function startBreathing() {
         isBreathingActive = true;
         
-        // Khởi tạo AudioContext khi người dùng bấm bắt đầu (tránh bị trình duyệt chặn)
         if (!breathingAudioCtx || breathingAudioCtx.state === 'closed') {
             breathingAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
@@ -77,6 +121,16 @@
 
         const btnEl = document.getElementById('breathing-toggle-btn');
         if (btnEl) btnEl.innerText = "Dừng lại";
+
+        sessionInterval = setInterval(() => {
+            if (sessionTimeLeft > 0) {
+                sessionTimeLeft--;
+                updateTimerDisplay();
+            } else {
+                finishBreathingSession();
+            }
+        }, 1000);
+
         runBreathingCycle();
     }
 
@@ -86,6 +140,10 @@
             clearTimeout(breathingTimer);
             breathingTimer = null;
         }
+        if (sessionInterval) {
+            clearInterval(sessionInterval);
+            sessionInterval = null;
+        }
         const btnEl = document.getElementById('breathing-toggle-btn');
         if (btnEl) btnEl.innerText = "Bắt đầu";
         const circleEl = document.getElementById('breathing-circle');
@@ -94,38 +152,60 @@
         if (textEl) textEl.innerText = "Sẵn sàng";
     }
 
-    // Hàm tạo tiếng chuông/beep ngắn theo tần số Hz
-    function playBeep(freq, duration = 0.15) {
+    function finishBreathingSession() {
+        stopBreathing();
+        playCompletionChime();
+        const textEl = document.getElementById('breathing-text');
+        if (textEl) textEl.innerText = "Hoàn thành! 🌟";
+        alert('🎉 Tuyệt vời! Bạn đã hoàn thành bài tập hít thở và thư giãn thành công.');
+        sessionTimeLeft = selectedDuration;
+        updateTimerDisplay();
+    }
+
+    function playBeep(freq, duration = 0.2) {
         if (!breathingAudioCtx) return;
         try {
             const osc = breathingAudioCtx.createOscillator();
             const gain = breathingAudioCtx.createGain();
-            
-            osc.type = 'sine'; // Sóng sin tạo âm thanh mềm mại, dễ chịu
+            osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, breathingAudioCtx.currentTime);
-            
-            gain.gain.setValueAtTime(0.08, breathingAudioCtx.currentTime);
+            gain.gain.setValueAtTime(0.35, breathingAudioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, breathingAudioCtx.currentTime + duration);
-            
             osc.connect(gain);
             gain.connect(breathingAudioCtx.destination);
-            
             osc.start();
             osc.stop(breathingAudioCtx.currentTime + duration);
-        } catch (e) {
-            console.log("Lỗi phát âm thanh hít thở", e);
-        }
+        } catch (e) {}
     }
 
+    function playCompletionChime() {
+        if (!breathingAudioCtx) return;
+        try {
+            [523.25, 659.25, 783.99].forEach((freq, index) => {
+                setTimeout(() => playBeep(freq, 0.35), index * 150);
+            });
+        } catch (e) {}
+    }
+
+    // Điều hướng chu kỳ thở theo kỹ thuật đã chọn
     function runBreathingCycle() {
         if (!isBreathingActive) return;
 
+        if (selectedTechnique === 'box') {
+            runBoxCycle();
+        } else if (selectedTechnique === '478') {
+            run478Cycle();
+        }
+    }
+
+    // Chu kỳ Box Breathing (4 - 4 - 4 - 4)
+    function runBoxCycle() {
+        if (!isBreathingActive) return;
         const textEl = document.getElementById('breathing-text');
         const circleEl = document.getElementById('breathing-circle');
 
-        // Giai đoạn 1: Hít vào (4 giây) - Cao độ 440 Hz (A4)
-        playBeep(440, 0.2);
-        if (textEl) textEl.innerText = "Hít vào...";
+        playBeep(440, 0.25);
+        if (textEl) textEl.innerText = "Hít vào (4s)";
         if (circleEl) {
             circleEl.style.transition = "transform 4s ease-in-out";
             circleEl.style.transform = "scale(1.4)";
@@ -133,17 +213,13 @@
 
         breathingTimer = setTimeout(() => {
             if (!isBreathingActive) return;
-
-            // Giai đoạn 2: Giữ hơi (4 giây) - Cao độ 554 Hz (C#5)
-            playBeep(554.37, 0.2);
-            if (textEl) textEl.innerText = "Giữ hơi...";
+            playBeep(554.37, 0.25);
+            if (textEl) textEl.innerText = "Giữ hơi (4s)";
             
             breathingTimer = setTimeout(() => {
                 if (!isBreathingActive) return;
-
-                // Giai đoạn 3: Thở ra (4 giây) - Cao độ thấp 329 Hz (E4)
-                playBeep(329.63, 0.2);
-                if (textEl) textEl.innerText = "Thở ra...";
+                playBeep(329.63, 0.25);
+                if (textEl) textEl.innerText = "Thở ra (4s)";
                 if (circleEl) {
                     circleEl.style.transition = "transform 4s ease-in-out";
                     circleEl.style.transform = "scale(1)";
@@ -151,21 +227,51 @@
 
                 breathingTimer = setTimeout(() => {
                     if (!isBreathingActive) return;
-
-                    // Giai đoạn 4: Giữ hơi (4 giây) - Cao độ 554 Hz (C#5)
-                    playBeep(554.37, 0.2);
-                    if (textEl) textEl.innerText = "Giữ hơi...";
+                    playBeep(554.37, 0.25);
+                    if (textEl) textEl.innerText = "Giữ hơi (4s)";
 
                     breathingTimer = setTimeout(() => {
-                        if (isBreathingActive) {
-                            runBreathingCycle(); // Lặp lại chu kỳ
-                        }
+                        if (isBreathingActive) runBoxCycle();
                     }, 4000);
-
                 }, 4000);
-
             }, 4000);
+        }, 4000);
+    }
 
+    // Chu kỳ Thở 4-7-8 (Hít 4s - Giữ 7s - Thở ra 8s)
+    function run478Cycle() {
+        if (!isBreathingActive) return;
+        const textEl = document.getElementById('breathing-text');
+        const circleEl = document.getElementById('breathing-circle');
+
+        // 1. Hít vào (4 giây)
+        playBeep(440, 0.25);
+        if (textEl) textEl.innerText = "Hít vào (4s)";
+        if (circleEl) {
+            circleEl.style.transition = "transform 4s ease-in-out";
+            circleEl.style.transform = "scale(1.4)";
+        }
+
+        breathingTimer = setTimeout(() => {
+            if (!isBreathingActive) return;
+            // 2. Giữ hơi (7 giây)
+            playBeep(554.37, 0.25);
+            if (textEl) textEl.innerText = "Giữ hơi (7s)";
+            
+            breathingTimer = setTimeout(() => {
+                if (!isBreathingActive) return;
+                // 3. Thở ra (8 giây)
+                playBeep(329.63, 0.25);
+                if (textEl) textEl.innerText = "Thở ra (8s)";
+                if (circleEl) {
+                    circleEl.style.transition = "transform 8s ease-in-out";
+                    circleEl.style.transform = "scale(1)";
+                }
+
+                breathingTimer = setTimeout(() => {
+                    if (isBreathingActive) run478Cycle();
+                }, 8000);
+            }, 7000);
         }, 4000);
     }
 </script>
@@ -4654,7 +4760,7 @@ let statusBadge = isF
 
 <!-- MODAL BREATHING EXERCISE -->
 <div id="breathing-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeBreathingModal()">
-    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-xs space-y-6 text-center border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-2xl w-full max-w-xs space-y-3 text-center border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
         
         <!-- Tiêu đề Modal -->
         <div class="flex items-center justify-between">
@@ -4664,26 +4770,41 @@ let statusBadge = isF
             <button onclick="closeBreathingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
         </div>
         
+        <!-- Chọn kỹ thuật thở -->
+        <div class="flex justify-center gap-1.5">
+            <button onclick="setTechnique('box', this)" class="tech-btn px-3 py-1 rounded-lg border border-indigo-600 bg-indigo-600 text-white font-bold text-[11px] transition">Box Breathing</button>
+            <button onclick="setTechnique('478', this)" class="tech-btn px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">Thở 4-7-8</button>
+        </div>
+
+        <!-- Chọn thời gian phiên tập: 2 phút, 5 phút, 10 phút -->
+        <div id="breathing-options" class="flex justify-center gap-1.5">
+            <button onclick="setBreathingDuration(120, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-indigo-600 bg-indigo-600 text-white font-bold text-[11px] transition">2 phút</button>
+            <button onclick="setBreathingDuration(300, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">5 phút</button>
+            <button onclick="setBreathingDuration(600, this)" class="duration-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[11px] transition">10 phút</button>
+        </div>
+
+        <!-- Đồng hồ đếm ngược thời gian còn lại -->
+        <div id="breathing-countdown" class="font-mono text-sm font-bold text-indigo-600 dark:text-indigo-400">02:00</div>
+
         <!-- Vòng tròn chuyển động trực quan -->
-        <div class="relative w-40 h-40 mx-auto flex items-center justify-center my-2">
+        <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
             <div class="absolute inset-0 rounded-full bg-indigo-50 dark:bg-indigo-950/40"></div>
-            <div id="breathing-circle" class="w-24 h-24 rounded-full bg-indigo-600 shadow-md flex items-center justify-center text-white font-bold text-xs">
-                <span id="breathing-text" class="text-center px-2">Sẵn sàng</span>
+            <div id="breathing-circle" class="w-18 h-18 rounded-full bg-indigo-600 shadow-md flex items-center justify-center text-white font-bold text-[11px]">
+                <span id="breathing-text" class="text-center px-1">Sẵn sàng</span>
             </div>
         </div>
 
         <!-- Điều khiển -->
-        <div class="space-y-3">
-            <button id="breathing-toggle-btn" onclick="toggleBreathing()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold text-sm shadow-sm">
+        <div class="space-y-2">
+            <button id="breathing-toggle-btn" onclick="toggleBreathing()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition font-bold text-xs shadow-sm">
                 Bắt đầu
             </button>
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 italic leading-relaxed">
-                Kỹ thuật Box Breathing: Hít vào (4s) $\rightarrow$ Giữ (4s) $\rightarrow$ Thở ra (4s) $\rightarrow$ Giữ (4s)
-            </p>
         </div>
     </div>
 </div>
+
     
+
     
 </body>
 </html>
