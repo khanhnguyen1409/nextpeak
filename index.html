@@ -30,71 +30,72 @@
 
     <!-- SCRIPT QUICK SCRATCHPAD -->
     <script>
-        function openScratchpad() {
-            if (typeof closeSettingsMenu === 'function') {
-                closeSettingsMenu(); // Tự động đóng menu settings nếu đang mở
-            }
-            document.getElementById('scratchpad-modal').classList.remove('hidden');
+    function openScratchpad() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu(); // Tự động đóng menu settings nếu đang mở
+        }
+        document.getElementById('scratchpad-modal').classList.remove('hidden');
+        
+        // Load nội dung mới nhất từ localStorage khi mở modal
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            textarea.value = localStorage.getItem('nextPeak_scratchpad') || '';
+            textarea.focus();
+        }
+    }
+
+    function closeScratchpad() {
+        document.getElementById('scratchpad-modal').classList.add('hidden');
+    }
+
+    function clearScratchpad() {
+        if (confirm('Bạn có chắc muốn xóa sạch toàn bộ ghi chú này không?')) {
+            const textarea = document.getElementById('scratchpad-text');
+            if (textarea) textarea.value = '';
+            localStorage.removeItem('nextPeak_scratchpad');
+            showScratchpadStatus('Đã xóa sạch!');
+        }
+    }
+
+    function copyScratchpad() {
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                showScratchpadStatus('Đã sao chép vào bộ nhớ tạm!');
+            });
+        }
+    }
+
+    function showScratchpadStatus(msg) {
+        const statusEl = document.getElementById('scratchpad-status');
+        if (statusEl) {
+            statusEl.innerText = msg;
+            setTimeout(() => {
+                statusEl.innerText = 'Đã tự động lưu';
+            }, 2000);
+        }
+    }
+
+    // Tự động lưu (Auto-save) thời gian thực khi gõ phím
+    window.addEventListener('DOMContentLoaded', () => {
+        const textarea = document.getElementById('scratchpad-text');
+        if (textarea) {
+            // Đã sửa dấu ] thành dấu ) ở đây
+            textarea.value = localStorage.getItem('nextPeak_scratchpad') || '';
             
-            // Load nội dung mới nhất từ localStorage khi mở modal
-            const textarea = document.getElementById('scratchpad-text');
-            if (textarea) {
-                textarea.value = localStorage.getItem('nextPeak_scratchpad') || '';
-                textarea.focus();
-            }
-        }
-
-        function closeScratchpad() {
-            document.getElementById('scratchpad-modal').classList.add('hidden');
-        }
-
-        function clearScratchpad() {
-            if (confirm('Bạn có chắc muốn xóa sạch toàn bộ ghi chú này không?')) {
-                const textarea = document.getElementById('scratchpad-text');
-                if (textarea) textarea.value = '';
-                localStorage.removeItem('nextPeak_scratchpad');
-                showScratchpadStatus('Đã xóa sạch!');
-            }
-        }
-
-        function copyScratchpad() {
-            const textarea = document.getElementById('scratchpad-text');
-            if (textarea) {
-                navigator.clipboard.writeText(textarea.value).then(() => {
-                    showScratchpadStatus('Đã sao chép vào bộ nhớ tạm!');
-                });
-            }
-        }
-
-        function showScratchpadStatus(msg) {
-            const statusEl = document.getElementById('scratchpad-status');
-            if (statusEl) {
-                statusEl.innerText = msg;
-                setTimeout(() => {
-                    statusEl.innerText = 'Đã tự động lưu';
-                }, 2000);
-            }
-        }
-
-        // Tự động lưu (Auto-save) thời gian thực khi gõ phím
-        window.addEventListener('DOMContentLoaded', () => {
-            const textarea = document.getElementById('scratchpad-text');
-            if (textarea) {
-                textarea.value = localStorage.getItem('nextPeak_scratchpad'] || '';
+            textarea.addEventListener('input', () => {
+                localStorage.setItem('nextPeak_scratchpad', textarea.value);
+                const statusEl = document.getElementById('scratchpad-status');
+                if (statusEl) statusEl.innerText = 'Đang lưu...';
                 
-                textarea.addEventListener('input', () => {
-                    localStorage.setItem('nextPeak_scratchpad', textarea.value);
-                    const statusEl = document.getElementById('scratchpad-status');
-                    if (statusEl) statusEl.innerText = 'Đang lưu...';
-                    
-                    clearTimeout(window.scratchpadTimeout);
-                    window.scratchpadTimeout = setTimeout(() => {
-                        if (statusEl) statusEl.innerText = 'Đã tự động lưu';
-                    }, 600);
-                });
-            }
-        });
-    </script>
+                clearTimeout(window.scratchpadTimeout);
+                window.scratchpadTimeout = setTimeout(() => {
+                    if (statusEl) statusEl.innerText = 'Đã tự động lưu';
+                }, 600);
+            });
+        }
+    });
+</script>
 
     <!-- Các thư viện khác: HTML2Canvas, Firebase, HEIC... -->
     
