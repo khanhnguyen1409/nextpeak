@@ -31,6 +31,7 @@
 <script>
     let breathingTimer = null;
     let isBreathingActive = false;
+    let breathingAudioCtx = null;
 
     function openBreathingModal() {
         if (typeof closeSettingsMenu === 'function') {
@@ -65,6 +66,15 @@
 
     function startBreathing() {
         isBreathingActive = true;
+        
+        // Khởi tạo AudioContext khi người dùng bấm bắt đầu (tránh bị trình duyệt chặn)
+        if (!breathingAudioCtx || breathingAudioCtx.state === 'closed') {
+            breathingAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (breathingAudioCtx.state === 'suspended') {
+            breathingAudioCtx.resume();
+        }
+
         const btnEl = document.getElementById('breathing-toggle-btn');
         if (btnEl) btnEl.innerText = "Dừng lại";
         runBreathingCycle();
@@ -84,13 +94,37 @@
         if (textEl) textEl.innerText = "Sẵn sàng";
     }
 
+    // Hàm tạo tiếng chuông/beep ngắn theo tần số Hz
+    function playBeep(freq, duration = 0.15) {
+        if (!breathingAudioCtx) return;
+        try {
+            const osc = breathingAudioCtx.createOscillator();
+            const gain = breathingAudioCtx.createGain();
+            
+            osc.type = 'sine'; // Sóng sin tạo âm thanh mềm mại, dễ chịu
+            osc.frequency.setValueAtTime(freq, breathingAudioCtx.currentTime);
+            
+            gain.gain.setValueAtTime(0.08, breathingAudioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, breathingAudioCtx.currentTime + duration);
+            
+            osc.connect(gain);
+            gain.connect(breathingAudioCtx.destination);
+            
+            osc.start();
+            osc.stop(breathingAudioCtx.currentTime + duration);
+        } catch (e) {
+            console.log("Lỗi phát âm thanh hít thở", e);
+        }
+    }
+
     function runBreathingCycle() {
         if (!isBreathingActive) return;
 
         const textEl = document.getElementById('breathing-text');
         const circleEl = document.getElementById('breathing-circle');
 
-        // Giai đoạn 1: Hít vào (4 giây)
+        // Giai đoạn 1: Hít vào (4 giây) - Cao độ 440 Hz (A4)
+        playBeep(440, 0.2);
         if (textEl) textEl.innerText = "Hít vào...";
         if (circleEl) {
             circleEl.style.transition = "transform 4s ease-in-out";
@@ -100,13 +134,15 @@
         breathingTimer = setTimeout(() => {
             if (!isBreathingActive) return;
 
-            // Giai đoạn 2: Giữ hơi (4 giây)
+            // Giai đoạn 2: Giữ hơi (4 giây) - Cao độ 554 Hz (C#5)
+            playBeep(554.37, 0.2);
             if (textEl) textEl.innerText = "Giữ hơi...";
             
             breathingTimer = setTimeout(() => {
                 if (!isBreathingActive) return;
 
-                // Giai đoạn 3: Thở ra (4 giây)
+                // Giai đoạn 3: Thở ra (4 giây) - Cao độ thấp 329 Hz (E4)
+                playBeep(329.63, 0.2);
                 if (textEl) textEl.innerText = "Thở ra...";
                 if (circleEl) {
                     circleEl.style.transition = "transform 4s ease-in-out";
@@ -116,7 +152,8 @@
                 breathingTimer = setTimeout(() => {
                     if (!isBreathingActive) return;
 
-                    // Giai đoạn 4: Giữ hơi (4 giây)
+                    // Giai đoạn 4: Giữ hơi (4 giây) - Cao độ 554 Hz (C#5)
+                    playBeep(554.37, 0.2);
                     if (textEl) textEl.innerText = "Giữ hơi...";
 
                     breathingTimer = setTimeout(() => {
