@@ -29,15 +29,16 @@
     </script>
 
     <script>
-    let currentAudio = null;
-    let audioContext = null;
-    let noiseNode = null;
-    let noiseGain = null;
+    let audioCtx = null;
+    let activeSoundNode = null;
+    let activeGainNode = null;
+    let activeFilterNode = null;
+    let waveInterval = null;
     let activeSoundId = null;
 
     function openAmbientModal() {
         if (typeof closeSettingsMenu === 'function') {
-            closeSettingsMenu(); // Đóng menu settings nếu đang mở
+            closeSettingsMenu();
         }
         document.getElementById('ambient-modal').classList.remove('hidden');
     }
@@ -46,25 +47,23 @@
         document.getElementById('ambient-modal').classList.add('hidden');
     }
 
-    // Dừng tất cả âm thanh đang phát
     function stopAllSounds() {
-        // Dừng HTML5 Audio (Mưa, Sóng biển...)
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio = null;
+        // Dừng và giải phóng toàn bộ Audio Context
+        if (activeSoundNode) {
+            try { activeSoundNode.stop(); } catch(e) {}
+            activeSoundNode.disconnect();
+            activeSoundNode = null;
         }
-        // Dừng Web Audio API (White Noise)
-        if (noiseNode) {
-            noiseNode.stop();
-            noiseNode.disconnect();
-            noiseNode = null;
+        if (waveInterval) {
+            clearInterval(waveInterval);
+            waveInterval = null;
         }
-        if (audioContext && audioContext.state !== 'closed') {
-            audioContext.close();
-            audioContext = null;
+        if (audioCtx && audioCtx.state !== 'closed') {
+            audioCtx.close();
+            audioCtx = null;
         }
-        
-        // Reset trạng thái giao diện nút bấm
+
+        // Reset giao diện nút bấm
         document.querySelectorAll('.ambient-btn').forEach(btn => {
             btn.classList.remove('bg-indigo-600', 'text-white', 'border-transparent');
             btn.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
@@ -72,18 +71,25 @@
         activeSoundId = null;
     }
 
+    function initAudioContext() {
+        if (!audioCtx || audioCtx.state === 'closed') {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
     function toggleAmbientSound(soundType, btnElement) {
-        // Nếu đang bật đúng âm thanh đó thì bấm lần nữa sẽ tắt
         if (activeSoundId === soundType) {
             stopAllSounds();
             return;
         }
 
-        // Tắt âm thanh cũ trước khi bật mới
         stopAllSounds();
+        initAudioContext();
         activeSoundId = soundType;
 
-        // Đổi giao diện nút đang chọn
         if (btnElement) {
             btnElement.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-300');
             btnElement.classList.add('bg-indigo-600', 'text-white', 'border-transparent');
@@ -92,56 +98,99 @@
         if (soundType === 'whitenoise') {
             playWhiteNoise();
         } else if (soundType === 'rain') {
-            // Link âm thanh thiên nhiên công khai ổn định
-            playStreamAudio('https://cdn.pixabay.com/download/audio/2021/08/09/audio_4237d6e4b8.mp3?filename=light-rain-ambient-114354.mp3');
+            playRainSound();
         } else if (soundType === 'waves') {
-            playStreamAudio('https://cdn.pixabay.com/download/audio/2022/05/16/audio_db327e5a0e.mp3?filename=ocean-waves-112906.mp3');
+            playWavesSound();
         }
     }
 
-    function playStreamAudio(url) {
-        currentAudio = new Audio(url);
-        currentAudio.loop = true;
-        currentAudio.volume = 0.5;
-        currentAudio.play().catch(err => {
-            console.log("Không thể phát âm thanh:", err);
-            alert("Trình duyệt chặn tự động phát âm thanh, vui lòng thử lại!");
-            stopAllSounds();
-        });
-    }
-
-    // Tạo tiếng ồn trắng (White Noise) thông qua Web Audio API trình duyệt
+    // 1. Tiếng ồn trắng (White Noise thuần)
     function playWhiteNoise() {
-        try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const bufferSize = 2 * audioContext.sampleRate;
-            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-            const output = noiseBuffer.getChannelData(0);
-            
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
-
-            noiseNode = audioContext.createBufferSource();
-            noiseNode.buffer = noiseBuffer;
-            noiseNode.loop = true;
-
-            // Bộ lọc âm thanh cho êm dịu (Lowpass filter)
-            const filter = audioContext.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 1000;
-
-            noiseGain = audioContext.createGain();
-            noiseGain.gain.value = 0.15; // Âm lượng vừa phải
-
-            noiseNode.connect(filter);
-            filter.connect(noiseGain);
-            noiseGain.connect(audioContext.destination);
-
-            noiseNode.start(0);
-        } catch (e) {
-            console.log("Web Audio API không được hỗ trợ", e);
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
         }
+
+        activeSoundNode = audioCtx.createBufferSource();
+        activeSoundNode.buffer = noiseBuffer;
+        activeSoundNode.loop = true;
+
+        activeFilterNode = audioCtx.createBiquadFilter();
+        activeFilterNode.type = 'lowpass';
+        activeFilterNode.frequency.value = 1000;
+
+        activeGainNode = audioCtx.createGain();
+        activeGainNode.gain.value = 0.1;
+
+        activeSoundNode.connect(activeFilterNode);
+        activeFilterNode.connect(activeGainNode);
+        activeGainNode.connect(audioCtx.destination);
+        activeSoundNode.start(0);
+    }
+
+    // 2. Tiếng Mưa rơi (Lọc tần số cao để nghe rả rích giống tiếng mưa)
+    function playRainSound() {
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+
+        activeSoundNode = audioCtx.createBufferSource();
+        activeSoundNode.buffer = noiseBuffer;
+        activeSoundNode.loop = true;
+
+        // Dùng bộ lọc bandpass/lowpass tinh chỉnh để ra tiếng mưa
+        activeFilterNode = audioCtx.createBiquadFilter();
+        activeFilterNode.type = 'lowpass';
+        activeFilterNode.frequency.value = 800;
+
+        activeGainNode = audioCtx.createGain();
+        activeGainNode.gain.value = 0.15;
+
+        activeSoundNode.connect(activeFilterNode);
+        activeFilterNode.connect(activeGainNode);
+        activeGainNode.connect(audioCtx.destination);
+        activeSoundNode.start(0);
+    }
+
+    // 3. Tiếng Sóng biển (Tự động thay đổi âm lượng nhịp nhàng lên xuống như sóng vỗ)
+    function playWavesSound() {
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+
+        activeSoundNode = audioCtx.createBufferSource();
+        activeSoundNode.buffer = noiseBuffer;
+        activeSoundNode.loop = true;
+
+        activeFilterNode = audioCtx.createBiquadFilter();
+        activeFilterNode.type = 'lowpass';
+        activeFilterNode.frequency.value = 400; // Tiếng trầm đục giống sóng xa
+
+        activeGainNode = audioCtx.createGain();
+        activeGainNode.gain.value = 0.05;
+
+        activeSoundNode.connect(activeFilterNode);
+        activeFilterNode.connect(activeGainNode);
+        activeGainNode.connect(audioCtx.destination);
+        activeSoundNode.start(0);
+
+        // Hiệu ứng sóng vỗ (tăng giảm âm lượng tuần hoàn mỗi 6 giây)
+        let time = 0;
+        waveInterval = setInterval(() => {
+            if (!activeGainNode || !audioCtx) return;
+            time += 0.1;
+            // Dùng hàm sin để tạo độ dâng hạ âm lượng nhịp nhàng
+            const targetGain = 0.03 + Math.abs(Math.sin(time * 0.8)) * 0.12;
+            activeGainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.5);
+        }, 200);
     }
 </script>
 
