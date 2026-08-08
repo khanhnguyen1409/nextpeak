@@ -496,17 +496,15 @@ function getStreakInfo(prog) {
 }
 
 function renderList() {
+    const container = document.getElementById('main-list-container'); 
+    if (!container) return; // Chặn đứng lỗi null ngay lập tức nếu DOM chưa sẵn sàng
+    
     const sel = document.getElementById('main-filter-select'); 
     if (sel && sel.value) currentFilter = sel.value; 
     
-    const container = document.getElementById('main-list-container'); 
-    if (!container) return; // Chặn đứng lỗi null nếu chưa có thẻ HTML này trên giao diện
     container.innerHTML = '';
-    
     let list = []; 
     const sysCfg = appData.systemConfig || defaultSystemConfig;
-    
-    // ... (phần code xử lý bên dưới giữ nguyên y cũ)
 
     if (activeTab === 'dashboard') {
         list = (appData.sharedChallenges||[]).filter(c => {
@@ -514,7 +512,10 @@ function renderList() {
             if (currentFilter === 'archived') return c.archived; if (c.archived) return false; if (currentFilter === 'ended') return cFinished; if (cFinished) return false; if (currentFilter === 'my') return j; if (currentFilter === 'new') return !j; return true;
         }).sort(sortByStartDate);
 
-        if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
+        if(!list.length) {
+            container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noChallenges')}</p>`;
+            return;
+        }
         
         list.forEach((c, idx) => {
             const tot=c.totalDays||sysCfg.defaultTotalDays, tgt=c.targetDays||sysCfg.defaultTargetDays, st=c.participants?c.participants[loggedInUserId]:null, j=(st===true||st==='given_up'), gu=(st==='given_up'), ro=(c.archived===true);
@@ -548,7 +549,7 @@ function renderList() {
 
                     if(ic) { s="bg-indigo-600 text-white border-indigo-600"; } else if(dayLocked && !ic) { s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800"; lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>'; } else if(it) { s="bg-amber-50 text-indigo-700 border-2 border-amber-500 font-extrabold"; } else if(ifu) { s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; } else { s="bg-rose-100/60 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700"; }
                     let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
-return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="clean-badge absolute -top-2 left-0 right-0 mx-auto w-max bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                    return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(c.startDate, dIdx)}</span>${it?`<span class="clean-badge absolute -top-2 left-0 right-0 mx-auto w-max bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
                 }).join('') + `</div>`;
                 
                 content = `<div class="space-y-2"><div class="flex justify-between items-center text-xs flex-wrap gap-2"><span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-indigo-600">${cnt}/${tgt} (${pct}%)</span> <span class="clean-badge bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span> <button onclick="openLeaderboardModal(${c.id})" class="hide-trophy bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition flex items-center justify-center w-6 h-6 p-0 leading-none">🏆</button></span>${statusBadgeHTML}</div><div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden"><div class="bg-indigo-300 dark:bg-indigo-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div></div>${grid}${toggleGridBtn}</div>`;
@@ -562,7 +563,10 @@ return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative 
             if (currentFilter === 'archived') return h.archived === true; if (h.archived) return false; if (currentFilter === 'ended') return cFinished; if (cFinished) return false; if (currentFilter === 'active') return !h.archived; return true;
         }).sort(sortByStartDate);
 
-        if(!list.length) return container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
+        if(!list.length) {
+            container.innerHTML = `<p class="text-center text-slate-400 py-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">${t('noHabits')}</p>`;
+            return;
+        }
         
         list.forEach((h, idx) => {
             const tot=h.totalDays||sysCfg.defaultTotalDays, tgt=h.targetDays||sysCfg.defaultTargetDays, st=h.status||'active', ro=(h.archived===true), tIdx=getTodayIndex(h.startDate);
@@ -590,7 +594,7 @@ return `<button onclick="openDayModal(${c.id}, ${dIdx}, false)" class="relative 
 
                 if(ic) { s="bg-emerald-600 text-white border-emerald-600"; } else if(dayLocked && !ic) { s="bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/40 dark:border-rose-800"; lockBadge = '<span class="absolute top-0.5 right-0.5 text-[8px] leading-none">❌</span>'; } else if(it) { s="bg-amber-50 text-emerald-700 border-2 border-amber-500 font-extrabold"; } else if(ifu) { s="bg-slate-100 text-slate-400 opacity-40 dark:bg-slate-800 dark:border-slate-700"; } else { s="bg-rose-100/60 text-rose-700 border-2 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700"; }
                 let isHiddenClass = (!isExpanded && tot > 14 && (dIdx < startD || dIdx > endD)) ? "hidden" : "flex";
-return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="clean-badge absolute -top-2 left-0 right-0 mx-auto w-max bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
+                return `<button onclick="openDayModal(${h.id}, ${dIdx}, true)" class="relative overflow-visible h-11 rounded-lg text-xs font-bold ${isHiddenClass} flex-col items-center justify-center border transition ${s}"><span class="text-[11px] leading-none">${getDateString(h.startDate, dIdx)}</span>${it?`<span class="clean-badge absolute -top-2 left-0 right-0 mx-auto w-max bg-amber-500 text-white text-[8px] font-bold px-1.5 rounded-full shadow-sm whitespace-nowrap z-10 flex items-center justify-center h-3.5 leading-none">${t('todayBadge')}</span>`:''}${lockBadge}${hn?'<span class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>':''}${streakConnector}</button>`;
             }).join('') + `</div>`;
 
             container.innerHTML += `<div id="challenge-card-${h.id}" class="bg-white dark:bg-slate-800 p-5 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-3"><div class="flex justify-between items-start"><div class="space-y-1.5 w-full"><h4 onclick="showDescriptionModalById(${h.id}, true)" class="font-extrabold text-base cursor-pointer hover:text-emerald-600 transition flex items-center gap-1">${getMemberAvatarHTML(loggedInUserId, "w-5 h-5")} ${h.text}<sup class="text-emerald-600 font-bold text-[10px] ml-0.5">${idx + 1}</sup></h4><div class="flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-normal italic"><span>${formatDateString(h.startDate)}</span>${ro?`<span class="text-[10px] bg-amber-100 text-amber-800 px-2 rounded-full font-bold shadow-sm not-italic flex items-center justify-center h-4 leading-none">${t('readOnlyMode')}</span>`:''}</div>${rewardPenaltyBoxHTML}</div><button onclick="openActionMenuModal(${h.id}, true)" class="text-slate-400 hover:text-slate-600 p-2 font-bold text-lg leading-none -mt-1 -mr-2 flex items-center justify-center w-8 h-8">⋮</button></div><div class="space-y-2"><div class="flex justify-between items-center text-xs flex-wrap gap-2"><span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">${t('progress')}: <span class="text-emerald-600">${cnt}/${tgt} (${pct}%)</span> <span class="clean-badge bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-[11px] font-extrabold border border-amber-200 dark:border-amber-800">🔥${streak.active}</span></span>${statusBadgeHTML}</div><div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden"><div class="bg-emerald-300 dark:bg-emerald-400/80 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div></div>${grid}${toggleGridBtn}</div></div>`;
