@@ -624,23 +624,42 @@ async function saveDayDetail() {
 
 function toggleDayModalProgressAccordion() { const list = document.getElementById('group-members-status-list'); const arrow = document.getElementById('day-modal-progress-arrow'); list.classList.toggle('hidden'); arrow.style.transform = list.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }
 
-document.getElementById('master-create-form').onsubmit = e => {
-    e.preventDefault(); const sysCfg = appData.systemConfig || defaultSystemConfig;
-    const tIn = document.getElementById('create-title-input').value.trim(), dIn = document.getElementById('create-desc-input').value, start = document.getElementById('create-date-input').value, tgt = parseInt(document.getElementById('create-target-input').value)||sysCfg.defaultTargetDays, tot = parseInt(document.getElementById('create-days-input').value)||sysCfg.defaultTotalDays;
-    if(!tIn) return; if(tot < tgt) return alert(t('errTotalTarget'));
-    
-    if (activeTab === 'dashboard') {
-        const isB = document.getElementById('create-bigplay-checkbox').checked, cR = document.getElementById('create-reward-input').value, cP = document.getElementById('create-penalty-input').value;
-        if(isB && (!cR || !cP)) return alert(t('bigPlayRequire'));
-        appData.sharedChallenges.push({ id:Date.now(), createdAt:Date.now(), title:tIn, description:dIn, creatorName:appData.members.find(m=>m.id===loggedInUserId)?.name||'Member', creatorId:loggedInUserId, startDate:start, targetDays:tgt, totalDays:tot, isBigPlay:isB, customReward:parseInt(cR)||0, customPenalty:parseInt(cP)||0, archived:false, comments:[], participants:{[loggedInUserId]:true}, progress:{[loggedInUserId]:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}))} });
-    } else {
-        const sR = document.getElementById('create-self-reward-input').value.trim(), sP = document.getElementById('create-self-penalty-input').value.trim();
-        if(!sR || !sP) return alert(t('selfRuleRequire'));
-        appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId]||[];
-        appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:dIn, startDate:start, targetDays:tgt, totalDays:tot, selfReward:sR, selfPenalty:sP, status:'active', archived:false, comments:[], days:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
+document.addEventListener('DOMContentLoaded', () => {
+    const createForm = document.getElementById('master-create-form');
+    if (createForm) {
+        createForm.onsubmit = e => {
+            e.preventDefault(); 
+            const sysCfg = appData.systemConfig || defaultSystemConfig;
+            const tIn = document.getElementById('create-title-input').value.trim(), 
+                  dIn = document.getElementById('create-desc-input').value, 
+                  start = document.getElementById('create-date-input').value, 
+                  tgt = parseInt(document.getElementById('create-target-input').value)||sysCfg.defaultTargetDays, 
+                  tot = parseInt(document.getElementById('create-days-input').value)||sysCfg.defaultTotalDays;
+            if(!tIn) return; 
+            if(tot < tgt) return alert(t('errTotalTarget'));
+            
+            if (activeTab === 'dashboard') {
+                const isB = document.getElementById('create-bigplay-checkbox').checked, 
+                      cR = document.getElementById('create-reward-input').value, 
+                      cP = document.getElementById('create-penalty-input').value;
+                if(isB && (!cR || !cP)) return alert(t('bigPlayRequire'));
+                appData.sharedChallenges.push({ id:Date.now(), createdAt:Date.now(), title:tIn, description:dIn, creatorName:appData.members.find(m=>m.id===loggedInUserId)?.name||'Member', creatorId:loggedInUserId, startDate:start, targetDays:tgt, totalDays:tot, isBigPlay:isB, customReward:parseInt(cR)||0, customPenalty:parseInt(cP)||0, archived:false, comments:[], participants:{[loggedInUserId]:true}, progress:{[loggedInUserId]:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''}))} });
+            } else {
+                const sR = document.getElementById('create-self-reward-input').value.trim(), 
+                      sP = document.getElementById('create-self-penalty-input').value.trim();
+                if(!sR || !sP) return alert(t('selfRuleRequire'));
+                appData.personalHabits[loggedInUserId] = appData.personalHabits[loggedInUserId]||[];
+                appData.personalHabits[loggedInUserId].push({ id:Date.now(), createdAt:Date.now(), text:tIn, description:dIn, startDate:start, targetDays:tgt, totalDays:tot, selfReward:sR, selfPenalty:sP, status:'active', archived:false, comments:[], days:Array(tot).fill(null).map(()=>({completed:false,note:'',image:'',timestamp:''})) });
+            }
+            dbRef.set(appData); 
+            toggleCreatePanel(); 
+            e.target.reset(); 
+            document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0]; 
+            document.getElementById('create-target-input').value = sysCfg.defaultTargetDays; 
+            document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
+        };
     }
-    dbRef.set(appData); toggleCreatePanel(); e.target.reset(); document.getElementById('create-date-input').value = new Date().toISOString().split('T')[0]; document.getElementById('create-target-input').value = sysCfg.defaultTargetDays; document.getElementById('create-days-input').value = sysCfg.defaultTotalDays;
-};
+});
 
 function toggleCommentSection(id) { const el = document.getElementById(`comment-section-${id}`); if (el) el.classList.toggle('hidden'); }
 function insertTagToComment(cId, name) { const i=document.getElementById(`comment-text-${cId}`); if(i){ i.value = `@${name} ` + i.value.replace(`@${name} `, ''); i.focus(); } }
