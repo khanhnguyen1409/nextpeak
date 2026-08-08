@@ -496,9 +496,17 @@ function getStreakInfo(prog) {
 }
 
 function renderList() {
-    const sel = document.getElementById('main-filter-select'); if (sel && sel.value) currentFilter = sel.value; 
-    const container = document.getElementById('main-list-container'); container.innerHTML = '';
-    let list = []; const sysCfg = appData.systemConfig || defaultSystemConfig;
+    const sel = document.getElementById('main-filter-select'); 
+    if (sel && sel.value) currentFilter = sel.value; 
+    
+    const container = document.getElementById('main-list-container'); 
+    if (!container) return; // Chặn đứng lỗi null nếu chưa có thẻ HTML này trên giao diện
+    container.innerHTML = '';
+    
+    let list = []; 
+    const sysCfg = appData.systemConfig || defaultSystemConfig;
+    
+    // ... (phần code xử lý bên dưới giữ nguyên y cũ)
 
     if (activeTab === 'dashboard') {
         list = (appData.sharedChallenges||[]).filter(c => {
