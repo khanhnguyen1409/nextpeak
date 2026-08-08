@@ -629,17 +629,17 @@
                 </div>
 
                 <div id="form-personal-rules" class="space-y-2 pt-1 border-t hidden">
-    <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
-        <div>
-            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng trải nghiệm:</label>
-            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-        <div>
-            <label id="t-self-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt trải nghiệm:</label>
-            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-    </div>
-</div>
+                    <div class="space-y-2 p-2.5 bg-emerald-50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-700">
+                        <div>
+                            <label id="t-reward-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block mb-1 flex items-center gap-1">🎁 Thưởng (k):</label>
+                            <input type="text" id="create-self-reward-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label id="t-self-penalty-label" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 block mb-1 flex items-center gap-1">💸 Phạt:</label>
+                            <input type="text" id="create-self-penalty-input" class="w-full px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-xl text-xs dark:bg-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+                </div>
 
                 <button type="submit" id="t-create-submit-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-sm mt-2">Tạo mới</button>
             </form>
@@ -686,8 +686,6 @@ async function uploadToImgbb(base64Str) {
                 appTitle: "NEXT PEAK",
                 tabDashboard: "Nhóm",
                 tabUpdate: "Cá nhân",
-                rewardExperience: "Thưởng trải nghiệm",
-        penaltyExperience: "Phạt trải nghiệm",
                 reportBtnText: "Kết quả",
                 reportModalTitle: "📋 Kết quả thử thách",
                 createSharedTitle: "Tạo thử thách nhóm",
@@ -930,8 +928,6 @@ async function uploadToImgbb(base64Str) {
             en: {
                 appTitle: "NEXT PEAK",
                 tabDashboard: "Group",
-                rewardExperience: "Experience Reward",
-        penaltyExperience: "Experience Penalty",
                 tabUpdate: "Personal",
                 reportBtnText: "Results",
                 reportModalTitle: "📋 Results",
@@ -1530,8 +1526,7 @@ function prevMusic() {
     setHtml('t-penalty-label', t('penaltyLabel'));
     
     setHtml('t-self-reward-label', t('selfRewardLabel'));
-    setHtml('t-self-penalty-label', `💸 ${t('penaltyExperience')}`);        
-
+    setHtml('t-self-penalty-label', t('selfPenaltyLabel'));
     setPlaceholder('create-self-reward-input', t('selfRewardPh'));
     setPlaceholder('create-self-penalty-input', t('selfPenaltyPh'));
 
@@ -1607,9 +1602,10 @@ function prevMusic() {
     setText('reward-rules-title', t('rewardRuleTitle'));
 
     const sysCfg = appData.systemConfig || defaultSystemConfig;
-    setText('rule-desc-group-text', `🎯 ${t('groupLabel')}: 💸 -${sysCfg.defaultPenalty}k | 🎁 +${sysCfg.defaultReward}`);
-    setText('rule-desc-bigplay-text', t('ruleDescBigPlay'));
-    setText('rule-desc-personal-text', t('ruleDescPersonal'));
+    const sysCfg = appData.systemConfig || defaultSystemConfig;
+setHtml('rule-desc-group-text', `🎯 ${t('groupLabel')}: <span class="text-rose-600 dark:text-rose-400 font-semibold">💸 -${sysCfg.defaultPenalty}k</span> | <span class="text-emerald-600 dark:text-emerald-400 font-semibold">🎁 +${sysCfg.defaultReward}k</span>`);
+setText('rule-desc-bigplay-text', t('ruleDescBigPlay'));
+setText('rule-desc-personal-text', t('ruleDescPersonal'));
 
     // Update Capture Dropdown Items (Đã thêm cơ chế chống lỗi null container)
     const updateCapButtons = (id) => {
