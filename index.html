@@ -157,7 +157,7 @@
         activeSoundNode.start(0);
     }
 
-    // 3. Tiếng Sóng biển (Tự động thay đổi âm lượng nhịp nhàng lên xuống như sóng vỗ)
+    // 3. Tiếng Sóng biển (Đã chỉnh lại to hơn và rõ tiếng vỗ hơn)
     function playWavesSound() {
         const bufferSize = 2 * audioCtx.sampleRate;
         const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -172,24 +172,23 @@
 
         activeFilterNode = audioCtx.createBiquadFilter();
         activeFilterNode.type = 'lowpass';
-        activeFilterNode.frequency.value = 400; // Tiếng trầm đục giống sóng xa
+        activeFilterNode.frequency.value = 650; // Tăng từ 400 lên 650 để tiếng sóng sáng và rõ hơn
 
         activeGainNode = audioCtx.createGain();
-        activeGainNode.gain.value = 0.05;
+        activeGainNode.gain.value = 0.18; // Tăng âm lượng cơ bản lên
 
         activeSoundNode.connect(activeFilterNode);
         activeFilterNode.connect(activeGainNode);
         activeGainNode.connect(audioCtx.destination);
         activeSoundNode.start(0);
 
-        // Hiệu ứng sóng vỗ (tăng giảm âm lượng tuần hoàn mỗi 6 giây)
+        // Hiệu ứng sóng vỗ (biên độ dao động từ 0.08 đến 0.28 để nghe rõ tiếng ào ào lúc sóng tràn vào)
         let time = 0;
         waveInterval = setInterval(() => {
             if (!activeGainNode || !audioCtx) return;
             time += 0.1;
-            // Dùng hàm sin để tạo độ dâng hạ âm lượng nhịp nhàng
-            const targetGain = 0.03 + Math.abs(Math.sin(time * 0.8)) * 0.12;
-            activeGainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.5);
+            const targetGain = 0.08 + Math.abs(Math.sin(time * 0.7)) * 0.20;
+            activeGainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.3);
         }, 200);
     }
 </script>
