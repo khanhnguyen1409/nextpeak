@@ -28,32 +28,7 @@
         }
     </script>
 
-    <script>
-    function toggleFullScreen() {
-        if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-            const docEl = document.documentElement;
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen();
-            } else if (docEl.webkitRequestFullscreen) {
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) {
-                docEl.msRequestFullscreen();
-            }
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        }
 
-        if (typeof closeSettingsMenu === 'function') {
-            closeSettingsMenu();
-        }
-    }
-</script>
 
 <script>
     let breathingTimer = null;
@@ -1149,10 +1124,7 @@
         </div>
     </div>
 
-    <button onclick="toggleFullScreen()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
-    <span class="text-base">⛶</span>
-    <span>Toàn màn hình</span>
-</button>
+    
 
 
     <!-- NÚT MỞ HABIT TRACKER TRONG MENU SETTINGS -->
