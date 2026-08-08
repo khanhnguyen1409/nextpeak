@@ -1607,8 +1607,6 @@ setHtml('t-self-reward-label', t('rewardExperience'));
     setText('reward-rules-title', t('rewardRuleTitle'));
 
     const sysCfg = appData.systemConfig || defaultSystemConfig;
-    const sysCfg = appData.systemConfig || defaultSystemConfig;
-
 // Đã đảo Thưởng lên trước, Phạt ra sau và thêm màu sắc sinh động
 setHtml('rule-desc-group-text', `🎯 ${t('groupLabel')}: <span class="text-emerald-600 dark:text-emerald-400 font-semibold">🎁 +${sysCfg.defaultReward}k</span> | <span class="text-rose-600 dark:text-rose-400 font-semibold">💸 -${sysCfg.defaultPenalty}k</span>`);
 
