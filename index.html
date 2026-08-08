@@ -207,7 +207,44 @@ function getPlaylist() {
     }
     return Array.isArray(appData.playlist) ? appData.playlist : Object.values(appData.playlist);
 }
+
+    // Danh sách nhạc mặc định
+const defaultPlaylist = [
+    'https://assets.mixkit.co/music/preview/mixkit-spirit-in-the-woods-139.mp3'
+];
+
+// Hàm lấy playlist
+function getPlaylist() {
+    if (!appData.playlist) {
+        appData.playlist = [...defaultPlaylist];
+    }
+    return Array.isArray(appData.playlist) ? appData.playlist : Object.values(appData.playlist);
+}
+
+// Hàm phát nhạc hiện tại
+let backgroundAudio = null;
+
+function playCurrentMusic() {
+    const playlist = getPlaylist();
+    if (!playlist || playlist.length === 0) return;
     
+    if (!backgroundAudio) {
+        backgroundAudio = new Audio();
+        backgroundAudio.loop = true;
+        backgroundAudio.volume = 0.3;
+    }
+    
+    if (backgroundAudio.src !== playlist[currentMusicIndex]) {
+        backgroundAudio.src = playlist[currentMusicIndex];
+    }
+    
+    backgroundAudio.play().then(() => {
+        isMusicPlaying = true;
+    }).catch(err => {
+        console.log("Trình duyệt chặn autoplay nhạc:", err);
+        isMusicPlaying = false;
+    });
+}
 function loginWithGoogle() {
     auth.signInWithPopup(googleProvider).catch(error => {
         alert("Lỗi đăng nhập: " + error.message);
