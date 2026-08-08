@@ -188,16 +188,27 @@ function switchUser() {
     }
 }
 
-function finishGoogleLogin(uid) { 
-    loggedInUserId = uid; 
-    document.getElementById('login-modal').classList.add('hidden'); 
-    updateUserLabel(); 
-    updateNotificationBadge(); 
+function finishGoogleLogin(uid) {  
+    loggedInUserId = uid;  
+    
+    // Ẩn modal đăng nhập một cách an toàn
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+        loginModal.classList.add('hidden');  
+    }
+    
+    updateUserLabel();  
+    updateNotificationBadge();  
     
     const isAdmin = (auth.currentUser && auth.currentUser.email === ADMIN_EMAIL);
-    document.getElementById('btn-admin-tool').classList.toggle('hidden', !isAdmin); 
     
-    switchTab('update'); 
+    // Kiểm tra an toàn nút Admin trước khi gọi classList
+    const adminBtn = document.getElementById('btn-admin-tool');
+    if (adminBtn) {
+        adminBtn.classList.toggle('hidden', !isAdmin);  
+    }
+    
+    switchTab('update');  
 
     const playlistInit = getPlaylist();
     if (playlistInit && playlistInit.length > 0) {
