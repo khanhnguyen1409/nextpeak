@@ -27,7 +27,87 @@
             darkMode: 'class'
         }
     </script>
+<script>
+    let currentCalendarDate = new Date();
 
+    function openMiniCalendar() {
+        if (typeof closeSettingsMenu === 'function') {
+            closeSettingsMenu(); // Tự động đóng menu settings nếu đang mở
+        }
+        document.getElementById('calendar-modal').classList.remove('hidden');
+        currentCalendarDate = new Date(); // Reset về tháng hiện tại khi mở
+        renderCalendar();
+    }
+
+    function closeMiniCalendar() {
+        document.getElementById('calendar-modal').classList.add('hidden');
+    }
+
+    function changeMonth(direction) {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+        renderCalendar();
+    }
+
+    function renderCalendar() {
+        const year = currentCalendarDate.getFullYear();
+        const month = currentCalendarDate.getMonth();
+
+        // Tên các tháng bằng tiếng Việt
+        const monthNames = [
+            "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+            "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+        ];
+        
+        const headerEl = document.getElementById('calendar-month-year');
+        if (headerEl) {
+            headerEl.innerText = `${monthNames[month]} / ${year}`;
+        }
+
+        const gridEl = document.getElementById('calendar-grid');
+        if (!gridEl) return;
+
+        // Tính toán ngày đầu tiên của tháng và tổng số ngày trong tháng
+        // (Bắt đầu tuần từ Thứ Hai: getDay() trả về 0 cho Chủ Nhật, nên cần điều chỉnh)
+        const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; 
+        const totalDays = new Date(year, month + 1, 0).getDate();
+        const prevTotalDays = new Date(year, month, 0).getDate();
+
+        let html = '';
+        const today = new Date();
+
+        // 1. Ngày của tháng trước (mờ đi để lấp đầy hàng)
+        for (let i = firstDayIndex; i > 0; i--) {
+            const dayNum = prevTotalDays - i + 1;
+            html += `<div class="py-2 text-slate-300 dark:text-slate-600 text-[11px]">${dayNum}</div>`;
+        }
+
+        // 2. Ngày của tháng hiện tại
+        for (let i = 1; i <= totalDays; i++) {
+            const isToday = (
+                i === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear()
+            );
+
+            if (isToday) {
+                // Đánh dấu ngày hôm nay bằng màu chủ đạo
+                html += `<div class="py-2 bg-indigo-600 text-white rounded-xl font-bold shadow-sm">${i}</div>`;
+            } else {
+                html += `<div class="py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition cursor-default">${i}</div>`;
+            }
+        }
+
+        // 3. Ngày của tháng sau (mờ đi để lấp đầy lưới lịch)
+        const totalCells = firstDayIndex + totalDays;
+        const remainingCells = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        for (let i = 1; i <= remainingCells; i++) {
+            html += `<div class="py-2 text-slate-300 dark:text-slate-600 text-[11px]">${i}</div>`;
+        }
+
+        gridEl.innerHTML = html;
+    }
+</script>
+    
     <!-- SCRIPT QUICK SCRATCHPAD -->
     <script>
     function openScratchpad() {
@@ -407,6 +487,11 @@
     <span>Ghi chú nhanh</span>
 </button>
 
+            <!-- NÚT MỞ LỊCH MINI TRONG MENU SETTINGS -->
+<button onclick="openMiniCalendar()" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 text-slate-700 dark:text-slate-200">
+    <span class="text-base">📅</span>
+    <span>Lịch mini</span>
+</button>
             
             <hr class="border-slate-100 dark:border-slate-700 my-1">
             <div class="px-3 py-1 text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase" id="m-font-size">Cỡ chữ</div>
@@ -3993,5 +4078,37 @@ let statusBadge = isF
         </div>
     </div>
 </div>
+
+    <!-- MODAL MINI CALENDAR -->
+<div id="calendar-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4" onclick="closeMiniCalendar()">
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl w-full max-w-xs space-y-3 border border-slate-100 dark:border-slate-700 text-xs" onclick="event.stopPropagation()">
+        
+        <!-- Tiêu đề Modal -->
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+                📅 Lịch Mini
+            </h3>
+            <button onclick="closeMiniCalendar()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-2 py-1 text-sm">✕</button>
+        </div>
+        
+        <!-- Điều hướng Tháng / Năm -->
+        <div class="flex items-center justify-between font-bold text-slate-700 dark:text-slate-200 px-2 py-1.5 bg-slate-50 dark:bg-slate-900 rounded-xl">
+            <button onclick="changeMonth(-1)" class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition">◀</button>
+            <span id="calendar-month-year" class="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400">Tháng ... / ...</span>
+            <button onclick="changeMonth(1)" class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition">▶</button>
+        </div>
+
+        <!-- Các thứ trong tuần -->
+        <div class="grid grid-cols-7 text-center font-bold text-slate-400 dark:text-slate-500 py-1 text-[11px]">
+            <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
+        </div>
+
+        <!-- Lưới hiển thị ngày -->
+        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center font-medium text-xs">
+            <!-- Dữ liệu được render tự động bằng JavaScript -->
+        </div>
+    </div>
+</div>
+    
 </body>
 </html>
