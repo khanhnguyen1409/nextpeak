@@ -32,6 +32,22 @@ const firebaseConfig = {
 databaseURL: "https://next-peak-1409-default-rtdb.asia-southeast1.firebasedatabase.app"    
 };
 
+    // Khởi tạo các biến toàn cục quan trọng ngay từ đầu file
+let appData = {
+    members: [],
+    sharedChallenges: [],
+    personalHabits: {},
+    pendingMembers: [],
+    systemConfig: {}
+};
+
+const defaultSystemConfig = { defaultTargetDays: 21, defaultTotalDays: 30 };
+const defaultSlogans = { vi: ["Hành trình vạn dặm khởi đầu từ một bước chân."], en: ["A journey of a thousand miles begins with a single step."] };
+const defaultHints = { vi: [], en: [] };
+let loggedInUserId = null;
+let currentLang = 'vi';
+const ADMIN_EMAIL = "klivefullynow@gmail.com"; // Thay bằng email admin của bạn nếu cần
+
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const dbRef = database.ref('nextPeakAppData'); // Đã đổi tên thư mục thành Next Peak
