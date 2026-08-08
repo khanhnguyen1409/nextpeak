@@ -125,6 +125,13 @@ function t(key) {
 // Hàm phụ trợ UI an toàn tránh lỗi ReferenceError
 function renderFilterOptions() {}
 function updateCreateFormLabels() {}
+// Hàm đóng menu người dùng
+function closeUserMenu() {
+    const userMenu = document.getElementById('user-menu'); 
+    if (userMenu) {
+        userMenu.classList.add('hidden');
+    }
+}
     
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
